@@ -5,16 +5,16 @@
   
   <title>如何接上 TapPay 並完成第一筆交易! | Yujack</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面 環境設置 TapPay Portal 申請  要拿到以下的值才有辦法作">
+  <meta name="description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何接上 TapPay 並完成第一筆交易!">
 <meta property="og:url" content="https://yu-jack.github.io/2017/09/23/tappay-payment/index.html">
 <meta property="og:site_name" content="Yujack">
-<meta property="og:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面 環境設置 TapPay Portal 申請  要拿到以下的值才有辦法作">
-<meta property="og:updated_time" content="2017-09-23T05:18:37.000Z">
+<meta property="og:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
+<meta property="og:updated_time" content="2017-09-23T05:39:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何接上 TapPay 並完成第一筆交易!">
-<meta name="twitter:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面 環境設置 TapPay Portal 申請  要拿到以下的值才有辦法作">
+<meta name="twitter:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
   
     <link rel="alternate" href="/atom.xml" title="Yujack" type="application/atom+xml">
   
@@ -52,9 +52,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yu-jack.github.io"></form>
@@ -87,6 +87,7 @@
       
         <p>這篇文章主要是說明如何使用 TapPay 這個服務<br>TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說<br>有興趣想要詳細了解可以去參考官網 <a href="https://www.tappaysdk.com" target="_blank" rel="external">https://www.tappaysdk.com</a></p>
 <p>最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了<br>這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面</p>
+<a id="more"></a>
 <h2 id="環境設置"><a href="#環境設置" class="headerlink" title="環境設置"></a>環境設置</h2><ol>
 <li><p>TapPay Portal 申請</p>
 <p> 要拿到以下的值才有辦法作後續的付款</p>
@@ -167,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yu-jack.github.io/2017/09/23/tappay-payment/" data-id="cj7wv8oi800000rvmvabu9pke" class="article-share-link">Partager</a>
+      <a data-url="https://yu-jack.github.io/2017/09/23/tappay-payment/" data-id="cj7wv8oi800000rvmvabu9pke" class="article-share-link">Share</a>
       
       
     </footer>
@@ -201,7 +202,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
@@ -222,7 +223,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 Jack Yu<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
