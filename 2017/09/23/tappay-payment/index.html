@@ -11,7 +11,7 @@
 <meta property="og:url" content="https://yu-jack.github.io/2017/09/23/tappay-payment/index.html">
 <meta property="og:site_name" content="Yujack">
 <meta property="og:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
-<meta property="og:updated_time" content="2017-09-23T05:39:05.000Z">
+<meta property="og:updated_time" content="2017-09-23T05:54:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何接上 TapPay 並完成第一筆交易!">
 <meta name="twitter:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
@@ -66,7 +66,7 @@
         <section id="main"><article id="post-tappay-payment" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/09/23/tappay-payment/" class="article-date">
-  <time datetime="2017-09-23T05:17:07.000Z" itemprop="datePublished">2017-09-23</time>
+  <time datetime="2017-09-23T05:52:51.000Z" itemprop="datePublished">2017-09-23</time>
 </a>
     
   </div>
@@ -124,18 +124,20 @@
 </ol>
 </li>
 <li><p>後端</p>
+<ol>
+<li>拿到前端送來的 Prime</li>
+<li>把 Prime 加上其他所需參數送往 TapPay Server</li>
+<li>完成付款!</li>
+</ol>
 </li>
 </ul>
-<pre><code>1. 拿到前端送來的 Prime
-2. 把 Prime 加上其他所需參數送往 TapPay Server
-3. 完成付款!
-</code></pre><h2 id="程式撰寫-前端"><a href="#程式撰寫-前端" class="headerlink" title="程式撰寫 - 前端"></a>程式撰寫 - 前端</h2><p>根據最新的 SDK 發佈的方法, 可以直接在一個 element 底下把卡號輸入表單塞進去</p>
+<h2 id="程式撰寫-前端"><a href="#程式撰寫-前端" class="headerlink" title="程式撰寫 - 前端"></a>程式撰寫 - 前端</h2><p>根據最新的 SDK 發佈的方法, 可以直接在一個 element 底下把卡號輸入表單塞進去</p>
 <h3 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h3><p>HTML 分成兩個部分</p>
 <ol>
 <li>建立好一個 div 準備等等被塞入輸入卡號表單</li>
 <li>建立好 trigger button 來觸發 Get Prime 方法</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;div style=&quot;width: 480px; margin: 50px auto;&quot;&gt;</div><div class="line">    &lt;label&gt;CardView&lt;/label&gt;</div><div class="line"></div><div class="line">    &lt;!-- 這是我們要塞表單的地方 --&gt;</div><div class="line">    &lt;div id=&quot;cardview-container&quot;&gt;&lt;/div&gt;</div><div class="line"></div><div class="line">    &lt;!-- 這是我們要觸發 GetPrime 方法的地方 --&gt;</div><div class="line">    &lt;button id=&quot;submit-button&quot; onclick=&quot;onClick()&quot;&gt;Get Prime&lt;/button&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"width: 480px; margin: 50px auto;"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">label</span>&gt;</span>CardView<span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- 這是我們要塞表單的地方 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"cardview-container"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- 這是我們要觸發 GetPrime 方法的地方 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"submit-button"</span> <span class="attr">onclick</span>=<span class="string">"onClick()"</span>&gt;</span>Get Prime<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
 <h3 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h3><p>Javascript 分成三個部分</p>
 <ol>
 <li>初始化金鑰</li>
@@ -168,7 +170,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yu-jack.github.io/2017/09/23/tappay-payment/" data-id="cj7wv8oi800000rvmvabu9pke" class="article-share-link">Share</a>
+      <a data-url="https://yu-jack.github.io/2017/09/23/tappay-payment/" data-id="cj7wwgt3e0000r4vmqe663uru" class="article-share-link">Share</a>
       
       
     </footer>

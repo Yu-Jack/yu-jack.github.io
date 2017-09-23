@@ -56,7 +56,6 @@ TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說
 
 * 後端
 
-
     1. 拿到前端送來的 Prime
     2. 把 Prime 加上其他所需參數送往 TapPay Server
     3. 完成付款!
@@ -72,7 +71,7 @@ HTML 分成兩個部分
 1. 建立好一個 div 準備等等被塞入輸入卡號表單
 2. 建立好 trigger button 來觸發 Get Prime 方法
 
-```htmlmixed=
+```html=
 <div style="width: 480px; margin: 50px auto;">
     <label>CardView</label>
 
