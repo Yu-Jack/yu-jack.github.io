@@ -1,5 +1,8 @@
 ---
 title: 如何接上 TapPay 並完成第一筆交易!
+categories: Payment Gateway
+date: 2017-09-23 11:43:00
+tags: [TapPay, Payment Gateway]
 ---
 這篇文章主要是說明如何使用 TapPay 這個服務
 TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說
