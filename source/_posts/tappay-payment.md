@@ -331,24 +331,23 @@ app.use('/', express.static(__dirname + "/html")) //serve static content
 app.post('/pay-by-prime', (req, res, next) => {
     const post_data = {
         "prime": req.body.prime,
-        "partnerkey": "PARTNER_KEY",
-        "merchantid": "MERCHANT_ID",
+        "partner_key": "PARTNER_KEY",
+        "merchant_id": "MERCHANT_ID",
         "amount": 1,
         "currency": "TWD",
         "details": "An apple and a pen.",
         "cardholder": {
-            "phonenumber": "+886923456789",
+            "phone_number": "+886923456789",
             "name": "jack",
             "email": "example@gmail.com"
         },
-        "instalment": 0,
         "remember": false
     }
 
     const post_options = {
         host: 'sandbox.tappayapis.com',
         port: 443,
-        path: '/tpc/partner/directpay/paybyprime',
+        path: '/tpc/payment/pay-by-prime',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
