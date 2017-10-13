@@ -36,6 +36,7 @@ const store = new Vuex.Store({
         status: '', // 去更新要顯示什麼狀態的項目
         counter: 0 // 當作 increment id 用
     },
+    // 宣告可以更改的方式
     mutations: {
         addItem (state, new_item) {
             state.counter += 1
@@ -81,7 +82,7 @@ export default {
     },
     methods: {
         submit() {
-            // 利用 vuex 把資料塞進去
+            // 利用 commit 把資料塞進去
             this.$store.commit('addItem', {
                 name: this.item,
                 is_completed: false
