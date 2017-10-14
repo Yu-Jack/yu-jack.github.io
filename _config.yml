@@ -81,5 +81,5 @@ deploy:
 
 
 google_analytics: UA-106831595-1
-
 disqus_shortname: yu-jack
+sitemap: sitemap.xml
