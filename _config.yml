@@ -77,7 +77,9 @@ theme: landscape
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo: https://github.com/Yu-Jack/yu-jack.github.io.git
+  branch: master
 
 
 google_analytics: UA-106831595-1
