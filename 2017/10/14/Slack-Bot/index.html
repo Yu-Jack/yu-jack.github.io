@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://i.imgur.com/qr9riue.png">
 <meta property="og:image" content="https://i.imgur.com/BfQRZa0.png">
 <meta property="og:image" content="https://i.imgur.com/zfH08LK.png">
-<meta property="og:updated_time" content="2017-10-14T07:00:17.000Z">
+<meta property="og:updated_time" content="2017-10-14T07:09:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Slack Bot">
 <meta name="twitter:description" content="在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP  申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習">
@@ -119,8 +119,8 @@
         <p>在開始玩弄 Slack Bot 之前，必須要先去<a href="https://api.slack.com/apps" target="_blank" rel="external">申請頁面</a>建立一個 APP</p>
 <p><img src="https://i.imgur.com/mKD5GhV.png" alt=""></p>
 <p>申請完之後，可以看到 Features 那邊有很多不同的功能<br>這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習</p>
-<p><img src="https://i.imgur.com/xXeTr5w.png" alt=""></p>
 <a id="more"></a>
+<p><img src="https://i.imgur.com/xXeTr5w.png" alt=""></p>
 <h2 id="Slash-Command"><a href="#Slash-Command" class="headerlink" title="Slash Command"></a>Slash Command</h2><h3 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h3><p>Slash Command 就是在 Slack 的聊天室下指令，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/deploy server</div></pre></td></tr></table></figure></p>
 <p>就會觸發到遠端伺服器，伺服器解析 command 後，再去近一步做一些行為</p>
 <h3 id="建立新指令"><a href="#建立新指令" class="headerlink" title="建立新指令"></a>建立新指令</h3><p>下圖就是設定 Slash Command 的地方<br>我們設定了 command 為 /test，然後會用 <strong>POST</strong> 觸發到遠端的 <a href="https://your.website.com/test" target="_blank" rel="external">https://your.website.com/test</a></p>

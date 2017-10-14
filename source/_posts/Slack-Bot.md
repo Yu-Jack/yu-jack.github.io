@@ -5,19 +5,16 @@ date: 2017-10-14 13:54:17
 tags: [Slack, Bot, Chat Bot]
 ---
 
-
-
 在開始玩弄 Slack Bot 之前，必須要先去[申請頁面](https://api.slack.com/apps)建立一個 APP
 
 ![](https://i.imgur.com/mKD5GhV.png)
 
-
 申請完之後，可以看到 Features 那邊有很多不同的功能
 這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習
 
-![](https://i.imgur.com/xXeTr5w.png)
-
 <!--more-->
+
+![](https://i.imgur.com/xXeTr5w.png)
 
 ## Slash Command
 
