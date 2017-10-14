@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Slack Bot | Yujack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP  申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習">
+<meta name="keywords" content="Slack,Bot,Chat Bot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Slack Bot">
+<meta property="og:url" content="https://yu-jack.github.io/2017/10/14/Slack-Bot/index.html">
+<meta property="og:site_name" content="Yujack">
+<meta property="og:description" content="在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP  申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習">
+<meta property="og:image" content="https://i.imgur.com/mKD5GhV.png">
+<meta property="og:image" content="https://i.imgur.com/xXeTr5w.png">
+<meta property="og:image" content="https://i.imgur.com/zrWlBqF.png">
+<meta property="og:image" content="https://i.imgur.com/CHfShmx.png">
+<meta property="og:image" content="https://i.imgur.com/aXWYu8r.png">
+<meta property="og:image" content="https://i.imgur.com/VQ0s5oF.png">
+<meta property="og:image" content="https://i.imgur.com/QLYSIqc.png">
+<meta property="og:image" content="https://i.imgur.com/JoUUwJa.png">
+<meta property="og:image" content="https://i.imgur.com/DbDiMPt.png">
+<meta property="og:image" content="https://i.imgur.com/dQjIn5A.png">
+<meta property="og:image" content="https://i.imgur.com/qr9riue.png">
+<meta property="og:image" content="https://i.imgur.com/BfQRZa0.png">
+<meta property="og:image" content="https://i.imgur.com/zfH08LK.png">
+<meta property="og:updated_time" content="2017-10-14T07:00:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Slack Bot">
+<meta name="twitter:description" content="在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP  申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習">
+<meta name="twitter:image" content="https://i.imgur.com/mKD5GhV.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Yujack" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106831595-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106831595-1');
+</script>
+
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Yujack</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yu-jack.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Slack-Bot" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/14/Slack-Bot/" class="article-date">
+  <time datetime="2017-10-14T05:54:17.000Z" itemprop="datePublished">2017-10-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Bot/">Bot</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Slack Bot
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在開始玩弄 Slack Bot 之前，必須要先去<a href="https://api.slack.com/apps" target="_blank" rel="external">申請頁面</a>建立一個 APP</p>
+<p><img src="https://i.imgur.com/mKD5GhV.png" alt=""></p>
+<p>申請完之後，可以看到 Features 那邊有很多不同的功能<br>這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習</p>
+<p><img src="https://i.imgur.com/xXeTr5w.png" alt=""></p>
+<a id="more"></a>
+<h2 id="Slash-Command"><a href="#Slash-Command" class="headerlink" title="Slash Command"></a>Slash Command</h2><h3 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h3><p>Slash Command 就是在 Slack 的聊天室下指令，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/deploy server</div></pre></td></tr></table></figure></p>
+<p>就會觸發到遠端伺服器，伺服器解析 command 後，再去近一步做一些行為</p>
+<h3 id="建立新指令"><a href="#建立新指令" class="headerlink" title="建立新指令"></a>建立新指令</h3><p>下圖就是設定 Slash Command 的地方<br>我們設定了 command 為 /test，然後會用 <strong>POST</strong> 觸發到遠端的 <a href="https://your.website.com/test" target="_blank" rel="external">https://your.website.com/test</a></p>
+<p><img src="https://i.imgur.com/zrWlBqF.png" alt=""></p>
+<p>比較重要的地方是，Request URL 一定要是 HTTPS，如果不是 HTTPS 一律拒絕，在 Slack 官方文件上面有以下這段說明</p>
+<blockquote>
+<p>NOTE: If your Slack app is set to be distributable or is part of the Slack app directory, the URL you provide must be use HTTPS with a valid, verifiable SSL certificate. Self-signed certificates cannot be used. See below for more information.</p>
+</blockquote>
+<p>按下 Save 之後，回到頁面會看到，就代表建立完成了</p>
+<p><img src="https://i.imgur.com/CHfShmx.png" alt=""></p>
+<h3 id="安裝進到你的-team"><a href="#安裝進到你的-team" class="headerlink" title="安裝進到你的 team"></a>安裝進到你的 team</h3><p>按下 Install App to Workspace，就會到授權頁面，然後點下 Authorize 即可安裝完成</p>
+<p><img src="https://i.imgur.com/aXWYu8r.png" alt=""></p>
+<p>安裝後在 channel 會出現訊息，通知說已經把 App 加入進來了</p>
+<p><img src="https://i.imgur.com/VQ0s5oF.png" alt=""></p>
+<p>這時候在聊天室裡面打下 /test 會出現我剛剛建立的 command 和 Description<br>不過輸入之後，並不會有任何反應，原因是因為我們還沒有設置好伺服器端的設定</p>
+<p><img src="https://i.imgur.com/QLYSIqc.png" alt=""></p>
+<h3 id="開始寫程式去接受-slash-command"><a href="#開始寫程式去接受-slash-command" class="headerlink" title="開始寫程式去接受 slash command"></a>開始寫程式去接受 slash command</h3><p>這邊用 nodejs 示範建立一個簡單的伺服器去接受 slash command</p>
+<p>SSL 的建立容許我這邊就不做示範了 XD (有點麻煩</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">const</span> app = express();</div><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>);</div><div class="line">app.use(bodyParser.json());</div><div class="line">app.use(bodyParser.urlencoded(&#123;</div><div class="line">    extended: <span class="literal">false</span></div><div class="line">&#125;));</div><div class="line">app.post(<span class="string">'/test'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(req.body);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">`User    :  <span class="subst">$&#123;req.body.user_name&#125;</span>`</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">`Text    :  <span class="subst">$&#123;req.body.text&#125;</span>`</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">`Command :  <span class="subst">$&#123;req.body.command&#125;</span>`</span>);</div><div class="line">                                       </div><div class="line">    <span class="keyword">return</span> res.json(&#123;</div><div class="line">        text: <span class="string">'Command is successful'</span></div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line">app.listen(<span class="number">8080</span>)</div></pre></td></tr></table></figure>
+<p>在輸入視窗輸入以下指令後</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/test Hi I&apos;m from slack</div></pre></td></tr></table></figure>
+<p>伺服器端會得到</p>
+<p><img src="https://i.imgur.com/JoUUwJa.png" alt=""></p>
+<p>完整的 JSON 格式如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 敏感資訊我都以 X 先馬掉了</span></div><div class="line">&#123;</div><div class="line">    token: <span class="string">'XXXXXXXXXXXXXXXXXXXXXXX'</span>,</div><div class="line">    team_id: <span class="string">'XXXXXXXXX'</span>,</div><div class="line">    team_domain: <span class="string">'XXXXXX'</span>,</div><div class="line">    channel_id: <span class="string">'XXXXXXXXX'</span>,</div><div class="line">    channel_name: <span class="string">'announcement'</span>,</div><div class="line">    user_id: <span class="string">'XXXXXXXXX'</span>,</div><div class="line">    user_name: <span class="string">'yujack'</span>,</div><div class="line">    command: <span class="string">'/test'</span>,</div><div class="line">    text: <span class="string">'Hi I\'m from slack'</span>,</div><div class="line">    response_url: <span class="string">'XXXXXXXXXXXXXX'</span>,</div><div class="line">    trigger_id: <span class="string">'XXXXXXXXXXXXXX'</span> </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而在輸入窗那邊會看到</p>
+<p><img src="https://i.imgur.com/DbDiMPt.png" alt=""></p>
+<p>代表指令有成功到伺服器上面了，然後回傳一個 “Command is successful”<br>指令完成後，一定會想問一個問題</p>
+<p>『我想要通知其他人，我觸發了這個指令，我不想要只有我看到，那我該怎麼做？』</p>
+<p>這時候就是下一個功能 Incoming Webhooks</p>
+<h2 id="Incoming-Webhooks"><a href="#Incoming-Webhooks" class="headerlink" title="Incoming Webhooks"></a>Incoming Webhooks</h2><h3 id="介紹-1"><a href="#介紹-1" class="headerlink" title="介紹"></a>介紹</h3><p>Incoming Webhook，可以直接讓你用 curl 的方式去發訊息到某一個 chaneel 裡面</p>
+<h3 id="啟用"><a href="#啟用" class="headerlink" title="啟用"></a>啟用</h3><p>啟用 Incoming Webhooks 功能</p>
+<p><img src="https://i.imgur.com/dQjIn5A.png" alt=""></p>
+<p>啟用之後，會在下面看到一個範例，還有新增 Webhook 的地方</p>
+<p><img src="https://i.imgur.com/qr9riue.png" alt=""></p>
+<p>點選 “Add New Webhook to Workspace”，會到授權頁面<br>這裡會出現，你想要把訊息可以傳送到哪一個地方<br>那這裡我就選擇 general 作為範例</p>
+<p><img src="https://i.imgur.com/BfQRZa0.png" alt=""></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在 terminal 貼上以下指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -X POST -H 'Content-type: application/json' --data '&#123;"text":"Hello, World!"&#125;' https://hooks.slack.com/services/XXXXXXXX</div></pre></td></tr></table></figure>
+<p>在你設定要傳送的那個 channel 就會出現訊息了</p>
+<p><img src="https://i.imgur.com/zfH08LK.png" alt=""></p>
+<p>那有了這個 Webhooks 之後，剛剛的 nodejs server 就可以稍微做更改<br>這樣的話就可以告訴那一個 channel 的人說，你執行了什麼樣的指令 ~</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">const</span> app = express();</div><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>);</div><div class="line">app.use(bodyParser.json());</div><div class="line">app.use(bodyParser.urlencoded(&#123;</div><div class="line">    extended: <span class="literal">false</span></div><div class="line">&#125;));</div><div class="line"></div><div class="line">app.post(<span class="string">'/test'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(req.body);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">`User    :  <span class="subst">$&#123;req.body.user_name&#125;</span>`</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">`Text    :  <span class="subst">$&#123;req.body.text&#125;</span>`</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">`Command :  <span class="subst">$&#123;req.body.command&#125;</span>`</span>);</div><div class="line">                                       </div><div class="line">    <span class="keyword">const</span> command = <span class="string">`curl -X POST `</span> +</div><div class="line">        <span class="string">`-H 'Content-type: application/json' `</span> +</div><div class="line">        <span class="string">`--data '<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(req.body.slack_message)&#125;</span>' `</span> +</div><div class="line">        <span class="string">`https://hooks.slack.com/services/XXXXXXXXX`</span>;</div><div class="line"></div><div class="line">    exec(command, (error, stdout, stderr) =&gt; &#123;</div><div class="line">        <span class="keyword">if</span> (error) &#123;</div><div class="line">            <span class="built_in">console</span>.error(<span class="string">`exec error: <span class="subst">$&#123;error&#125;</span>`</span>);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> res.json(&#123;</div><div class="line">            text: <span class="string">'Command is successful'</span></div><div class="line">        &#125;)</div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(<span class="number">8080</span>)</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yu-jack.github.io/2017/10/14/Slack-Bot/" data-id="cj8qz33mw00009jvm1gacc3x7" class="article-share-link">Share</a>
+      
+        <a href="https://yu-jack.github.io/2017/10/14/Slack-Bot/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bot/">Bot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Chat-Bot/">Chat Bot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Slack/">Slack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/09/23/todo-vue/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">TODO - vue + vuex + vue-router</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bot/">Bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chat-Bot/">Chat Bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payment-Gateway/">Payment Gateway</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slack/">Slack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TapPay/">TapPay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todo-list/">todo-list</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue-router/">vue-router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vuex/">vuex</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Bot/" style="font-size: 10px;">Bot</a> <a href="/tags/Chat-Bot/" style="font-size: 10px;">Chat Bot</a> <a href="/tags/Payment-Gateway/" style="font-size: 10px;">Payment Gateway</a> <a href="/tags/Slack/" style="font-size: 10px;">Slack</a> <a href="/tags/TapPay/" style="font-size: 10px;">TapPay</a> <a href="/tags/todo-list/" style="font-size: 10px;">todo-list</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/vue-router/" style="font-size: 10px;">vue-router</a> <a href="/tags/vuex/" style="font-size: 10px;">vuex</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/14/Slack-Bot/">Slack Bot</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/23/todo-vue/">TODO - vue + vuex + vue-router</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/23/tappay-payment/">如何接上 TapPay 並完成第一筆交易!</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Jack Yu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'yu-jack';
+  
+  var disqus_url = 'https://yu-jack.github.io/2017/10/14/Slack-Bot/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
