@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
+        <lastmod>2017-10-18T17:35:05.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2017/09/23/todo-vue/</loc>
         <lastmod>2017-10-18T16:19:35.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -23,7 +31,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2017/10/14/Slack-Bot/</loc>
+        <loc>https://yu-jack.github.io/2017/09/23/tappay-payment/</loc>
         <lastmod>2017-10-18T16:09:22.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -31,7 +39,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2017/09/23/tappay-payment/</loc>
+        <loc>https://yu-jack.github.io/2017/10/14/Slack-Bot/</loc>
         <lastmod>2017-10-18T16:09:22.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>

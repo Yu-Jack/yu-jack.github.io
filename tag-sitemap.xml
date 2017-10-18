@@ -16,6 +16,20 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/TapPay/</loc>
+        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/Payment-Gateway/</loc>
+        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/Slack/</loc>
         <lastmod>2017-10-18T16:09:22.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -31,20 +45,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/Chat-Bot/</loc>
-        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/TapPay/</loc>
-        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/Payment-Gateway/</loc>
         <lastmod>2017-10-18T16:09:22.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -74,6 +74,20 @@
     <url>
         <loc>https://yu-jack.github.io/tags/todo-list/</loc>
         <lastmod>2017-10-18T16:19:35.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
+        <lastmod>2017-10-18T17:35:05.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/ecma6/</loc>
+        <lastmod>2017-10-18T17:35:05.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
