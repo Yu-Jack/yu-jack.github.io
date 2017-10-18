@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何接上 TapPay 並完成第一筆交易! | Yujack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
+<meta name="keywords" content="TapPay,Payment Gateway">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何接上 TapPay 並完成第一筆交易!">
+<meta property="og:url" content="https://yu-jack.github.io/2017/09/23/tappay-payment/index.html">
+<meta property="og:site_name" content="Yujack">
+<meta property="og:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2017-10-14T05:56:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何接上 TapPay 並完成第一筆交易!">
+<meta name="twitter:description" content="這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com 最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面">
+  
+    <link rel="alternate" href="/atom.xml" title="Yujack" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106831595-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106831595-1');
+</script>
+
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Yujack</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yu-jack.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tappay-payment" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/23/tappay-payment/" class="article-date">
+  <time datetime="2017-09-23T03:43:00.000Z" itemprop="datePublished">2017-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Payment-Gateway/">Payment Gateway</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何接上 TapPay 並完成第一筆交易!
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>這篇文章主要是說明如何使用 TapPay 這個服務<br>TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說<br>有興趣想要詳細了解可以去參考官網 <a href="https://www.tappaysdk.com" target="_blank" rel="external">https://www.tappaysdk.com</a></p>
+<p>最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了<br>這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面</p>
+<a id="more"></a>
+<h2 id="環境設置"><a href="#環境設置" class="headerlink" title="環境設置"></a>環境設置</h2><ol>
+<li><p>TapPay Portal 申請</p>
+<p> 要拿到以下的值才有辦法作後續的付款</p>
+<ul>
+<li>App Key (應用程式頁面)</li>
+<li>App ID (應用程式頁面)</li>
+<li>Partner Key (帳號資訊頁面)</li>
+<li>Merchant ID (商家管理頁面)</li>
+</ul>
+</li>
+<li><p>程式部分</p>
+<ul>
+<li>前端: HTML + Javascript + CSS</li>
+<li>後端: nodejs (v6)</li>
+</ul>
+</li>
+<li><p>網域部分</p>
+<ul>
+<li>設置 /etc/hosts<br>這邊要特別注意，要去 /etc/hots 底下設置<br>跟在 TapPay Portal 所建立的 domain 一樣<br>才有辦法 Get Prim，否則會一直出現 CORS 的問題<br>待會在細部流程的時候會做介紹</li>
+</ul>
+</li>
+<li><p>測試卡號</p>
+<p> 測試卡號可以參考這裡<br> <a href="https://docs.tappaysdk.com/tutorial/zh/reference.html#test-card" target="_blank" rel="external">https://docs.tappaysdk.com/tutorial/zh/reference.html#test-card</a><br> card number 4242424242424242<br> month 01<br> year 23<br> ccv 123</p>
+</li>
+</ol>
+<h2 id="流程介紹"><a href="#流程介紹" class="headerlink" title="流程介紹"></a>流程介紹</h2><p>主要分成以下幾個步驟</p>
+<ul>
+<li><p>前端</p>
+<ol>
+<li>使用 TapPay SDK 設置好輸入卡號的表單</li>
+<li>按下按鈕觸發 TapPay 的 GetPrime 方法</li>
+<li>拿到 Prime</li>
+<li>把 Prime 送到後端</li>
+</ol>
+</li>
+<li><p>後端</p>
+<ol>
+<li>拿到前端送來的 Prime</li>
+<li>把 Prime 加上其他所需參數送往 TapPay Server</li>
+<li>完成付款!</li>
+</ol>
+</li>
+</ul>
+<h2 id="程式撰寫-前端"><a href="#程式撰寫-前端" class="headerlink" title="程式撰寫 - 前端"></a>程式撰寫 - 前端</h2><p>根據最新的 SDK 發佈的方法, 可以直接在一個 element 底下把卡號輸入表單塞進去</p>
+<h3 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h3><p>HTML 分成兩個部分</p>
+<ol>
+<li>建立好一個 div 準備等等被塞入輸入卡號表單</li>
+<li>建立好 trigger button 來觸發 Get Prime 方法</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"width: 480px; margin: 50px auto;"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">label</span>&gt;</span>CardView<span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- 這是我們要塞表單的地方 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"cardview-container"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- 這是我們要觸發 GetPrime 方法的地方 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"submit-button"</span> <span class="attr">onclick</span>=<span class="string">"onClick()"</span>&gt;</span>Get Prime<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h3><p>Javascript 分成三個部分</p>
+<ol>
+<li>初始化金鑰</li>
+<li>植入輸入卡號表單</li>
+<li>觸發 getPrime 方法</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 設置好等等 GetPrime 所需要的金鑰</span></div><div class="line">TPDirect.setupSDK(APP_ID, <span class="string">"APP_KEY"</span>, <span class="string">"sandbox"</span>)</div><div class="line">				  </div><div class="line"><span class="comment">// 把 TapPay 內建輸入卡號的表單給植入到 div 中</span></div><div class="line">TPDirect.card.setup(<span class="string">'#cardview-container'</span>)</div><div class="line"></div><div class="line"><span class="keyword">var</span> submitButton = <span class="built_in">document</span>.querySelector(<span class="string">'#submit-button'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 讓 button click 之後觸發 getPrime 方法</span></div><div class="line">    TPDirect.card.getPrime(<span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (result.status !== <span class="number">0</span>) &#123;</div><div class="line">            <span class="built_in">console</span>.err(<span class="string">'getPrime 錯誤'</span>)</div><div class="line">            <span class="keyword">return</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">var</span> prime = result.card.prime</div><div class="line">        alert(<span class="string">'getPrime 成功: '</span> + prime)</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>沒錯！你沒看錯，不到 30 行<br>但是，這邊要注意到一個地方，如果你 Get Prime 之後沒有任何反應<br>打開開發者模式後卻看到了這個<br>getPrime 錯誤<br>題外話，如果並不使用 TPDirect.card.setup 版本的話<br>而是自己實作整個流程，則會看到 CORS 的紅字</p>
+<p>這個代表你開發的網域和你在 TapPay Portal 上面所填寫的網域是不一樣的<br>這就是一開始在環境設置提到的 /etc/hosts 有關係</p>
+<p>假設你未來可能要使用的網域是 example-tappay.yujack.com 的話<br>請到 /etc/hosts localhost 下面加上一段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">127.0.0.1 localhost</div><div class="line">127.0.0.1 example-tappay.yujack.com</div></pre></td></tr></table></figure>
+<p>然後回到網頁上把 URL 從<br><a href="http://localhost:8080/" target="_blank" rel="external">http://localhost:8080/</a> 改成 <a href="http://example-tappay.yujack.com:8080/" target="_blank" rel="external">http://example-tappay.yujack.com:8080/</a><br>這樣 Get Prime 就會成功了！</p>
+<p>不過要注意，如果你未來要用的網域是已經在用的話<br>在 /etc/hosts 底下是上去是沒有用的<br>所以切記用一個沒在用的網域做測試<br>否則 .. 你只好直接部署上去測試了</p>
+<h2 id="程式撰寫-後端"><a href="#程式撰寫-後端" class="headerlink" title="程式撰寫 - 後端"></a>程式撰寫 - 後端</h2><p>小弟我是習慣用 nodejs 撰寫後端伺服器<br>所以這邊會以 nodejs 去做付款的動作<br>前端 Get Prime 成功之後, 就要把這組 prime 送到後端了</p>
+<h3 id="建立-NodeJs-server"><a href="#建立-NodeJs-server" class="headerlink" title="建立 NodeJs server"></a>建立 NodeJs server</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</div><div class="line"><span class="keyword">const</span> app = express()</div><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</div><div class="line"><span class="keyword">const</span> https = <span class="built_in">require</span>(<span class="string">'https'</span>);</div><div class="line"><span class="keyword">const</span> PORT = <span class="number">8080</span></div><div class="line"></div><div class="line">app.use(bodyParser.json())</div><div class="line">app.use(bodyParser.urlencoded(&#123;</div><div class="line">    extended: <span class="literal">false</span></div><div class="line">&#125;))</div><div class="line">app.use(<span class="string">'/'</span>, express.static(__dirname + <span class="string">"/html"</span>)) <span class="comment">//serve static content</span></div><div class="line"></div><div class="line">app.post(<span class="string">'/pay-by-prime'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    <span class="comment">// 必須要把程式實作在這邊</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(PORT, () =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Connet your webiste in the http://localhost:8080/'</span>);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h3 id="實作-Pay-by-Prime"><a href="#實作-Pay-by-Prime" class="headerlink" title="實作 Pay by Prime"></a>實作 Pay by Prime</h3><p>接下來要實作 pay-by-prime 的程式<br>要加到 app.post(‘/pay-by-prime’) 裡面<br>這裡有兩個參數要注意<br>兩個都是在 TapPay Portal 上面申請帳號時會獲得的，程式如下</p>
+<ol>
+<li>Partner Key (帳號資訊頁面)</li>
+<li>Merchant ID (商家管理頁面)</li>
+</ol>
+<p>另外就是 headers 裡面要特別帶 x-api-key 進去<br>否則會收到 access deny 的 response</p>
+<p>可以參考 <a href="https://docs.tappaysdk.com/tutorial/zh/back.html#pay-by-prime-api" target="_blank" rel="external">https://docs.tappaysdk.com/tutorial/zh/back.html#pay-by-prime-api</a><br>所需要帶的參數和 headers</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> post_data = &#123;</div><div class="line">    <span class="comment">// prime from front-end</span></div><div class="line">    <span class="string">"prime"</span>: req.body.prime,</div><div class="line">    <span class="string">"partnerkey"</span>: <span class="string">"PARTNER_KEY"</span>,</div><div class="line">    <span class="string">"merchantid"</span>: <span class="string">"MERCHANT_ID"</span>,</div><div class="line">    <span class="string">"amount"</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">"currency"</span>: <span class="string">"TWD"</span>,</div><div class="line">    <span class="string">"details"</span>: <span class="string">"An apple and a pen."</span>,</div><div class="line">    <span class="string">"cardholder"</span>: &#123;</div><div class="line">        <span class="string">"phonenumber"</span>: <span class="string">"+886923456789"</span>,</div><div class="line">        <span class="string">"name"</span>: <span class="string">"yujack"</span>,</div><div class="line">        <span class="string">"email"</span>: <span class="string">"example@gmail.com"</span></div><div class="line">    &#125;,</div><div class="line">    <span class="string">"instalment"</span>: <span class="number">0</span>,</div><div class="line">    <span class="string">"remember"</span>: <span class="literal">false</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> post_options = &#123;</div><div class="line">    host: <span class="string">'sandbox.tappayapis.com'</span>,</div><div class="line">    port: <span class="number">443</span>,</div><div class="line">    path: <span class="string">'/tpc/partner/directpay/paybyprime'</span>,</div><div class="line">    method: <span class="string">'POST'</span>,</div><div class="line">    headers: &#123;</div><div class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,</div><div class="line">        <span class="comment">// 這個參數必須要帶上去，否則不會過</span></div><div class="line">        <span class="string">'x-api-key'</span>: <span class="string">'PARTNER_KEY'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> post_req = https.request(post_options, <span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</div><div class="line">    response.setEncoding(<span class="string">'utf8'</span>);</div><div class="line">    response.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">body</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> res.json(&#123;</div><div class="line">            result: <span class="built_in">JSON</span>.parse(body)</div><div class="line">        &#125;)</div><div class="line">    &#125;);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">post_req.write(<span class="built_in">JSON</span>.stringify(post_data));</div><div class="line">post_req.end();</div></pre></td></tr></table></figure>
+<p>實作完成後，開啟 nodejs server<br>然後打上測試卡後就可以完成付款了！<br>打完收工！下班去！</p>
+<h3 id="前端補正"><a href="#前端補正" class="headerlink" title="前端補正"></a>前端補正</h3><p>記得前端要補上把 prime 帶上來的程式<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.post(<span class="string">'/pay-by-prime'</span>, &#123;<span class="attr">prime</span>: prime&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">    alert(<span class="string">'付款成功'</span> + <span class="built_in">JSON</span>.stringify(data))</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<h2 id="完整程式碼"><a href="#完整程式碼" class="headerlink" title="完整程式碼"></a>完整程式碼</h2><h3 id="資料夾結構"><a href="#資料夾結構" class="headerlink" title="資料夾結構"></a>資料夾結構</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">|</div><div class="line">|--- app.js</div><div class="line">|</div><div class="line">|----html</div><div class="line">|     |---index.html</div></pre></td></tr></table></figure>
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">text</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"https://js.tappaysdk.com/tpdirect/v2_2_1"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://code.jquery.com/jquery-2.2.4.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Connect payment with TapPay<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"width: 480px; margin: 50px auto;"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>CardView<span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"cardview-container"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"submit-button"</span> <span class="attr">onclick</span>=<span class="string">"onClick()"</span>&gt;</span>Get Prime<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">pre</span> <span class="attr">id</span>=<span class="string">"result1"</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">pre</span> <span class="attr">id</span>=<span class="string">"result2"</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="javascript">        TPDirect.setupSDK(APP_ID, <span class="string">'APP_KEY'</span>, <span class="string">'sandbox'</span>)</span></div><div class="line"><span class="javascript">        TPDirect.card.setup(<span class="string">'#cardview-container'</span>)</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">        <span class="keyword">var</span> submitButton = <span class="built_in">document</span>.querySelector(<span class="string">'#submit-button'</span>)</span></div><div class="line"><span class="javascript">        <span class="keyword">var</span> cardViewContainer = <span class="built_in">document</span>.querySelector(<span class="string">'#cardview-container'</span>)</span></div><div class="line"><span class="undefined">        </span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">onClick</span>(<span class="params"></span>) </span>&#123;</span></div><div class="line"><span class="javascript">            TPDirect.card.getPrime(<span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</span></div><div class="line"><span class="javascript">                <span class="keyword">if</span> (result.status !== <span class="number">0</span>) &#123;</span></div><div class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="string">'getPrime 錯誤'</span>)</span></div><div class="line"><span class="javascript">                    <span class="keyword">return</span></span></div><div class="line"><span class="undefined">                &#125;</span></div><div class="line"><span class="javascript">                alert(<span class="string">'getPrime 成功'</span>)</span></div><div class="line"><span class="javascript">                <span class="keyword">var</span> prime = result.card.prime</span></div><div class="line"><span class="javascript">                <span class="built_in">document</span>.querySelector(<span class="string">'#result1'</span>).innerHTML = <span class="built_in">JSON</span>.stringify(result, <span class="literal">null</span>, <span class="number">4</span>)</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">                $.post(<span class="string">'/pay-by-prime'</span>, &#123;<span class="attr">prime</span>: prime&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span></div><div class="line"><span class="javascript">                    alert(<span class="string">'付款成功'</span>)</span></div><div class="line"><span class="javascript">                    <span class="built_in">document</span>.querySelector(<span class="string">'#result2'</span>).innerHTML = <span class="built_in">JSON</span>.stringify(data, <span class="literal">null</span>, <span class="number">4</span>)</span></div><div class="line"><span class="undefined">                &#125;)</span></div><div class="line"><span class="undefined">            &#125;)</span></div><div class="line"><span class="undefined">        &#125;</span></div><div class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="後端"><a href="#後端" class="headerlink" title="後端"></a>後端</h3><p>記得先執行以下 command<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install body-parser express</div></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</div><div class="line"><span class="keyword">const</span> app = express()</div><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</div><div class="line"><span class="keyword">const</span> https = <span class="built_in">require</span>(<span class="string">'https'</span>);</div><div class="line"><span class="keyword">const</span> PORT = <span class="number">8080</span></div><div class="line"></div><div class="line">app.use(bodyParser.json())</div><div class="line">app.use(bodyParser.urlencoded(&#123;</div><div class="line">    extended: <span class="literal">false</span></div><div class="line">&#125;))</div><div class="line">app.use(<span class="string">'/'</span>, express.static(__dirname + <span class="string">"/html"</span>)) <span class="comment">//serve static content</span></div><div class="line"></div><div class="line">app.post(<span class="string">'/pay-by-prime'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> post_data = &#123;</div><div class="line">        <span class="string">"prime"</span>: req.body.prime,</div><div class="line">        <span class="string">"partner_key"</span>: <span class="string">"PARTNER_KEY"</span>,</div><div class="line">        <span class="string">"merchant_id"</span>: <span class="string">"MERCHANT_ID"</span>,</div><div class="line">        <span class="string">"amount"</span>: <span class="number">1</span>,</div><div class="line">        <span class="string">"currency"</span>: <span class="string">"TWD"</span>,</div><div class="line">        <span class="string">"details"</span>: <span class="string">"An apple and a pen."</span>,</div><div class="line">        <span class="string">"cardholder"</span>: &#123;</div><div class="line">            <span class="string">"phone_number"</span>: <span class="string">"+886923456789"</span>,</div><div class="line">            <span class="string">"name"</span>: <span class="string">"jack"</span>,</div><div class="line">            <span class="string">"email"</span>: <span class="string">"example@gmail.com"</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">"remember"</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">const</span> post_options = &#123;</div><div class="line">        host: <span class="string">'sandbox.tappayapis.com'</span>,</div><div class="line">        port: <span class="number">443</span>,</div><div class="line">        path: <span class="string">'/tpc/payment/pay-by-prime'</span>,</div><div class="line">        method: <span class="string">'POST'</span>,</div><div class="line">        headers: &#123;</div><div class="line">            <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,</div><div class="line">            <span class="string">'x-api-key'</span>: <span class="string">'PARTNER_KEY'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">const</span> post_req = https.request(post_options, <span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</div><div class="line">        response.setEncoding(<span class="string">'utf8'</span>);</div><div class="line">        response.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">body</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> res.json(&#123;</div><div class="line">                result: <span class="built_in">JSON</span>.parse(body)</div><div class="line">            &#125;)</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    post_req.write(<span class="built_in">JSON</span>.stringify(post_data));</div><div class="line">    post_req.end();</div><div class="line"></div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(PORT, () =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Connet your webiste in the http://localhost:8080/'</span>);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yu-jack.github.io/2017/09/23/tappay-payment/" data-id="cj8ue5df20001wevmfcutn434" class="article-share-link">Share</a>
+      
+        <a href="https://yu-jack.github.io/2017/09/23/tappay-payment/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Payment-Gateway/">Payment Gateway</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TapPay/">TapPay</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/23/todo-vue/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          TODO - vue + vuex + vue-router
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bot/">Bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chat-Bot/">Chat Bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payment-Gateway/">Payment Gateway</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slack/">Slack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TapPay/">TapPay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-hacking/">google hacking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todo-list/">todo-list</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue-router/">vue-router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vuex/">vuex</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Bot/" style="font-size: 10px;">Bot</a> <a href="/tags/Chat-Bot/" style="font-size: 10px;">Chat Bot</a> <a href="/tags/Payment-Gateway/" style="font-size: 10px;">Payment Gateway</a> <a href="/tags/Slack/" style="font-size: 10px;">Slack</a> <a href="/tags/TapPay/" style="font-size: 10px;">TapPay</a> <a href="/tags/google-hacking/" style="font-size: 10px;">google hacking</a> <a href="/tags/search/" style="font-size: 10px;">search</a> <a href="/tags/todo-list/" style="font-size: 10px;">todo-list</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/vue-router/" style="font-size: 10px;">vue-router</a> <a href="/tags/vuex/" style="font-size: 10px;">vuex</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/17/google-hacking/">Google Hacking</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/14/Slack-Bot/">Slack Bot</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/23/todo-vue/">TODO - vue + vuex + vue-router</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/23/tappay-payment/">如何接上 TapPay 並完成第一筆交易!</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Jack Yu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'yu-jack';
+  
+  var disqus_url = 'https://yu-jack.github.io/2017/09/23/tappay-payment/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
