@@ -3,17 +3,22 @@
 
     <sitemap>
         <loc>https://yu-jack.github.io/post-sitemap.xml</loc>
-        <lastmod>2017-10-18T17:44:13.000Z</lastmod>
+        <lastmod>2017-10-20T15:53:15.000Z</lastmod>
+    </sitemap>
+
+    <sitemap>
+        <loc>https://yu-jack.github.io/page-sitemap.xml</loc>
+        <lastmod>2017-10-20T15:08:59.000Z</lastmod>
     </sitemap>
 
     <sitemap>
         <loc>https://yu-jack.github.io/category-sitemap.xml</loc>
-        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
+        <lastmod>2017-10-20T15:05:47.000Z</lastmod>
     </sitemap>
 
     <sitemap>
         <loc>https://yu-jack.github.io/tag-sitemap.xml</loc>
-        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
+        <lastmod>2017-10-20T15:05:47.000Z</lastmod>
     </sitemap>
 
 </sitemapindex>

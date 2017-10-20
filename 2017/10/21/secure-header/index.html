@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          增加安全性的 HTTP Headers - undefined
+        
+    </title>
+
+    <link rel="canonical" href="https://yu-jack.github.io/2017/10/21/secure-header/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/images/banner.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#header" title="header">header</a>
+                            
+                              <a class="tag" href="/tags/#security" title="security">security</a>
+                            
+                              <a class="tag" href="/tags/#security header" title="security header">security header</a>
+                            
+                              <a class="tag" href="/tags/#HTTPS" title="HTTPS">HTTPS</a>
+                            
+                        </div>
+                        <h1>增加安全性的 HTTP Headers</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Jack Yu on
+                            2017-10-21
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Yujack</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>最近遇到需要增進網站安全性的問題<br>於是 survey 了幾個常見的 header 設置方式<br>接下來會開始介紹每一個 header 的功能以及設置方式<br>以及可以到這個網站進行檢測 <a href="https://securityheaders.io/" target="_blank" rel="external">https://securityheaders.io/</a><br>個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主<br><a id="more"></a></p>
+<h2><span id="set-cookie-設置方式">Set-Cookie 設置方式</span></h2><p>防禦面向為: XSS</p>
+<p><code>Set-Cookie</code> 基本上是最多人使用的，但是 <code>Set-Cookie</code> 的設置方式如果沒有設定好是不安全的<br><code>Set-Cookie</code> 有以下兩個 header 可以設定</p>
+<ol>
+<li><p>HttpOnly<br>設置 <code>HttpOnly</code> 的 cookie 之後，會沒辦法用 <code>document.cookie</code> 的方式(任何 javascript)去存取 cookie</p>
+</li>
+<li><p>Secure<br>強制 cookie 只能在 HTTPS protocol 的環境下進行傳遞<br>簡單來說設置 <code>Secure</code> 的 cookie 之後在非 HTTPS 的環境底下是會失效的</p>
+</li>
+</ol>
+<h3><span id="使用方式">使用方式</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">res.cookie(<span class="string">'cookie_name'</span>, <span class="string">'jack'</span>, &#123;</div><div class="line">    httpOnly: <span class="literal">true</span>,</div><div class="line">    secure: <span class="literal">true</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2><span id="x-xss-protection">X-XSS-Protection</span></h2><p>防禦面向為: XSS</p>
+<p>設定之後，如果瀏覽器偵測到 XSS 的攻擊，會根據設置的屬性做不同的反應<br>p.s. 這個是舊有的屬性，基本上可以被 <code>Content-Security-Policy</code> 取代<br>但是還是可以為那些沒有支援 <code>Content-Security-Policy</code> 的瀏覽器提供一層保護</p>
+<p><code>X-XSS-Protection</code> 有以下四個值可以設定</p>
+<ol>
+<li><p>0<br>關閉 XSS 過濾功能</p>
+</li>
+<li><p>1<br>開啟 XSS 過濾功能，如果偵測到 XSS 攻擊的話，瀏覽器會刪除不安全的部分</p>
+</li>
+<li><p>1; mode=block<br>開啟 XSS 過濾功能，如果偵測到 XSS 攻擊的話，瀏覽器不會把網頁給渲染出來</p>
+</li>
+<li><p>1;report=<reporting-uri>  (Chromium only)<br>開啟 XSS 過濾功能，如果偵測到 XSS 攻擊的話，瀏覽器會回報到指定的 URI</reporting-uri></p>
+</li>
+</ol>
+<h3><span id="使用方式">使用方式</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'0'</span>)</div><div class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'1'</span>)</div><div class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'1; mode=block'</span>)</div><div class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'1;report=https://www.example.com'</span>)</div></pre></td></tr></table></figure>
+<h2><span id="content-security-policy">Content-Security-Policy</span></h2><p>防禦面向為: XSS</p>
+<p><code>Content-Security-Policy</code> 是一個可以限制網站的 <code>script</code> <code>object</code> <code>style</code> <code>font</code> 的來源<br>主要是用白名單的方式限制，甚至可以限制不允許 <code>eval</code> 這種東西出現<br>簡單來說設定 <code>Content-Security-Policy</code> 之後，只有白名單內的 resource 可以存取<br>因為值很多種，所以以下用例子來解釋，詳細可以參考 <a href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Headers/Content-Security-Policy" target="_blank" rel="external">Content-Security-Policy</a><br>但基本上有以下幾種可以設定</p>
+<ol>
+<li>default-src</li>
+<li>script-src</li>
+<li>img-src</li>
+<li>font-src</li>
+<li>frame-src</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">res.setHeader(<span class="string">'Content-Security-Policy'</span>, <span class="string">"default-src 'self'; script-src 'self' *.google.com 'unsafe-eval'; img-src 'self' *.amazonaws.com data:"</span>)</div></pre></td></tr></table></figure>
+<p>以上面的例子來說<br>default-src ‘self’ 代表網站 resource 只能讀取自己網站的，default 代表如果在其他設置欄位沒找到的話，會根據 default-src 為主<br>script-src ‘self’ <em>.google.com ‘unsafe-eval’ 代表我用的 <code>script</code> src 可以存取自己網站以及 </em>.google.com 底下，以及可以允許 <code>eval</code><br>img-src ‘self’ <em>.amazonaws.com data:代表我用的 <code>script</code> src 可以存取自己網站以及 </em>.amazonaws.com 底下，以及比較特別的是可以存取 base64 格式的 image data</p>
+<h2><span id="x-frame-options">X-Frame-Options</span></h2><p>防禦面向為: Clickjacking</p>
+<p><code>X-Frame-Options</code> 主要是設定網站是否能被其他網站透過 <code>iframe</code> <code>frame</code> 的方式遷入<br><code>X-Frame-Options</code> 有以下三個值可以設定</p>
+<ol>
+<li><p>DENY<br>不允許被任何網站用 <code>iframe</code> 的形式嵌入的<br>假設在 www.example.com 設置了 <code>X-Frame-Options: DENY</code> 的話<br>在 www.google.com 的話，是不能 html 裡面嵌入 <code>&lt;iframe src=&quot;www.example.com&quot;&gt;&lt;/iframe&gt;</code></p>
+</li>
+<li><p>SAMEORIGIN<br>允許同源底下的網站，用 <code>iframe</code> 方式嵌入</p>
+</li>
+<li><p>ALLOW-FROM<br>設定白名單的 list</p>
+</li>
+</ol>
+<h3><span id="使用方式">使用方式</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">res.setHeader(<span class="string">'X-Frame-Options'</span>, <span class="string">'DENY'</span>)</div><div class="line">res.setHeader(<span class="string">'X-Frame-Options'</span>, <span class="string">'SAMEORIGIN'</span>)</div><div class="line">res.setHeader(<span class="string">'X-Frame-Options'</span>, <span class="string">'ALLOW-FROM https://example.com'</span>)</div></pre></td></tr></table></figure>
+<h2><span id="x-content-type-options">X-Content-Type-Options</span></h2><p>用途: 避免瀏覽器誤判文件形態</p>
+<p><code>X-Content-Type-Options</code> 是拿來防止 Content-Type 被竄改<br>比較要注意的是，這個屬性只會套用在 <code>script</code> <code>style</code><br>如果 <code>style</code> 的 <code>content-type</code> 不是 <code>text/css</code> 就會被拒絕<br>如果 <code>script</code> 的 <code>content-type</code> 不是 <a href="https://html.spec.whatwg.org/multipage/scripting.html#javascript-mime-type" target="_blank" rel="external">javascript MIME type</a> 就會被拒絕</p>
+<h3><span id="使用方式">使用方式</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">res.setHeader(<span class="string">'X-Content-Type-Options'</span>, <span class="string">'nosniff'</span>)</div></pre></td></tr></table></figure>
+<h2><span id="strict-transport-security">Strict-Transport-Security</span></h2><p>防禦面向: 強迫用戶使用 HTTPS，防範 MITM 攻擊</p>
+<p><code>Strict-Transport-Security</code> 是強化 HTTPS 機智的一種方式<br>設置之後，即使是用 HTTP 連線，還是會被轉去使用 HTTPS 連線</p>
+<h3><span id="使用方式">使用方式</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">res.setHeader(<span class="string">'Strict-Transport-Security'</span>, <span class="string">'max-age=16070400; includeSubDomains'</span>)</div></pre></td></tr></table></figure>
+<h2><span id="referrer-policy">Referrer-Policy</span></h2><p>防禦面向: 增加隱私權</p>
+<p><code>Referrer</code> 代表的是你從 A 網站跳到 B 網站的時候，這個欄位會被記錄為 A<br>簡單來說，他是記錄你上一個瀏覽的地方的東西</p>
+<p>他有以下幾個值可以設定，詳細可以參考<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy" target="_blank" rel="external">這裏</a></p>
+<ol>
+<li><p>no-referrer<br>不允許被記錄下來</p>
+</li>
+<li><p>origin<br>只有紀錄 origin，例如在 <a href="https://example.com/a.html" target="_blank" rel="external">https://example.com/a.html</a> 底下，只會傳送 <a href="https://example.com" target="_blank" rel="external">https://example.com</a></p>
+</li>
+<li><p>strict-origin<br>只有在 HTTPS-&gt;HTTPS 之間才會被記錄下來</p>
+</li>
+<li><p>no-referrer-when-downgrade (default)<br>跟 strict-origin 一樣</p>
+</li>
+<li><p>origin-when-cross-origin<br>只有在 CORS 的時候, <code>referrer</code> 才會被送出，但只有 origin</p>
+</li>
+<li><p>same-origin<br>CORS 的時候, <code>referrer</code> 不會被記錄，同源的時候會有 <code>origin</code></p>
+</li>
+<li><p>strict-origin-when-cross-origin<br>只有在同源的時候才會送出 <code>referrer</code>，而且還是要 HTTPS -&gt; HTTPS </p>
+</li>
+<li><p>unsafe-url<br>不管怎樣都送就對拉</p>
+</li>
+</ol>
+<h3><span id="使用方式">使用方式</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">res.setHeader(<span class="string">'Referrer-Policy'</span>, <span class="string">'no-referrer'</span>)</div><div class="line">res.setHeader(<span class="string">'Referrer-Policy'</span>, <span class="string">'unsafe-url'</span>)</div></pre></td></tr></table></figure>
+<h2><span id="public-key-pins">Public-Key-Pins</span></h2><p>防禦面向: 中間人攻擊</p>
+<p>設定 <code>Public-Key-Pins</code> 之後，可以給予我們是否要主動信任 CA (憑證頒發機構) 的權利<br>可以防止攻擊者透過 CA 錯誤的簽署憑證並進行中間人攻擊的安全機制</p>
+<h3><span id="使用方式">使用方式</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 裡面的 base64== 是要透過用自己的憑證，產出的 public keu</span></div><div class="line"><span class="comment">// 產出的 public key 配合 openssl 產出 fingerprint</span></div><div class="line"><span class="comment">// 把 fingerprint 貼上來取代掉 base64== 即可</span></div><div class="line">res.setHeader(<span class="string">'Public-Key-Pins'</span>, <span class="string">'pin-sha256="base64=="; max-age=2592000; includeSubDomains'</span>)</div></pre></td></tr></table></figure>
+<h2><span id="reference">Reference</span></h2><p><a href="https://developer.mozilla.org" target="_blank" rel="external">https://developer.mozilla.org</a><br><a href="https://devco.re/blog/2014/03/10/security-issues-of-http-headers-1/" target="_blank" rel="external">https://devco.re/blog/2014/03/10/security-issues-of-http-headers-1/</a><br><a href="https://devco.re/blog/2014/04/08/security-issues-of-http-headers-2-content-security-policy/" target="_blank" rel="external">https://devco.re/blog/2014/04/08/security-issues-of-http-headers-2-content-security-policy/</a><br><a href="https://devco.re/blog/2014/06/11/setcookie-httponly-security-issues-of-http-headers-3/" target="_blank" rel="external">https://devco.re/blog/2014/06/11/setcookie-httponly-security-issues-of-http-headers-3/</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/10/19/module-export/" data-toggle="tooltip" data-placement="top" title="Module Export">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "yu-jack";
+    var disqus_identifier = "https://yu-jack.github.io/2017/10/21/secure-header/";
+    var disqus_url = "https://yu-jack.github.io/2017/10/21/secure-header/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jack Yu 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://yu-jack.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

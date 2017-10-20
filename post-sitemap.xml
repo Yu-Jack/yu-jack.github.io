@@ -7,24 +7,8 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
-        <lastmod>2017-10-18T17:44:13.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/2017/09/23/todo-vue/</loc>
-        <lastmod>2017-10-18T16:19:35.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2017/10/17/google-hacking/</loc>
-        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
+        <lastmod>2017-10-20T15:53:15.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -32,7 +16,31 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/10/14/Slack-Bot/</loc>
-        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
+        <lastmod>2017-10-20T15:53:11.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2017/10/21/secure-header/</loc>
+        <lastmod>2017-10-20T15:53:03.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
+        <lastmod>2017-10-20T15:05:47.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2017/10/17/google-hacking/</loc>
+        <lastmod>2017-10-20T15:05:47.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -40,7 +48,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/09/23/tappay-payment/</loc>
-        <lastmod>2017-10-18T16:09:22.000Z</lastmod>
+        <lastmod>2017-10-20T15:05:47.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
