@@ -21,13 +21,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Securiry/</loc>
-        <lastmod>2017-10-20T15:53:03.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Bot/</loc>
         <lastmod>2017-10-20T15:53:11.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -37,6 +30,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2017-10-20T15:53:15.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Securiry/</loc>
+        <lastmod>2017-10-20T17:33:48.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
