@@ -7,6 +7,22 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2017/10/24/api-gateway-mapping-template/</loc>
+        <lastmod>2017-10-23T16:00:19.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
+        <lastmod>2017-10-23T15:59:40.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2017/10/20/secure-header/</loc>
         <lastmod>2017-10-20T17:33:48.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -32,14 +48,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/10/17/google-hacking/</loc>
-        <lastmod>2017-10-20T15:05:47.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
         <lastmod>2017-10-20T15:05:47.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
