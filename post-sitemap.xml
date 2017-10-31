@@ -7,8 +7,8 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2017/10/17/google-hacking/</loc>
-        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
+        <loc>https://yu-jack.github.io/2017/11/01/how-to-test/</loc>
+        <lastmod>2017-10-31T16:56:16.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -23,7 +23,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
+        <loc>https://yu-jack.github.io/2017/10/14/Slack-Bot/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -31,7 +31,15 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2017/10/14/Slack-Bot/</loc>
+        <loc>https://yu-jack.github.io/2017/10/17/google-hacking/</loc>
+        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
