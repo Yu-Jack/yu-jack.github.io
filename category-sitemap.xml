@@ -7,6 +7,13 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/categories/Google/</loc>
+        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/categories/Bot/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -14,7 +21,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Google/</loc>
+        <loc>https://yu-jack.github.io/categories/Securiry/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -35,13 +42,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Securiry/</loc>
-        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Development/</loc>
         <lastmod>2017-10-31T16:58:26.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -49,8 +49,22 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
+        <lastmod>2017-11-08T13:19:44.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/categories/AWS/</loc>
-        <lastmod>2017-11-04T14:58:02.000Z</lastmod>
+        <lastmod>2017-11-08T13:33:22.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/tool/</loc>
+        <lastmod>2017-11-08T13:39:13.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
