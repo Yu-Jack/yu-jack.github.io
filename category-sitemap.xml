@@ -7,6 +7,13 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/categories/Bot/</loc>
+        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/categories/Google/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -14,7 +21,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Bot/</loc>
+        <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -29,13 +36,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
-        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -64,7 +64,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/categories/tool/</loc>
-        <lastmod>2017-11-08T13:39:13.000Z</lastmod>
+        <lastmod>2017-11-08T14:09:10.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
