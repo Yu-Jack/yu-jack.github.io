@@ -14,7 +14,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          如何用 API Gateway 和 Lambda 上傳和下載檔案 - Jack Yu | 傑克
+          如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 - Jack Yu | 傑克
         
     </title>
 
@@ -97,7 +97,7 @@
                               <a class="tag" href="/tags/#download file" title="download file">download file</a>
                             
                         </div>
-                        <h1>如何用 API Gateway 和 Lambda 上傳和下載檔案</h1>
+                        <h1>如何用 AWS API Gateway 和 Lambda 上傳和下載檔案</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by Jack Yu on
@@ -204,7 +204,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>這篇主要是記錄如何利用 lambda 和 API Gateway 做檔案的上傳以及下載<br>在 API Gateway 中要做幾項設定才有辦法達成<br>加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整<br>這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分<br><a id="more"></a></p>
+                <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載<br>在 API Gateway 中要做幾項設定才有辦法達成<br>加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整<br>這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分<br><a id="more"></a></p>
 <h2><span id="api-gateway">API Gateway</span></h2><p>主要調整得地方有兩個</p>
 <ol>
 <li>/upload Integration Request</li>
