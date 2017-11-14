@@ -16,27 +16,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/slack/</loc>
-        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/bot/</loc>
-        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/chat-bot/</loc>
-        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/header/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -59,6 +38,27 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/HTTPS/</loc>
+        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/slack/</loc>
+        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/bot/</loc>
+        <lastmod>2017-10-31T16:55:06.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/chat-bot/</loc>
         <lastmod>2017-10-31T16:55:06.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -157,35 +157,35 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
-        <lastmod>2017-11-13T17:44:04.000Z</lastmod>
+        <lastmod>2017-11-14T17:16:18.804Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/aws/</loc>
-        <lastmod>2017-11-13T17:44:04.000Z</lastmod>
+        <lastmod>2017-11-14T17:16:18.804Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/lambda/</loc>
-        <lastmod>2017-11-13T17:44:04.000Z</lastmod>
+        <lastmod>2017-11-14T17:16:18.804Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/upload-file/</loc>
-        <lastmod>2017-11-13T17:44:04.000Z</lastmod>
+        <lastmod>2017-11-14T17:16:18.804Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/download-file/</loc>
-        <lastmod>2017-11-13T17:44:04.000Z</lastmod>
+        <lastmod>2017-11-14T17:16:18.804Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

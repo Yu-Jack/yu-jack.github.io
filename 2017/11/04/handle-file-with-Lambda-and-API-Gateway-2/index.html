@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 1 - Jack Yu | 傑克
+          如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 2 - Jack Yu | 傑克
         
     </title>
 
-    <link rel="canonical" href="https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway/">
+    <link rel="canonical" href="https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway-2/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -97,7 +97,7 @@
                               <a class="tag" href="/tags/#download file" title="download file">download file</a>
                             
                         </div>
-                        <h1>如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 1</h1>
+                        <h1>如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 2</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by Jack Yu on
@@ -204,42 +204,20 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載<br>在 API Gateway 中要做幾項設定才有辦法達成<br>加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整<br>這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分<br><a id="more"></a></p>
-<h2><span id="api-gateway">API Gateway</span></h2><p>主要調整得地方有兩個</p>
+                <h2><span id="前言">前言</span></h2><p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳<br>上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON<br>所以必須在 API Gateway 必須要做 body mapping 的調整<br>e.g 透過 Binary Support 或是 Base64Enconde 的方式處理<br>那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端<br><a id="more"></a></p>
+<h2><span id="aws-api-gateway">AWS API Gateway</span></h2><p>在上一篇，透過 Lambda 和 API Gateway 完成檔案上傳和下載之後<br>出現了一個疑問，API Gateway 直接到 Server 這端，需不需要調整東西呢 ?</p>
+<p>在這樣的想法下，做了一個簡單的實現</p>
 <ol>
-<li>/upload Integration Request</li>
-<li>/download Integration Response</li>
+<li>在 API Gateway 新增一個 API /upload (POST Method)</li>
+<li>用 nodejs 啟動 server (記得把 body-parser 改成 text 也支援的設定)<br>在這樣的實驗之下，發現 Request 的 Content-Type 只有帶 multipart/form-data<br>並沒有帶後面的 Boundary，這樣會沒有辦法去 Parse 上傳的檔案或是 text<br>那會這樣的原因只會有一個，那就是 API Gateway 對我的 Headers 做了手腳</li>
 </ol>
-<p>另外還有一種特別的方式，是利用 API Gateway 的 Binary Support 去處理<br>這種方式會列在最後面</p>
-<h3><span id="upload-integration-request">/upload Integration Request</span></h3><ol>
-<li>到 body mapping template 底下調整成圖片樣子(Generate templaye 選擇 “Method Request passthrough”)</li>
-</ol>
-<p><img src="https://i.imgur.com/1vUOTvZ.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 需要修改的部分為第一行的 body</span></div><div class="line"><span class="comment">// 其他行不需要做調整</span></div><div class="line">&#123;</div><div class="line">    <span class="string">"body"</span>: <span class="string">"$util.base64Encode($input.body)"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3><span id="download-integration-reponse">/download Integration Reponse</span></h3><ol>
-<li>到 body mapping template 底下調整成圖片樣子</li>
-</ol>
-<p><img src="https://i.imgur.com/ZW32Fhb.png" alt=""><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$util.base64Decode($input.body)</div></pre></td></tr></table></figure></p>
-<h2><span id="lambda">Lambda</span></h2><p>主要是用 nodejs 去編寫處理上傳的部分</p>
-<h3><span id="handle-upload-request">Handle upload request</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> multipart = <span class="built_in">require</span>(<span class="string">'parse-multipart'</span>);</div><div class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// convert base64 string to binary</span></div><div class="line">    <span class="keyword">const</span> buffer = <span class="keyword">new</span> Buffer(event.body, <span class="string">'base64'</span>)</div><div class="line">    <span class="keyword">const</span> boundary = multipart.getBoundary(event.params.header[<span class="string">'Content-Type'</span>])</div><div class="line">    <span class="keyword">const</span> parts = multipart.Parse(buffer, boundary)</div><div class="line">    <span class="keyword">return</span> callback(<span class="literal">null</span>, &#123;</div><div class="line">        s: parts</div><div class="line">    &#125;)</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3><span id="handle-download-request">Handle download request</span></h3><p>這邊範例是用去讀取 S3 的檔案</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</div><div class="line"></div><div class="line">    s3.getObject(&#123;</div><div class="line">        Bucket: <span class="string">'your-bucket'</span>,</div><div class="line">        Key: <span class="string">'download_file.json'</span></div><div class="line">    &#125;, (err, data) =&gt; &#123;</div><div class="line">        <span class="keyword">if</span> (err) &#123;</div><div class="line">            <span class="keyword">return</span> callback(err)</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 原本方式是會直接回傳 JSON (DEMO 有圖)</span></div><div class="line">        <span class="comment">// callback(null, data.Body)</span></div><div class="line">        <span class="comment">// </span></div><div class="line">        <span class="comment">// 正確方式，回傳 base64，然後讓 API Gateway 去 decode</span></div><div class="line">        callback(<span class="literal">null</span>, <span class="keyword">new</span> Buffer(data.Body).toString(<span class="string">'base64'</span>))</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2><span id="demo-with-postman">Demo with Postman</span></h2><h3><span id="upload-file">Upload File</span></h3><p>上傳要注意選 “form-data”<br>然後隨便選擇一個檔案即可</p>
-<p><img src="https://i.imgur.com/QhjRLH3.png" alt=""></p>
-<h3><span id="download-file">Download File</span></h3><p>如果沒有在 API Gateway 做調整的話會變成<br>沒錯，Lambda 是會直接回傳 JSON 的<br>他並不會回傳 binary 給你，所以才要到 API Gateway 和 Lambda 做一些調整 (要到 mapping template 調整)</p>
-<p><img src="https://i.imgur.com/qFc5FZC.png" alt=""></p>
-<p>修改之後</p>
-<p><img src="https://i.imgur.com/mijGJFI.png" alt=""></p>
-<p>然後可以改用程式下載檔案</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</div><div class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</div><div class="line"><span class="keyword">const</span> r = request.post(<span class="string">'your_url'</span>)</div><div class="line">r.on(<span class="string">'response'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</div><div class="line">    res.pipe(fs.createWriteStream(<span class="string">'download_file.json'</span>))</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h2><span id="額外補充-binary-support">額外補充 - Binary Support</span></h2><h3><span id="upload-integration-request">/upload integration request</span></h3><p>在 API Gateway 底下的 binary support 加上 multipart/form-data，API Gateway 就會自動幫我們做 base64 encode</p>
-<p>而在 mapping template 就改成這樣即可<br>lambda 不需要做任何調整</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="string">"body"</span>: $input.json(<span class="string">'$'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2><span id="註記">註記</span></h2><ol>
-<li>API Gateway payload 有限制 10mb</li>
-<li>Lambda 有限制 6mb</li>
-</ol>
-<p>所以最大只能上傳或下載 6mb 的檔案<br>但是，因為會轉成 base64，所以原本的 4mb 轉完可能變成 5mb<br>這裡是特別要注意的地方</p>
+<p>後來的解決方式，是把設定 API Gateway 為 Proxy，就可以讓 bounday 成功 pass 到後端 Server<br>那這後面就會介紹如何設定 API Gateway (基本上就只有一個地方，Integration Request &amp; Integration Response)</p>
+<h3><span id="upload">Upload</span></h3><p>只要把 HTTP Proxy Integration 打勾即可，不用像上一篇要到其他地方做設定</p>
+<p><img src="https://i.imgur.com/xuGUHC1.png" alt=""></p>
+<h2><span id="server">Server</span></h2><h3><span id="upload">Upload</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</div><div class="line"><span class="keyword">const</span> app = express()</div><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</div><div class="line">app.use(bodyParser.text(&#123;<span class="attr">type</span>: <span class="string">'*/*'</span>&#125;))</div><div class="line">app.post(<span class="string">'/upload_file'</span>,  (req, res, next) =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(req.body);</div><div class="line">    <span class="built_in">console</span>.log(req.headers);</div><div class="line">    res.json(&#123;&#125;)</div><div class="line">&#125;)</div><div class="line">app.listen(<span class="number">8080</span>)</div></pre></td></tr></table></figure>
+<h2><span id="demo">DEMO</span></h2><h3><span id="upload">Upload</span></h3><p>從上傳的地方會看到 content-type 最後面會出現 boundary<br>如果 API Gateway 沒有設成 Proxy 的話，是不會出現</p>
+<p>不會出現的話，會沒辦法用 content-type 後面的 boundary 去 parse 檔案的<br>因為檔案之間會用 boundary 去區分，沒了這個就沒辦法識別傳了什麼上來</p>
+<p><img src="https://i.imgur.com/r4KL4RF.png" alt=""></p>
 
                 
 
@@ -248,12 +226,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2017/11/08/ngrok/" data-toggle="tooltip" data-placement="top" title="Ngrok - Connect to your localhost!">&larr; Previous Post</a>
+                            <a href="/2017/11/04/handle-file-with-Lambda-and-API-Gateway/" data-toggle="tooltip" data-placement="top" title="如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 1">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2017/11/04/handle-file-with-Lambda-and-API-Gateway-2/" data-toggle="tooltip" data-placement="top" title="如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 2">Next Post &rarr;</a>
+                            <a href="/2017/11/01/how-to-test/" data-toggle="tooltip" data-placement="top" title="關於『測試』這件事">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -302,8 +280,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "yu-jack";
-    var disqus_identifier = "https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway/";
-    var disqus_url = "https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway/";
+    var disqus_identifier = "https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway-2/";
+    var disqus_url = "https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway-2/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
