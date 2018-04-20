@@ -162,6 +162,13 @@
                         </li>
                         
                     
+
+                        
+                        <li>
+                            <a href="/tags/">All Tags</a>
+                        </li>
+                        
+                    
                     
                 </ul>
             </div>
@@ -224,7 +231,7 @@
 <p>後來的解決方式，是把設定 API Gateway 為 Proxy，就可以讓 bounday 成功 pass 到後端 Server<br>那這後面就會介紹如何設定 API Gateway (基本上就只有一個地方，Integration Request &amp; Integration Response)</p>
 <h3><span id="upload">Upload</span></h3><p>只要把 HTTP Proxy Integration 打勾即可，不用像上一篇要到其他地方做設定</p>
 <p><img src="https://i.imgur.com/xuGUHC1.png" alt=""></p>
-<h2><span id="server">Server</span></h2><h3><span id="upload">Upload</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</div><div class="line"><span class="keyword">const</span> app = express()</div><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</div><div class="line">app.use(bodyParser.text(&#123;<span class="attr">type</span>: <span class="string">'*/*'</span>&#125;))</div><div class="line">app.post(<span class="string">'/upload_file'</span>,  (req, res, next) =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(req.body);</div><div class="line">    <span class="built_in">console</span>.log(req.headers);</div><div class="line">    res.json(&#123;&#125;)</div><div class="line">&#125;)</div><div class="line">app.listen(<span class="number">8080</span>)</div></pre></td></tr></table></figure>
+<h2><span id="server">Server</span></h2><h3><span id="upload">Upload</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line">app.use(bodyParser.text(&#123;<span class="attr">type</span>: <span class="string">'*/*'</span>&#125;))</span><br><span class="line">app.post(<span class="string">'/upload_file'</span>,  (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="built_in">console</span>.log(req.headers);</span><br><span class="line">    res.json(&#123;&#125;)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
 <h2><span id="demo">DEMO</span></h2><h3><span id="upload">Upload</span></h3><p>從上傳的地方會看到 content-type 最後面會出現 boundary<br>如果 API Gateway 沒有設成 Proxy 的話，是不會出現</p>
 <p>不會出現的話，會沒辦法用 content-type 後面的 boundary 去 parse 檔案的<br>因為檔案之間會用 boundary 去區分，沒了這個就沒辦法識別傳了什麼上來</p>
 <p><img src="https://i.imgur.com/r4KL4RF.png" alt=""></p>
@@ -327,7 +334,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Jack Yu 2017 
+                    Copyright &copy; Jack Yu 2018 
                     <br>
                     <span id="busuanzi_container_site_pv">
                         Total <span id="busuanzi_value_site_pv"></span> views
