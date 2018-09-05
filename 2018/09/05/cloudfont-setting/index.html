@@ -24,11 +24,11 @@
 
     <title>
         
-          Ngrok - Connect to your localhost! - Jack Yu | 傑克
+          Cloudfront 設定 Header Forward - Jack Yu | 傑克
         
     </title>
 
-    <link rel="canonical" href="https://yu-jack.github.io/2017/11/08/ngrok/">
+    <link rel="canonical" href="https://yu-jack.github.io/2018/09/05/cloudfont-setting/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -96,16 +96,20 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#ngrok" title="ngrok">ngrok</a>
+                              <a class="tag" href="/tags/#Cloudfront" title="Cloudfront">Cloudfront</a>
                             
-                              <a class="tag" href="/tags/#localhost" title="localhost">localhost</a>
+                              <a class="tag" href="/tags/#cookie" title="cookie">cookie</a>
+                            
+                              <a class="tag" href="/tags/#query string" title="query string">query string</a>
+                            
+                              <a class="tag" href="/tags/#header" title="header">header</a>
                             
                         </div>
-                        <h1>Ngrok - Connect to your localhost!</h1>
+                        <h1>Cloudfront 設定 Header Forward</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by Jack Yu on
-                            2017-11-08
+                            2018-09-05
                         </span>
                         <span id="busuanzi_container_page_pv">
                             <span id="busuanzi_value_page_pv"></span> views
@@ -215,19 +219,25 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost
-這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到</p>
-<p>&lt;!-- more --&gt;</p>
-<p>工具連結在此: <a href="https://ngrok.com/" target="_blank" rel="noopener">Ngrok</a></p>
-<h2><span id="使用方式簡單介紹">使用方式簡單介紹</span></h2>
-<p>下載下來後，<code>unzip</code> 之後就可以做使用了
-如果在 localhost 開了一個 8080 想讓大家連
-可以在下這以下這行指令</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ngrok http 8080</span><br></pre></td></tr></table></figure></p>
-<p>結果會長這樣，然後在網址列打上他給你的網址就可以直接連到你的 8080 port
-<img src="https://i.imgur.com/9wgzJP7.png" alt=""></p>
-<p>如果像是要用到 Apple Pay 一些特定服務只允許跑在 SSL 上面的話
-這個工具會非常有用，但畢竟是經過別人家重導 .... 所以小心用</p>
+                <p>最近在使用 Cloudfront Header forward 的設定
+Cloudfront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon Cloudfront</code>
+於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
+<p>&lt;!-- more --&gt;
+但由於 CF 上面的設定寫的不是很清楚
+於是發現以下這篇 <a href="https://aws.amazon.com/blogs/aws/enhanced-cloudfront-customization/" target="_blank" rel="noopener">AWS 官方文章</a>
+這裡直接做一個總結</p>
+<ol>
+<li>None: 使用 Cloudfront 原生的行為 (例如替換 <code>User-Agent</code>)</li>
+<li>Whitelists: 把 whitelists 裡面的參數，<strong>完整不動</strong> 的 Forward 到 Orign 去使用</li>
+<li>ALL: 把所有參數都 forward 到 Origin 去</li>
+</ol>
+<p>下面是一個 whitelist 的簡單範例</p>
+<p><img src="https://i.imgur.com/Dy57usH.png" alt=""></p>
+<p>以這張圖的設定的來說，代表 <code>User-Agent</code> 不會被 Cloudfront 給自動替換掉
+而是會拿原生<code>User-Agent</code>直接 forward 到 Origin 去</p>
+<p>另外這邊要提醒，Cloudfront 預設是不會 Forward Headers, Cookies 和 Query String 的
+這邊要特別注意，要特別設定才可以
+那至於 Cookie 以及 Query String 的設定看上面就明瞭了</p>
 
                 
 
@@ -235,13 +245,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/" data-toggle="tooltip" data-placement="top" title="如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 2">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2017/11/04/handle-file-with-Lambda-and-API-Gateway/" data-toggle="tooltip" data-placement="top" title="如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 1">Next Post &rarr;</a>
+                            <a href="/2018/07/22/promise/" data-toggle="tooltip" data-placement="top" title="callback, promise, async/await 使用方式教學以及介紹 Part I">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -290,8 +296,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "yu-jack";
-    var disqus_identifier = "https://yu-jack.github.io/2017/11/08/ngrok/";
-    var disqus_url = "https://yu-jack.github.io/2017/11/08/ngrok/";
+    var disqus_identifier = "https://yu-jack.github.io/2018/09/05/cloudfont-setting/";
+    var disqus_url = "https://yu-jack.github.io/2018/09/05/cloudfont-setting/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
