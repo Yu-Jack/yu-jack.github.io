@@ -209,6 +209,42 @@
 
 <div class="post-preview">
 
+    <a href="/2019/01/08/ssh-tunnel/">
+        <h2 class="post-title">
+            關於 SSH Tunnel 連線 (SSH Proxy, SSH Port Forwarding)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            這篇主要在介紹 SSH Tunnel 是什麼東西以及使用方式  
+
+使用情境介紹一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
+這裡有兩台機器，分別為 A BB 為重要的服務或是資料A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
+這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑這件事實在是太麻煩了（汗所以可......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2019-01-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Development" title="Development">Development</a>
+            
+              <a href="/tags/#ssh" title="ssh">ssh</a>
+            
+              <a href="/tags/#ssh tunnel" title="ssh tunnel">ssh tunnel</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/09/05/cloudfont-setting/">
         <h2 class="post-title">
             CloudFront 設定 Header Forward
@@ -231,8 +267,6 @@ None: 使用 CloudF......
         </p>
         <div class="tags">
             
-              <a href="/tags/#aws" title="aws">aws</a>
-            
               <a href="/tags/#CloudFront" title="CloudFront">CloudFront</a>
             
               <a href="/tags/#cookie" title="cookie">cookie</a>
@@ -240,6 +274,8 @@ None: 使用 CloudF......
               <a href="/tags/#query string" title="query string">query string</a>
             
               <a href="/tags/#header" title="header">header</a>
+            
+              <a href="/tags/#aws" title="aws">aws</a>
             
         </div>
     
@@ -380,9 +416,9 @@ CallbackCallback 是 JS 很常......
         </p>
         <div class="tags">
             
-              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-            
               <a href="/tags/#aws" title="aws">aws</a>
+            
+              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
             
               <a href="/tags/#lambda" title="lambda">lambda</a>
             
@@ -452,9 +488,9 @@ API Gateway主要......
         </p>
         <div class="tags">
             
-              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-            
               <a href="/tags/#aws" title="aws">aws</a>
+            
+              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
             
               <a href="/tags/#lambda" title="lambda">lambda</a>
             
@@ -527,45 +563,9 @@ if e......
         </p>
         <div class="tags">
             
-              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-            
               <a href="/tags/#aws" title="aws">aws</a>
             
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/10/20/secure-header/">
-        <h2 class="post-title">
-            增加安全性的 HTTP Headers
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            最近遇到需要增進網站安全性的問題於是 survey 了幾個常見的 header 設置方式接下來會開始介紹每一個 header 的功能以及設置方式以及可以到這個網站進行檢測 https://securityheaders.io/個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
-Set-Cookie 設置方式防禦面向為: XSS
-Set-Cookie......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2017-10-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#header" title="header">header</a>
-            
-              <a href="/tags/#security" title="security">security</a>
-            
-              <a href="/tags/#security header" title="security header">security header</a>
-            
-              <a href="/tags/#HTTPS" title="HTTPS">HTTPS</a>
+              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
             
         </div>
     
@@ -641,6 +641,10 @@ Set-Cookie......
     <ul>
       
         <li>
+          <a href="/2019/01/08/ssh-tunnel/">關於 SSH Tunnel 連線 (SSH Proxy, SSH Port Forwarding)</a>
+        </li>
+      
+        <li>
           <a href="/2018/09/05/cloudfont-setting/">CloudFront 設定 Header Forward</a>
         </li>
       
@@ -656,10 +660,6 @@ Set-Cookie......
           <a href="/2017/12/11/express-static/">Express 對靜態檔案做了什麼? 為什麼會被 cache 住呢?</a>
         </li>
       
-        <li>
-          <a href="/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/">如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 2</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -672,7 +672,7 @@ Set-Cookie......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -681,7 +681,7 @@ Set-Cookie......
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Securiry/">Securiry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Securiry/">Securiry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>
@@ -714,7 +714,7 @@ Set-Cookie......
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Jack Yu 2018 
+                    Copyright &copy; Jack Yu 2019 
                     <br>
                     <span id="busuanzi_container_site_pv">
                         Total <span id="busuanzi_value_site_pv"></span> views

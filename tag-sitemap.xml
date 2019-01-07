@@ -72,13 +72,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/Development/</loc>
-        <lastmod>2017-10-31T16:58:26.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/mocha/</loc>
         <lastmod>2017-10-31T16:58:26.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -247,13 +240,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/aws/</loc>
-        <lastmod>2018-09-05T14:39:48.059Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/CloudFront/</loc>
         <lastmod>2018-09-05T14:39:48.059Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -277,6 +263,34 @@
     <url>
         <loc>https://yu-jack.github.io/tags/header/</loc>
         <lastmod>2018-09-05T14:39:48.059Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/aws/</loc>
+        <lastmod>2018-09-05T14:39:48.059Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/Development/</loc>
+        <lastmod>2019-01-07T14:03:50.859Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/ssh/</loc>
+        <lastmod>2019-01-07T14:03:50.859Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/ssh-tunnel/</loc>
+        <lastmod>2019-01-07T14:03:50.859Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
