@@ -223,7 +223,7 @@
 <p>Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本中是沒有一個管控的方式<br>幾乎都是用 new Thread 的方式去創建使用<br>在 JDK 1.5 之後的版本則是出了 Exectuor 去管控 Thread Pool</p>
 <a id="more"></a>
 <h2><span id="threadpoolexecutor-介紹">ThreadPoolExecutor 介紹</span></h2><p>Java 提供了 ThreadPoolExecutor 能讓我們客製化定義不同的使用模式<br>以下為 ThreadPoolExecutor 的設定方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">    <span class="keyword">int</span> corePoolSize,</span><br><span class="line">    <span class="keyword">int</span> maxPoolSize,</span><br><span class="line">    <span class="keyword">long</span> keepAliveTime,</span><br><span class="line">    TimeUnit unit,</span><br><span class="line">    BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">    RejectedExecutionHandler handler</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">    <span class="keyword">int</span> corePoolSize,</span><br><span class="line">    <span class="keyword">int</span> maxPoolSize,</span><br><span class="line">    <span class="keyword">long</span> keepAliveTime,</span><br><span class="line">    TimeUnit unit,</span><br><span class="line">    BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">    RejectedExecutionHandler handler</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">executor.execute(Runnable runnable)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>corePoolSize<br>  核心 Thread 的數量，基本上 Thread 數量不會低於此數字</li>
 <li>maxPoolSize<br>  Thread Pool 的最大數量，如果所有 Thread 都被執行的話<br>  Task 會被塞到 Queue 之中等到有空閒的 Thread 為止<br>  決定 maxPoolSize 的數量最好是根據系統資源去計算出來<br>  <code>Runtime.getRuntime().availableProcessors();</code></li>
@@ -266,8 +266,6 @@
 </li>
 </ol>
 <p>但是基本上不是很推薦使用以上這四種方法去定義 Thread Pool<br>在阿里巴巴的 Java 開發手冊中也有提到，如果要新建 Thread<br>請透過 ThreadPoolExecutor 的方式去自定義 Thread Pool 的使用模式<br>在<a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">這篇文章</a>的樓主也是因為用了以上其中一個方法採到 OOM 的雷<br>所以在設定 Thread Pool 的時候要特別注意使用的情況適不適合！</p>
-<h2><span id="使用方式">使用方式</span></h2><pre><code class="java=">
-</code></pre>
 <h2><span id="references">References</span></h2><ol>
 <li><a href="https://www.cnblogs.com/vhua/p/5297587.html" target="_blank" rel="noopener">Java Executor并发框架</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">一次Java线程池误用引发的血案和总结</a></li>
