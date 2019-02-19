@@ -235,7 +235,7 @@
 <h3><span id="blockingqueue-詳細介紹">BlockingQueue 詳細介紹</span></h3><p>基本規則為</p>
 <ol>
 <li>如果當前的 Thread 小於 corePoolSize，則 Executor 首先會新增 Thread，而不會把 Task 丟到 Queue 之中 (基本上就是直接運行的意思)</li>
-<li>如果當前的 Thread 大於 corePoolSize，則 Executor 首先會把 Task 加到 Queue 之中等待</li>
+<li>如果當前的 Thread 大於等於 corePoolSize，則 Executor 首先會把 Task 加到 Queue 之中等待</li>
 <li>當 Task 無法再被加入到 Queue 之中的話，則 Executor 首先會創建新的 Thread，直到超過 maxPoolSize 為止</li>
 <li>超過 maxPoolSize 時，任務會被拒絕</li>
 </ol>
@@ -266,6 +266,8 @@
 </li>
 </ol>
 <p>但是基本上不是很推薦使用以上這四種方法去定義 Thread Pool<br>在阿里巴巴的 Java 開發手冊中也有提到，如果要新建 Thread<br>請透過 ThreadPoolExecutor 的方式去自定義 Thread Pool 的使用模式<br>在<a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">這篇文章</a>的樓主也是因為用了以上其中一個方法採到 OOM 的雷<br>所以在設定 Thread Pool 的時候要特別注意使用的情況適不適合！</p>
+<h2><span id="使用方式">使用方式</span></h2><pre><code class="java=">
+</code></pre>
 <h2><span id="references">References</span></h2><ol>
 <li><a href="https://www.cnblogs.com/vhua/p/5297587.html" target="_blank" rel="noopener">Java Executor并发框架</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">一次Java线程池误用引发的血案和总结</a></li>
