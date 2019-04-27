@@ -296,27 +296,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/js/</loc>
-        <lastmod>2019-04-27T08:31:41.862Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
-        <lastmod>2019-04-27T08:31:41.862Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/this/</loc>
-        <lastmod>2019-04-27T08:31:41.862Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/apple-pay/</loc>
         <lastmod>2019-04-27T11:30:56.405Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -340,6 +319,27 @@
     <url>
         <loc>https://yu-jack.github.io/tags/safari/</loc>
         <lastmod>2019-04-27T11:30:56.405Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/js/</loc>
+        <lastmod>2019-04-27T11:57:29.415Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
+        <lastmod>2019-04-27T11:57:29.415Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/this/</loc>
+        <lastmod>2019-04-27T11:57:29.415Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
