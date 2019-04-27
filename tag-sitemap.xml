@@ -170,34 +170,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/apple-pay/</loc>
-        <lastmod>2018-04-20T17:18:34.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/debug/</loc>
-        <lastmod>2018-04-20T17:18:34.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/iOS/</loc>
-        <lastmod>2018-04-20T17:18:34.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/safari/</loc>
-        <lastmod>2018-04-20T17:18:34.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/nodejs/</loc>
         <lastmod>2018-07-22T15:28:41.264Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -340,6 +312,34 @@
     <url>
         <loc>https://yu-jack.github.io/tags/this/</loc>
         <lastmod>2019-04-27T08:31:41.862Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/apple-pay/</loc>
+        <lastmod>2019-04-27T11:30:56.405Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/debug/</loc>
+        <lastmod>2019-04-27T11:30:56.405Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/iOS/</loc>
+        <lastmod>2019-04-27T11:30:56.405Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/safari/</loc>
+        <lastmod>2019-04-27T11:30:56.405Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
