@@ -209,6 +209,45 @@
 
 <div class="post-preview">
 
+    <a href="/2019/05/02/promise-2/">
+        <h2 class="post-title">
+            callback, promise, async/await 使用方式教學以及介紹 Part II (Error Handling 介紹)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            上一篇主要是介紹如何使用這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  
+callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情那就是 callback 第一個參數都會是 error雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的假設當 callback 參數回傳越來越多的時候，總......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2019-05-02
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
+            
+              <a href="/tags/#Javascript" title="Javascript">Javascript</a>
+            
+              <a href="/tags/#promise" title="promise">promise</a>
+            
+              <a href="/tags/#callback" title="callback">callback</a>
+            
+              <a href="/tags/#async" title="async">async</a>
+            
+              <a href="/tags/#await" title="await">await</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/04/24/javascript-this/">
         <h2 class="post-title">
             JavaScript this 是什麼? 如何運作的呢?
@@ -362,9 +401,8 @@ None: 使用 CloudF......
             
         </h3>
         <div class="post-content-preview">
-            這篇主要紀錄 callback, promise, async/await 的使用方式以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, event-driven 的觀念有一些涉略
-
-CallbackCallback 是 JS 很常......
+            [Update 2019-05-02] 關於 Error Handing 可以看下一篇文章
+這篇主要紀錄 callback, promise, async/await 的使用方式以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, e......
         </div>
     </a>
     
@@ -531,43 +569,6 @@ CallbackCallback 是 JS 很常......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2017/11/04/handle-file-with-Lambda-and-API-Gateway/">
-        <h2 class="post-title">
-            如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 1
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-API Gateway主要......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2017-11-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#aws" title="aws">aws</a>
-            
-              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-            
-              <a href="/tags/#lambda" title="lambda">lambda</a>
-            
-              <a href="/tags/#upload file" title="upload file">upload file</a>
-            
-              <a href="/tags/#download file" title="download file">download file</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -636,6 +637,10 @@ API Gateway主要......
     <ul>
       
         <li>
+          <a href="/2019/05/02/promise-2/">callback, promise, async/await 使用方式教學以及介紹 Part II (Error Handling 介紹)</a>
+        </li>
+      
+        <li>
           <a href="/2019/04/24/javascript-this/">JavaScript this 是什麼? 如何運作的呢?</a>
         </li>
       
@@ -651,10 +656,6 @@ API Gateway主要......
           <a href="/2018/09/05/cloudfont-setting/">CloudFront 設定 Header Forward</a>
         </li>
       
-        <li>
-          <a href="/2018/07/22/promise/">callback, promise, async/await 使用方式教學以及介紹 Part I</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -667,7 +668,7 @@ API Gateway主要......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

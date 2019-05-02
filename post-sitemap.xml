@@ -7,8 +7,24 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2019/05/02/promise-2/</loc>
+        <lastmod>2019-05-02T17:27:26.898Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2018/07/22/promise/</loc>
+        <lastmod>2019-05-02T17:05:27.583Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2019/04/24/javascript-this/</loc>
-        <lastmod>2019-04-27T11:57:29.415Z</lastmod>
+        <lastmod>2019-04-29T06:26:23.181Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -41,14 +57,6 @@
     <url>
         <loc>https://yu-jack.github.io/2018/09/05/cloudfont-setting/</loc>
         <lastmod>2018-09-05T14:39:48.059Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2018/07/22/promise/</loc>
-        <lastmod>2018-07-22T15:28:41.264Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
