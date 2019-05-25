@@ -229,19 +229,38 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2><span id="前言">前言</span></h2><p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳<br>上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON<br>所以必須在 API Gateway 必須要做 body mapping 的調整<br>e.g 透過 Binary Support 或是 Base64Enconde 的方式處理<br>那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端<br><a id="more"></a></p>
-<h2><span id="aws-api-gateway">AWS API Gateway</span></h2><p>在上一篇，透過 Lambda 和 API Gateway 完成檔案上傳和下載之後<br>出現了一個疑問，API Gateway 直接到 Server 這端，需不需要調整東西呢 ?</p>
+                <h2><span id="前言">前言</span></h2>
+<p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
+上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
+所以必須在 API Gateway 必須要做 body mapping 的調整
+e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
+那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端
+&lt;!-- more --&gt;</p>
+<h2><span id="aws-api-gateway">AWS API Gateway</span></h2>
+<p>在上一篇，透過 Lambda 和 API Gateway 完成檔案上傳和下載之後
+出現了一個疑問，API Gateway 直接到 Server 這端，需不需要調整東西呢 ?</p>
 <p>在這樣的想法下，做了一個簡單的實現</p>
 <ol>
 <li>在 API Gateway 新增一個 API /upload (POST Method)</li>
-<li>用 nodejs 啟動 server (記得把 body-parser 改成 text 也支援的設定)<br>在這樣的實驗之下，發現 Request 的 Content-Type 只有帶 multipart/form-data<br>並沒有帶後面的 Boundary，這樣會沒有辦法去 Parse 上傳的檔案或是 text<br>那會這樣的原因只會有一個，那就是 API Gateway 對我的 Headers 做了手腳</li>
+<li>用 nodejs 啟動 server (記得把 body-parser 改成 text 也支援的設定)
+在這樣的實驗之下，發現 Request 的 Content-Type 只有帶 multipart/form-data
+並沒有帶後面的 Boundary，這樣會沒有辦法去 Parse 上傳的檔案或是 text
+那會這樣的原因只會有一個，那就是 API Gateway 對我的 Headers 做了手腳</li>
 </ol>
-<p>後來的解決方式，是把設定 API Gateway 為 Proxy，就可以讓 bounday 成功 pass 到後端 Server<br>那這後面就會介紹如何設定 API Gateway (基本上就只有一個地方，Integration Request &amp; Integration Response)</p>
-<h3><span id="upload">Upload</span></h3><p>只要把 HTTP Proxy Integration 打勾即可，不用像上一篇要到其他地方做設定</p>
+<p>後來的解決方式，是把設定 API Gateway 為 Proxy，就可以讓 bounday 成功 pass 到後端 Server
+那這後面就會介紹如何設定 API Gateway (基本上就只有一個地方，Integration Request &amp; Integration Response)</p>
+<h3><span id="upload">Upload</span></h3>
+<p>只要把 HTTP Proxy Integration 打勾即可，不用像上一篇要到其他地方做設定</p>
 <p><img src="https://i.imgur.com/xuGUHC1.png" alt=""></p>
-<h2><span id="server">Server</span></h2><h3><span id="upload">Upload</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line">app.use(bodyParser.text(&#123;<span class="attr">type</span>: <span class="string">'*/*'</span>&#125;))</span><br><span class="line">app.post(<span class="string">'/upload_file'</span>,  (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="built_in">console</span>.log(req.headers);</span><br><span class="line">    res.json(&#123;&#125;)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
-<h2><span id="demo">DEMO</span></h2><h3><span id="upload">Upload</span></h3><p>從上傳的地方會看到 content-type 最後面會出現 boundary<br>如果 API Gateway 沒有設成 Proxy 的話，是不會出現</p>
-<p>不會出現的話，會沒辦法用 content-type 後面的 boundary 去 parse 檔案的<br>因為檔案之間會用 boundary 去區分，沒了這個就沒辦法識別傳了什麼上來</p>
+<h2><span id="server">Server</span></h2>
+<h3><span id="upload">Upload</span></h3>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line">app.use(bodyParser.text(&#123;<span class="attr">type</span>: <span class="string">'*/*'</span>&#125;))</span><br><span class="line">app.post(<span class="string">'/upload_file'</span>,  (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="built_in">console</span>.log(req.headers);</span><br><span class="line">    res.json(&#123;&#125;)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure></p>
+<h2><span id="demo">DEMO</span></h2>
+<h3><span id="upload">Upload</span></h3>
+<p>從上傳的地方會看到 content-type 最後面會出現 boundary
+如果 API Gateway 沒有設成 Proxy 的話，是不會出現</p>
+<p>不會出現的話，會沒辦法用 content-type 後面的 boundary 去 parse 檔案的
+因為檔案之間會用 boundary 去區分，沒了這個就沒辦法識別傳了什麼上來</p>
 <p><img src="https://i.imgur.com/r4KL4RF.png" alt=""></p>
 
                 
