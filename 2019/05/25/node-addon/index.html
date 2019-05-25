@@ -228,9 +228,9 @@
                 <p>這裡簡單的筆記如何去建立一個 Node.js 的 C++ Addon<br>範圍包含如何實作以及使用 Addon 後的效能提升</p>
 <h2><span id="建立-nodejs-addon">建立 Node.js Addon</span></h2><p>(此處 node 版本為 v10)</p>
 <ol>
-<li><p><code>npm install node-gyp -g</code><br>此為把 c++ 檔案編譯成給 node 使用得套件</p>
+<li><p><code>npm install node-gyp -g</code><br>此為把 c++ 檔案編譯成給 node 使用的套件</p>
 </li>
-<li><p>建立檔案 <code>binding.gyp</code></p>
+<li><p>建立檔案 <code>binding.gyp</code><br><code>sources</code> 為指定哪幾個 c++ 檔案<br><code>target_name</code> 為編譯完成後的名稱，此為 cal.node<br>如果改為 hello，就會變成 hello.node<br>屆時引用的時候就要引用 hello.node</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"targets"</span>: [&#123;</span><br><span class="line">        <span class="string">"target_name"</span>: <span class="string">"cal"</span>,</span><br><span class="line">        <span class="string">"sources"</span>: [<span class="string">"cal.cc"</span>]</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>建立 <code>cal.cc</code></p>
