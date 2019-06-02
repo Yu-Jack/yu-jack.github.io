@@ -42,13 +42,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
-        <lastmod>2019-05-29T07:05:25.524Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/tool/</loc>
         <lastmod>2019-05-29T07:05:30.591Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -86,6 +79,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
         <lastmod>2019-05-29T07:05:43.910Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
+        <lastmod>2019-06-02T04:55:52.494Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

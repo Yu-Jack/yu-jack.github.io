@@ -217,6 +217,44 @@
 
 <div class="post-preview">
 
+    <a href="/2019/06/02/ajax-with-session/">
+        <h2 class="post-title">
+            前後端分離下之使用 session
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 的狀況下要如何達到使用 session 的方法
+前言以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人但當我們在前後端完全分離的狀況下，該怎麼去達到這件事情呢?
+CORS瀏覽器有一個限制，當這個......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2019-06-02
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
+            
+              <a href="/tags/#session" title="session">session</a>
+            
+              <a href="/tags/#cookie" title="cookie">cookie</a>
+            
+              <a href="/tags/#cors" title="cors">cors</a>
+            
+              <a href="/tags/#credential" title="credential">credential</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/05/02/promise-2/">
         <h2 class="post-title">
             callback, promise, async/await 使用方式教學以及介紹 Part II (Error Handling 介紹)
@@ -225,13 +263,8 @@
             
         </h3>
         <div class="post-content-preview">
-            上一篇主要是介紹如何使用
-這篇會介紹該如何去在每一種使用方式之中去做 Error Handling
-callback
-相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情
-那就是 callback 第一個參數都會是 error
-雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的
-假設當 callback 參數回傳越來越多的時......
+            上一篇主要是介紹如何使用這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  
+callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情那就是 callback 第一個參數都會是 error雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的假設當 callback 參數回傳越來越多的時候，總......
         </div>
     </a>
     
@@ -269,15 +302,9 @@ callback
             
         </h3>
         <div class="post-content-preview">
-            前言
-相信寫過 js 的人對於 this 都有一定的認識
-但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純
-所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事
-以及最後面教學如何一步一步判定 this 會是指向什麼
-&lt;!-- more --&gt;
-this 是什麼 ？
-this 單純看英文解釋的話，是代表『自身』
-聽起來好像......
+            前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼
+
+this 是什麼 ？this 單純看英文解釋的話，是代表『自身』聽起來好像有這麼一回事，但實際上使用起來根本不是這樣實際上 ......
         </div>
     </a>
     
@@ -309,11 +336,8 @@ this 單純看英文解釋的話，是代表『自身』
             
         </h3>
         <div class="post-content-preview">
-            前言
-Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念
-就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用
-使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
-Thread Pool 也是這種概念，但在 JDK 1.5 之前......
+            前言Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
+Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本......
         </div>
     </a>
     
@@ -348,13 +372,10 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前......
         </h3>
         <div class="post-content-preview">
             這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用
-&lt;!-- more --&gt;
-使用情境介紹
-一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
-這裡有兩台機器，分別為 A B
-B 為重要的服務或是資料
-A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
-這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到......
+
+使用情境介紹一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
+這裡有兩台機器，分別為 A BB 為重要的服務或是資料A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
+這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑這件事實在是太麻煩了（汗所以可......
         </div>
     </a>
     
@@ -386,13 +407,11 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
             
         </h3>
         <div class="post-content-preview">
-            最近在使用 CloudFront Header forward 的設定
-CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
-於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
-&lt;!-- more --&gt;
-但由於 CF 上面的設定寫的不是很清楚
-於是發現以下這篇 AWS 官方文章
-這裡直......
+            最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
+
+但由於 CF 上面的設定寫的不是很清楚於是發現以下這篇 AWS 官方文章這裡直接做一個總結
+
+None: 使用 CloudF......
         </div>
     </a>
     
@@ -402,11 +421,11 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </p>
         <div class="tags">
             
+              <a href="/tags/#cookie" title="cookie">cookie</a>
+            
               <a href="/tags/#aws" title="aws">aws</a>
             
               <a href="/tags/#CloudFront" title="CloudFront">CloudFront</a>
-            
-              <a href="/tags/#cookie" title="cookie">cookie</a>
             
               <a href="/tags/#query string" title="query string">query string</a>
             
@@ -428,9 +447,8 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
             
         </h3>
         <div class="post-content-preview">
-            &lt;span style=&quot;color: green&quot;&gt;[Update 2019-05-02]&lt;/span&gt; 關於 Error Handing 可以看下一篇文章
-這篇主要紀錄 callback, promise, async/await 的使用方式
-以及為何會從到 callback 和 promise 的 hell world 進入到 async/a......
+            [Update 2019-05-02] 關於 Error Handing 可以看下一篇文章
+這篇主要紀錄 callback, promise, async/await 的使用方式以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, e......
         </div>
     </a>
     
@@ -468,14 +486,9 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
             
         </h3>
         <div class="post-content-preview">
-            有時候在使用類似 Apple Pay 的東西
-並不知道該如何去看手機中 Safari 的偵錯
-然後就會愣在那裡，並不知道該怎麼 Debug
-今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
-&lt;!--more--&gt;
-前提
-首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！
-沒有打開的話是不能使......
+            有時候在使用類似 Apple Pay 的東西並不知道該如何去看手機中 Safari 的偵錯然後就會愣在那裡，並不知道該怎麼 Debug今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
+
+前提首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！沒有打開的話是不能使用 Develop Debug mode  ......
         </div>
     </a>
     
@@ -509,14 +522,9 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
             
         </h3>
         <div class="post-content-preview">
-            前言
-最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
-加上小弟常用 nodejs + express 去寫前後端
-於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
-&lt;!-- more --&gt;
-介紹
-在 express 裡面有一個 function 叫做 express.static()
-這個是一個 middleware......
+            前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
+
+介紹在 express 裡面有一個 function 叫做 express.static()這個是一個 middleware，最常被用在要讀取一些靜態檔案上面以這個寫法來說......
         </div>
     </a>
     
@@ -546,12 +554,7 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
             
         </h3>
         <div class="post-content-preview">
-            前言
-這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
-上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
-所以必須在 API Gateway 必須要做 body mapping 的調整
-e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
-那這次的紀錄是讓 AWS ......
+            前言這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON所以必須在 API Gateway 必須要做 body mapping 的調整e.g 透過 Binary Support 或是 Base64Enconde 的方式處理那這次的紀錄是讓 AWS 的 API......
         </div>
     </a>
     
@@ -570,44 +573,6 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
               <a href="/tags/#upload file" title="upload file">upload file</a>
             
               <a href="/tags/#download file" title="download file">download file</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/11/08/ngrok/">
-        <h2 class="post-title">
-            Ngrok - Connect to your localhost!
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost
-這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到
-&lt;!-- more --&gt;
-工具連結在此: Ngrok
-使用方式簡單介紹
-下載下來後，unzip 之後就可以做使用了
-如果在 localhost 開了一個 8080 想讓大家連
-可以在下這以下這行指令
-1./ngrok http ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2017-11-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#ngrok" title="ngrok">ngrok</a>
-            
-              <a href="/tags/#localhost" title="localhost">localhost</a>
             
         </div>
     
@@ -683,6 +648,10 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
     <ul>
       
         <li>
+          <a href="/2019/06/02/ajax-with-session/">前後端分離下之使用 session</a>
+        </li>
+      
+        <li>
           <a href="/2019/05/02/promise-2/">callback, promise, async/await 使用方式教學以及介紹 Part II (Error Handling 介紹)</a>
         </li>
       
@@ -698,10 +667,6 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
           <a href="/2019/01/08/ssh-tunnel/">關於 SSH Tunnel 連線 (SSH Proxy, SSH Port Forwarding)</a>
         </li>
       
-        <li>
-          <a href="/2018/09/05/cloudfont-setting/">CloudFront 設定 Header Forward</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -714,7 +679,7 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -723,7 +688,7 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Securiry/">Securiry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Securiry/">Securiry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>

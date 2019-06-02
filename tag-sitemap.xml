@@ -65,13 +65,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/cookie/</loc>
-        <lastmod>2019-05-29T07:04:56.845Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/query-string/</loc>
         <lastmod>2019-05-29T07:04:56.845Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -317,13 +310,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
-        <lastmod>2019-05-29T07:05:43.910Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/TapPay/</loc>
         <lastmod>2019-05-29T07:05:43.910Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -333,6 +319,41 @@
     <url>
         <loc>https://yu-jack.github.io/tags/Payment-Gateway/</loc>
         <lastmod>2019-05-29T07:05:43.910Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
+        <lastmod>2019-06-02T04:55:52.494Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/session/</loc>
+        <lastmod>2019-06-02T04:55:52.494Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/cookie/</loc>
+        <lastmod>2019-06-02T04:55:52.494Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/cors/</loc>
+        <lastmod>2019-06-02T04:55:52.494Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/credential/</loc>
+        <lastmod>2019-06-02T04:55:52.494Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
