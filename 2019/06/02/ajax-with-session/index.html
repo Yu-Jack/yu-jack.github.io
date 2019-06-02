@@ -281,7 +281,8 @@ app.listen(<span class="number">7777</span>, () =&gt; {
 });
 </code></pre>
 <h3><span id="實作">實作</span></h3><p>透過執行以上的兩個 server 程式，寫後近到 <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> 之後<br>按下幾次重整，可以看到 api server 印出來的 session 每一次都是不同個<br><img src="https://imgur.com/s8uwa99.png" alt=""></p>
-<p>接下來就是要透過 xhr 的 credential 去設定<br>在 ajax 送出之前要加上 <code>ajax.withCredentials = true;</code> 這樣才可以把 Cookie 夾帶上去<br>但會發現瀏覽器卻爆出另一個錯誤訊息<br><code>The value of the &#39;Access-Control-Allow-Origin&#39; header in the response must not be the wildcard &#39;*&#39; when the request&#39;s credentials mode is &#39;include&#39;.</code><br><img src="https://imgur.com/HBreO9s.png" alt=""></p>
+<p>接下來就是要透過 xhr 的 credential 去設定<br>在 ajax 送出之前要加上 <code>ajax.withCredentials = true;</code> 這樣才可以把 Cookie 夾帶上去<br>但會發現瀏覽器卻爆出另一個錯誤訊息<br><code>The value of the &#39;Access-Control-Allow-Credentials&#39; header in the response is &#39;&#39; which must be &#39;true&#39; when the request&#39;s credentials mode is &#39;include&#39;</code><br><img src="https://imgur.com/B4OEBSz.png" alt=""><br>這是前後端必須要同步都使用 credentials 才可以用，於是在後端 server 加上 <code>Access-Control-Allow-Credentials: true</code></p>
+<p>但再度重整之後又發現新的錯誤！<br><code>The value of the &#39;Access-Control-Allow-Origin&#39; header in the response must not be the wildcard &#39;*&#39; when the request&#39;s credentials mode is &#39;include&#39;.</code><br><img src="https://imgur.com/HBreO9s.png" alt=""></p>
 <p>其實這也是限制的一種，當使用到 credentials 的時候，後端必須多限制只有一個 domain 能使用<br> <code>Access-Control-Allow-Origin: http://localhost:8888</code><br>這樣設定之後按幾次重整就會發現 session id 是一致的了<br><img src="https://imgur.com/DY6aSrr.png" alt=""></p>
 <h2><span id="後記">後記</span></h2><p>以上為簡單介紹如何在前後分離架構下依舊可以使用 session 的方式<br>而文章有提到 JWT，那是另一種驗證及授權方式，有機會再來談談這個技術實作的方式</p>
 
