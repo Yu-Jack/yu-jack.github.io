@@ -7,8 +7,16 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2019/02/19/java-executor/</loc>
+        <lastmod>2019-06-12T06:35:08.104Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2019/06/02/ajax-with-session/</loc>
-        <lastmod>2019-06-02T16:35:29.673Z</lastmod>
+        <lastmod>2019-06-03T02:27:33.149Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -89,14 +97,6 @@
     <url>
         <loc>https://yu-jack.github.io/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/</loc>
         <lastmod>2019-05-29T07:05:22.977Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2019/02/19/java-executor/</loc>
-        <lastmod>2019-05-29T07:05:21.594Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
