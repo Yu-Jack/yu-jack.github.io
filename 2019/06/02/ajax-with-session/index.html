@@ -229,7 +229,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 的狀況<br>要如何達到使用 session 的方法</p>
+                <p>這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下<br>要如何達到使用 session 的方法</p>
 <p>知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到<a href="#重點筆記">重點筆記</a></p>
 <h2><span id="前言">前言</span></h2><p>以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面<br>而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人<br>但當我們在前後端完全分離的狀況下，該怎麼去達到這件事情呢?</p>
 <h2><span id="cors">CORS</span></h2><p>瀏覽器有一個限制，當這個 request 請求起始的地方跟 endpoint 不一致得時候會造成所謂 CORS 的問題<br>舉例來說，假設網站架設在 <a href="https://www.example.com" target="_blank" rel="noopener">https://www.example.com</a> 底下，但是你的 API Server 是在 <a href="https://www.example1.com" target="_blank" rel="noopener">https://www.example1.com</a> 的話<br>這樣網站 POST 到 API Server 的請求就會被阻擋 (這時 request 是從 html 頁面發起)  </p>
