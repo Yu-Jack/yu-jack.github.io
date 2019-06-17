@@ -296,6 +296,13 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/cookie/</loc>
+        <lastmod>2019-06-03T02:27:33.149Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/nodejs/</loc>
         <lastmod>2019-06-03T02:27:33.149Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -304,13 +311,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/session/</loc>
-        <lastmod>2019-06-03T02:27:33.149Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/cookie/</loc>
         <lastmod>2019-06-03T02:27:33.149Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
