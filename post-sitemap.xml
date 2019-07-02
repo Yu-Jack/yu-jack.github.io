@@ -7,16 +7,8 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2019/06/02/ajax-with-session/</loc>
-        <lastmod>2019-06-17T04:24:44.264Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/2017/09/23/todo-vue/</loc>
-        <lastmod>2019-06-17T04:24:39.135Z</lastmod>
+        <lastmod>2019-07-02T15:44:34.251Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -24,7 +16,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/09/23/tappay-payment/</loc>
-        <lastmod>2019-06-17T04:24:39.109Z</lastmod>
+        <lastmod>2019-07-02T15:44:34.224Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -32,7 +24,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2019/01/08/ssh-tunnel/</loc>
-        <lastmod>2019-06-17T04:24:39.082Z</lastmod>
+        <lastmod>2019-07-02T15:44:34.198Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -40,7 +32,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/10/20/secure-header/</loc>
-        <lastmod>2019-06-17T04:24:39.056Z</lastmod>
+        <lastmod>2019-07-02T15:44:34.156Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -48,7 +40,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2018/07/22/promise/</loc>
-        <lastmod>2019-06-17T04:24:39.029Z</lastmod>
+        <lastmod>2019-07-02T15:44:34.118Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -56,7 +48,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2019/05/02/promise-2/</loc>
-        <lastmod>2019-06-17T04:24:38.986Z</lastmod>
+        <lastmod>2019-07-02T15:44:34.004Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -64,7 +56,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/11/08/ngrok/</loc>
-        <lastmod>2019-06-17T04:24:38.904Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.963Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -72,7 +64,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/10/19/module-export/</loc>
-        <lastmod>2019-06-17T04:24:38.874Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.922Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -80,7 +72,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2019/04/24/javascript-this/</loc>
-        <lastmod>2019-06-17T04:24:38.848Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.880Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -88,7 +80,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2019/02/19/java-executor/</loc>
-        <lastmod>2019-06-17T04:24:38.822Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.836Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -96,7 +88,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/11/01/how-to-test/</loc>
-        <lastmod>2019-06-17T04:24:38.784Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.792Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -104,7 +96,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/</loc>
-        <lastmod>2019-06-17T04:24:38.740Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.747Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -112,7 +104,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway/</loc>
-        <lastmod>2019-06-17T04:24:38.696Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.703Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -120,7 +112,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/10/17/google-hacking/</loc>
-        <lastmod>2019-06-17T04:24:38.653Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.657Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -128,7 +120,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/12/11/express-static/</loc>
-        <lastmod>2019-06-17T04:24:38.609Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.610Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -136,7 +128,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2018/09/05/cloudfont-setting/</loc>
-        <lastmod>2019-06-17T04:24:38.374Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.568Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -144,7 +136,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2018/04/21/apple-debug/</loc>
-        <lastmod>2019-06-17T04:24:38.333Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.524Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -152,7 +144,15 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/10/24/api-gateway-mapping-template/</loc>
-        <lastmod>2019-06-17T04:24:38.289Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.484Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2019/06/02/ajax-with-session/</loc>
+        <lastmod>2019-07-02T15:44:33.442Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -160,7 +160,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/2017/10/14/Slack-Bot/</loc>
-        <lastmod>2019-06-17T04:24:38.101Z</lastmod>
+        <lastmod>2019-07-02T15:44:33.316Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
