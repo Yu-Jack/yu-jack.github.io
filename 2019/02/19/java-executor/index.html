@@ -227,38 +227,20 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2><span id="前言">前言</span></h2>
-<p>Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念
-就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用
-使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用</p>
-<p>Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本中是沒有一個管控的方式
-幾乎都是用 new Thread 的方式去創建使用
-在 JDK 1.5 之後的版本則是出了 Exectuor 去管控 Thread Pool</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="threadpoolexecutor-介紹">ThreadPoolExecutor 介紹</span></h2>
-<p>Java 提供了 ThreadPoolExecutor 能讓我們客製化定義不同的使用模式
-以下為 ThreadPoolExecutor 的設定即使用方法
-以及取用 Queue Size 以及 Thread Name 的方式</p>
-<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">    <span class="keyword">int</span> corePoolSize,</span><br><span class="line">    <span class="keyword">int</span> maxPoolSize,</span><br><span class="line">    <span class="keyword">long</span> keepAliveTime,</span><br><span class="line">    TimeUnit unit,</span><br><span class="line">    BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">    RejectedExecutionHandler handler</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">"Queue size is: "</span> + executor.getQueue().size());</span><br><span class="line"></span><br><span class="line">executor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"running"</span>);</span><br><span class="line">        System.out.println(<span class="string">"Thread Name: "</span> + Thread.currentThread().getName())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+                <h2><span id="前言">前言</span></h2><p>Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念<br>就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用<br>使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用</p>
+<p>Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本中是沒有一個管控的方式<br>幾乎都是用 new Thread 的方式去創建使用<br>在 JDK 1.5 之後的版本則是出了 Exectuor 去管控 Thread Pool</p>
+<a id="more"></a>
+<h2><span id="threadpoolexecutor-介紹">ThreadPoolExecutor 介紹</span></h2><p>Java 提供了 ThreadPoolExecutor 能讓我們客製化定義不同的使用模式<br>以下為 ThreadPoolExecutor 的設定即使用方法<br>以及取用 Queue Size 以及 Thread Name 的方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">    <span class="keyword">int</span> corePoolSize,</span><br><span class="line">    <span class="keyword">int</span> maxPoolSize,</span><br><span class="line">    <span class="keyword">long</span> keepAliveTime,</span><br><span class="line">    TimeUnit unit,</span><br><span class="line">    BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">    RejectedExecutionHandler handler</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">"Queue size is: "</span> + executor.getQueue().size());</span><br><span class="line"></span><br><span class="line">executor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"running"</span>);</span><br><span class="line">        System.out.println(<span class="string">"Thread Name: "</span> + Thread.currentThread().getName())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <ul>
-<li>corePoolSize
-核心 Thread 的數量，基本上 Thread 數量不會低於此數字</li>
-<li>maxPoolSize
-Thread Pool 的最大數量，如果所有 Thread 都被執行的話
-Task 會被塞到 Queue 之中等到有空閒的 Thread 為止
-決定 maxPoolSize 的數量最好是根據系統資源去計算出來
-<code>Runtime.getRuntime().availableProcessors();</code></li>
-<li>keeyAliveTime
-當閒置時間超過此設定的時間的話，系統會開始回收 corePoolSize 以上多餘的 Thread</li>
-<li>unit
-keepAliveTime 的時間單位，可以使用 <code>TimeUnit.SECONDS</code></li>
-<li>workQueue
-決定當所有 Thread 都被執行時，Task 在 Queue 之中會以何種形式等待</li>
-<li>handler
-Queue 已滿且 Thread 已達到 maxPoolSize 之後會以什麼樣的方式處理新的 Task</li>
+<li>corePoolSize<br>  核心 Thread 的數量，基本上 Thread 數量不會低於此數字</li>
+<li>maxPoolSize<br>  Thread Pool 的最大數量，如果所有 Thread 都被執行的話<br>  Task 會被塞到 Queue 之中等到有空閒的 Thread 為止<br>  決定 maxPoolSize 的數量最好是根據系統資源去計算出來<br>  <code>Runtime.getRuntime().availableProcessors();</code></li>
+<li>keeyAliveTime<br>  當閒置時間超過此設定的時間的話，系統會開始回收 corePoolSize 以上多餘的 Thread</li>
+<li>unit<br>  keepAliveTime 的時間單位，可以使用 <code>TimeUnit.SECONDS</code></li>
+<li>workQueue<br>  決定當所有 Thread 都被執行時，Task 在 Queue 之中會以何種形式等待</li>
+<li>handler<br>  Queue 已滿且 Thread 已達到 maxPoolSize 之後會以什麼樣的方式處理新的 Task</li>
 </ul>
-<h3><span id="blockingqueue-詳細介紹">BlockingQueue 詳細介紹</span></h3>
-<p>基本規則為</p>
+<h3><span id="blockingqueue-詳細介紹">BlockingQueue 詳細介紹</span></h3><p>基本規則為</p>
 <ol>
 <li>如果當前的 Thread 小於 corePoolSize，則 Executor 首先會新增 Thread，而不會把 Task 丟到 Queue 之中 (基本上就是直接運行的意思)</li>
 <li>如果當前的 Thread 大於等於 corePoolSize，則 Executor 首先會把 Task 加到 Queue 之中等待</li>
@@ -266,79 +248,34 @@ Queue 已滿且 Thread 已達到 maxPoolSize 之後會以什麼樣的方式處�
 <li>超過 maxPoolSize 時，任務會被拒絕</li>
 </ol>
 <p>BlockingQueue 有三種類型</p>
-<h4><span id="直接提交">直接提交</span></h4>
-<p>代表類型: synchronousQueue
-基本上就 Queue Size 就是 0
-會直接把 Task 提交給 Thread，如果不存在可用 Thread，則新建一個
-如果此類型有設置 maxPoolSize 的話，是有可會拒絕新的 Task
-所以通常使這種類型，會建議 maxPoolSize 不要做上限設定</p>
-<h4><span id="無界隊列-unbounded-queue">無界隊列 (Unbounded Queue)</span></h4>
-<p>代表類型: LinkedBlockingQueue
-Queue 的大小是無限制的
-特別注意的是因為大小是無限制，所以萬一 Task 執行時間過長
-會導致有大量個 Task 卡在 Queue 之中動彈不得，進而導致 OOM 的發生
-<code>Executors.newFixedThreadPool</code> 採用的就是此種類型的 Queue</p>
-<h4><span id="有界隊列-bounded-queue">有界隊列 (Bounded Queue)</span></h4>
-<p>代表類型: ArrayBlockingQueue
-Queue 的大小是有限制的
-但要注意的點是，這個 Queue 大小必須和 Thread Pool 相互搭配才可以發揮出比較好的效能
-使用大的 Queue Size 和小的 Thread Pool Size
-雖然可以有效降低 CPU 使用率，但會降低 QPS
-而使用小的 Queue Size 和大的 Thread Pool Size
-雖然可以提昇 QPS，但會降低 CPU</p>
-<h3><span id="queue-飽和-rejectexecutionhandle-介紹">Queue 飽和 RejectExecutionHandle 介紹</span></h3>
-<p>再來要介紹當 Queue 飽和之後，可以根據不同 handle 做出不一樣的行為
-以下總計有四種使用方式</p>
-<h4><span id="終止策略-abortpolicy">終止策略 (AbortPolicy)</span></h4>
-<p><strong><em>此為預設 Policy</em></strong>
-使用該 Policy，飽和時會拋出 RejectedExecutionException
-調用者可以用以下自行定義方式處理異常</p>
-<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">executor.setRejectedExecutionHandler(<span class="keyword">new</span> RejectedExecutionHandler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor executor)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Get you!"</span>);</span><br><span class="line">        r.run();</span><br><span class="line">        System.out.println(<span class="string">"Done in handler"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h4><span id="拋棄策略-discardpolicy">拋棄策略 (DiscardPolicy)</span></h4>
-<p>不做任何處理直接拋棄</p>
-<h4><span id="拋棄舊任務策略-discardoldestpolicy">拋棄舊任務策略 (DiscardOldestPolicy)</span></h4>
-<p>把 Queue 之中最頭的元素拋棄，並在嘗試重新提交 Task</p>
-<h4><span id="調用者運行策略-callerrunspolicy">調用者運行策略 (CallerRunsPolicy)</span></h4>
-<p>簡單來說，飽和後會直接由調用 Thread Pool 的主 Thread 自己來執行這個 Task
-但在這個期間，主 Thread 就無法再度提交 Task
-從而讓 Thread Pool 有時間把正在處理的 Task 給完成</p>
-<h2><span id="創建-thread-pool-的四個常用方法">創建 Thread Pool 的四個常用方法</span></h2>
-<p>這四個常用的方法都是透過 ThreadPoolExecutor 的不同參數所實作而成的</p>
+<h4><span id="直接提交">直接提交</span></h4><p>代表類型: synchronousQueue<br>基本上就 Queue Size 就是 0<br>會直接把 Task 提交給 Thread，如果不存在可用 Thread，則新建一個<br>如果此類型有設置 maxPoolSize 的話，是有可會拒絕新的 Task<br>所以通常使這種類型，會建議 maxPoolSize 不要做上限設定</p>
+<h4><span id="無界隊列-unbounded-queue">無界隊列 (Unbounded Queue)</span></h4><p>代表類型: LinkedBlockingQueue<br>Queue 的大小是無限制的<br>特別注意的是因為大小是無限制，所以萬一 Task 執行時間過長<br>會導致有大量個 Task 卡在 Queue 之中動彈不得，進而導致 OOM 的發生<br><code>Executors.newFixedThreadPool</code> 採用的就是此種類型的 Queue</p>
+<h4><span id="有界隊列-bounded-queue">有界隊列 (Bounded Queue)</span></h4><p>代表類型: ArrayBlockingQueue<br>Queue 的大小是有限制的<br>但要注意的點是，這個 Queue 大小必須和 Thread Pool 相互搭配才可以發揮出比較好的效能<br>使用大的 Queue Size 和小的 Thread Pool Size<br>雖然可以有效降低 CPU 使用率，但會降低 QPS<br>而使用小的 Queue Size 和大的 Thread Pool Size<br>雖然可以提昇 QPS，但會降低 CPU</p>
+<h3><span id="queue-飽和-rejectexecutionhandle-介紹">Queue 飽和 RejectExecutionHandle 介紹</span></h3><p>再來要介紹當 Queue 飽和之後，可以根據不同 handle 做出不一樣的行為<br>以下總計有四種使用方式</p>
+<h4><span id="終止策略-abortpolicy">終止策略 (AbortPolicy)</span></h4><p><strong><em>此為預設 Policy</em></strong><br>使用該 Policy，飽和時會拋出 RejectedExecutionException<br>調用者可以用以下自行定義方式處理異常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">executor.setRejectedExecutionHandler(<span class="keyword">new</span> RejectedExecutionHandler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor executor)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Get you!"</span>);</span><br><span class="line">        r.run();</span><br><span class="line">        System.out.println(<span class="string">"Done in handler"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4><span id="拋棄策略-discardpolicy">拋棄策略 (DiscardPolicy)</span></h4><p>不做任何處理直接拋棄</p>
+<h4><span id="拋棄舊任務策略-discardoldestpolicy">拋棄舊任務策略 (DiscardOldestPolicy)</span></h4><p>把 Queue 之中最頭的元素拋棄，並在嘗試重新提交 Task</p>
+<h4><span id="調用者運行策略-callerrunspolicy">調用者運行策略 (CallerRunsPolicy)</span></h4><p>簡單來說，飽和後會直接由調用 Thread Pool 的主 Thread 自己來執行這個 Task<br>但在這個期間，主 Thread 就無法再度提交 Task<br>從而讓 Thread Pool 有時間把正在處理的 Task 給完成</p>
+<h2><span id="創建-thread-pool-的四個常用方法">創建 Thread Pool 的四個常用方法</span></h2><p>這四個常用的方法都是透過 ThreadPoolExecutor 的不同參數所實作而成的</p>
 <ol>
-<li>
-<p><code>public static ExecutorService newFixedThreadPool(int nThreads)</code>
-創建固定數量的 Thead，提交 Task 的時候如果未達 <code>nThreads</code> 的數量的話，則會一直新建 Thread
-達到 <code>nThreads</code> 時，之後的 Task 則會進入到佇列中</p>
-<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<li><p><code>public static ExecutorService newFixedThreadPool(int nThreads)</code><br> 創建固定數量的 Thead，提交 Task 的時候如果未達 <code>nThreads</code> 的數量的話，則會一直新建 Thread<br> 達到 <code>nThreads</code> 時，之後的 Task 則會進入到佇列中</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p><code>public static ExecutorService newCachedThreadPool()</code>
-Thread 的數量預設上限為 2^31 - 1，如果當 Thread 大於 Tasks 數量的時候
-就會開始去回收那些等了超過 60 秒還沒有 Task 進來的 Thread
-問題是，這個 <code>newCachedThreadPool</code> 是屬於動態新建所以萬一 Task 一直大於 Thread 數量的話則會一直新建
-這樣很容易耗光機器資源，使用這個最好的狀況是 Task 的執行時間是短的才比較適合</p>
-<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                  <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<li><p><code>public static ExecutorService newCachedThreadPool()</code><br> Thread 的數量預設上限為 2^31 - 1，如果當 Thread 大於 Tasks 數量的時候<br> 就會開始去回收那些等了超過 60 秒還沒有 Task 進來的 Thread<br> 問題是，這個 <code>newCachedThreadPool</code> 是屬於動態新建所以萬一 Task 一直大於 Thread 數量的話則會一直新建<br> 這樣很容易耗光機器資源，使用這個最好的狀況是 Task 的執行時間是短的才比較適合</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                  <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p><code>public static ExecutorService newSingleThreadExecutor()</code>
-創建一個 Single Thread，因為此 Thread 被使用的話其他都會是在佇列中等待，所以效能會下降</p>
-<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newSingleThreadScheduledExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DelegatedScheduledExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<li><p><code>public static ExecutorService newSingleThreadExecutor()</code><br> 創建一個 Single Thread，因為此 Thread 被使用的話其他都會是在佇列中等待，所以效能會下降</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newSingleThreadScheduledExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DelegatedScheduledExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p><code>public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)</code>
-支持定時以及週期性執行 Task 的需求</p>
-<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newScheduledThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>看看 Parent Class</p>
-<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ScheduledThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(corePoolSize, Integer.MAX_VALUE, <span class="number">0</span>, NANOSECONDS,</span><br><span class="line">          <span class="keyword">new</span> DelayedWorkQueue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<li><p><code>public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)</code><br> 支持定時以及週期性執行 Task 的需求</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newScheduledThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 看看 Parent Class</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ScheduledThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(corePoolSize, Integer.MAX_VALUE, <span class="number">0</span>, NANOSECONDS,</span><br><span class="line">          <span class="keyword">new</span> DelayedWorkQueue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>但是基本上不是很推薦使用以上這四種方法去定義 Thread Pool
-在阿里巴巴的 Java 開發手冊中也有提到，如果要新建 Thread
-請透過 ThreadPoolExecutor 的方式去自定義 Thread Pool 的使用模式
-在<a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">這篇文章</a>的樓主也是因為用了以上其中一個方法採到 OOM 的雷
-所以在設定 Thread Pool 的時候要特別注意使用的情況適不適合！</p>
-<h2><span id="references">References</span></h2>
-<ol>
+<p>但是基本上不是很推薦使用以上這四種方法去定義 Thread Pool<br>在阿里巴巴的 Java 開發手冊中也有提到，如果要新建 Thread<br>請透過 ThreadPoolExecutor 的方式去自定義 Thread Pool 的使用模式<br>在<a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">這篇文章</a>的樓主也是因為用了以上其中一個方法採到 OOM 的雷<br>所以在設定 Thread Pool 的時候要特別注意使用的情況適不適合！</p>
+<h2><span id="references">References</span></h2><ol>
 <li><a href="https://www.cnblogs.com/vhua/p/5297587.html" target="_blank" rel="noopener">Java Executor并发框架</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">一次Java线程池误用引发的血案和总结</a></li>
 <li><a href="http://givemepass-blog.logdown.com/posts/296960-how-to-use-the-threadpool" target="_blank" rel="noopener">如何使用ThreadPool</a></li>
