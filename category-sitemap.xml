@@ -7,13 +7,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Bot/</loc>
-        <lastmod>2019-07-02T15:44:33.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/AWS/</loc>
         <lastmod>2019-07-02T15:44:33.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -35,14 +28,21 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Java/</loc>
+        <loc>https://yu-jack.github.io/categories/tool/</loc>
         <lastmod>2019-07-02T15:44:33.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/tool/</loc>
+        <loc>https://yu-jack.github.io/categories/Bot/</loc>
+        <lastmod>2019-07-02T15:44:33.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Java/</loc>
         <lastmod>2019-07-02T15:44:33.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -63,14 +63,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
+        <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2019-07-02T15:44:34.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Vue/</loc>
+        <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
         <lastmod>2019-07-02T15:44:34.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
