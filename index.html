@@ -77,6 +77,12 @@
         enable_page_level_ads: true
       });
     </script>
+    <style>
+        img {
+            border: 1px solid #00000042;
+            box-shadow: 1px 1px 5px;
+        }
+    </style>
 </head>
 
 
@@ -217,6 +223,42 @@
 
 <div class="post-preview">
 
+    <a href="/2019/09/06/hacker101-part2/">
+        <h2 class="post-title">
+            Hacker 101 CTF Write Up Part 2 - Micro-CMS v1, Petshop Pro
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  
+Micro-CMS v1根據題目總共有 4 個 Flag
+========= 0x00  =========打開頁面後頁面是
+試著建立 post 試試看
+發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
+按了 Go Home 會去上一頁就跳出 FLAG 了
+========= 0x01  =====......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2019-09-06
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#CTF" title="CTF">CTF</a>
+            
+              <a href="/tags/#security" title="security">security</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/09/04/hacker101-part1/">
         <h2 class="post-title">
             Hacker 101 CTF Write Up Part 1 - Micro-CMS v2, TempImage
@@ -272,11 +314,11 @@ Micro-CMS v2根據題目總共有 3 個 Flag
         </p>
         <div class="tags">
             
+              <a href="/tags/#cookie" title="cookie">cookie</a>
+            
               <a href="/tags/#nodejs" title="nodejs">nodejs</a>
             
               <a href="/tags/#session" title="session">session</a>
-            
-              <a href="/tags/#cookie" title="cookie">cookie</a>
             
               <a href="/tags/#cors" title="cors">cors</a>
             
@@ -456,15 +498,15 @@ None: 使用 CloudF......
         </p>
         <div class="tags">
             
-              <a href="/tags/#cookie" title="cookie">cookie</a>
-            
-              <a href="/tags/#aws" title="aws">aws</a>
-            
               <a href="/tags/#CloudFront" title="CloudFront">CloudFront</a>
+            
+              <a href="/tags/#cookie" title="cookie">cookie</a>
             
               <a href="/tags/#query string" title="query string">query string</a>
             
               <a href="/tags/#header" title="header">header</a>
+            
+              <a href="/tags/#aws" title="aws">aws</a>
             
         </div>
     
@@ -547,38 +589,6 @@ None: 使用 CloudF......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2017/12/11/express-static/">
-        <h2 class="post-title">
-            Express 對靜態檔案做了什麼? 為什麼會被 cache 住呢?
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
-
-介紹在 express 裡面有一個 function 叫做 express.static()這個是一個 middleware，最常被用在要讀取一些靜態檔案上面以這個寫法來說......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2017-12-11
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
-            
-              <a href="/tags/#express" title="express">express</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -648,6 +658,10 @@ None: 使用 CloudF......
     <ul>
       
         <li>
+          <a href="/2019/09/06/hacker101-part2/">Hacker 101 CTF Write Up Part 2 - Micro-CMS v1, Petshop Pro</a>
+        </li>
+      
+        <li>
           <a href="/2019/09/04/hacker101-part1/">Hacker 101 CTF Write Up Part 1 - Micro-CMS v2, TempImage</a>
         </li>
       
@@ -663,10 +677,6 @@ None: 使用 CloudF......
           <a href="/2019/04/24/javascript-this/">JavaScript this 是什麼? 如何運作的呢?</a>
         </li>
       
-        <li>
-          <a href="/2019/02/19/java-executor/">Java Executor、TheadPoolExecutor 設定參數基本介紹</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -679,7 +689,7 @@ None: 使用 CloudF......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -688,7 +698,7 @@ None: 使用 CloudF......
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>
