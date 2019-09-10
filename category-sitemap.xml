@@ -42,14 +42,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Bot/</loc>
+        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
         <lastmod>2019-09-09T06:38:52.224Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
+        <loc>https://yu-jack.github.io/categories/Bot/</loc>
         <lastmod>2019-09-09T06:38:52.224Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -85,7 +85,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/categories/Security/</loc>
-        <lastmod>2019-09-09T06:46:55.105Z</lastmod>
+        <lastmod>2019-09-10T14:41:18.698Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
