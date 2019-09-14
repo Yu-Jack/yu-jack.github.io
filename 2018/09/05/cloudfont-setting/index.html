@@ -120,13 +120,13 @@
                             
                               <a class="tag" href="/tags/#cookie" title="cookie">cookie</a>
                             
+                              <a class="tag" href="/tags/#aws" title="aws">aws</a>
+                            
                               <a class="tag" href="/tags/#CloudFront" title="CloudFront">CloudFront</a>
                             
                               <a class="tag" href="/tags/#query string" title="query string">query string</a>
                             
                               <a class="tag" href="/tags/#header" title="header">header</a>
-                            
-                              <a class="tag" href="/tags/#aws" title="aws">aws</a>
                             
                         </div>
                         <h1>CloudFront 設定 Header Forward</h1>
@@ -243,13 +243,9 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>最近在使用 CloudFront Header forward 的設定
-CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon CloudFront</code>
-於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
-<p>&lt;!-- more --&gt;</p>
-<p>但由於 CF 上面的設定寫的不是很清楚
-於是發現以下這篇 <a href="https://aws.amazon.com/blogs/aws/enhanced-cloudfront-customization/" target="_blank" rel="noopener">AWS 官方文章</a>
-這裡直接做一個總結</p>
+                <p>最近在使用 CloudFront Header forward 的設定<br>CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon CloudFront</code><br>於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
+<a id="more"></a>
+<p>但由於 CF 上面的設定寫的不是很清楚<br>於是發現以下這篇 <a href="https://aws.amazon.com/blogs/aws/enhanced-cloudfront-customization/" target="_blank" rel="noopener">AWS 官方文章</a><br>這裡直接做一個總結</p>
 <ol>
 <li>None: 使用 CloudFront 原生的行為 (例如替換 <code>User-Agent</code>)</li>
 <li>Whitelists: 把 whitelists 裡面的參數，<strong>完整不動</strong> 的 Forward 到 Orign 去使用</li>
@@ -257,11 +253,8 @@ CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Am
 </ol>
 <p>下面是一個 whitelist 的簡單範例</p>
 <p><img src="https://i.imgur.com/Dy57usH.png" alt=""></p>
-<p>以這張圖的設定的來說，代表 <code>User-Agent</code> 不會被 CloudFront 給自動替換掉
-而是會拿原生<code>User-Agent</code>直接 forward 到 Origin 去</p>
-<p>另外這邊要提醒，Cloudfront 預設是不會 Forward Headers, Cookies 和 Query String 的
-這邊要特別注意，要特別設定才可以
-那至於 Cookie 以及 Query String 的設定看上面就明瞭了</p>
+<p>以這張圖的設定的來說，代表 <code>User-Agent</code> 不會被 CloudFront 給自動替換掉<br>而是會拿原生<code>User-Agent</code>直接 forward 到 Origin 去</p>
+<p>另外這邊要提醒，Cloudfront 預設是不會 Forward Headers, Cookies 和 Query String 的<br>這邊要特別注意，要特別設定才可以<br>那至於 Cookie 以及 Query String 的設定看上面就明瞭了</p>
 
                 
 
