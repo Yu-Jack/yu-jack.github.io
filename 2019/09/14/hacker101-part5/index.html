@@ -237,87 +237,32 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="codys-first-blog">Cody's First Blog</h1>
-<p>這題總共有 3 個 flag</p>
-<h2 id="0x00">0x00</h2>
-<p>一開始畫面長這樣<br>
-<img src="/images/ctf/part5-blog-1-01.png" alt=""></p>
-<p>裡面有提到好像是用 php 建立的<br>
-試著提交看看 <code>&lt;?php echo phpinfo(); ?&gt;</code><br>
-就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo<br>
-<img src="/images/ctf/part5-blog-1-02.png" alt="">
-<img src="/images/ctf/part5-blog-1-03.png" alt=""></p>
-<h2 id="0x01">0x01</h2>
-<p>接下來看一下 source code 發現一個特別的地方</p>
+                <h1 id="codys-first-blog"><a href="#Cody’s-First-Blog" class="headerlink" title="Cody’s First Blog"></a>Cody’s First Blog</h1><p>這題總共有 3 個 flag</p>
+<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>一開始畫面長這樣<br><img src="/images/ctf/part5-blog-1-01.png" alt=""></p>
+<p>裡面有提到好像是用 php 建立的<br>試著提交看看 <code>&lt;?php echo phpinfo(); ?&gt;</code><br>就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo<br><img src="/images/ctf/part5-blog-1-02.png" alt=""><br><img src="/images/ctf/part5-blog-1-03.png" alt=""></p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>接下來看一下 source code 發現一個特別的地方  </p>
 <ol>
-<li>被註解掉的 admin path
-<img src="/images/ctf/part5-blog-2-01.png" alt=""></li>
+<li>被註解掉的 admin path<br><img src="/images/ctf/part5-blog-2-01.png" alt=""></li>
 </ol>
-<p>Path: http://34.74.105.127/8a10550a14/?page=admin.auth.inc<br>
-發現看到可以登入的地方<br>
-<img src="/images/ctf/part5-blog-2-02.png" alt=""></p>
-<p>嘗試輸入 username 看會不會有列舉的漏洞
-以及輸入一些弱密碼嘗試登入<br>
-全部都不行，暫時就先擱置不看<br>
-<img src="/images/ctf/part5-blog-2-03.png" alt=""></p>
-<p>這邊就開始有點卡住了 ...
-回去首頁看看有什麼特別的東西<br>
-有一句話有提到有用到 <code>include</code> 這個 function<br>
-而剛剛的參數中 <code>?page=admin.auth.inc</code> 是登入用的 php<br>
-接下來這邊試著改成 <code>?page=admin.inc</code> 發現就 bypass 登入的機制到 admin 頁面了<br>
-然後就發現 FLAG 以及可以 approve 剛剛 submit 的 comment<br>
-<img src="/images/ctf/part5-blog-2-04.png" alt=""></p>
-<h2 id="0x02">0x02</h2>
-<p>按下 approve，是一個 GET Url<br>
-嘗試對 approve 做 SQL Injection 檢測發現沒有問題<br>
-<img src="/images/ctf/part5-blog-3-01.png" alt=""></p>
-<p>接下來回到首頁，檢視原始碼發現一個特別的東西<br>
-一開始輸入的參數被 approve 後顯示在這裡<br>
-有點特別，但因為不能執行所以沒什麼用就先擱著不動<br>
-<img src="/images/ctf/part5-blog-3-02.png" alt=""></p>
-<p>接下來嘗試對 page 參數亂打<br>
-<img src="/images/ctf/part5-blog-3-03.png" alt=""></p>
-<p>看來的確是用 include 去引入別的檔案<br>
-而且還會再參數後面再加入 .php 的副檔名</p>
-<p>這邊嘗試用 php://filter 看能不能讀取原始碼<br>
-結果發現不能 QQ
-<img src="/images/ctf/part5-blog-3-04.png" alt=""></p>
-<p>看到 include 後回想起首頁提到的<br>
-這個 server 不能對外連線，也只有作者可以上傳檔案<br>
-以及他都是用 include 去引用檔案</p>
-<p>這裡聯想到一件事情<br>
-include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
-於是這邊嘗試引用 <code>http://34.74.105.127/8a10550a14/?page=http://localhost/admin.inc</code><br>
-發現可以引用成功，但還是沒有提供什麼資訊<br>
-<img src="/images/ctf/part5-blog-3-05.png" alt=""></p>
-<p>但因為用 include 配合 <code>http://</code> 會有一個特色<br>
-假如 test2.php 內容為
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> $body = <span class="string">"&lt;?php echo phpinfo(); ?&gt;"</span> <span class="meta">?&gt;</span></span><br><span class="line">&lt;p&gt;<span class="meta">&lt;?php</span> <span class="keyword">echo</span> $body <span class="meta">?&gt;</span>&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
-<p>test3.php 內容為
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>直接讀取 test2.php 的時候，是沒辦法執行 <code>phpinfo()</code><br>
-只會出現這樣的結果<br>
-<img src="/images/ctf/part5-blog-3-06.png" alt=""></p>
-<p>讀取 test3.php 時<br>
-這邊會出現跟直接讀取 test2.php 一樣的結果<br>
-<img src="/images/ctf/part5-blog-3-08.png" alt=""></p>
-<p>但如果把 test3.php 改成用 <code>http://</code> 協議會怎麼樣呢?<br>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"http://localhost:7888/test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>它會把 test2.php 顯示的結果，當成原始碼繼續使用下去<br>
-結果就會變成可以成功執行 phpinfo 了<br>
-<img src="/images/ctf/part5-blog-3-07.png" alt=""></p>
-<p>那因為剛剛一開始頁面也有一樣的邏輯出現<br>
-首頁也有顯示 <code>&lt;?php echo phpinfo(); ?&gt;</code><br>
-<img src="/images/ctf/part5-blog-3-02.png" alt=""></p>
-<p>那如果說有辦法，讓這個頁面在被 include 一次的話<br>
-就可以成功執行 phpinfo() 了<br>
-所以 payload 會改成以下
-<code>http://34.74.105.127/8a10550a14/?page=http://localhost/index</code><br>
-然後就成功可以執行了<br>
-<img src="/images/ctf/part5-blog-3-09.png" alt=""></p>
-<p>重新輸入一個參數 <code>&lt;?php readfile(&quot;index.php&quot;) ?&gt;</code> 並且 approve<br>
-回到首頁檢視原始碼發現 FLAG !
-<img src="/images/ctf/part5-blog-3-10.png" alt=""></p>
+<p>Path: <a href="http://34.74.105.127/8a10550a14/?page=admin.auth.inc" target="_blank" rel="noopener">http://34.74.105.127/8a10550a14/?page=admin.auth.inc</a><br>發現看到可以登入的地方<br><img src="/images/ctf/part5-blog-2-02.png" alt=""></p>
+<p>嘗試輸入 username 看會不會有列舉的漏洞<br>以及輸入一些弱密碼嘗試登入<br>全部都不行，暫時就先擱置不看<br><img src="/images/ctf/part5-blog-2-03.png" alt=""></p>
+<p>這邊就開始有點卡住了 …<br>回去首頁看看有什麼特別的東西<br>有一句話有提到有用到 <code>include</code> 這個 function<br>而剛剛的參數中 <code>?page=admin.auth.inc</code> 是登入用的 php<br>接下來這邊試著改成 <code>?page=admin.inc</code> 發現就 bypass 登入的機制到 admin 頁面了<br>然後就發現 FLAG 以及可以 approve 剛剛 submit 的 comment<br><img src="/images/ctf/part5-blog-2-04.png" alt=""></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>按下 approve，是一個 GET Url<br>嘗試對 approve 做 SQL Injection 檢測發現沒有問題<br><img src="/images/ctf/part5-blog-3-01.png" alt=""></p>
+<p>接下來回到首頁，檢視原始碼發現一個特別的東西<br>一開始輸入的參數被 approve 後顯示在這裡<br>有點特別，但因為不能執行所以沒什麼用就先擱著不動<br><img src="/images/ctf/part5-blog-3-02.png" alt=""></p>
+<p>接下來嘗試對 page 參數亂打<br><img src="/images/ctf/part5-blog-3-03.png" alt=""></p>
+<p>看來的確是用 include 去引入別的檔案<br>而且還會再參數後面再加入 .php 的副檔名  </p>
+<p>這邊嘗試用 php://filter 看能不能讀取原始碼<br>結果發現不能 QQ<br><img src="/images/ctf/part5-blog-3-04.png" alt=""></p>
+<p>看到 include 後回想起首頁提到的<br>這個 server 不能對外連線，也只有作者可以上傳檔案<br>以及他都是用 include 去引用檔案  </p>
+<p>這裡聯想到一件事情<br>include 是不是也能用 http:// 去把檔案引入並執行呢?<br>於是這邊嘗試引用 <code>http://34.74.105.127/8a10550a14/?page=http://localhost/admin.inc</code><br>發現可以引用成功，但還是沒有提供什麼資訊<br><img src="/images/ctf/part5-blog-3-05.png" alt=""></p>
+<p>但因為用 include 配合 <code>http://</code> 會有一個特色<br>假如 test2.php 內容為<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> $body = <span class="string">"&lt;?php echo phpinfo(); ?&gt;"</span> <span class="meta">?&gt;</span></span><br><span class="line">&lt;p&gt;<span class="meta">&lt;?php</span> <span class="keyword">echo</span> $body <span class="meta">?&gt;</span>&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
+<p>test3.php 內容為<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>直接讀取 test2.php 的時候，是沒辦法執行 <code>phpinfo()</code><br>只會出現這樣的結果<br><img src="/images/ctf/part5-blog-3-06.png" alt=""></p>
+<p>讀取 test3.php 時<br>這邊會出現跟直接讀取 test2.php 一樣的結果<br><img src="/images/ctf/part5-blog-3-08.png" alt=""></p>
+<p>但如果把 test3.php 改成用 <code>http://</code> 協議會怎麼樣呢?<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"http://localhost:7888/test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>它會把 test2.php 顯示的結果，當成原始碼繼續使用下去<br>結果就會變成可以成功執行 phpinfo 了<br><img src="/images/ctf/part5-blog-3-07.png" alt=""></p>
+<p>那因為剛剛一開始頁面也有一樣的邏輯出現<br>首頁也有顯示 <code>&lt;?php echo phpinfo(); ?&gt;</code><br><img src="/images/ctf/part5-blog-3-02.png" alt=""></p>
+<p>那如果說有辦法，讓這個頁面在被 include 一次的話<br>就可以成功執行 phpinfo() 了<br>所以 payload 會改成以下<br><code>http://34.74.105.127/8a10550a14/?page=http://localhost/index</code><br>然後就成功可以執行了<br><img src="/images/ctf/part5-blog-3-09.png" alt=""></p>
+<p>重新輸入一個參數 <code>&lt;?php readfile(&quot;index.php&quot;) ?&gt;</code> 並且 approve<br>回到首頁檢視原始碼發現 FLAG !<br><img src="/images/ctf/part5-blog-3-10.png" alt=""></p>
 
                 
 
@@ -326,7 +271,7 @@ include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2019/09/30/http-smuggling/" data-toggle="tooltip" data-placement="top" title="HTTP Request Smuggling (HTPP 請求走私)">&larr; Previous Post</a>
+                            <a href="/2019/09/30/http-smuggling/" data-toggle="tooltip" data-placement="top" title="HTTP Request Smuggling (HTTP 請求走私)">&larr; Previous Post</a>
                         </li>
                     
                     
@@ -361,7 +306,7 @@ include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#codys-first-blog"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Cody&#39;s First Blog</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x00"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">0x00</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x01"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">0x01</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x02"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">0x02</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#codys-first-blog"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Cody’s First Blog</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x00"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">0x00</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x01"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">0x01</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x02"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">0x02</span></a></li></ol></li></ol>
         
         </div>
       </aside>
