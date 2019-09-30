@@ -16,7 +16,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/CloudFront/</loc>
+        <loc>https://yu-jack.github.io/tags/session/</loc>
         <lastmod>2019-09-09T06:38:51.956Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -24,34 +24,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/cookie/</loc>
-        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/query-string/</loc>
-        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/header/</loc>
-        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/aws/</loc>
-        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/session/</loc>
         <lastmod>2019-09-09T06:38:51.956Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -101,6 +73,34 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
+        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/aws/</loc>
+        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/CloudFront/</loc>
+        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/query-string/</loc>
+        <lastmod>2019-09-09T06:38:51.956Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/header/</loc>
         <lastmod>2019-09-09T06:38:51.956Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -360,7 +360,14 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/security/</loc>
-        <lastmod>2019-09-14T13:02:15.156Z</lastmod>
+        <lastmod>2019-09-30T13:58:02.138Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/network/</loc>
+        <lastmod>2019-09-30T13:58:02.138Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
