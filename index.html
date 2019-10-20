@@ -231,6 +231,41 @@
 
 <div class="post-preview">
 
+    <a href="/2019/10/20/hacker101-part6/">
+        <h2 class="post-title">
+            Hacker 101 CTF Write Up Part 6 - Encrypted Pastebin (Padding Oracle 以及翻轉攻擊)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Encrypted Pastebin這題總共有四個 flag
+0x00一開始畫面長這樣
+試著輸入值之後，發現上面有一段 ?post= 資料
+嘗試更改之後，發現 flag
+0x01根據上一個 error message 得知有用到 base64所以可以知道 ?post= 的是 base64接下來再輸入一些奇怪的值試試看
+發現程式使用的是 aes-128-cbc 去把資料作加密且根據錯誤訊息表示......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2019-10-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#CTF" title="CTF">CTF</a>
+            
+              <a href="/tags/#security" title="security">security</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/09/30/http-smuggling/">
         <h2 class="post-title">
             HTTP Request Smuggling (HTTP 請求走私)
@@ -547,41 +582,6 @@ this 是什麼 ？this 單純看英文解釋的話，是代表『自身』聽�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2019/02/19/java-executor/">
-        <h2 class="post-title">
-            Java Executor、TheadPoolExecutor 設定參數基本介紹
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
-Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2019-02-19
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Java" title="Java">Java</a>
-            
-              <a href="/tags/#Executor" title="Executor">Executor</a>
-            
-              <a href="/tags/#Thread Pool" title="Thread Pool">Thread Pool</a>
-            
-              <a href="/tags/#TheadPoolExecutor" title="TheadPoolExecutor">TheadPoolExecutor</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -651,6 +651,10 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本......
     <ul>
       
         <li>
+          <a href="/2019/10/20/hacker101-part6/">Hacker 101 CTF Write Up Part 6 - Encrypted Pastebin (Padding Oracle 以及翻轉攻擊)</a>
+        </li>
+      
+        <li>
           <a href="/2019/09/30/http-smuggling/">HTTP Request Smuggling (HTTP 請求走私)</a>
         </li>
       
@@ -666,10 +670,6 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本......
           <a href="/2019/09/08/hacker101-part3/">Hacker 101 CTF Write Up Part 3 - Ticketastic Live Instance</a>
         </li>
       
-        <li>
-          <a href="/2019/09/06/hacker101-part2/">Hacker 101 CTF Write Up Part 2 - Micro-CMS v1, Petshop Pro</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -682,7 +682,7 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -691,7 +691,7 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本......
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>
