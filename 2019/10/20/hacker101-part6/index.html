@@ -254,7 +254,7 @@
 <p>dump 出 columns<br><img src="/images/ctf/part6-aes-4-05.png" alt=""></p>
 <p>透過 dump 出來的 tables 和 columns，去把 tracking 列出資料來<br><img src="/images/ctf/part6-aes-4-06.png" alt=""></p>
 <p>發現有一筆資料是對 localhost 運行的結果<br>把 post= 後面的值帶到瀏覽器後發現 flag4 (黑色大標是 flag3，下面小字為內容才是 flag4)<br><img src="/images/ctf/part6-aes-4-07.png" alt=""></p>
-<p>下面整理出 SQL Injection 搭配 Padding Oracle 去找到的程式碼 (有點亂 XD)<br>程式基本邏輯為下:  </p>
+<p>下面整理當時寫出來的 SQL Injection 搭配 Padding Oracle 程式碼 (有點亂 XD)<br>程式基本邏輯為下:  </p>
 <ol>
 <li>透過 padding oracle 找到原本明文  </li>
 <li>透過翻轉攻擊構造假 iv 達到預期目標的明文  </li>
