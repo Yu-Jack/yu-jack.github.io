@@ -268,7 +268,7 @@
 <h2 id="測試涵蓋率-test-coverage"><a href="#測試涵蓋率-test-coverage" class="headerlink" title="測試涵蓋率 (test coverage)"></a>測試涵蓋率 (test coverage)</h2><p>做測試的時候當然少不了 test coverage<br>node.js 有一款叫做 nyc 的可以檢測 test coverage<br>配製方法非常簡單，以下兩個步驟即可</p>
 <ol>
 <li>下載 nyc <code>npm install nyc</code></li>
-<li>把 nyc 放置於 mocha 前面 <code>nyc mocha ....</code>  </li>
+<li>把 nyc 放置於 mocha 前面 <code>nyc mocha ....</code><br>如果要想看 html 結構的報告的話，<code>nyc --reporter=lcov --reporter=text-summary mocha ...</code></li>
 </ol>
 <p><img src="/images/unit-test/nyc.png" alt=""></p>
 <blockquote>
