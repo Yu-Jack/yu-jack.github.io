@@ -239,7 +239,8 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在很久很久之前有提到過 <a href="https://yu-jack.github.io/2017/11/01/how-to-test/">unit test</a><br>但那時候只有針對簡單到不能在簡單的 function 進行 unit test<br>想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面  </p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><span style="color:green">[2019-12-22 Update]</span><br>在<a href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/">express unit test 一些技巧教學以及困難點</a>裡面有針對一些技巧做說明<br>以及增加測試涵蓋率的使用方式</p>
+<p>在很久很久之前有提到過 <a href="https://yu-jack.github.io/2017/11/01/how-to-test/">unit test</a><br>但那時候只有針對簡單到不能在簡單的 function 進行 unit test<br>想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面  </p>
 <p>在真正開發上面要用到 unit test<br>一定會牽扯到讀取資料庫、讀取檔案、呼叫 API 等等複雜邏輯<br>難道在做測試的時候，我還要確保我的 API 可以呼叫<br>資料庫可以進行連線等等後，我才能確認我的程式是否正確嗎?<br>在這種情況下要做 unit test 真的是一件不簡單的事情<br>更別說 test cases 跑到一半<br>有人把你測試環境的 database 亂改動，或是 API  Server 的分支改掉這種鳥事了…  </p>
 <p>這樣的話，究竟要透過什麼樣的方式可以去做到 unit test 呢?<br>其實可以透過 mock 的機制，讓呼叫 API 回傳值<br>回傳一個固定值，而並不需要去真正呼叫 API  </p>
 <p>這裡所說的 mock 只是 unit test 使用到的一種方式<br>其他還包含 spy 、stub、fake 等等<br>我們通常稱這些為 test double (測試替身)<br>以下會先介紹剛剛提到的 test double</p>
