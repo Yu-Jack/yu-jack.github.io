@@ -3,13 +3,13 @@
 
 <canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="keyword"  content="">
+    <meta name="keyword" content="">
     <link rel="shortcut icon" href="/img/ironman-draw.png">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -238,8 +238,8 @@
                 post-container">
 
                 <p>系列篇第三篇，目前題目寫下來都蠻有趣的  </p>
-<h1 id="ticketastic-live-instance"><a href="#Ticketastic-Live-Instance" class="headerlink" title="Ticketastic: Live Instance"></a>Ticketastic: Live Instance</h1><p>根據題目總共有 2 個 Flag</p>
-<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看<br><img src="/images/ctf/part3-instance-1-01.png" alt=""></p>
+<h1><span id="ticketastic-live-instance">Ticketastic: Live Instance</span></h1><p>根據題目總共有 2 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2><p>一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看<br><img src="/images/ctf/part3-instance-1-01.png" alt=""></p>
 <p>大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』<br>不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/admin 可以先登入<br><img src="/images/ctf/part3-instance-1-02.png" alt=""></p>
 <p>登入後可以看到有一個 ticket 以及可以新建使用者<br><img src="/images/ctf/part3-instance-1-03.png" alt=""></p>
 <p>點了 ticket 進去看了一下，提到說，如果處理錯誤的話會在這邊被標記起來<br>看起來是使用者提供錯誤的連結的話，當機器人處理不了時會在這邊顯示提醒<br>但這邊看起來沒什麼洞可以挖，繼續往下<br><img src="/images/ctf/part3-instance-1-04.png" alt=""></p>
@@ -250,7 +250,7 @@
 <p>想了非常久才想到，這應該是 SSRF 的一種利用<br>於是把 payload 改成 localhost 的方式去探測能不能用內網方式新增使用者<br>發現不再顯示錯誤連結！<br><img src="/images/ctf/part3-instance-1-10.png" alt=""><br><img src="/images/ctf/part3-instance-1-11.png" alt=""></p>
 <p>建立的使用者也能正確地登入！<br><img src="/images/ctf/part3-instance-1-12.png" alt=""></p>
 <p>接著就把這個 Payload 帶到另一個題目，發現能夠登入！<br>登入後發現第一個 FLAG<br><img src="/images/ctf/part3-instance-1-13.png" alt=""><br><img src="/images/ctf/part3-instance-1-14.png" alt=""></p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>接下來發現連結上面有 id<br>試著帶入單引號發現噴出 SQL Exception<br><img src="/images/ctf/part3-instance-2-01.png" alt=""></p>
+<h2><span id="0x01">0x01</span></h2><p>接下來發現連結上面有 id<br>試著帶入單引號發現噴出 SQL Exception<br><img src="/images/ctf/part3-instance-2-01.png" alt=""></p>
 <p>丟入 sqlmap dump 出 admin 的密碼就是 FLAG 了<br><img src="/images/ctf/part3-instance-2-02.png" alt=""></p>
 
                 
@@ -295,7 +295,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#ticketastic-live-instance"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Ticketastic: Live Instance</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x00"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">0x00</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0x01"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">0x01</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Ticketastic: Live Instance</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">0x00</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">0x01</span></a></li></ol></li></ol>
         
         </div>
       </aside>

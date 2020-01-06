@@ -3,13 +3,13 @@
 
 <canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="keyword"  content="">
+    <meta name="keyword" content="">
     <link rel="shortcut icon" href="/img/ironman-draw.png">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -231,6 +231,42 @@
 
 <div class="post-preview">
 
+    <a href="/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/">
+        <h2 class="post-title">
+            如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 2
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON所以必須在 API Gateway 必須要做 body mapping 的調整e.g 透過 Binary Support 或是 Base64Enconde 的方式處理那這次的紀錄是讓 AWS 的 API......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2017-11-15
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
+            
+              <a href="/tags/#aws" title="aws">aws</a>
+            
+              <a href="/tags/#lambda" title="lambda">lambda</a>
+            
+              <a href="/tags/#upload file" title="upload file">upload file</a>
+            
+              <a href="/tags/#download file" title="download file">download file</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2017/11/08/ngrok/">
         <h2 class="post-title">
             Ngrok - Connect to your localhost!
@@ -392,9 +428,9 @@ Set-Cookie......
         </p>
         <div class="tags">
             
-              <a href="/tags/#header" title="header">header</a>
-            
               <a href="/tags/#security" title="security">security</a>
+            
+              <a href="/tags/#header" title="header">header</a>
             
               <a href="/tags/#security header" title="security header">security header</a>
             
@@ -498,13 +534,13 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
         </p>
         <div class="tags">
             
+              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
+            
               <a href="/tags/#slack" title="slack">slack</a>
             
               <a href="/tags/#bot" title="bot">bot</a>
             
               <a href="/tags/#chat bot" title="chat bot">chat bot</a>
-            
-              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
             
         </div>
     
@@ -556,43 +592,6 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2017/09/23/tappay-payment/">
-        <h2 class="post-title">
-            如何串接上 TapPay 並完成第一筆交易!
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com
-最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面
-
-環境設置
-TapPay Portal 申請
- 要拿到以下的值才......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2017-09-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
-            
-              <a href="/tags/#TapPay" title="TapPay">TapPay</a>
-            
-              <a href="/tags/#Payment Gateway" title="Payment Gateway">Payment Gateway</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -603,6 +602,10 @@ TapPay Portal 申請
             <a href="/page/2/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/page/4/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -662,6 +665,10 @@ TapPay Portal 申請
     <ul>
       
         <li>
+          <a href="/2020/01/06/aws-certificate-manager/">AWS Certificate Manager 如何更換憑證 (Reimport Certificate)</a>
+        </li>
+      
+        <li>
           <a href="/2019/12/22/unit-test-express-implement-troubleshooting/">express unit test 一些技巧教學以及困難點</a>
         </li>
       
@@ -677,10 +684,6 @@ TapPay Portal 申請
           <a href="/2019/10/20/hacker101-part6/">Hacker 101 CTF Write Up Part 6 - Encrypted Pastebin (Padding Oracle 以及翻轉攻擊)</a>
         </li>
       
-        <li>
-          <a href="/2019/09/30/http-smuggling/">HTTP Request Smuggling (HTTP 請求走私)</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -693,7 +696,7 @@ TapPay Portal 申請
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -702,7 +705,7 @@ TapPay Portal 申請
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>

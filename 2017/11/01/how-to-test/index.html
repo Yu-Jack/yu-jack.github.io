@@ -3,13 +3,13 @@
 
 <canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="keyword"  content="">
+    <meta name="keyword" content="">
     <link rel="shortcut icon" href="/img/ironman-draw.png">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -242,7 +242,7 @@
                 <p>為什麼要測試?<br>確保你程式的結果跟你預期所想的一樣<br>那這樣有什麼好處?<br>這樣大概會讓你少加班好幾小時吧 ….</p>
 <p>下面我會介紹如何用 mocha 去做測試<br>小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~</p>
 <a id="more"></a>
-<h2 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h2><p>測試是為了確保你的程式結果跟你預期所想的一樣<br>那我們又該如何去測試？那又該測試什麼東西？</p>
+<h2><span id="介紹">介紹</span></h2><p>測試是為了確保你的程式結果跟你預期所想的一樣<br>那我們又該如何去測試？那又該測試什麼東西？</p>
 <p>在這邊我把該測試的東西分成三個方向，由小到大<br>這篇文章重點會放在 Unit Test 的部分，其他會以 Unit Test 的概念延伸說明</p>
 <ol>
 <li><p>Unit Test (本篇重點)<br>測試你的 function 有沒有輸出正確結果</p>
@@ -252,10 +252,10 @@
 <li><p>User Story Test<br>測試整個使用情景有沒有跟使用者所想的一樣</p>
 </li>
 </ol>
-<h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2><p>在開始要做測試之前需要安裝以下幾樣東西<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mocha 測試主要會用到的東西</span></span><br><span class="line"><span class="comment">// chai 一個很好用的 assertion library</span></span><br><span class="line"><span class="comment">// axios 發 request 用的 library</span></span><br><span class="line">npm install mocha chai axios</span><br></pre></td></tr></table></figure></p>
+<h2><span id="準備">準備</span></h2><p>在開始要做測試之前需要安裝以下幾樣東西<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mocha 測試主要會用到的東西</span></span><br><span class="line"><span class="comment">// chai 一個很好用的 assertion library</span></span><br><span class="line"><span class="comment">// axios 發 request 用的 library</span></span><br><span class="line">npm install mocha chai axios</span><br></pre></td></tr></table></figure></p>
 <p>該建立的資料夾</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">|--- package.json</span><br><span class="line">|--- node_modules</span><br><span class="line">|--- test</span><br><span class="line">|    |--- test.js</span><br></pre></td></tr></table></figure>
-<h2 id="如何測試"><a href="#如何測試" class="headerlink" title="如何測試"></a>如何測試</h2><p>想像一下我們現在有一個需求進來了<br>『我要把我丟進去的數字都變成一個陣列然後回傳回來』</p>
+<h2><span id="如何測試">如何測試</span></h2><p>想像一下我們現在有一個需求進來了<br>『我要把我丟進去的數字都變成一個陣列然後回傳回來』</p>
 <p>所以根據這個狀況我可以列出一個測試的方式<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Test Case in test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;assert&#125; = <span class="built_in">require</span>(<span class="string">'chai'</span>)</span><br><span class="line">describe(<span class="string">'Unit Test'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">'Test function with one number'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> [], <span class="keyword">typeof</span> result)</span><br><span class="line">        assert.equal(<span class="number">1</span>, result.length)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 <p>測試列出來了，但是程式完全還沒寫<br>於是接下來先寫主要功能的程式</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這程式想放哪都可以，記得 require 近來就好</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transformToArray</span> (<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [number]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">transformToArray(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// result should be [1]</span></span><br></pre></td></tr></table></figure>
@@ -302,7 +302,7 @@
 <li>輸入正確帳號密碼，成功登入後</li>
 <li>在搜尋欄位輸入『找不到』，然後顯示搜尋結果為 0 筆的頁面</li>
 </ol>
-<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>我認為用什麼樣的開發流程去測試程式都可以<br>BDD TDD ATDD 等等，都是很好的開發流程<br>對於不同團隊都會有各個團隊習慣的方式<br>但最重要的是，要有『測試』這件事情出現在專案的開發流程上就足以</p>
+<h2><span id="結語">結語</span></h2><p>我認為用什麼樣的開發流程去測試程式都可以<br>BDD TDD ATDD 等等，都是很好的開發流程<br>對於不同團隊都會有各個團隊習慣的方式<br>但最重要的是，要有『測試』這件事情出現在專案的開發流程上就足以</p>
 
                 
 
@@ -346,7 +346,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#介紹"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">介紹</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#準備"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">準備</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何測試"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">如何測試</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#結語"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">結語</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">介紹</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">準備</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">如何測試</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">結語</span></a></li></ol>
         
         </div>
       </aside>
