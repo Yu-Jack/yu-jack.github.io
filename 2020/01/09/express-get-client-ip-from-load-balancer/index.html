@@ -180,14 +180,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">All Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">All Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -245,7 +245,7 @@
 
                 <h2><span id="前言">前言</span></h2><p>我們有時候要取得使用者 IP<br>往往都會用最簡單的方式取得 IP<br>以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>取得到的 IP 會是 Load Balancer 的嗎?<br>而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>如果不知道的話，那這邊文章有可能會幫助到你  </p>
 <p>接下來會以 AWS 的 Load Balancer 以及伺服器上建立一個 Nginx 服務<br>然後還有一個 express server 服務來說明<br>從無 Load Balancer 到雙層 Load Balancer 的架構下分別該如何取得 IP</p>
-<h2><span id="無層-load-balancer">無層 Load Balancer</span></h2><p>架構示意圖如下<br><img src="/images/aws/aws-get-ip-01-arch.png" alt=""></p>
+<h2><span id="direct-connection">Direct Connection</span></h2><p>架構示意圖如下<br><img src="/images/aws/aws-get-ip-01-arch.png" alt=""></p>
 <p>當我們連線時直接連到伺服器時<br>可以透過 express 的 <code>req.connection.remoteAddress</code> 取得到使用者的 IP (233.x.x.x)<br>原因是此時的呼叫者是使用者  </p>
 <p><img src="/images/aws/aws-get-ip-01.png" alt=""></p>
 <h2><span id="單層-load-balancer">單層 Load Balancer</span></h2><p>架構示意圖如下<br><img src="/images/aws/aws-get-ip-02-arch.png" alt=""></p>
@@ -303,7 +303,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">無層 Load Balancer</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">單層 Load Balancer</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">雙層 Load Balancer</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">雙層 Load Balancer + 惡意 X-Forwarded-For</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">References</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Direct Connection</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">單層 Load Balancer</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">雙層 Load Balancer</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">雙層 Load Balancer + 惡意 X-Forwarded-For</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">References</span></a></li></ol>
         
         </div>
       </aside>
