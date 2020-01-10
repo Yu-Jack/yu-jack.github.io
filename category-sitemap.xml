@@ -77,13 +77,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Security/</loc>
-        <lastmod>2019-10-22T15:01:52.605Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Test/</loc>
         <lastmod>2019-12-25T14:37:56.272Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -93,6 +86,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/AWS/</loc>
         <lastmod>2020-01-06T09:01:30.090Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Security/</loc>
+        <lastmod>2020-01-10T02:02:08.752Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
