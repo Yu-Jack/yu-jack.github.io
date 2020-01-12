@@ -3,13 +3,13 @@
 
 <canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA">
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="keyword" content="">
+    <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/ironman-draw.png">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -240,11 +240,11 @@
                 post-container">
 
                 <h2><span id="前言">前言</span></h2><p>在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠<br>此時會需要把硬碟增加大小，以免整台機器爆掉<br>接下來會針對如何增加硬碟大小做說明  </p>
-<h2><span id="確認硬碟大小方法">確認硬碟大小方法</span></h2><p>可以透過 <code>df -h .</code> 指令確認硬碟目前使用的大小<br>這時候可以看到硬碟配置的大小<br><img src="/images/aws/aws-ec2-disk-01.png" alt=""></p>
-<p>接下來可以透過 <code>lsblk</code> 回找最大上限的配置可以是多少<br>上面 xvda 就是最多可以有多少大小<br>下面 xvda1 就是實際上目前有多少大小<br><img src="/images/aws/aws-ec2-disk-02.png" alt=""></p>
-<p>看另一個例子，以下圖的 xvdi 和 xvdi1 來說<br>可配置最大上限為 8G，但目前正在使用的最大上限為 1023 MB<br><img src="/images/aws/aws-ec2-disk-03.png" alt=""></p>
-<h2><span id="增加硬碟大小">增加硬碟大小</span></h2><p>到 EC2 的頁面點選要更新的 EC2，點選右下角 disk<br><img src="/images/aws/aws-ec2-disk-04.png" alt=""></p>
-<p>點進去之後，就進入到另一個頁面，點選 Action &gt; Modify，會看到以下頁面，就可以增加大小了<br><img src="/images/aws/aws-ec2-disk-05.png" alt=""></p>
+<h2><span id="確認硬碟大小方法">確認硬碟大小方法</span></h2><p>可以透過 <code>df -h .</code> 指令確認硬碟目前使用的大小<br>這時候可以看到硬碟配置的大小<br><img src="/images/aws/aws-ec2-disk-01.png" alt></p>
+<p>接下來可以透過 <code>lsblk</code> 回找最大上限的配置可以是多少<br>上面 xvda 就是最多可以有多少大小<br>下面 xvda1 就是實際上目前有多少大小<br><img src="/images/aws/aws-ec2-disk-02.png" alt></p>
+<p>看另一個例子，以下圖的 xvdi 和 xvdi1 來說<br>可配置最大上限為 8G，但目前正在使用的最大上限為 1023 MB<br><img src="/images/aws/aws-ec2-disk-03.png" alt></p>
+<h2><span id="增加硬碟大小">增加硬碟大小</span></h2><p>到 EC2 的頁面點選要更新的 EC2，點選右下角 disk<br><img src="/images/aws/aws-ec2-disk-04.png" alt></p>
+<p>點進去之後，就進入到另一個頁面，點選 Action &gt; Modify，會看到以下頁面，就可以增加大小了<br><img src="/images/aws/aws-ec2-disk-05.png" alt></p>
 <p>接下來要到 EC2 裡面把實際上使用的大小擴充到可配置的最大空間<br>以剛剛的 xvdi 為例的話，需要執行以下兩個指令才可以擴充<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo growpart /dev/xvdi 1</span><br><span class="line">sudo resize2fs /dev/xvdi1</span><br></pre></td></tr></table></figure></p>
 <p>這樣大小會直接擴充至可配置的最大上限，如果不想要配置到最大的話<br>可以在後面加上幾 G 去做限制，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 擇一</span><br><span class="line">sudo resize2fs /dev/xvdi1 2G</span><br><span class="line">sudo resize2fs /dev/xvdi1 2048M</span><br></pre></td></tr></table></figure></p>
 
@@ -290,7 +290,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">確認硬碟大小方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">增加硬碟大小</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#確認硬碟大小方法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">確認硬碟大小方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#增加硬碟大小"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">增加硬碟大小</span></a></li></ol>
         
         </div>
       </aside>

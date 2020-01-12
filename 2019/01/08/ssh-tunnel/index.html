@@ -3,13 +3,13 @@
 
 <canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA">
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="keyword" content="">
+    <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/ironman-draw.png">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -250,7 +250,7 @@
 <h2><span id="ssh-tunnel-使用方式">SSH Tunnel 使用方式</span></h2><p>這邊主要會是用 Linux 原生指令 ssh 去完成 SSH Tunnel<br>在這之前我們先回想一下 ssh 連線的方式！</p>
 <p>當已經有一台 server 上面跑著一個網頁的服務<br>而你可以透過以下指令 ssh 連線到那一台 server 上<br><code>ssh root@127.0.0.1</code><br>ssh 連線上去之後，上面有跑一個 Nginx 的服務在 80 port<br>這時候在 server 上執行 <code>curl localhost</code> 會發現有成功回傳 Nginx 的 Hello 頁面</p>
 <p>此時如果你想要在自己的電腦上就能讀取這個網頁或是資料庫該怎麼辦?<br>這邊我們就要介紹 <code>-L</code> 這個 option 可以幫你達成這個目標！<br>Template: <code>ssh -L [local_port]:localhost:[remote_port] root@127.0.0.1</code> </p>
-<p>所以如果我要把 server 上的 80 port 網頁服務導入到本地端的 8080 port 該怎麼做呢?<br>可以使用以下這行指令<br><code>ssh -L 8080:localhost:80 root@127.0.0.1</code><br>然後在瀏覽器打開 <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> 即可看到 server 上面的網頁！</p>
+<p>所以如果我要把 server 上的 80 port 網頁服務導入到本地端的 8080 port 該怎麼做呢?<br>可以使用以下這行指令<br><code>ssh -L 8080:localhost:80 root@127.0.0.1</code><br>然後在瀏覽器打開 <a href="http://localhost:8080" target="_blank" rel="external">http://localhost:8080</a> 即可看到 server 上面的網頁！</p>
 <p>接著又有另一種情境出現了<br>就是在 server 上要讀取 local port 的服務的時候該怎麼辦呢?<br>這裡就可以使用另一種相反的方式，也就是透過 <code>-R</code> 去達成<br><code>-R</code> 簡單來說就是反過來，你可以把本地機器上的服務 port 導入到 server 讓他連線！<br>Template: <code>ssh -R [remote_port]:localhsot:[local_port] root@127.0.0.1</code></p>
 <p>舉例來說，在本地端起了一個 8080 port 的服務<br>如果要在 server 上 6666 port 讀取的話可以透過以下方式取得！<br><code>ssh -R 6666:localhost:8080 root@127.0.0.1</code></p>
 <h2><span id="後記">後記</span></h2><p>最近還蠻常會使用到這個方式去連線，於是在這邊特別把它記錄下來<br>然而這種方式只是圖個方便，需要的時候做個 forwarding 而已</p>
@@ -297,7 +297,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">使用情境介紹</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">SSH Tunnel 介紹</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">SSH Tunnel 使用方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">後記</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用情境介紹"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">使用情境介紹</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ssh-tunnel-介紹"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">SSH Tunnel 介紹</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ssh-tunnel-使用方式"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">SSH Tunnel 使用方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#後記"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">後記</span></a></li></ol>
         
         </div>
       </aside>
