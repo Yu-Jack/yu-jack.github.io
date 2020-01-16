@@ -372,6 +372,8 @@ img.thumbnail {
 .content h5,
 .content h6 {
   font-weight: 400;
+  border-bottom: 0.5px solid #b9b9b9;
+  padding-bottom: 10px;
 }
 .content h1 {
   font-size: 1.75em;
