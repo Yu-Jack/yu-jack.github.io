@@ -1,247 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<canvas id="fireworks" style="position: fixed"></canvas>
-<!-- Head tag -->
+<html  lang="zh">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword"  content="">
-    <link rel="shortcut icon" href="/img/ironman-draw.png">
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Slack Bot - 技術雜記 Technology Notes</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+
+
+    <meta name="description" content="在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP  申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Slack Bot">
+<meta property="og:url" content="https://yu-jack.github.io/2017/10/14/Slack-Bot/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes">
+<meta property="og:description" content="在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP  申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2017-10-14T05:54:17.000Z">
+<meta property="article:modified_time" content="2020-01-14T16:21:14.388Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="nodejs">
+<meta property="article:tag" content="slack">
+<meta property="article:tag" content="bot">
+<meta property="article:tag" content="chat bot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
     
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NKT99TP');</script>
-    <!-- End Google Tag Manager -->
-
-    <title>
-        
-          Slack Bot - Jack Yu | 傑克
-        
-    </title>
-
-    <link rel="canonical" href="https://yu-jack.github.io/2017/10/14/Slack-Bot/">
-
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <!-- Custom CSS --> 
-    <link rel="stylesheet" href="/css/beantech.min.css">
     
-    <!-- Pygments Highlight CSS -->
-    <link rel="stylesheet" href="/css/highlight.css">
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
 
-    <link rel="stylesheet" href="/css/widget.css">
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
 
-    <link rel="stylesheet" href="/css/rocket.css">
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
 
-    <link rel="stylesheet" href="/css/signature.css">
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
 
-    <link rel="stylesheet" href="/css/toc.css">
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
 
-    <!-- Custom Fonts -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-    <!-- Hux change font-awesome CDN to qiniu -->
-    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-
-    <!-- Hux Delete, sad but pending in China
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
-    css'>
-    -->
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- ga & ba script hoook -->
-    <script></script>
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-1515253208026743",
-        enable_page_level_ads: true
-      });
-    </script>
-    <style>
-        img {
-            border: 1px solid #00000042;
-            box-shadow: 1px 1px 5px;
-        }
-        div.post-container h2:not(.post-title) {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.3em;
-        }
-        div.post-container h1:not(.post-title) {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.3em;
-        }
-    </style>
+<link rel="stylesheet" href="/css/style.css">
 </head>
-
-
-<!-- hack iOS CSS :active style -->
-<body ontouchstart="">
-	<!-- Modified by Yu-Hsuan Yen -->
-<!-- Post Header -->
-<style type="text/css">
-    header.intro-header{
-        
-            background-image: url('/images/banner.jpg')
-            /*post*/
-        
-    }
-    
-</style>
-
-<header class="intro-header" >
-    <!-- Signature -->
-    <div id="signature">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                
-                    <div class="post-heading">
-                        <div class="tags">
-                            
-                              <a class="tag" href="/tags/#nodejs" title="nodejs">nodejs</a>
-                            
-                              <a class="tag" href="/tags/#slack" title="slack">slack</a>
-                            
-                              <a class="tag" href="/tags/#bot" title="bot">bot</a>
-                            
-                              <a class="tag" href="/tags/#chat bot" title="chat bot">chat bot</a>
-                            
-                        </div>
-                        <h1>Slack Bot</h1>
-                        <h2 class="subheading"></h2>
-                        <span class="meta">
-                            Posted by Jack Yu on
-                            2017-10-14
-                        </span>
-                        <span id="busuanzi_container_page_pv">
-                            <span id="busuanzi_value_page_pv"></span> views
-                        </span>                              
-                    </div>
-                
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-	
-    <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">技術雜記 Technology Notes</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <!-- Known Issue, found by Hux:
-            <nav>'s height woule be hold on by its content.
-            so, when navbar scale out, the <nav> will cover tags.
-            also mask any touch event of tags, unfortunately.
-        -->
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-
-                    
-
-                        
-                        <li>
-                            <a href="/tags/">All Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
-                        </li>
-                        
-                    
-                    
-                </ul>
-            </div>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
-<script>
-    // Drop Bootstarp low-performance Navbar
-    // Use customize navbar with high-quality material design animation
-    // in high-perf jank-free CSS3 implementation
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
-
-    $toggle.addEventListener('click', handleMagic)
-    function handleMagic(e){
-        if ($navbar.className.indexOf('in') > 0) {
-        // CLOSE
-            $navbar.className = " ";
-            // wait until animation end.
-            setTimeout(function(){
-                // prevent frequently toggle
-                if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
-                }
-            },400)
-        }else{
-        // OPEN
-            $collapse.style.height = "auto"
-            $navbar.className += " in";
-        }
-    }
-</script>
-
-
-    <!-- Main Content -->
-    <!-- Modify by Yu-Hsuan Yen -->
-
-<!-- Post Content -->
-<article>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
     <div class="container">
-        <div class="row">
-
-            <!-- Post Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                <p>在開始玩弄 Slack Bot 之前，必須要先去<a href="https://api.slack.com/apps" target="_blank" rel="external">申請頁面</a>建立一個 APP</p>
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Slack Bot" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2017-10-14T05:54:17.000Z">2017-10-14</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Bot/">Bot</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    15 分鐘 閱讀文 (大約 2191 個字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Slack Bot
+            
+        </h1>
+        <div class="content">
+            <p>在開始玩弄 Slack Bot 之前，必須要先去<a href="https://api.slack.com/apps">申請頁面</a>建立一個 APP</p>
 <p><img src="https://i.imgur.com/mKD5GhV.png" alt></p>
 <p>申請完之後，可以看到 Features 那邊有很多不同的功能<br>這次主要會針對 <strong>Slash Command</strong>、<strong>Incoming Webhooks</strong> 以及 <strong>Interactive Components</strong> 做練習</p>
 <a id="more"></a>
@@ -255,9 +176,8 @@
 <li>通知公司同仁，更新已結束 (用 Incoming Webhooks 通知)</li>
 </ol>
 <p>這流程就會是我們所想要的，當然中間還可以透過 jenkins 去部署其他台伺服器<br>用 slack 部署 server，超方便 der (但感覺拿來訂便當更好用 XD</p>
-<h2><span id="slash-command">Slash Command</span></h2><h3><span id="介紹">介紹</span></h3><p>Slash Command 就是在 Slack 的聊天室下指令，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/deploy server</span><br></pre></td></tr></table></figure></p>
-<p>就會觸發到遠端伺服器，伺服器解析 command 後，再去近一步做一些行為</p>
-<h3><span id="建立新指令">建立新指令</span></h3><p>下圖就是設定 Slash Command 的地方<br>我們設定了 command 為 /test，然後會用 <strong>POST</strong> 觸發到遠端的 <a href="https://your.website.com/test" target="_blank" rel="external">https://your.website.com/test</a></p>
+<h2><span id="slash-command">Slash Command</span></h2><h3><span id="介紹">介紹</span></h3><p>Slash Command 就是在 Slack 的聊天室下指令，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;deploy server</span><br></pre></td></tr></table></figure><br>就會觸發到遠端伺服器，伺服器解析 command 後，再去近一步做一些行為</p>
+<h3><span id="建立新指令">建立新指令</span></h3><p>下圖就是設定 Slash Command 的地方<br>我們設定了 command 為 /test，然後會用 <strong>POST</strong> 觸發到遠端的 <a href="https://your.website.com/test">https://your.website.com/test</a></p>
 <p><img src="https://i.imgur.com/zrWlBqF.png" alt></p>
 <p>比較重要的地方是，Request URL 一定要是 HTTPS，如果不是 HTTPS 一律拒絕，在 Slack 官方文件上面有以下這段說明</p>
 <blockquote>
@@ -273,12 +193,12 @@
 <p><img src="https://i.imgur.com/QLYSIqc.png" alt></p>
 <h3><span id="開始寫程式去接受-slash-command">開始寫程式去接受 slash command</span></h3><p>這邊用 nodejs 示範建立一個簡單的伺服器去接受 slash command</p>
 <p>SSL 的建立容許我這邊就不做示範了 XD (有點麻煩</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const express = require(&apos;express&apos;);</span><br><span class="line">const app = express();</span><br><span class="line">const bodyParser = require(&apos;body-parser&apos;);</span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123;</span><br><span class="line">    extended: false</span><br><span class="line">&#125;));</span><br><span class="line">app.post(&apos;/test&apos;, (req, res, next) =&gt; &#123;</span><br><span class="line">    console.log(req.body);</span><br><span class="line">    console.log(`User    :  $&#123;req.body.user_name&#125;`);</span><br><span class="line">    console.log(`Text    :  $&#123;req.body.text&#125;`);</span><br><span class="line">    console.log(`Command :  $&#123;req.body.command&#125;`);</span><br><span class="line">                                       </span><br><span class="line">    return res.json(&#123;</span><br><span class="line">        text: &apos;Command is successful&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(8080)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>);</span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123;</span><br><span class="line">    extended: <span class="literal">false</span></span><br><span class="line">&#125;));</span><br><span class="line">app.post(<span class="string">'/test'</span>, (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`User    :  <span class="subst">$&#123;req.body.user_name&#125;</span>`</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Text    :  <span class="subst">$&#123;req.body.text&#125;</span>`</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Command :  <span class="subst">$&#123;req.body.command&#125;</span>`</span>);</span><br><span class="line">                                       </span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        text: <span class="string">'Command is successful'</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
 <p>在輸入視窗輸入以下指令後</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/test Hi I&apos;m from slack</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;test Hi I&#39;m from slack</span><br></pre></td></tr></table></figure>
 <p>伺服器端會得到</p>
 <p><img src="https://i.imgur.com/JoUUwJa.png" alt></p>
-<p>完整的 JSON 格式如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 敏感資訊我都以 X 先馬掉了</span><br><span class="line">&#123;</span><br><span class="line">    token: &apos;XXXXXXXXXXXXXXXXXXXXXXX&apos;,</span><br><span class="line">    team_id: &apos;XXXXXXXXX&apos;,</span><br><span class="line">    team_domain: &apos;XXXXXX&apos;,</span><br><span class="line">    channel_id: &apos;XXXXXXXXX&apos;,</span><br><span class="line">    channel_name: &apos;announcement&apos;,</span><br><span class="line">    user_id: &apos;XXXXXXXXX&apos;,</span><br><span class="line">    user_name: &apos;yujack&apos;,</span><br><span class="line">    command: &apos;/test&apos;,</span><br><span class="line">    text: &apos;Hi I\&apos;m from slack&apos;,</span><br><span class="line">    response_url: &apos;XXXXXXXXXXXXXX&apos;,</span><br><span class="line">    trigger_id: &apos;XXXXXXXXXXXXXX&apos; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>完整的 JSON 格式如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 敏感資訊我都以 X 先馬掉了</span></span><br><span class="line">&#123;</span><br><span class="line">    token: <span class="string">'XXXXXXXXXXXXXXXXXXXXXXX'</span>,</span><br><span class="line">    team_id: <span class="string">'XXXXXXXXX'</span>,</span><br><span class="line">    team_domain: <span class="string">'XXXXXX'</span>,</span><br><span class="line">    channel_id: <span class="string">'XXXXXXXXX'</span>,</span><br><span class="line">    channel_name: <span class="string">'announcement'</span>,</span><br><span class="line">    user_id: <span class="string">'XXXXXXXXX'</span>,</span><br><span class="line">    user_name: <span class="string">'yujack'</span>,</span><br><span class="line">    command: <span class="string">'/test'</span>,</span><br><span class="line">    text: <span class="string">'Hi I\'m from slack'</span>,</span><br><span class="line">    response_url: <span class="string">'XXXXXXXXXXXXXX'</span>,</span><br><span class="line">    trigger_id: <span class="string">'XXXXXXXXXXXXXX'</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>而在輸入窗那邊會看到</p>
 <p><img src="https://i.imgur.com/DbDiMPt.png" alt></p>
 <p>代表指令有成功到伺服器上面了，然後回傳一個 “Command is successful”<br>指令完成後，一定會想問一個問題</p>
@@ -292,11 +212,11 @@
 <p>點選 “Add New Webhook to Workspace”，會到授權頁面<br>這裡會出現，你想要把訊息可以傳送到哪一個地方<br>那這裡我就選擇 general 作為範例</p>
 <p><img src="https://i.imgur.com/BfQRZa0.png" alt></p>
 <h3><span id="使用">使用</span></h3><p>在 terminal 貼上以下指令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST -H &apos;Content-type: application/json&apos; --data &apos;&#123;&quot;text&quot;:&quot;Hello, World!&quot;&#125;&apos; https://hooks.slack.com/services/XXXXXXXX</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST -H 'Content-type: application/json' --data '&#123;"text":"Hello, World!"&#125;' https://hooks.slack.com/services/XXXXXXXX</span><br></pre></td></tr></table></figure>
 <p>在你設定要傳送的那個 channel 就會出現訊息了</p>
 <p><img src="https://i.imgur.com/zfH08LK.png" alt></p>
 <p>那有了這個 Webhooks 之後，剛剛的 nodejs server 就可以稍微做更改<br>這樣的話就可以告訴那一個 channel 的人說，你執行了什麼樣的指令 ~</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">const express = require(&apos;express&apos;);</span><br><span class="line">const app = express();</span><br><span class="line">const bodyParser = require(&apos;body-parser&apos;);</span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123;</span><br><span class="line">    extended: false</span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line">app.post(&apos;/test&apos;, (req, res, next) =&gt; &#123;</span><br><span class="line">    console.log(req.body);</span><br><span class="line">    console.log(`User    :  $&#123;req.body.user_name&#125;`);</span><br><span class="line">    console.log(`Text    :  $&#123;req.body.text&#125;`);</span><br><span class="line">    console.log(`Command :  $&#123;req.body.command&#125;`);</span><br><span class="line">                                       </span><br><span class="line">    const command = `curl -X POST ` +</span><br><span class="line">        `-H &apos;Content-type: application/json&apos; ` +</span><br><span class="line">        `--data &apos;$&#123;JSON.stringify(req.body.slack_message)&#125;&apos; ` +</span><br><span class="line">        `https://hooks.slack.com/services/XXXXXXXXX`;</span><br><span class="line"></span><br><span class="line">    exec(command, (error, stdout, stderr) =&gt; &#123;</span><br><span class="line">        if (error) &#123;</span><br><span class="line">            console.error(`exec error: $&#123;error&#125;`);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        return res.json(&#123;</span><br><span class="line">            text: &apos;Command is successful&apos;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.listen(8080)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>);</span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123;</span><br><span class="line">    extended: <span class="literal">false</span></span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line">app.post(<span class="string">'/test'</span>, (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`User    :  <span class="subst">$&#123;req.body.user_name&#125;</span>`</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Text    :  <span class="subst">$&#123;req.body.text&#125;</span>`</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Command :  <span class="subst">$&#123;req.body.command&#125;</span>`</span>);</span><br><span class="line">                                       </span><br><span class="line">    <span class="keyword">const</span> command = <span class="string">`curl -X POST `</span> +</span><br><span class="line">        <span class="string">`-H 'Content-type: application/json' `</span> +</span><br><span class="line">        <span class="string">`--data '<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(req.body.slack_message)&#125;</span>' `</span> +</span><br><span class="line">        <span class="string">`https://hooks.slack.com/services/XXXXXXXXX`</span>;</span><br><span class="line"></span><br><span class="line">    exec(command, (error, stdout, stderr) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (error) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">`exec error: <span class="subst">$&#123;error&#125;</span>`</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            text: <span class="string">'Command is successful'</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
 <p>到這裡不禁會想到一個問題，我能不能不把 branch 記起來<br>我直接讓 server 告訴我，我在選一個我想要的去 deploy 呢?</p>
 <p>這時候，Interactive Components 就派上用場了<br>這個功能可以接收使用者選擇了什麼選項，然後進一步去分析<br>接下來就要介紹 Interactive Components </p>
 <h2><span id="interactive-components">Interactive Components</span></h2><h3><span id="介紹">介紹</span></h3><p>這是一個互動式的功能，在 Slack 上面可能會跳出</p>
@@ -315,227 +235,346 @@
 <li>通知公司同仁，更新已結束 (用 Incoming Webhooks 通知)</li>
 </ol>
 <h3><span id="啟用">啟用</span></h3><p><img src="https://i.imgur.com/OUfUkGZ.png" alt></p>
-<h3><span id="使用">使用</span></h3><p>在使用 Interactive Componets 之前，要先學會如何製作選項或是按鈕給使用者點選<br>Slack 官方有提供地方可以客製化不同的按鈕或是表單的地方，<a href="https://api.slack.com/docs/messages/builder" target="_blank" rel="external">點這進去</a><br>我客製化了這個訊息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;text&quot;: &quot;Would you like to play a game?&quot;,</span><br><span class="line">    &quot;attachments&quot;: [&#123;</span><br><span class="line">        &quot;text&quot;: &quot;Choose a game to play&quot;,</span><br><span class="line">        &quot;fallback&quot;: &quot;You are unable to choose a game&quot;,</span><br><span class="line">        &quot;callback_id&quot;: &quot;wopr_game&quot;,</span><br><span class="line">        &quot;attachment_type&quot;: &quot;default&quot;,</span><br><span class="line">        &quot;actions&quot;: [&#123;</span><br><span class="line">            &quot;name&quot;: &quot;game&quot;,</span><br><span class="line">            &quot;text&quot;: &quot;Chess&quot;,</span><br><span class="line">            &quot;type&quot;: &quot;button&quot;,</span><br><span class="line">            &quot;value&quot;: &quot;chess&quot;</span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="使用">使用</span></h3><p>在使用 Interactive Componets 之前，要先學會如何製作選項或是按鈕給使用者點選<br>Slack 官方有提供地方可以客製化不同的按鈕或是表單的地方，<a href="https://api.slack.com/docs/messages/builder">點這進去</a><br>我客製化了這個訊息</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"text"</span>: <span class="string">"Would you like to play a game?"</span>,</span><br><span class="line">    <span class="string">"attachments"</span>: [&#123;</span><br><span class="line">        <span class="string">"text"</span>: <span class="string">"Choose a game to play"</span>,</span><br><span class="line">        <span class="string">"fallback"</span>: <span class="string">"You are unable to choose a game"</span>,</span><br><span class="line">        <span class="string">"callback_id"</span>: <span class="string">"wopr_game"</span>,</span><br><span class="line">        <span class="string">"attachment_type"</span>: <span class="string">"default"</span>,</span><br><span class="line">        <span class="string">"actions"</span>: [&#123;</span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"game"</span>,</span><br><span class="line">            <span class="string">"text"</span>: <span class="string">"Chess"</span>,</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"button"</span>,</span><br><span class="line">            <span class="string">"value"</span>: <span class="string">"chess"</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>拿到訊息之後，利用 Incoming Webhooks 送出到使用者端給使用者點選</p>
 <p><img src="https://i.imgur.com/8DtwtPG.png" alt></p>
-<p>點選之後伺服器會發 POST 到 <a href="https://your.website.com/interactive" target="_blank" rel="external">https://your.website.com/interactive</a><br>伺服器就會收到以下資訊</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">// Before JSON.Parse</span><br><span class="line">&#123;</span><br><span class="line">    payload: &apos;&#123;&quot;actions&quot;:[&#123;&quot;name&quot;:&quot;game&quot;,&quot;type&quot;:&quot;button&quot;,&quot;value&quot;:&quot;chess&quot;&#125;],&quot;callback_id&quot;:&quot;wopr_game&quot;,&quot;team&quot;:&#123;&quot;id&quot;:&quot;XXXXXXXXX&quot;,&quot;domain&quot;:&quot;XXXXXX&quot;&#125;,&quot;channel&quot;:&#123;&quot;id&quot;:&quot;XXXXXXXXX&quot;,&quot;name&quot;:&quot;general&quot;&#125;,&quot;user&quot;:&#123;&quot;id&quot;:&quot;XXXXXXXXX&quot;,&quot;name&quot;:&quot;yujack&quot;&#125;,&quot;action_ts&quot;:&quot;1507970582.644321&quot;,&quot;message_ts&quot;:&quot;1507970575.000002&quot;,&quot;attachment_id&quot;:&quot;1&quot;,&quot;token&quot;:&quot;XXXXXXXXXXXXXXXXXXXXXXX&quot;,&quot;is_app_unfurl&quot;:false,&quot;type&quot;:&quot;interactive_message&quot;,&quot;original_message&quot;:&#123;&quot;text&quot;:&quot;Would you like to play a game?&quot;,&quot;bot_id&quot;:&quot;XXXXXXXXX&quot;,&quot;attachments&quot;:[&#123;&quot;callback_id&quot;:&quot;wopr_game&quot;,&quot;fallback&quot;:&quot;You are unable to choose a game&quot;,&quot;text&quot;:&quot;Choose a game to play&quot;,&quot;id&quot;:1,&quot;actions&quot;:[&#123;&quot;id&quot;:&quot;1&quot;,&quot;name&quot;:&quot;game&quot;,&quot;text&quot;:&quot;Chess&quot;,&quot;type&quot;:&quot;button&quot;,&quot;value&quot;:&quot;chess&quot;,&quot;style&quot;:&quot;&quot;&#125;]&#125;],&quot;type&quot;:&quot;message&quot;,&quot;subtype&quot;:&quot;bot_message&quot;,&quot;ts&quot;:&quot;1507970575.000002&quot;&#125;,&quot;response_url&quot;:&quot;https:\\/\\/hooks.slack.com\\/actions\\/XXXXXXXXX\\/XXXXXXXXX\\/XXXXXXXXXXXXXXXXXXXXXXXXX&quot;,&quot;trigger_id&quot;:&quot;XXXXXXXXX.XXXXXXXXX.XXXXXXXXXXXXXXXXXX&quot;&#125;&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// After JSON.parse</span><br><span class="line">&#123;</span><br><span class="line">    payload: &#123;</span><br><span class="line">        actions: [&#123;</span><br><span class="line">            name: &apos;game&apos;,</span><br><span class="line">            type: &apos;button&apos;,</span><br><span class="line">            value: &apos;chess&apos;</span><br><span class="line">        &#125;],</span><br><span class="line">        callback_id: &apos;wopr_game&apos;,</span><br><span class="line">        team: &#123;</span><br><span class="line">            id: &apos;XXXXXXXXX&apos;,</span><br><span class="line">            domain: &apos;XXXXXX&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        channel: &#123;</span><br><span class="line">            id: &apos;XXXXXXXXX&apos;,</span><br><span class="line">            name: &apos;general&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        user: &#123;</span><br><span class="line">            id: &apos;XXXXXXXXX&apos;,</span><br><span class="line">            name: &apos;yujack&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        action_ts: &apos;1507970582.644321&apos;,</span><br><span class="line">        message_ts: &apos;1507970575.000002&apos;,</span><br><span class="line">        attachment_id: &apos;1&apos;,</span><br><span class="line">        token: &apos;XXXXXXXXXXXXXXXXXXXXXXX&apos;,</span><br><span class="line">        is_app_unfurl: false,</span><br><span class="line">        type: &apos;interactive_message&apos;,</span><br><span class="line">        original_message: &#123;</span><br><span class="line">            text: &apos;Would you like to play a game?&apos;,</span><br><span class="line">            bot_id: &apos;XXXXXXXXX&apos;,</span><br><span class="line">            attachments: [</span><br><span class="line">                [Object]</span><br><span class="line">            ],</span><br><span class="line">            type: &apos;message&apos;,</span><br><span class="line">            subtype: &apos;bot_message&apos;,</span><br><span class="line">            ts: &apos;1507970575.000002&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        response_url: &apos;https://hooks.slack.com/actions/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXX&apos;,</span><br><span class="line">        trigger_id: &apos;XXXXXXXXX.XXXXXXXXX.XXXXXXXXXXXXXXXXXX&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>點選之後伺服器會發 POST 到 <a href="https://your.website.com/interactive">https://your.website.com/interactive</a><br>伺服器就會收到以下資訊</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Before JSON.Parse</span></span><br><span class="line">&#123;</span><br><span class="line">    payload: <span class="string">'&#123;"actions":[&#123;"name":"game","type":"button","value":"chess"&#125;],"callback_id":"wopr_game","team":&#123;"id":"XXXXXXXXX","domain":"XXXXXX"&#125;,"channel":&#123;"id":"XXXXXXXXX","name":"general"&#125;,"user":&#123;"id":"XXXXXXXXX","name":"yujack"&#125;,"action_ts":"1507970582.644321","message_ts":"1507970575.000002","attachment_id":"1","token":"XXXXXXXXXXXXXXXXXXXXXXX","is_app_unfurl":false,"type":"interactive_message","original_message":&#123;"text":"Would you like to play a game?","bot_id":"XXXXXXXXX","attachments":[&#123;"callback_id":"wopr_game","fallback":"You are unable to choose a game","text":"Choose a game to play","id":1,"actions":[&#123;"id":"1","name":"game","text":"Chess","type":"button","value":"chess","style":""&#125;]&#125;],"type":"message","subtype":"bot_message","ts":"1507970575.000002"&#125;,"response_url":"https:\\/\\/hooks.slack.com\\/actions\\/XXXXXXXXX\\/XXXXXXXXX\\/XXXXXXXXXXXXXXXXXXXXXXXXX","trigger_id":"XXXXXXXXX.XXXXXXXXX.XXXXXXXXXXXXXXXXXX"&#125;'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// After JSON.parse</span></span><br><span class="line">&#123;</span><br><span class="line">    payload: &#123;</span><br><span class="line">        actions: [&#123;</span><br><span class="line">            name: <span class="string">'game'</span>,</span><br><span class="line">            type: <span class="string">'button'</span>,</span><br><span class="line">            value: <span class="string">'chess'</span></span><br><span class="line">        &#125;],</span><br><span class="line">        callback_id: <span class="string">'wopr_game'</span>,</span><br><span class="line">        team: &#123;</span><br><span class="line">            id: <span class="string">'XXXXXXXXX'</span>,</span><br><span class="line">            domain: <span class="string">'XXXXXX'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        channel: &#123;</span><br><span class="line">            id: <span class="string">'XXXXXXXXX'</span>,</span><br><span class="line">            name: <span class="string">'general'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        user: &#123;</span><br><span class="line">            id: <span class="string">'XXXXXXXXX'</span>,</span><br><span class="line">            name: <span class="string">'yujack'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        action_ts: <span class="string">'1507970582.644321'</span>,</span><br><span class="line">        message_ts: <span class="string">'1507970575.000002'</span>,</span><br><span class="line">        attachment_id: <span class="string">'1'</span>,</span><br><span class="line">        token: <span class="string">'XXXXXXXXXXXXXXXXXXXXXXX'</span>,</span><br><span class="line">        is_app_unfurl: <span class="literal">false</span>,</span><br><span class="line">        type: <span class="string">'interactive_message'</span>,</span><br><span class="line">        original_message: &#123;</span><br><span class="line">            text: <span class="string">'Would you like to play a game?'</span>,</span><br><span class="line">            bot_id: <span class="string">'XXXXXXXXX'</span>,</span><br><span class="line">            attachments: [</span><br><span class="line">                [<span class="built_in">Object</span>]</span><br><span class="line">            ],</span><br><span class="line">            type: <span class="string">'message'</span>,</span><br><span class="line">            subtype: <span class="string">'bot_message'</span>,</span><br><span class="line">            ts: <span class="string">'1507970575.000002'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        response_url: <span class="string">'https://hooks.slack.com/actions/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXX'</span>,</span><br><span class="line">        trigger_id: <span class="string">'XXXXXXXXX.XXXXXXXXX.XXXXXXXXXXXXXXXXXX'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>按鈕會消失，然後顯示你在 server 上面回傳的完成資訊<br>收到資訊之後，就可以知道使用者點選了什麼按鈕或是選擇了什麼選項<br>根據這些選項伺服器在做一些處理就可以完成了</p>
 <p><img src="https://i.imgur.com/JaE9My4.png" alt></p>
 <p>伺服器上面的程式會長這樣 (這邊單純印出來而已，沒有做後續處理</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.post(&apos;/interactive&apos;, (req, res, next) =&gt; &#123;</span><br><span class="line">    console.log(req.body);</span><br><span class="line">    return res.json(&#123;</span><br><span class="line">        text: &apos;Command is successful&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.post(<span class="string">'/interactive'</span>, (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        text: <span class="string">'Command is successful'</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h2><span id="結論">結論</span></h2><p>我用了一個情境讓大家比較好思考如何把這三個功能串起來<br>雖然我還是覺得用在訂便當上面很方便就是了 (?</p>
 <p>不過有些細部關於真正如何部署或是 SSL 的部分這裡就不會說明了<br>那個會需要花到一兩篇文章的篇幅去介紹</p>
 <p>如果有任何問題，請歡迎一起來討論 ~</p>
 
-                
-
-                <hr>
-                <!-- Pager -->
-                <ul class="pager">
-                    
-                        <li class="previous">
-                            <a href="/2017/10/17/google-hacking/" data-toggle="tooltip" data-placement="top" title="Google Hacking">&larr; Previous Post</a>
-                        </li>
-                    
-                    
-                        <li class="next">
-                            <a href="/2017/09/23/todo-vue/" data-toggle="tooltip" data-placement="top" title="TODO - vue + vuex + vue-router">Next Post &rarr;</a>
-                        </li>
-                    
-                </ul>
-
-                <!-- duoshuo Share start -->
-                
-                <!-- 多说 Share end-->
-
-                <!-- 多说评论框 start -->
-                
-                <!-- 多说评论框 end -->
-
-                <!-- disqus comment start -->
-                
-                    <div class="comment">
-                        <div id="disqus_thread" class="disqus-thread"></div>
-                    </div>
-                
-                <!-- disqus comment end -->
-            </div>
-            
-            <!-- Tabe of Content -->
-            <!-- Table of Contents -->
-
-    
-      <aside id="sidebar">
-        <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
-        
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#slash-command"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Slash Command</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#介紹"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">介紹</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#建立新指令"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">建立新指令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安裝進到你的-team"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">安裝進到你的 team</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#開始寫程式去接受-slash-command"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">開始寫程式去接受 slash command</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#incoming-webhooks"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Incoming Webhooks</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#介紹"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">介紹</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#啟用"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">啟用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">使用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#interactive-components"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Interactive Components</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#介紹"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">介紹</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#啟用"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">啟用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">使用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#結論"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">結論</span></a></li></ol>
-        
         </div>
-      </aside>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/bot/" rel="tag">bot</a>, <a class="has-link-grey -link" href="/tags/chat-bot/" rel="tag">chat bot</a>, <a class="has-link-grey -link" href="/tags/nodejs/" rel="tag">nodejs</a>, <a class="has-link-grey -link" href="/tags/slack/" rel="tag">slack</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2017/10/17/google-hacking/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Google Hacking</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2017/09/23/todo-vue/">
+                <span class="level-item">TODO - vue + vuex + vue-router</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2017/10/14/Slack-Bot/';
+        this.page.identifier = '2017/10/14/Slack-Bot/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
     
-
-                
-            <!-- Sidebar Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                <!-- Featured Tags -->
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
                 
 
-                <!-- Friends Blog -->
-                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+    
+        
+            
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#slash-command">
+        <span class="has-mr-6">1</span>
+        <span>Slash Command</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#介紹">
+        <span class="has-mr-6">1.1</span>
+        <span>介紹</span>
+        </a></li><li>
+        <a class="is-flex" href="#建立新指令">
+        <span class="has-mr-6">1.2</span>
+        <span>建立新指令</span>
+        </a></li><li>
+        <a class="is-flex" href="#安裝進到你的-team">
+        <span class="has-mr-6">1.3</span>
+        <span>安裝進到你的 team</span>
+        </a></li><li>
+        <a class="is-flex" href="#開始寫程式去接受-slash-command">
+        <span class="has-mr-6">1.4</span>
+        <span>開始寫程式去接受 slash command</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#incoming-webhooks">
+        <span class="has-mr-6">2</span>
+        <span>Incoming Webhooks</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#介紹">
+        <span class="has-mr-6">2.1</span>
+        <span>介紹</span>
+        </a></li><li>
+        <a class="is-flex" href="#啟用">
+        <span class="has-mr-6">2.2</span>
+        <span>啟用</span>
+        </a></li><li>
+        <a class="is-flex" href="#使用">
+        <span class="has-mr-6">2.3</span>
+        <span>使用</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#interactive-components">
+        <span class="has-mr-6">3</span>
+        <span>Interactive Components</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#介紹">
+        <span class="has-mr-6">3.1</span>
+        <span>介紹</span>
+        </a></li><li>
+        <a class="is-flex" href="#啟用">
+        <span class="has-mr-6">3.2</span>
+        <span>啟用</span>
+        </a></li><li>
+        <a class="is-flex" href="#使用">
+        <span class="has-mr-6">3.3</span>
+        <span>使用</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#結論">
+        <span class="has-mr-6">4</span>
+        <span>結論</span>
+        </a></li></ul>
             </div>
         </div>
     </div>
-</article>
+
+        
+    
+        
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            
+        
+        </div>
+    
+</div>
 
 
-
-
-<!-- disqus embedded js code start (one page only need to embed once) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "yu-jack";
-    var disqus_identifier = "https://yu-jack.github.io/2017/10/14/Slack-Bot/";
-    var disqus_url = "https://yu-jack.github.io/2017/10/14/Slack-Bot/";
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus embedded js code start end -->
-
+                
 
 
 
 
 
-    <!-- Footer -->
-    <!-- Footer -->
-<footer>
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right ">
+    
+        
+    
+    
+</div>
+
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 
-                
-                
-
-                
-
-                
-
-                
-
-                
-
-                </ul>
-                <p class="copyright text-muted">
-                    Copyright &copy; Jack Yu 2020 
-                    <br>
-                    <span id="busuanzi_container_site_pv">
-                        Total <span id="busuanzi_value_site_pv"></span> views
-                    </span>
                 </p>
+            </div>
+            <div class="level-end">
+            
             </div>
         </div>
     </div>
 </footer>
-
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="/js/hux-blog.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
 
 
-<!-- async load function -->
 <script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
+};
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
-     so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
--->
-<!--
-    <script>
-        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
-            hljs.initHighlightingOnLoad();
-        })
-    </script>
-    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
--->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
-<!-- jquery.tagcloud.js -->
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
-    // only load tagcloud.js in tag.html
-    if($('#tag_cloud').length !== 0){
-        async("https://yu-jack.github.io/js/jquery.tagcloud.js",function(){
-            $.fn.tagcloud.defaults = {
-                //size: {start: 1, end: 1, unit: 'em'},
-                color: {start: '#bbbbee', end: '#0085a1'},
-            };
-            $('#tag_cloud a').tagcloud();
-        })
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
 </script>
 
-<!--fastClick.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
-    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-        var $nav = document.querySelector("nav");
-        if($nav) FastClick.attach($nav);
-    })
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
 </script>
 
 
-<!-- Google Analytics -->
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
 
-<!-- Baidu Tongji -->
 
 
 
 
 
 
-	<!-- <a id="rocket" href="#top" class=""></a> -->
-	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" async=""></script>
-    <script type="text/javascript" src="/js/fireworks.js" async=""></script>
-<!-- Image to hack wechat -->
-<img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
-<!-- Migrate from head to bottom, no longer block render and still work -->
 
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
-
 </html>

@@ -1,245 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<canvas id="fireworks" style="position: fixed"></canvas>
-<!-- Head tag -->
+<html  lang="zh">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword"  content="">
-    <link rel="shortcut icon" href="/img/ironman-draw.png">
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>JavaScript this 是什麼? 如何運作的呢? - 技術雜記 Technology Notes</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+
+
+    <meta name="description" content="前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript this 是什麼? 如何運作的呢?">
+<meta property="og:url" content="https://yu-jack.github.io/2019/04/24/javascript-this/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes">
+<meta property="og:description" content="前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2019-04-24T15:09:32.000Z">
+<meta property="article:modified_time" content="2020-01-14T16:21:14.388Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="this">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
     
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NKT99TP');</script>
-    <!-- End Google Tag Manager -->
-
-    <title>
-        
-          JavaScript this 是什麼? 如何運作的呢? - Jack Yu | 傑克
-        
-    </title>
-
-    <link rel="canonical" href="https://yu-jack.github.io/2019/04/24/javascript-this/">
-
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <!-- Custom CSS --> 
-    <link rel="stylesheet" href="/css/beantech.min.css">
     
-    <!-- Pygments Highlight CSS -->
-    <link rel="stylesheet" href="/css/highlight.css">
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
 
-    <link rel="stylesheet" href="/css/widget.css">
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
 
-    <link rel="stylesheet" href="/css/rocket.css">
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
 
-    <link rel="stylesheet" href="/css/signature.css">
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
 
-    <link rel="stylesheet" href="/css/toc.css">
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
 
-    <!-- Custom Fonts -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-    <!-- Hux change font-awesome CDN to qiniu -->
-    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-
-    <!-- Hux Delete, sad but pending in China
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
-    css'>
-    -->
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- ga & ba script hoook -->
-    <script></script>
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-1515253208026743",
-        enable_page_level_ads: true
-      });
-    </script>
-    <style>
-        img {
-            border: 1px solid #00000042;
-            box-shadow: 1px 1px 5px;
-        }
-        div.post-container h2:not(.post-title) {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.3em;
-        }
-        div.post-container h1:not(.post-title) {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.3em;
-        }
-    </style>
+<link rel="stylesheet" href="/css/style.css">
 </head>
-
-
-<!-- hack iOS CSS :active style -->
-<body ontouchstart="">
-	<!-- Modified by Yu-Hsuan Yen -->
-<!-- Post Header -->
-<style type="text/css">
-    header.intro-header{
-        
-            background-image: url('/images/banner.jpg')
-            /*post*/
-        
-    }
-    
-</style>
-
-<header class="intro-header" >
-    <!-- Signature -->
-    <div id="signature">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                
-                    <div class="post-heading">
-                        <div class="tags">
-                            
-                              <a class="tag" href="/tags/#js" title="js">js</a>
-                            
-                              <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
-                            
-                              <a class="tag" href="/tags/#this" title="this">this</a>
-                            
-                        </div>
-                        <h1>JavaScript this 是什麼? 如何運作的呢?</h1>
-                        <h2 class="subheading"></h2>
-                        <span class="meta">
-                            Posted by Jack Yu on
-                            2019-04-24
-                        </span>
-                        <span id="busuanzi_container_page_pv">
-                            <span id="busuanzi_value_page_pv"></span> views
-                        </span>                              
-                    </div>
-                
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-	
-    <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">技術雜記 Technology Notes</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <!-- Known Issue, found by Hux:
-            <nav>'s height woule be hold on by its content.
-            so, when navbar scale out, the <nav> will cover tags.
-            also mask any touch event of tags, unfortunately.
-        -->
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-
-                    
-
-                        
-                        <li>
-                            <a href="/tags/">All Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
-                        </li>
-                        
-                    
-                    
-                </ul>
-            </div>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
-<script>
-    // Drop Bootstarp low-performance Navbar
-    // Use customize navbar with high-quality material design animation
-    // in high-perf jank-free CSS3 implementation
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
-
-    $toggle.addEventListener('click', handleMagic)
-    function handleMagic(e){
-        if ($navbar.className.indexOf('in') > 0) {
-        // CLOSE
-            $navbar.className = " ";
-            // wait until animation end.
-            setTimeout(function(){
-                // prevent frequently toggle
-                if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
-                }
-            },400)
-        }else{
-        // OPEN
-            $collapse.style.height = "auto"
-            $navbar.className += " in";
-        }
-    }
-</script>
-
-
-    <!-- Main Content -->
-    <!-- Modify by Yu-Hsuan Yen -->
-
-<!-- Post Content -->
-<article>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
     <div class="container">
-        <div class="row">
-
-            <!-- Post Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                <h2><span id="前言">前言</span></h2><p>相信寫過 js 的人對於 this 都有一定的認識<br>但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純<br>所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事<br>以及最後面教學如何一步一步判定 this 會是指向什麼</p>
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="JavaScript this 是什麼? 如何運作的呢?" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-04-24T15:09:32.000Z">2019-04-24</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    11 分鐘 閱讀文 (大約 1597 個字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                JavaScript this 是什麼? 如何運作的呢?
+            
+        </h1>
+        <div class="content">
+            <h2><span id="前言">前言</span></h2><p>相信寫過 js 的人對於 this 都有一定的認識<br>但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純<br>所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事<br>以及最後面教學如何一步一步判定 this 會是指向什麼</p>
 <a id="more"></a>
 <h2><span id="this-是什麼">this 是什麼 ？</span></h2><p>this 單純看英文解釋的話，是代表『自身』<br>聽起來好像有這麼一回事，但實際上使用起來根本不是這樣<br>實際上 js 中 this 代表的是執行時的對象，並不代表自身<br>簡單來就說就是找<em>函數被調用的位置</em>  </p>
 <p>讓我們看看以下的範例</p>
@@ -247,22 +169,22 @@
 <p>雖然 console.log 真的有跑出來 foo 的兩個輸出<br>但 foo.count 卻還是 0<br>這其中的原因是，真正執行 foo 調用的位置的地方是<em>全域(瀏覽器中為 window 物件)</em><br>注意到這點回去可以執行這行 <code>window.count</code> 會發現為 NaN，卻不是 undefined  </p>
 <p>那我在這邊該如何去把 <code>this.count</code> 綁定到我的 <code>foo.count</code> 上面呢?<br>這裡可以透過 <code>fn.call(thisArg, arg)</code> 的方式把我們的 this 綁定到 foo 上面<br>在 for loop 之中調用 foo 得方式更改為 <code>foo.call(foo, i)</code> 就可以完成綁定<br>重新執行以上的程式就會發現 <code>foo.count</code> 變成 2 了！</p>
 <p>然而要如何尋找呼叫位置以及善用 this 就是一件學問了<br>而用 this 有什麼好處? 看看以下這段 code  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">`foo: <span class="subst">$&#123;num&#125;</span>`</span>)</span><br><span class="line">    data.count++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">    <span class="attr">count</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">7</span>) &#123;</span><br><span class="line">        foo(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// foo: 8</span></span><br><span class="line"><span class="comment">// foo: 9</span></span><br><span class="line"><span class="comment">// foo 被調用多少次</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.count) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">`foo: <span class="subst">$&#123;num&#125;</span>`</span>)</span><br><span class="line">    data.count++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">    count: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">7</span>) &#123;</span><br><span class="line">        foo(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// foo: 8</span></span><br><span class="line"><span class="comment">// foo: 9</span></span><br><span class="line"><span class="comment">// foo 被調用多少次</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.count) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
 <p>沒有用 this 去做綁定，而是用一個變量的方式去儲存<br>雖然這樣一樣看達到效果，但這看起來就不太簡潔未來要重複使用也很不方便<br>而這就是學好 this 的好處之一  </p>
 <p>看到這邊應該會 this 有簡單的理解了<br>那對於以下這段 code 應該就能清楚知道會出現什麼結果了  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">identify</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">speak</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> greeting = <span class="string">"I 'm"</span> + identify.call(<span class="keyword">this</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(greeting)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">"Jack"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> you = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">"Reader"</span></span><br><span class="line">&#125;</span><br><span class="line">identify.call(me) <span class="comment">// Jack</span></span><br><span class="line">identify.call(you) <span class="comment">// Reader</span></span><br><span class="line"></span><br><span class="line">speak.call(me) <span class="comment">// Jack</span></span><br><span class="line">speak.call(you) <span class="comment">// Reader</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">identify</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">speak</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> greeting = <span class="string">"I 'm"</span> + identify.call(<span class="keyword">this</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(greeting)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">    name: <span class="string">"Jack"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> you = &#123;</span><br><span class="line">    name: <span class="string">"Reader"</span></span><br><span class="line">&#125;</span><br><span class="line">identify.call(me) <span class="comment">// Jack</span></span><br><span class="line">identify.call(you) <span class="comment">// Reader</span></span><br><span class="line"></span><br><span class="line">speak.call(me) <span class="comment">// Jack</span></span><br><span class="line">speak.call(you) <span class="comment">// Reader</span></span><br></pre></td></tr></table></figure>
 <h2><span id="this-綁定規則">this 綁定規則</span></h2><p>前面提到要如何去找到調用位置是重要的事之外<br>還要理解 js 中是有哪些規則去綁定 this 的<br>以下會開始介紹 js 的幾種綁定方式<br>但就個人來說，盡量使用顯示綁定的方式去把 this 綁定到對的對象上面才是正確的做法  </p>
 <h3><span id="default-binding-默認綁定">Default Binding (默認綁定)</span></h3><p>這條為無法應用其他規則的時候，默認會出現的綁定模式<br>請看以下的 code  </p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">foo(); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
 <p>這邊可以注意到 <code>var a = 2</code> 是在全域下的一個全局變量<br>所以裡面的 <code>this.a</code> 是指向到全域的變量 a<br>還有個方法可以確認說有沒有真的綁定到，可以透過 <code>use strict</code> 嚴格模式去做測試</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="string">"use strict"</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">foo(); <span class="comment">// TypeError</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    "use strict"</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">foo(); <span class="comment">// TypeError</span></span><br></pre></td></tr></table></figure>
 <h3><span id="implicit-binding-隱式綁定">Implicit Binding (隱式綁定)</span></h3><p>這條隱式綁定的規則，則是要取決於上下文  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    <span class="attr">a</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">foo</span>: foo</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">"HIHI"</span>; <span class="comment">// Global</span></span><br><span class="line">bar(); <span class="comment">// "HIHI"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    a: <span class="number">2</span>,</span><br><span class="line">    foo: foo</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">"HIHI"</span>; <span class="comment">// Global</span></span><br><span class="line">bar(); <span class="comment">// "HIHI"</span></span><br></pre></td></tr></table></figure>
 <p>雖然 bar 是 obj.foo 的一個引用，但實際上它是對應到 foo 上<br>還有一種狀況很特別，當把 function 當成 args 傳進去執行  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doFoo</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    fn()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    <span class="attr">a</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">foo</span>: foo</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">"HIHI"</span>; <span class="comment">// Global</span></span><br><span class="line">doFoo(obj.foo); <span class="comment">// "HIHI"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doFoo</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    fn()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    a: <span class="number">2</span>,</span><br><span class="line">    foo: foo</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">"HIHI"</span>; <span class="comment">// Global</span></span><br><span class="line">doFoo(obj.foo); <span class="comment">// "HIHI"</span></span><br></pre></td></tr></table></figure>
 <p>這邊可以發現當把函數存進去後, <code>obj.foo</code> 的 <code>this</code> 是被綁定在 global 上  </p>
 <h3><span id="explicit-binding-顯式綁定">Explicit Binding (顯式綁定)</span></h3><p>顯式綁定會透過三個函數去使用<br><code>call</code> <code>apply</code> <code>bind</code> 的方式去做到這件事<br>做法的話，前面應該有看到過了，這邊重新複習一下</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    <span class="attr">a</span>: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line">foo.call(obj); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    a: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line">foo.call(obj); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
 <p>這邊可以注意到我們把 foo 裡面的 <code>this.a</code> 綁定到 obj 上面了  </p>
 <h3><span id="new-binding">new Binding</span></h3><p>先說明 js 之中的 new 和其他 class 類型的語言是完全不一樣的東西<br>在 js 之中使用 new，並不會真的屬於什麼類或是實例化一個類 (嚴格來說 js 中也沒有所謂的類，全部都是物件)<br>而在使用 new 的時候會有以下幾個步驟  </p>
 <ol>
@@ -273,218 +195,313 @@
 </ol>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(bar.a); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
 <p>以上的範例來說明上面的四個步驟<br>bar 為 <em>創建全新物件</em>，建立出 bar 之後會對 Object 的<em>原型鍊做連接</em> (這裡暫時不提)<br>因為 bar 為新物件，所以根據<em>新物件會綁定到函數調用的 this</em><br>這時 bar 就會被綁定在 foo 函數裡面的 this 去了<br>那因為在使用 <code>new foo(2)</code> 時，並沒有<em>返回其他物件</em>，所以這裡會把 bar 回傳回去<br>但如果這時有返回其他物件，這時候就會把 bar 也改替換掉了<br>這時第三步原本是把 this 綁定在 bar 本身，這時會變成綁定在其他物件身上<br>參考以下 code  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> test = &#123;</span><br><span class="line">    <span class="attr">a</span>: <span class="string">"hihi"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a;</span><br><span class="line">    <span class="keyword">return</span> test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(bar.a); <span class="comment">// "hihi"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> test = &#123;</span><br><span class="line">    a: <span class="string">"hihi"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a;</span><br><span class="line">    <span class="keyword">return</span> test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(bar.a); <span class="comment">// "hihi"</span></span><br></pre></td></tr></table></figure>
 <p>不過如果回傳的並不是物件的話，狀況又會不一樣了</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(bar.a); <span class="comment">// "2"</span></span><br></pre></td></tr></table></figure>
 <h2><span id="後記">後記</span></h2><p>這是看完 You don’t know JS 後做的一篇整理<br>如果有任何錯誤歡迎指教！<br>而整本書對於 this 的解釋非常詳細，如果有興趣的讀者可以找找這本書看看原文是如何寫的吧！<br>後續會再找時間整理關於 prototype (原形鏈) 的原理</p>
 
-                
-
-                <hr>
-                <!-- Pager -->
-                <ul class="pager">
-                    
-                        <li class="previous">
-                            <a href="/2019/05/02/promise-2/" data-toggle="tooltip" data-placement="top" title="callback, promise, async/await 使用方式教學以及介紹 Part II (Error Handling 介紹)">&larr; Previous Post</a>
-                        </li>
-                    
-                    
-                        <li class="next">
-                            <a href="/2019/02/19/java-executor/" data-toggle="tooltip" data-placement="top" title="Java Executor、TheadPoolExecutor 設定參數基本介紹">Next Post &rarr;</a>
-                        </li>
-                    
-                </ul>
-
-                <!-- duoshuo Share start -->
-                
-                <!-- 多说 Share end-->
-
-                <!-- 多说评论框 start -->
-                
-                <!-- 多说评论框 end -->
-
-                <!-- disqus comment start -->
-                
-                    <div class="comment">
-                        <div id="disqus_thread" class="disqus-thread"></div>
-                    </div>
-                
-                <!-- disqus comment end -->
-            </div>
-            
-            <!-- Tabe of Content -->
-            <!-- Table of Contents -->
-
-    
-      <aside id="sidebar">
-        <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
-        
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#this-是什麼"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">this 是什麼 ？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#this-綁定規則"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">this 綁定規則</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#default-binding-默認綁定"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Default Binding (默認綁定)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#implicit-binding-隱式綁定"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">Implicit Binding (隱式綁定)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#explicit-binding-顯式綁定"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">Explicit Binding (顯式綁定)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#new-binding"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">new Binding</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#後記"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">後記</span></a></li></ol>
-        
         </div>
-      </aside>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/JavaScript/" rel="tag">JavaScript</a>, <a class="has-link-grey -link" href="/tags/js/" rel="tag">js</a>, <a class="has-link-grey -link" href="/tags/this/" rel="tag">this</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/02/promise-2/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">callback, promise, async/await 使用方式教學以及介紹 Part II (Error Handling 介紹)</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/02/19/java-executor/">
+                <span class="level-item">Java Executor、TheadPoolExecutor 設定參數基本介紹</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2019/04/24/javascript-this/';
+        this.page.identifier = '2019/04/24/javascript-this/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
     
-
-                
-            <!-- Sidebar Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                <!-- Featured Tags -->
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
                 
 
-                <!-- Friends Blog -->
-                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+    
+        
+            
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#this-是什麼">
+        <span class="has-mr-6">2</span>
+        <span>this 是什麼 ？</span>
+        </a></li><li>
+        <a class="is-flex" href="#this-綁定規則">
+        <span class="has-mr-6">3</span>
+        <span>this 綁定規則</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#default-binding-默認綁定">
+        <span class="has-mr-6">3.1</span>
+        <span>Default Binding (默認綁定)</span>
+        </a></li><li>
+        <a class="is-flex" href="#implicit-binding-隱式綁定">
+        <span class="has-mr-6">3.2</span>
+        <span>Implicit Binding (隱式綁定)</span>
+        </a></li><li>
+        <a class="is-flex" href="#explicit-binding-顯式綁定">
+        <span class="has-mr-6">3.3</span>
+        <span>Explicit Binding (顯式綁定)</span>
+        </a></li><li>
+        <a class="is-flex" href="#new-binding">
+        <span class="has-mr-6">3.4</span>
+        <span>new Binding</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">4</span>
+        <span>後記</span>
+        </a></li></ul>
             </div>
         </div>
     </div>
-</article>
+
+        
+    
+        
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            
+        
+        </div>
+    
+</div>
 
 
-
-
-<!-- disqus embedded js code start (one page only need to embed once) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "yu-jack";
-    var disqus_identifier = "https://yu-jack.github.io/2019/04/24/javascript-this/";
-    var disqus_url = "https://yu-jack.github.io/2019/04/24/javascript-this/";
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus embedded js code start end -->
-
+                
 
 
 
 
 
-    <!-- Footer -->
-    <!-- Footer -->
-<footer>
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right ">
+    
+        
+    
+    
+</div>
+
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 
-                
-                
-
-                
-
-                
-
-                
-
-                
-
-                </ul>
-                <p class="copyright text-muted">
-                    Copyright &copy; Jack Yu 2020 
-                    <br>
-                    <span id="busuanzi_container_site_pv">
-                        Total <span id="busuanzi_value_site_pv"></span> views
-                    </span>
                 </p>
+            </div>
+            <div class="level-end">
+            
             </div>
         </div>
     </div>
 </footer>
-
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="/js/hux-blog.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
 
 
-<!-- async load function -->
 <script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
+};
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
-     so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
--->
-<!--
-    <script>
-        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
-            hljs.initHighlightingOnLoad();
-        })
-    </script>
-    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
--->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
-<!-- jquery.tagcloud.js -->
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
-    // only load tagcloud.js in tag.html
-    if($('#tag_cloud').length !== 0){
-        async("https://yu-jack.github.io/js/jquery.tagcloud.js",function(){
-            $.fn.tagcloud.defaults = {
-                //size: {start: 1, end: 1, unit: 'em'},
-                color: {start: '#bbbbee', end: '#0085a1'},
-            };
-            $('#tag_cloud a').tagcloud();
-        })
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
 </script>
 
-<!--fastClick.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
-    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-        var $nav = document.querySelector("nav");
-        if($nav) FastClick.attach($nav);
-    })
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
 </script>
 
 
-<!-- Google Analytics -->
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
 
-<!-- Baidu Tongji -->
 
 
 
 
 
 
-	<!-- <a id="rocket" href="#top" class=""></a> -->
-	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" async=""></script>
-    <script type="text/javascript" src="/js/fireworks.js" async=""></script>
-<!-- Image to hack wechat -->
-<img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
-<!-- Migrate from head to bottom, no longer block render and still work -->
 
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
-
 </html>
