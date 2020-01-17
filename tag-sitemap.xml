@@ -233,21 +233,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/js/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/this/</loc>
+        <loc>https://yu-jack.github.io/tags/ecma6/</loc>
         <lastmod>2020-01-14T16:21:14.388Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -268,35 +254,21 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/ecma6/</loc>
+        <loc>https://yu-jack.github.io/tags/js/</loc>
         <lastmod>2020-01-14T16:21:14.388Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/promise/</loc>
+        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
         <lastmod>2020-01-14T16:21:14.388Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/callback/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/async/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/await/</loc>
+        <loc>https://yu-jack.github.io/tags/this/</loc>
         <lastmod>2020-01-14T16:21:14.388Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -325,6 +297,34 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/todo-list/</loc>
+        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/promise/</loc>
+        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/callback/</loc>
+        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/async/</loc>
+        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/await/</loc>
         <lastmod>2020-01-14T16:21:14.388Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>

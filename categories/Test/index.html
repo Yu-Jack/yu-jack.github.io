@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>分類: Test - 技術雜記 Technology Notes</title>
+<title>分類: Test - 技術雜記 Technology Notes - Jack Yu</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,9 +19,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
     <meta property="og:type" content="website">
-<meta property="og:title" content="技術雜記 Technology Notes">
+<meta property="og:title" content="技術雜記 Technology Notes - Jack Yu">
 <meta property="og:url" content="https://yu-jack.github.io/categories/Test/index.html">
-<meta property="og:site_name" content="技術雜記 Technology Notes">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:author" content="Jack Yu">
@@ -83,7 +83,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="技術雜記 Technology Notes" height="28">
+                <img src="/images/logo.svg" alt="技術雜記 Technology Notes - Jack Yu" height="28">
             
             </a>
         </div> -->
@@ -164,17 +164,120 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://yu-jack.github.io/2019/12/10/unit-test-express/">上一篇</a>我們講到使用 sinon 搭配 express 的使用基礎<br>今天會介紹的是關於在 express 上<br>實作 unit test 的幾個技巧以及可能會遇到的問題<br>該如何解決問題，並依靠 sinon 去達到希望的功效  </p>
+            <h2><span id="前言">前言</span></h2>
+<p><a href="https://yu-jack.github.io/2019/12/10/unit-test-express/">上一篇</a>我們講到使用 sinon 搭配 express 的使用基礎<br>
+今天會介紹的是關於在 express 上<br>
+實作 unit test 的幾個技巧以及可能會遇到的問題<br>
+該如何解決問題，並依靠 sinon 去達到希望的功效</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="stub-同一個-object">stub 同一個 object</span></h2>
+<p>在開始寫 unit test 之後<br>
+會開始發現一件事情，就是需要對同一個物件重複做 stub<br>
+在 a.test.js 需要 stub 一次<br>
+在 b.test.js 又需要 stub 一次</p>
+<p>直覺上測試程式可能會變成以下的樣子<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// login.test.js</span></span><br><span class="line"><span class="keyword">const</span> apiServiceStub = sinon.stub(apiService);</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.login.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.login.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// register.test.js</span></span><br><span class="line"><span class="keyword">const</span> apiServiceStub = sinon.stub(apiService);</span><br><span class="line">describe(<span class="string">"[註冊功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"註冊成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.register.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.register.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>我們在 login.test.js 以及 register.test.js<br>
+都對 apiServer 進行 stub 的動作<br>
+而這兩個檔案在獨立分別跑測試的時候是會成功的<br>
+但一起執行的時候卻會爆出以下的錯誤<br>
+<code>TypeError: Attempted to wrap which is already wrapped</code><br>
+代表說，我們對同一個 object 重複做了 wrap<br>
+<img src="/images/unit-test/problem-1.png" alt></p>
+<blockquote>
+<p>可到個人的 <a href="https://github.com/Yu-Jack/unit-test-practice">github 下載程式</a>，並執行 <code>npm run w1</code><br>
+就可以看到錯誤訊息了</p>
+</blockquote>
+<p>要解決這個問題的話<br>
+我們必須透過 stub 指定的 method<br>
+再加上透過 restore 的方式釋放被 wrapped 物件的方法<br>
+如果不 restore 的話，物件就會一直是 wrappred 的狀態<br>
+然後就一直沒有辦法回復到原本物件應該有的狀態<br>
+所以更改過後程式碼如下
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// login.test.js</span></span><br><span class="line"><span class="keyword">let</span> apiServiceLogin</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    before(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin = sinon.stub(apiService, <span class="string">"login"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    after(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin.restore();</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// register.test.js</span></span><br><span class="line"><span class="keyword">let</span> apiServiceRegisterStub;</span><br><span class="line">describe(<span class="string">"[註冊功能]"</span>, () =&gt; &#123;</span><br><span class="line">    before(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceRegisterStub = sinon.stub(apiService, <span class="string">"register"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    after(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceRegisterStub.restore();</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceRegisterStub.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceRegisterStub.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>主要著手解決的地方在於兩點</p>
+<ol>
+<li><code>before</code> -&gt; 把 stub 的地方改放這 (不過個人實驗過，不放這也沒問題，放這只是比較有統一性)</li>
+<li><code>after</code> -&gt; 加上 <code>restore</code>，在做完測試的時候把整個物件給釋放出來
+這點如果沒有做到的話，會導致在另一個 xxx.test.js 在使用同一個物件的方法時<br>
+爆出已經被 wrapped 過後的錯誤訊息</li>
+</ol>
+<blockquote>
+<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run w2</code> 即可看到錯誤訊息
+裡面的範例是把 login.test.js restore 給註解掉後
+故意讓 register.test.js 去對 login 做 stub 而不是 register
+此時因為 login.test.js 做過一次 stub
+register.test.js 再做一次 stub 就會出現錯誤了
+成功的結果可以執行 <code>npm run c1</code>  看到</p>
+</blockquote>
+<h2><span id="檢測-api-uri">檢測 API URI</span></h2>
+<p>透過 <code>sinon.stub</code> 的 <code>withArgs</code> 功能可以確定<br>
+當我們程式在執行的時候，所呼叫的 api URI 是否正確<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">axiosPostStub.withArgs(<span class="string">"http://localhost:7070/api/login"</span>, data).resolves(&#123;</span><br><span class="line">    status: <span class="number">0</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+當程式呼叫錯誤的 API URI 的時候<br>
+就不會回傳我們預設給的回傳值<br>
+就會導致程式後續失敗，這就是反向驗證了我們 API URI 是否正確的方式</p>
+<blockquote>
+<p>可在個人專案下執行 <code>npm run c2</code> 即可看到結果</p>
+</blockquote>
+<h2><span id="驗證-axios-的攔截器">驗證 axios 的攔截器</span></h2>
+<p>有時候我們會為 axios 加上攔截功能<br>
+但如果要測試攔截功能，就又必須要有 server 才能辦到<br>
+此時可以在 test case 裡面加上 <code>http.createServer</code> 做到這件事情
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// network.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>);</span><br><span class="line"></span><br><span class="line">axios.interceptors.request.use(<span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log((<span class="string">"do something for request"</span>));</span><br><span class="line">    <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">axios.interceptors.response.use(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log((<span class="string">"do something for response"</span>));</span><br><span class="line">    <span class="keyword">return</span> response.data;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = axios;</span><br><span class="line"></span><br><span class="line"><span class="comment">// network.test.js</span></span><br><span class="line"><span class="keyword">let</span> server;</span><br><span class="line">describe(<span class="string">"[network 功能]"</span>, () =&gt; &#123;</span><br><span class="line">    afterEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        server.close();</span><br><span class="line">        server = <span class="literal">null</span>;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">"測試攔截功能(interceptors)"</span>, (done) =&gt; &#123;</span><br><span class="line">        server = http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> data = &#123;<span class="attr">a</span>:<span class="number">1</span>&#125;</span><br><span class="line">            res.end(<span class="built_in">JSON</span>.stringify(data));</span><br><span class="line">        &#125;).listen(<span class="number">4000</span>, () =&gt; &#123;</span><br><span class="line">            network.post(<span class="string">"http://localhost:4000"</span>).then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">                done();</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>配置好以上程式之後，可以在 terminal 看到兩個 console.log 的訊息<br>
+這就代表我們的攔截器有被執行到<br>
+個人認為攔截器測試獨立寫出來一個就可以<br>
+不用特地讓其他測試案例都一定要執行到這功能，不然就不叫 unit test 了</p>
+<blockquote>
+<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run c3</code> 即可看到結果</p>
+</blockquote>
+<h2><span id="測試-callback-function">測試 callback function</span></h2>
+<p>有些時候我們會需要把一些在用 callback function 的程式<br>
+包起來改用 Promise 的方法使用，如下
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> test = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        obj.test(<span class="string">"qqqq"</span>, (data) =&gt; &#123;</span><br><span class="line">            res(data)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> data = <span class="keyword">await</span> test();</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br><span class="line"><span class="comment">// qqqq</span></span><br></pre></td></tr></table></figure></p>
+<p>在這種 callback 底下，可以透過 <code>sinon.yields</code> 去進行測試<br>
+<code>sinon.yields</code> 的功能，就是可以強制讓你的 callback 被執行<br>
+而不會去執行原本 function 內 callback 應該要執行的內容<br>
+而且後面所帶的參數會變成你設定在 <code>yields(data1, data2)</code> 後面的 data1 data2<br>
+這邊展示一個範例
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"running"</span>);</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// running</span></span><br><span class="line"><span class="comment">// test</span></span><br></pre></td></tr></table></figure></p>
+<p>讓我們把程式加上 <code>sinon.yield</code> 試試看
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>)</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"running"</span>);</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).yields(<span class="number">1</span>)</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
+<p>程式會 log 出 1 這個值<br>
+但是 running 並不會執行到<br>
+非常符合 stub 的原則，就是會覆寫 function 原本的行為<br>
+然後再透過 yields 的方法，可以直接你所撰寫觸發 callback 的行為<br>
+而不會去執行 obj.test function 本身的行為</p>
+<p>所以依此類推，我在後面多加幾個參數<br>
+原本的 callback 回來的參數只會有一個，其餘為 <code>undefined</code><br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data1, data2, data3) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data1: "</span> + data1);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data2: "</span> + data2);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data3: "</span> + data3);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// data1: test</span></span><br><span class="line"><span class="comment">// data2: undefined</span></span><br><span class="line"><span class="comment">// data3: undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>但是如果透過 <code>sinon.yields</code> 去強制給於另外兩個參數呢?<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>)</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).yields(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data1, data2, data3) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data1: "</span> + data1);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data2: "</span> + data2);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data3: "</span> + data3);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// data1: 1</span></span><br><span class="line"><span class="comment">// data2: 2</span></span><br><span class="line"><span class="comment">// data3: 3</span></span><br></pre></td></tr></table></figure></p>
+<p>callback 的時候，另外兩個參數也會跟著進來</p>
+<p>那透過把 callback 包成 promise 的案例又該怎麼測試呢?<br>
+範例如下，必須在執行 function 之前<br>
+先加上 <code>sinon.stub(obj, &quot;test&quot;).yields(1)</code> 就可以了
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>)</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).yields(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">const</span> test = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        obj.test(<span class="string">"qqqq"</span>, (data) =&gt; &#123;</span><br><span class="line">            res(data)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> data = <span class="keyword">await</span> test();</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br><span class="line"><span class="comment">// 1 (因為已經被 yields 改成 1 了)</span></span><br></pre></td></tr></table></figure></p>
+<h2><span id="測試涵蓋率-test-coverage">測試涵蓋率 (test coverage)</span></h2>
+<p>做測試的時候當然少不了 test coverage<br>
+node.js 有一款叫做 nyc 的可以檢測 test coverage<br>
+配製方法非常簡單，以下兩個步驟即可</p>
+<ol>
+<li>下載 nyc <code>npm install nyc</code></li>
+<li>把 nyc 放置於 mocha 前面 <code>nyc mocha ....</code><br>
+如果要想看 html 結構的報告的話，<code>nyc --reporter=lcov --reporter=text-summary mocha ...</code></li>
+</ol>
+<p><img src="/images/unit-test/nyc.png" alt></p>
+<blockquote>
+<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run nyc</code> 即可看到結果</p>
+</blockquote>
+<h2><span id="結語">結語</span></h2>
+<p>以上介紹幾個在實際撰寫 unit test 會遇到的困難點以及解決方法<br>
+未來還有遇到的話，會在陸陸續續補上來！</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/12/22/unit-test-express-implement-troubleshooting/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -218,18 +321,217 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><span style="color:green">[2019-12-22 Update]</span><br>在<a href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/">express unit test 一些技巧教學以及困難點</a>裡面有針對一些技巧做說明<br>以及增加測試涵蓋率的使用方式</p>
-<p>在很久很久之前有提到過 <a href="https://yu-jack.github.io/2017/11/01/how-to-test/">unit test</a><br>但那時候只有針對簡單到不能在簡單的 function 進行 unit test<br>想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面  </p>
+            <h2><span id="前言">前言</span></h2>
+<p>&lt;span style=&quot;color:green&quot;&gt;[2019-12-22 Update]&lt;/span&gt;
+在<a href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/">express unit test 一些技巧教學以及困難點</a>裡面有針對一些技巧做說明<br>
+以及增加測試涵蓋率的使用方式</p>
+<p>在很久很久之前有提到過 <a href="https://yu-jack.github.io/2017/11/01/how-to-test/">unit test</a><br>
+但那時候只有針對簡單到不能在簡單的 function 進行 unit test<br>
+想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面</p>
+<p>&lt;!-- more --&gt;</p>
+<p>在真正開發上面要用到 unit test<br>
+一定會牽扯到讀取資料庫、讀取檔案、呼叫 API 等等複雜邏輯<br>
+難道在做測試的時候，我還要確保我的 API 可以呼叫<br>
+資料庫可以進行連線等等後，我才能確認我的程式是否正確嗎?<br>
+在這種情況下要做 unit test 真的是一件不簡單的事情<br>
+更別說 test cases 跑到一半<br>
+有人把你測試環境的 database 亂改動，或是 API  Server 的分支改掉這種鳥事了...</p>
+<p>這樣的話，究竟要透過什麼樣的方式可以去做到 unit test 呢?<br>
+其實可以透過 mock 的機制，讓呼叫 API 回傳值<br>
+回傳一個固定值，而並不需要去真正呼叫 API</p>
+<p>這裡所說的 mock 只是 unit test 使用到的一種方式<br>
+其他還包含 spy 、stub、fake 等等
+我們通常稱這些為 test double (測試替身)
+以下會先介紹剛剛提到的 test double</p>
+<blockquote>
+<p>題外話，一開始看到這名詞讓我一直想到 JOJO ..</p>
+</blockquote>
+<h2><span id="test-double-測試替身">Test Double - 測試替身</span></h2>
+<p>根據<a href="http://teddy-chen-tw.blogspot.com/2014/09/test-double2.html">搞笑談軟功</a>裡面其實有提到五種，但我這邊會介紹個人常見和常用到的四種</p>
+<h3><span id="stub">stub</span></h3>
+<p>當程式是使用到 HTTP 相關操作的，為了測試相依性降到最低
+可以透過 stub 去變更發出 HTTP 程式的行為，變成不真的發出 HTTP，且可以自定義回傳的結果
+還有包含讀檔的行為也是如此，利用 stub 取代真的讀檔的行為，使測試可以更關注在程式邏輯上面
+而一般使用 stub 都會寫死回傳的資訊，以方便後續測試</p>
+<p>使用情景: &lt;span style=&quot;color:green&quot;&gt;[假資料回傳]&lt;/span&gt;<br>
+HTTP Request, 讀檔, 讀取資料庫等等，後續程式還沒實作的狀況下可以用來測試程式邏輯</p>
+<h3><span id="spy">spy</span></h3>
+<p>此 double 是用在去紀錄 function 的行為驗證上面
+被 spy 的 function 就像是被安插間諜一樣，會去收集行為
+function 也會真的被執行，並不會像 stub 一樣被取代掉
+以 function 裡面 post http 為例，此 post http 是會真的發送請求出去，但會被紀錄
+如果是用 stub 的話，post http 則是不會發送請求出去</p>
+<p>使用情景: &lt;span style=&quot;color:green&quot;&gt;[行為驗證]&lt;/span&gt;<br>
+因為程式是真的會執行，所以會專注在驗證程式執行的行為驗證上，例如驗證程式應該只能跑一次等等的行為上</p>
+<p>想了解更詳細的可以讀讀 Sinon.js 的文件內容，擷取部分原文如下</p>
+<blockquote>
+<p>A test spy is a function that records arguments, return value, the
+value of this and exception thrown (if any) for all its calls.
+from <a href="https://sinonjs.org/releases/latest/spies/">Sinon Spy</a></p>
+</blockquote>
+<h3><span id="mock">mock</span></h3>
+<p>Mock Object 則是類似於 spy 以及 stub 的集合體
+本身擁有可以取代物件的方法 (stub)，且內建 expect 方法可以驗證執行的行為是否正確 (spy)
+如果只是單純要讓後續程式邏輯接受固定值的話，用 stub 即可
+如果只是單純要驗證程式的行為，用 spy 即可
+但如果是以上兩個混合的狀況下，則是建議使用 Mock</p>
+<p>使用情景: &lt;span style=&quot;color:green&quot;&gt;[行為驗證,假資料回傳]&lt;/span&gt;<br>
+當需要驗證 HTTP POST 是否有根據所需參數進行執行，但又不想要真的發出 HTTP 的時候可以使用，跟 spy 最大差別在於 spy 是會真的執行程式，但 Mock 是不會真的去執行</p>
+<p>想了解更詳細的可以讀讀 Sinon.js 的文件內容，擷取部分原文如下</p>
+<blockquote>
+<p>Mocks (and mock expectations) are fake methods (like spies) with pre-programmed behavior (like stubs) as well as pre-programmed expectations.
+Mocks should only be used for the method under test. In every unit test, there should be one unit under test.
+In general you should have no more than one mock (possibly with several expectations) in a single test.
+from <a href="https://sinonjs.org/releases/latest/mocks/">Sinon Mock</a></p>
+</blockquote>
+<h3><span id="fake">fake</span></h3>
+<p>此物件並不像是 spy 或是 stub 會取代程式裡面的行為
+而是建立一個實際可執行的 function，通常是用在建立 XHR or Server or Database 上面，但會是以更簡化的方式去實現
+例如原本可能是一個寄信的程式，但因為寄信驗證這件事情本身不好處理
+這邊可以做出一個 fake Object 是把寄信的訊息內容，改成寫檔，已達成寄信行為的驗證</p>
+<p>使用情境：&lt;span style=&quot;color:green&quot;&gt;[簡化程式]&lt;/span&gt;<br>
+簡化寄信，或是簡化 DB 連線改用 In-memory 的方式等等，目的就是要簡化 prodcution code 的複雜度</p>
+<p>想了解更詳細的可以讀讀 Sinon.js 的文件內容，擷取部分原文如下</p>
+<blockquote>
+<p>the sinon.fake API knows only how to create fakes, and doesn’t concern itself with plugging them into the system under test.
+To plug the fakes into the system under test, you can use the sinon.replace* methods.
+from <a href="https://sinonjs.org/releases/latest/fakes/">Sinon Fake</a></p>
+</blockquote>
+<h3><span id="小結結語">小結結語</span></h3>
+<p>要特別注意一件事情<br>
+每一個測試框架針對這些 test double 可能會有一些些微的差距<br>
+最好是針對測試框架裡面的文件進行閱讀<br>
+去了解使用時機跟方式會比較恰當<br>
+接下來就開始介紹關於 Sinon 這個測試框架的程式實作部分<br>
+以及該如何搭配 express 進行 unit test</p>
+<h2><span id="實作">實作</span></h2>
+<p>接下來會透過 express 搭配 sinon 進行 unit test 的說明<br>
+首先我們會需要一個簡單的 express server<br>
+此 server 功能有呼叫登入 API 以及寫檔兩種功能</p>
+<p>為了方便進行 unit test 程式架構上，會進行拆分以模擬真實開發狀況<br>
+登入的主要邏輯很單純<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server.js - listen 在 7070</span></span><br><span class="line"><span class="keyword">const</span> authController = <span class="built_in">require</span>(<span class="string">"./authController"</span>)</span><br><span class="line">app.post(<span class="string">"/login"</span>, authController.run);</span><br><span class="line"></span><br><span class="line"><span class="comment">// authController.js</span></span><br><span class="line"><span class="keyword">const</span> run = <span class="keyword">async</span> (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">        username</span><br><span class="line">    &#125; = &#123;...req.body&#125;;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> apiService.login(username)</span><br><span class="line">    <span class="keyword">if</span> (result.status !== <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        message: <span class="string">"登入成功"</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// apiService.js</span></span><br><span class="line"><span class="keyword">const</span> login = <span class="function">(<span class="params">username</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> axios.post(<span class="string">"http://localhost:7070/api"</span>, &#123;</span><br><span class="line">        username,</span><br><span class="line">    &#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 給 /login 用的, 不在測試範圍內</span></span><br><span class="line">app.post(<span class="string">"/api"</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.json(&#123;<span class="attr">status</span>: req.body.username === <span class="string">"123"</span> ? <span class="number">0</span> : <span class="number">1</span>&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>在這種情況下要進行 unit test 必須要確保<br>
+呼叫 <code>apiService.login</code> 是不會有任何問題的<br>
+那如果要移除這層依賴，透過 test double 該如何對 <code>authController.run</code> 進行測試呢?</p>
+<h3><span id="express-with-sinon-stub">Express with Sinon Stub</span></h3>
+<h4><span id="sinon-stub-介紹">Sinon Stub 介紹</span></h4>
+<p>先介紹一下 Sinon Stub 如何使用，先看 code</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> test = sinon.stub().returns(<span class="number">5</span>);</span><br><span class="line"><span class="built_in">console</span>.log(test());</span><br><span class="line"><span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+透過 stub 這個 function 接到的回傳值會是一個 function<br>
+而這個 function 可以自定義呼叫的時候會有什麼樣的行為<br>
+上面的範例中，我們讓他呼叫後得到的回傳是 5</p>
+<p>那如果要得到類似 <code>{status: 0}</code> 這種結果呢? 方法如下<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> test = sinon.stub().returns(&#123;<span class="attr">status</span>: <span class="number">0</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(test());</span><br><span class="line"><span class="comment">// &#123;status: 0&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>那如果說是要取代原本 function 的功能呢?
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test."</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// "this is test."</span></span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).resolves(&#123;<span class="attr">status</span>: <span class="number">0</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// Promise &#123; &#123; status: 0 &#125; &#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>透過以上方法，obj 裡面的 test function 就被取代掉<br>
+然後讓這個 function 回傳一個 promise.resolve 的結果</p>
+<p>但如果說我的 function 要接收一個參數，然後指定回傳呢?<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test: "</span> + a</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(obj.test(<span class="string">"test"</span>));</span><br><span class="line"><span class="comment">// this is test: test</span></span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).withArgs(<span class="string">"123"</span>).returns(&#123;<span class="attr">status</span>: <span class="number">0</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(obj.test(<span class="string">"123"</span>));</span><br><span class="line"><span class="comment">// &#123; status: 0 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>透過 <code>withArgs</code> 可以設定，當這個 function 接收到什麼樣的參數的時候<br>
+應該要回傳什麼樣的結果<br>
+以上面的範例來說，只要這個 test function 的參數是 <code>&quot;123&quot;</code> 的話<br>
+那他的回傳值就會是 <code>{ status: 0 }</code><br>
+綜合以上的方法，就可以開始實作 unit test 了</p>
+<h4><span id="如何在-express-上使用-stub">如何在 express 上使用 stub</span></h4>
+<p>回到正題
+因為是 express 的關係，所以 req 以及 res 的物件必須先透過 stub<br>
+把 res 的行為先透過自訂義的方式給取代</p>
+<blockquote>
+<p>這邊 req 不用的原因是，我們只取 req.body 的值
+所以可以直接當成 json 取值就好
+但 res 不能的原因是, express 再回傳的時候
+會需要多 call res.json() 來把值回傳回去</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mockRequest = <span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        body: data</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> mockResponse = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> res = &#123;&#125;;</span><br><span class="line">    res.json = sinon.stub().returns(res);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下來正式的測試程式來了<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        sinon.stub(apiService, <span class="string">"login"</span>).withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>透過使用 <code>sinon.stub(apiService, &quot;login&quot;)</code><br>
+可以把 apiService 裡面的 login function 實際行為給取消掉<br>
+我們在後面定義了回傳一個 <code>Promise.resolve</code> 來指定被我們更改掉後應該回傳的資料<br>
+也就是 <code>sinon.stub(apiService, &quot;login&quot;).resolves(data)</code> 裡面的 data<br>
+這樣我們就可以讓 <code>authController.run</code> 裡面的 <code>apiService.login</code><br>
+不會真正去發送 POST Request，而是會回傳我們的結果<br>
+執行 mocha 後的結果如下<br>
+<img src="/images/unit-test/mocha-1.png" alt></p>
+<p>接下來我們再增加一個 test case，程式碼如下<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> apiServiceLogin = sinon.stub(apiService, <span class="string">"login"</span>)</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin.reset()</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">999</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>這邊要注意，已經被取代掉的 function，行為已經被我們第一個 test case 給固定了<br>
+為了要還原預設行為，必須在 <code>beforeEach</code> 加上  <code>reset()</code> 的方法<br>
+去重置每一個 test case <code>apiService.login</code> 回傳的行為，結果如下<br>
+<img src="/images/unit-test/mocha-2.png" alt></p>
+<h3><span id="express-with-sinon-spy">Express with Sinon Spy</span></h3>
+<h4><span id="sinon-spy">Sinon Spy</span></h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> spy = sinon.spy();</span><br><span class="line">spy()</span><br><span class="line"><span class="built_in">console</span>.log(spy.callCount);</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
+<p>基本上所有測試替身呼叫後，都是會回傳一個可執行 function 回來<br>
+根據前面介紹過，spy 是單純拿來做紀錄以及驗證<br>
+上面的範例來說，就可以知道這個 function 被呼叫一次<br>
+另外在 spy 的狀況下，function 實際行為是會被觸發，我們再來看另一段 code<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test: "</span> + a</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> spy = sinon.spy(obj, <span class="string">"test"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(spy(<span class="string">"hihi"</span>));</span><br><span class="line"><span class="comment">// this is test: hihi</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.test(<span class="string">"hihi2"</span>));</span><br><span class="line"><span class="comment">// this is test: hihi2</span></span><br><span class="line"><span class="built_in">console</span>.log(spy.callCount);</span><br><span class="line"><span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+以上面的例子可以看到，程式實際上的邏輯是有被觸發成功的<br>
+透過 spy 回傳的值，也是一個可執行的 function<br>
+透過 <code>spy()</code> 或是 <code>obj.test()</code> 去觸發，都會被記錄起來</p>
+<h4><span id="如何在-express-上使用-spy">如何在 express 上使用  spy</span></h4>
+<p>程式碼會增加一段對 username 進行 hash 再去做 login<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// authControler.js</span></span><br><span class="line"><span class="keyword">const</span> run = <span class="keyword">async</span> (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">        username</span><br><span class="line">    &#125; = &#123;...req.body&#125;;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> apiService.login(hash.sha256(username))</span><br><span class="line">    <span class="keyword">if</span> (result.status !== <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        message: <span class="string">"登入成功"</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// hash.js</span></span><br><span class="line"><span class="keyword">const</span> sha256 = <span class="function">(<span class="params">username</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> t = ctypto.createHash(<span class="string">"sha256"</span>);</span><br><span class="line">    <span class="keyword">return</span> t.update(username, <span class="string">"utf8"</span>).digest(<span class="string">"base64"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>先來跑跑看 unit test 會發現結果是錯的<br>
+原因是因為原本設定好 login 的時候，參數應該會是帶 <code>&quot;123&quot;</code><br>
+但因為變成 hash 之後會改成 <code>&quot;pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM=&quot;</code><br>
+把 unit test 裡面的 withArgs 改成 <code>apiServiceLogin.withArgs(&quot;pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM=&quot;)</code> 即可</p>
+<p>此時我們想要針對 <code>hash.sha256</code> 進行次數監控<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hashSha256 = sinon.spy(hash, <span class="string">"sha256"</span>);</span><br><span class="line">beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin.reset()</span><br><span class="line">        hashSha256.resetHistory()</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入成功, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">999</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>先在最前面加上 <code>const hashSha256 = sinon.spy(hash, &quot;sha256&quot;);</code> 取完成 spy 的動作
+然後在最後面加上了驗證 <code>sinon.assert.calledOnce(hashSha256)</code> 就可以完成驗證動作<br>
+除此之外，要先在 <code>beforeEach</code> 加上 <code>hashSha256.resetHistory()</code> 去重置計算次數</p>
+<h3><span id="express-with-sinon-mock">Express with Sinon Mock</span></h3>
+<h4><span id="sinon-mock">Sinon Mock</span></h4>
+<p>不同於 stub 以及 spy<br>
+透過 mock 回傳的東西並不是一個可執行的 function<br>
+而是要透過此 mock 去進行設定，類似『驗證』用的東西<br>
+以及可以像是 stub 一樣，指定在 function 被呼叫的時候，應該會有什麼樣的回傳值<br>
+但又不同於 stub 以及 spy，mock 並不能直接去針對某一個做 mock<br>
+而是只能會對整個 obj 做 mock<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test: "</span> + a</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mock = sinon.mock(obj);</span><br><span class="line"><span class="comment">// 驗證只能最多被呼叫 2 次</span></span><br><span class="line">mock.expects(<span class="string">"test"</span>).atLeast(<span class="number">2</span>).returns(&#123;<span class="attr">status</span>: <span class="number">1</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// &#123; status: 1 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// &#123; status: 1 &#125;</span></span><br><span class="line"></span><br><span class="line">mock.verify()</span><br></pre></td></tr></table></figure></p>
+<p>透過 <code>mock.expects(&quot;test&quot;).atLeast(2).returns({status: 1})</code> 去設定<br>
+預期哪一個 method 應該回傳什麼樣的值以及設定可被執行的次數<br>
+最後再透過 <code>mock.verify()</code> 可以啟用這個 assertion<br>
+除此之外，如果想要回復這個被 mock 原始的 method 的話<br>
+可以透過 <code>mock.restore()</code> 去做回覆的動作<br>
+這樣回覆之後，就會執行原本 function 的邏輯了</p>
+<h4><span id="如何在-express-上使用-mock">如何在 express 上使用 mock</span></h4>
+<p>基本上程式碼跟上一個很像，但不一樣的地方在於<br>
+我想要針對 apiService.js 去進行驗證，以及模擬回傳值<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> apiServiceLogin = sinon.mock(apiService);</span><br><span class="line">it(<span class="string">"登入成功, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.expects(<span class="string">"login"</span>).withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;).once();</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.expects(<span class="string">"login"</span>).withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;).once();</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>差別在於以下程式，透過 mock，可以去指定回傳值，以及可以兼顧驗證用的功能
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apiServiceLogin.expects(<span class="string">"login"</span>).withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">    status: <span class="number">-1</span></span><br><span class="line">&#125;).once();</span><br></pre></td></tr></table></figure></p>
+<h3><span id="express-with-sinon-fake">Express with Sinon Fake</span></h3>
+<h4><span id="sinon-fake">Sinon Fake</span></h4>
+<p>在 Sinon 官網上對於 Fake 的說明是<br>
+一種把 spy 跟 stub 混合的一種形式<br>
+所以這邊後面並不會介紹如何在 express 上面實作<br>
+而是會針對這個 fake 功能做些簡單的範例而已</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> fake = sinon.fake.returns(&#123;<span class="attr">status</span>: <span class="number">1</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(fake());</span><br><span class="line">&#123; <span class="attr">status</span>: <span class="number">1</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>跟 stub 一樣可以指定該 function 應該回傳的值<br>
+但他也有可以取代原本 method 的功能，程式如下</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"test"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> fake = sinon.fake.returns(&#123;<span class="attr">status</span>: <span class="number">1</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// test</span></span><br><span class="line">sinon.replace(obj, <span class="string">"test"</span>, fake)</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// &#123; status: 1 &#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>透過 <code>sinon.replace</code>，可以取代掉原本 function 的實際邏輯</p>
+<h2><span id="結語">結語</span></h2>
+<p>以上介紹完每一個 test double 的意思以及使用場景<br>
+但使用場景上，我也還在思考什麼樣的場景可以搭配什麼去使用<br>
+歡迎各位一起在下面留言進行討論<br>
+未來會再針對實務上 unit test 遇到的困難再回來整理一篇</p>
+<h2><span id="references">References</span></h2>
+<ol>
+<li>https://www.sitepoint.com/sinon-tutorial-javascript-testing-mocks-spies-stubs/</li>
+<li>https://dev.to/milipski/test-doubles---fakes-mocks-and-stubs</li>
+<li>https://codewithhugo.com/express-request-response-mocking/</li>
+<li>https://tpu.thinkpower.com.tw/tpu/articleDetails/1294</li>
+<li>http://kaczanowscy.pl/tomek/2011-01/testing-basics-sut-and-docs</li>
+</ol>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/12/10/unit-test-express/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
@@ -273,18 +575,110 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>為什麼要測試?<br>確保你程式的結果跟你預期所想的一樣<br>那這樣有什麼好處?<br>這樣大概會讓你少加班好幾小時吧 ….</p>
-<p>下面我會介紹如何用 mocha 去做測試<br>小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~</p>
+            <p>為什麼要測試?
+確保你程式的結果跟你預期所想的一樣
+那這樣有什麼好處?
+這樣大概會讓你少加班好幾小時吧 ....</p>
+<p>下面我會介紹如何用 mocha 去做測試
+小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="介紹">介紹</span></h2>
+<p>測試是為了確保你的程式結果跟你預期所想的一樣
+那我們又該如何去測試？那又該測試什麼東西？</p>
+<p>在這邊我把該測試的東西分成三個方向，由小到大
+這篇文章重點會放在 Unit Test 的部分，其他會以 Unit Test 的概念延伸說明</p>
+<ol>
+<li>
+<p>Unit Test (本篇重點)
+測試你的 function 有沒有輸出正確結果</p>
+</li>
+<li>
+<p>API Test
+測試跟 API 相關的 Unit 有沒有正確執行</p>
+</li>
+<li>
+<p>User Story Test
+測試整個使用情景有沒有跟使用者所想的一樣</p>
+</li>
+</ol>
+<h2><span id="準備">準備</span></h2>
+<p>在開始要做測試之前需要安裝以下幾樣東西
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mocha 測試主要會用到的東西</span></span><br><span class="line"><span class="comment">// chai 一個很好用的 assertion library</span></span><br><span class="line"><span class="comment">// axios 發 request 用的 library</span></span><br><span class="line">npm install mocha chai axios</span><br></pre></td></tr></table></figure></p>
+<p>該建立的資料夾</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">|--- package.json</span><br><span class="line">|--- node_modules</span><br><span class="line">|--- test</span><br><span class="line">|    |--- test.js</span><br></pre></td></tr></table></figure></p>
+<h2><span id="如何測試">如何測試</span></h2>
+<p>想像一下我們現在有一個需求進來了
+『我要把我丟進去的數字都變成一個陣列然後回傳回來』</p>
+<p>所以根據這個狀況我可以列出一個測試的方式
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Test Case in test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;assert&#125; = <span class="built_in">require</span>(<span class="string">'chai'</span>)</span><br><span class="line">describe(<span class="string">'Unit Test'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">'Test function with one number'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> [], <span class="keyword">typeof</span> result)</span><br><span class="line">        assert.equal(<span class="number">1</span>, result.length)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+測試列出來了，但是程式完全還沒寫
+於是接下來先寫主要功能的程式</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這程式想放哪都可以，記得 require 近來就好</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transformToArray</span> (<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [number]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">transformToArray(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// result should be [1]</span></span><br></pre></td></tr></table></figure></p>
+<p>程式寫出來之後，可以正式執行測試了
+依照這個 test case 我們的程式是有正確執行的</p>
+<p><img src="https://i.imgur.com/oanbJ3s.png" alt></p>
+<p>接下來我在列出另一個 test case
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Test Case in test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;assert&#125; = <span class="built_in">require</span>(<span class="string">'chai'</span>)</span><br><span class="line">describe(<span class="string">'Unit Test'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">'Test function with one number'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> [], <span class="keyword">typeof</span> result)</span><br><span class="line">        assert.equal(<span class="number">1</span>, result.length)</span><br><span class="line">    &#125;);</span><br><span class="line">    it(<span class="string">'Test function with multiple numbers'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> result, <span class="keyword">typeof</span> [])</span><br><span class="line">        assert.equal(result.length, <span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>Oops, test case 出錯了，代表我的程式爆炸了
+這時候該怎麼辦？
+那就是回去繼續修改我的程式讓他可以通過這個 test case</p>
+<p><img src="https://i.imgur.com/mXOfzFW.png" alt></p>
+<p>進行修改後，程式變成這樣</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Version 2 程式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> transformToArray = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> temp = []</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> i <span class="keyword">of</span> <span class="built_in">arguments</span>) &#123;</span><br><span class="line">        temp.push(<span class="built_in">arguments</span>[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> temp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>登愣，我們執行結果正確了</p>
+<p><img src="https://i.imgur.com/tAGBFrt.png" alt></p>
+<p>但是總覺得程式好像沒有寫得很漂亮於是改成</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Version 3 的程式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> transformToArray = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(<span class="built_in">arguments</span>).map(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">arguments</span>[key]</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在我們剛剛列出 test case 然後修正程式去符合新的 test case
+這整個開發流程，就屬於 TDD 的方式</p>
+<ol>
+<li>列出 test case</li>
+<li>開發程式</li>
+<li>Passed or Failed</li>
+<li>Refactor</li>
+</ol>
+<p>不過我個人是喜歡 BDD 的開發方式，兩個的主要差別我列在下面</p>
+<ul>
+<li>Test-driven Development 的方式，是以測試為主，列出各種 test case 讓程式可以正確執行</li>
+<li>Behavior-driven Development 的方式跟 TDD 很相似，但是他會以規格為主(有點像訂出 User Story 的感覺)</li>
+</ul>
+<p>BDD 比較符合我們現時開發上的流程，客戶需求進來
+變成一個 User Story，根據 User Story 寫出 Test Case
+接下來就是開發程式，讓程式可以通過這個 Test Case</p>
+<p>那關於測試 API 和 Uesr Story 的方式
+大體上跟 Unit Test 很相似，差在 Test Case 的寫法不太一樣而已</p>
+<p>對 API Test 來說，可能是 3 ~ 4 Unit 合成的一個 API
+例如 API 是『登入』，對登入來說 Input 是帳號密碼，Output 是有無驗證成功
+帳號密碼的驗證可能牽扯到 3 ~ 4 Unit，但是這已經在 Unit Test 那邊完成了
+所以對於 API Test 來說，可能會列出以下幾種 Test Case</p>
+<ol>
+<li>輸入正確帳號密碼，成功登入</li>
+<li>輸入錯誤帳號密碼，無法登入</li>
+<li>輸入正確帳號錯誤密碼，無法登入</li>
+<li>輸入錯誤帳號正確密碼，無法登入</li>
+</ol>
+<p>對 User Story 來說，可能是 3 ~ 4 個 API 合成的一個功能
+假如使用情形是，使用者登入了賣書網站
+搜尋了他想要的書本，根據搜尋會顯示或是找不到書本給使用者看
+那對於 User Story Test 來說，可能會列出以下幾種 Test Case</p>
+<p>First Test Case</p>
+<ol>
+<li>輸入正確帳號密碼，成功登入後</li>
+<li>在搜尋欄位輸入『nodejs』 然後顯示 nodejs 書籍</li>
+</ol>
+<p>Second Test Case</p>
+<ol>
+<li>輸入正確帳號密碼，成功登入後</li>
+<li>在搜尋欄位輸入『找不到』，然後顯示搜尋結果為 0 筆的頁面</li>
+</ol>
+<h2><span id="結語">結語</span></h2>
+<p>我認為用什麼樣的開發流程去測試程式都可以
+BDD TDD ATDD 等等，都是很好的開發流程
+對於不同團隊都會有各個團隊習慣的方式
+但最重要的是，要有『測試』這件事情出現在專案的開發流程上就足以</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2017/11/01/how-to-test/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>

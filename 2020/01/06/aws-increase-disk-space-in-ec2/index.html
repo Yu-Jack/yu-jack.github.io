@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>如何增加 EC2 硬碟大小 (Expand the disk space in EC2) - 技術雜記 Technology Notes</title>
+<title>如何增加 EC2 硬碟大小 (Expand the disk space in EC2) - 技術雜記 Technology Notes - Jack Yu</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -18,12 +18,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠此時會需要把硬碟增加大小，以免整台機器爆掉接下來會針對如何增加硬碟大小做說明">
+    <meta name="description" content="前言 在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠 此時會需要把硬碟增加大小，以免整台機器爆掉 接下來會針對如何增加硬碟大小做說明 &lt;!-- more --&gt; 確認硬碟大小方法 可以透過 df -h . 指令確認硬碟目前使用的大小 這時候可以看到硬碟配置的大小  接下來可以透過 lsblk 回找最大上限的配置可以是多少 上面 xvda 就是最多可以有多少大小 下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何增加 EC2 硬碟大小 (Expand the disk space in EC2)">
 <meta property="og:url" content="https://yu-jack.github.io/2020/01/06/aws-increase-disk-space-in-ec2/index.html">
-<meta property="og:site_name" content="技術雜記 Technology Notes">
-<meta property="og:description" content="前言在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠此時會需要把硬碟增加大小，以免整台機器爆掉接下來會針對如何增加硬碟大小做說明">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu">
+<meta property="og:description" content="前言 在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠 此時會需要把硬碟增加大小，以免整台機器爆掉 接下來會針對如何增加硬碟大小做說明 &lt;!-- more --&gt; 確認硬碟大小方法 可以透過 df -h . 指令確認硬碟目前使用的大小 這時候可以看到硬碟配置的大小  接下來可以透過 lsblk 回找最大上限的配置可以是多少 上面 xvda 就是最多可以有多少大小 下">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-01-06T15:10:13.000Z">
@@ -167,14 +167,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2><p>在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠<br>此時會需要把硬碟增加大小，以免整台機器爆掉<br>接下來會針對如何增加硬碟大小做說明  </p>
-<a id="more"></a>
-<h2><span id="確認硬碟大小方法">確認硬碟大小方法</span></h2><p>可以透過 <code>df -h .</code> 指令確認硬碟目前使用的大小<br>這時候可以看到硬碟配置的大小<br><img src="/images/aws/aws-ec2-disk-01.png" alt></p>
-<p>接下來可以透過 <code>lsblk</code> 回找最大上限的配置可以是多少<br>上面 xvda 就是最多可以有多少大小<br>下面 xvda1 就是實際上目前有多少大小<br><img src="/images/aws/aws-ec2-disk-02.png" alt></p>
-<p>看另一個例子，以下圖的 xvdi 和 xvdi1 來說<br>可配置最大上限為 8G，但目前正在使用的最大上限為 1023 MB<br><img src="/images/aws/aws-ec2-disk-03.png" alt></p>
-<h2><span id="增加硬碟大小">增加硬碟大小</span></h2><p>到 EC2 的頁面點選要更新的 EC2，點選右下角 disk<br><img src="/images/aws/aws-ec2-disk-04.png" alt></p>
-<p>點進去之後，就進入到另一個頁面，點選 Action &gt; Modify，會看到以下頁面，就可以增加大小了<br><img src="/images/aws/aws-ec2-disk-05.png" alt></p>
-<p>接下來要到 EC2 裡面把實際上使用的大小擴充到可配置的最大空間<br>以剛剛的 xvdi 為例的話，需要執行以下兩個指令才可以擴充<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo growpart &#x2F;dev&#x2F;xvdi 1</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1</span><br></pre></td></tr></table></figure><br>這樣大小會直接擴充至可配置的最大上限，如果不想要配置到最大的話<br>可以在後面加上幾 G 去做限制，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 擇一</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2G</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2048M</span><br></pre></td></tr></table></figure></p>
+            <h2><span id="前言">前言</span></h2>
+<p>在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠<br>
+此時會需要把硬碟增加大小，以免整台機器爆掉<br>
+接下來會針對如何增加硬碟大小做說明</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="確認硬碟大小方法">確認硬碟大小方法</span></h2>
+<p>可以透過 <code>df -h .</code> 指令確認硬碟目前使用的大小<br>
+這時候可以看到硬碟配置的大小<br>
+<img src="/images/aws/aws-ec2-disk-01.png" alt></p>
+<p>接下來可以透過 <code>lsblk</code> 回找最大上限的配置可以是多少
+上面 xvda 就是最多可以有多少大小
+下面 xvda1 就是實際上目前有多少大小
+<img src="/images/aws/aws-ec2-disk-02.png" alt></p>
+<p>看另一個例子，以下圖的 xvdi 和 xvdi1 來說<br>
+可配置最大上限為 8G，但目前正在使用的最大上限為 1023 MB<br>
+<img src="/images/aws/aws-ec2-disk-03.png" alt></p>
+<h2><span id="增加硬碟大小">增加硬碟大小</span></h2>
+<p>到 EC2 的頁面點選要更新的 EC2，點選右下角 disk<br>
+<img src="/images/aws/aws-ec2-disk-04.png" alt></p>
+<p>點進去之後，就進入到另一個頁面，點選 Action &gt; Modify，會看到以下頁面，就可以增加大小了<br>
+<img src="/images/aws/aws-ec2-disk-05.png" alt></p>
+<p>接下來要到 EC2 裡面把實際上使用的大小擴充到可配置的最大空間<br>
+以剛剛的 xvdi 為例的話，需要執行以下兩個指令才可以擴充
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo growpart &#x2F;dev&#x2F;xvdi 1</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1</span><br></pre></td></tr></table></figure>
+這樣大小會直接擴充至可配置的最大上限，如果不想要配置到最大的話<br>
+可以在後面加上幾 G 去做限制，如下
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 擇一</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2G</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2048M</span><br></pre></td></tr></table></figure></p>
 
         </div>
         

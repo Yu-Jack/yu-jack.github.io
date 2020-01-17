@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>使用 Apple Pay 時 Safari 如何開啟開發者模式去 Debug 呢? - 技術雜記 Technology Notes</title>
+<title>使用 Apple Pay 時 Safari 如何開啟開發者模式去 Debug 呢? - 技術雜記 Technology Notes - Jack Yu</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -18,12 +18,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="有時候在使用類似 Apple Pay 的東西並不知道該如何去看手機中 Safari 的偵錯然後就會愣在那裡，並不知道該怎麼 Debug今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式">
+    <meta name="description" content="有時候在使用類似 Apple Pay 的東西 並不知道該如何去看手機中 Safari 的偵錯 然後就會愣在那裡，並不知道該怎麼 Debug 今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式 &lt;!--more--&gt; 前提 首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！ 沒有打開的話是不能使用 D">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 Apple Pay 時 Safari 如何開啟開發者模式去 Debug 呢?">
 <meta property="og:url" content="https://yu-jack.github.io/2018/04/21/apple-debug/index.html">
-<meta property="og:site_name" content="技術雜記 Technology Notes">
-<meta property="og:description" content="有時候在使用類似 Apple Pay 的東西並不知道該如何去看手機中 Safari 的偵錯然後就會愣在那裡，並不知道該怎麼 Debug今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu">
+<meta property="og:description" content="有時候在使用類似 Apple Pay 的東西 並不知道該如何去看手機中 Safari 的偵錯 然後就會愣在那裡，並不知道該怎麼 Debug 今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式 &lt;!--more--&gt; 前提 首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！ 沒有打開的話是不能使用 D">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2018-04-20T16:00:00.000Z">
@@ -168,17 +168,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>有時候在使用類似 Apple Pay 的東西<br>並不知道該如何去看手機中 Safari 的偵錯<br>然後就會愣在那裡，並不知道該怎麼 Debug<br>今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式</p>
-<a id="more"></a>
-<h2><span id="前提">前提</span></h2><p>首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！<br>沒有打開的話是不能使用 Develop Debug mode  </p>
-<h2><span id="整體流程">整體流程</span></h2><ol>
-<li>把你的 iPhone 線接到 Mac 上</li>
-<li>在手機上面開起 Safari，然後打開一個頁面</li>
-<li>開啟 Mac 上的 Safari</li>
-<li>左上選單選擇 『開發者』(Develop)</li>
-<li><p>下面會有你手機的名稱，點下去就會看到手機 Safari 頁面<br><img src="/images/safari-1.png" alt></p>
+            <p>有時候在使用類似 Apple Pay 的東西
+並不知道該如何去看手機中 Safari 的偵錯
+然後就會愣在那裡，並不知道該怎麼 Debug
+今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式</p>
+<p>&lt;!--more--&gt;</p>
+<h2><span id="前提">前提</span></h2>
+<p>首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！<br>
+沒有打開的話是不能使用 Develop Debug mode</p>
+<h2><span id="整體流程">整體流程</span></h2>
+<ol>
+<li>
+<p>把你的 iPhone 線接到 Mac 上</p>
 </li>
-<li><p>接下來會跳出 Safari 的開發者模式，就可以繼續 Debug 拉 ~<br><img src="/images/safari-2.png" alt></p>
+<li>
+<p>在手機上面開起 Safari，然後打開一個頁面</p>
+</li>
+<li>
+<p>開啟 Mac 上的 Safari</p>
+</li>
+<li>
+<p>左上選單選擇 『開發者』(Develop)</p>
+</li>
+<li>
+<p>下面會有你手機的名稱，點下去就會看到手機 Safari 頁面
+<img src="/images/safari-1.png" alt></p>
+</li>
+<li>
+<p>接下來會跳出 Safari 的開發者模式，就可以繼續 Debug 拉 ~
+<img src="/images/safari-2.png" alt></p>
 </li>
 </ol>
 

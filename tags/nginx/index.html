@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>標籤: nginx - 技術雜記 Technology Notes</title>
+<title>標籤: nginx - 技術雜記 Technology Notes - Jack Yu</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,9 +19,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
     <meta property="og:type" content="website">
-<meta property="og:title" content="技術雜記 Technology Notes">
+<meta property="og:title" content="技術雜記 Technology Notes - Jack Yu">
 <meta property="og:url" content="https://yu-jack.github.io/tags/nginx/index.html">
-<meta property="og:site_name" content="技術雜記 Technology Notes">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:author" content="Jack Yu">
@@ -83,7 +83,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="技術雜記 Technology Notes" height="28">
+                <img src="/images/logo.svg" alt="技術雜記 Technology Notes - Jack Yu" height="28">
             
             </a>
         </div> -->
@@ -163,17 +163,65 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我們有時候要取得使用者 IP<br>往往都會用最簡單的方式取得 IP<br>以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>取得到的 IP 會是 Load Balancer 的嗎?<br>而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>如果不知道的話，那這邊文章有可能會幫助到你  </p>
+            <h2><span id="前言">前言</span></h2>
+<p>我們有時候要取得使用者 IP<br>
+往往都會用最簡單的方式取得 IP<br>
+以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>
+但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>
+取得到的 IP 會是 Load Balancer 的嗎?<br>
+而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>
+如果不知道的話，那這邊文章有可能會幫助到你</p>
+<p>&lt;!-- more --&gt;</p>
+<p>接下來會以 AWS 的 Load Balancer 以及伺服器上建立一個 Nginx 服務<br>
+然後還有一個 express server 服務來說明<br>
+從無 Load Balancer 到雙層 Load Balancer 的架構下分別該如何取得 IP</p>
+<h2><span id="direct-connection">Direct Connection</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-01-arch.png" alt></p>
+<p>當我們連線時直接連到伺服器時
+可以透過 express 的 <code>req.connection.remoteAddress</code> 取得到使用者的 IP (233.x.x.x)<br>
+原因是此時的呼叫者是使用者</p>
+<p><img src="/images/aws/aws-get-ip-01.png" alt></p>
+<h2><span id="單層-load-balancer">單層 Load Balancer</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-02-arch.png" alt></p>
+<p>當我們遇到只有一層 Load Balancer 時<br>
+透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的
+是 Load Balancer 的 IP (10.x.x.x, 圖中最下面)<br>
+原因是 Load Balancer 作為中介者，取得到了 Rqeuest 之後<br>
+會再往後端伺服器轉發，這時候呼叫者就是 Load Balancer 而不會是使用者<br>
+使用者真正的 IP 是會放在 header 的 <code>X-Forwarded-For</code> 上面 (233.x.x.x)</p>
+<blockquote>
+<p>這邊 Load Balancer 可以是 Nginx，但這邊我們用 AWS Load Balancer 做 DEMO<br>
+原因是我們後面會需要架構出兩層 Load Balancer 的狀況</p>
+</blockquote>
+<p><img src="/images/aws/aws-get-ip-02.png" alt></p>
+<h2><span id="雙層-load-balancer">雙層 Load Balancer</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-03-arch.png" alt></p>
+<p>而當我們再加上一層 Load Balancer 的時候 (這裡用 nginx 代替)<br>
+透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的是 Nginx 的 IP<br>
+因為呼叫者從上一個案例的 Load Balancer 變成了 Nginx<br>
+而我們這邊 Nginx 是架設在 localhost 裡面，所以可以看到 IP 是 127.0.0.1 (圖中最下面)<br>
+那前面 Load balancer 的 IP 就被放到 X-Forwarded-For 上面去了 (10.x.x.x 那個)</p>
+<p><img src="/images/aws/aws-get-ip-03.png" alt></p>
+<h2><span id="雙層-load-balancer-惡意-x-forwarded-for">雙層 Load Balancer + 惡意 X-Forwarded-For</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-04-arch.png" alt></p>
+<p>狀況如同前面的 Case，但這邊唯一不一樣的是<br>
+萬一使用者自己在 X-Forwarded-For 加了 <code>X-Forwarded-For: 5.5.5.5, 6.6.6.6</code><br>
+這些資料是會被放到 X-Forwarded-For 最前面去的<br>
+所以在取得 IP 的時候要特別注意並不是取得 X-Forwarded-For 的第一個就可以了<br>
+應該要根據你前面放了多少個 Load Balancer 去決定要拿<strong><em>從後面數過來的第幾個</em></strong>才是正確的</p>
+<p><img src="/images/aws/aws-get-ip-04.png" alt></p>
+<h2><span id="references">References</span></h2>
+<p>其他還有很多詳細的介紹，非常推薦看以下這篇文章，大推！</p>
+<ol>
+<li>https://devco.re/blog/2014/06/19/client-ip-detection/</li>
+</ol>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/01/09/express-get-client-ip-from-load-balancer/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
