@@ -164,53 +164,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         <div class="content">
             <p>這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="使用情境介紹">使用情境介紹</span></h2>
-<p>一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的</p>
-<p>這裡有兩台機器，分別為 A B
-B 為重要的服務或是資料
-A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)</p>
-<p>這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑
-這件事實在是太麻煩了（汗
-所以可以的話希望可以直接在 A 機器上面就能夠讀取到 B 的服務或是資料
-這樣的話就能夠方便直接在本地開發
-而要達成這件事情的方法就是透過 SSH Tunnel 的方式去達成</p>
-<h2><span id="ssh-tunnel-介紹">SSH Tunnel 介紹</span></h2>
-<p>SSH Tunnel 在者裡面扮演的角色可以這樣思考</p>
-<p>你在住家附近有一口水井，但你水井完全是沒有水可以取用
-然後在距離很遠的地方有一個水庫，要喝水的必須到水庫取水並放回住家附近的水井
-有一個作法就是，把水井和水庫之間挖一條通道，讓水庫的水直接導入到水井
-這個<code>通道</code>就是我們 SSH Tunnel 扮演的角色</p>
-<p>而用比較技術的說法的話，SSH Tunnel 就是做到了 Port Forwarding 的功用</p>
-<h2><span id="ssh-tunnel-使用方式">SSH Tunnel 使用方式</span></h2>
-<p>這邊主要會是用 Linux 原生指令 ssh 去完成 SSH Tunnel
-在這之前我們先回想一下 ssh 連線的方式！</p>
-<p>當已經有一台 server 上面跑著一個網頁的服務
-而你可以透過以下指令 ssh 連線到那一台 server 上
-<code>ssh root@127.0.0.1</code>
-ssh 連線上去之後，上面有跑一個 Nginx 的服務在 80 port
-這時候在 server 上執行 <code>curl localhost</code> 會發現有成功回傳 Nginx 的 Hello 頁面</p>
-<p>此時如果你想要在自己的電腦上就能讀取這個網頁或是資料庫該怎麼辦?
-這邊我們就要介紹 <code>-L</code> 這個 option 可以幫你達成這個目標！
-Template: <code>ssh -L [local_port]:localhost:[remote_port] root@127.0.0.1</code></p>
-<p>所以如果我要把 server 上的 80 port 網頁服務導入到本地端的 8080 port 該怎麼做呢?
-可以使用以下這行指令
-<code>ssh -L 8080:localhost:80 root@127.0.0.1</code>
-然後在瀏覽器打開 http://localhost:8080 即可看到 server 上面的網頁！</p>
-<p>接著又有另一種情境出現了
-就是在 server 上要讀取 local port 的服務的時候該怎麼辦呢?
-這裡就可以使用另一種相反的方式，也就是透過 <code>-R</code> 去達成
-<code>-R</code> 簡單來說就是反過來，你可以把本地機器上的服務 port 導入到 server 讓他連線！
-Template: <code>ssh -R [remote_port]:localhsot:[local_port] root@127.0.0.1</code></p>
-<p>舉例來說，在本地端起了一個 8080 port 的服務
-如果要在 server 上 6666 port 讀取的話可以透過以下方式取得！
-<code>ssh -R 6666:localhost:8080 root@127.0.0.1</code></p>
-<h2><span id="後記">後記</span></h2>
-<p>最近還蠻常會使用到這個方式去連線，於是在這邊特別把它記錄下來
-然而這種方式只是圖個方便，需要的時候做個 forwarding 而已</p>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/01/08/ssh-tunnel/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -254,110 +217,18 @@ Template: <code>ssh -R [remote_port]:localhsot:[local_port] root@127.0.0.1</code
             
         </h1>
         <div class="content">
-            <p>為什麼要測試?
-確保你程式的結果跟你預期所想的一樣
-那這樣有什麼好處?
-這樣大概會讓你少加班好幾小時吧 ....</p>
-<p>下面我會介紹如何用 mocha 去做測試
-小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="介紹">介紹</span></h2>
-<p>測試是為了確保你的程式結果跟你預期所想的一樣
-那我們又該如何去測試？那又該測試什麼東西？</p>
-<p>在這邊我把該測試的東西分成三個方向，由小到大
-這篇文章重點會放在 Unit Test 的部分，其他會以 Unit Test 的概念延伸說明</p>
-<ol>
-<li>
-<p>Unit Test (本篇重點)
-測試你的 function 有沒有輸出正確結果</p>
-</li>
-<li>
-<p>API Test
-測試跟 API 相關的 Unit 有沒有正確執行</p>
-</li>
-<li>
-<p>User Story Test
-測試整個使用情景有沒有跟使用者所想的一樣</p>
-</li>
-</ol>
-<h2><span id="準備">準備</span></h2>
-<p>在開始要做測試之前需要安裝以下幾樣東西
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mocha 測試主要會用到的東西</span></span><br><span class="line"><span class="comment">// chai 一個很好用的 assertion library</span></span><br><span class="line"><span class="comment">// axios 發 request 用的 library</span></span><br><span class="line">npm install mocha chai axios</span><br></pre></td></tr></table></figure></p>
-<p>該建立的資料夾</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">|--- package.json</span><br><span class="line">|--- node_modules</span><br><span class="line">|--- test</span><br><span class="line">|    |--- test.js</span><br></pre></td></tr></table></figure></p>
-<h2><span id="如何測試">如何測試</span></h2>
-<p>想像一下我們現在有一個需求進來了
-『我要把我丟進去的數字都變成一個陣列然後回傳回來』</p>
-<p>所以根據這個狀況我可以列出一個測試的方式
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Test Case in test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;assert&#125; = <span class="built_in">require</span>(<span class="string">'chai'</span>)</span><br><span class="line">describe(<span class="string">'Unit Test'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">'Test function with one number'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> [], <span class="keyword">typeof</span> result)</span><br><span class="line">        assert.equal(<span class="number">1</span>, result.length)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-測試列出來了，但是程式完全還沒寫
-於是接下來先寫主要功能的程式</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這程式想放哪都可以，記得 require 近來就好</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transformToArray</span> (<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [number]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">transformToArray(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// result should be [1]</span></span><br></pre></td></tr></table></figure></p>
-<p>程式寫出來之後，可以正式執行測試了
-依照這個 test case 我們的程式是有正確執行的</p>
-<p><img src="https://i.imgur.com/oanbJ3s.png" alt></p>
-<p>接下來我在列出另一個 test case
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Test Case in test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;assert&#125; = <span class="built_in">require</span>(<span class="string">'chai'</span>)</span><br><span class="line">describe(<span class="string">'Unit Test'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">'Test function with one number'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> [], <span class="keyword">typeof</span> result)</span><br><span class="line">        assert.equal(<span class="number">1</span>, result.length)</span><br><span class="line">    &#125;);</span><br><span class="line">    it(<span class="string">'Test function with multiple numbers'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> result, <span class="keyword">typeof</span> [])</span><br><span class="line">        assert.equal(result.length, <span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>Oops, test case 出錯了，代表我的程式爆炸了
-這時候該怎麼辦？
-那就是回去繼續修改我的程式讓他可以通過這個 test case</p>
-<p><img src="https://i.imgur.com/mXOfzFW.png" alt></p>
-<p>進行修改後，程式變成這樣</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Version 2 程式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> transformToArray = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> temp = []</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> i <span class="keyword">of</span> <span class="built_in">arguments</span>) &#123;</span><br><span class="line">        temp.push(<span class="built_in">arguments</span>[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> temp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>登愣，我們執行結果正確了</p>
-<p><img src="https://i.imgur.com/tAGBFrt.png" alt></p>
-<p>但是總覺得程式好像沒有寫得很漂亮於是改成</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Version 3 的程式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> transformToArray = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(<span class="built_in">arguments</span>).map(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">arguments</span>[key]</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在我們剛剛列出 test case 然後修正程式去符合新的 test case
-這整個開發流程，就屬於 TDD 的方式</p>
-<ol>
-<li>列出 test case</li>
-<li>開發程式</li>
-<li>Passed or Failed</li>
-<li>Refactor</li>
-</ol>
-<p>不過我個人是喜歡 BDD 的開發方式，兩個的主要差別我列在下面</p>
-<ul>
-<li>Test-driven Development 的方式，是以測試為主，列出各種 test case 讓程式可以正確執行</li>
-<li>Behavior-driven Development 的方式跟 TDD 很相似，但是他會以規格為主(有點像訂出 User Story 的感覺)</li>
-</ul>
-<p>BDD 比較符合我們現時開發上的流程，客戶需求進來
-變成一個 User Story，根據 User Story 寫出 Test Case
-接下來就是開發程式，讓程式可以通過這個 Test Case</p>
-<p>那關於測試 API 和 Uesr Story 的方式
-大體上跟 Unit Test 很相似，差在 Test Case 的寫法不太一樣而已</p>
-<p>對 API Test 來說，可能是 3 ~ 4 Unit 合成的一個 API
-例如 API 是『登入』，對登入來說 Input 是帳號密碼，Output 是有無驗證成功
-帳號密碼的驗證可能牽扯到 3 ~ 4 Unit，但是這已經在 Unit Test 那邊完成了
-所以對於 API Test 來說，可能會列出以下幾種 Test Case</p>
-<ol>
-<li>輸入正確帳號密碼，成功登入</li>
-<li>輸入錯誤帳號密碼，無法登入</li>
-<li>輸入正確帳號錯誤密碼，無法登入</li>
-<li>輸入錯誤帳號正確密碼，無法登入</li>
-</ol>
-<p>對 User Story 來說，可能是 3 ~ 4 個 API 合成的一個功能
-假如使用情形是，使用者登入了賣書網站
-搜尋了他想要的書本，根據搜尋會顯示或是找不到書本給使用者看
-那對於 User Story Test 來說，可能會列出以下幾種 Test Case</p>
-<p>First Test Case</p>
-<ol>
-<li>輸入正確帳號密碼，成功登入後</li>
-<li>在搜尋欄位輸入『nodejs』 然後顯示 nodejs 書籍</li>
-</ol>
-<p>Second Test Case</p>
-<ol>
-<li>輸入正確帳號密碼，成功登入後</li>
-<li>在搜尋欄位輸入『找不到』，然後顯示搜尋結果為 0 筆的頁面</li>
-</ol>
-<h2><span id="結語">結語</span></h2>
-<p>我認為用什麼樣的開發流程去測試程式都可以
-BDD TDD ATDD 等等，都是很好的開發流程
-對於不同團隊都會有各個團隊習慣的方式
-但最重要的是，要有『測試』這件事情出現在專案的開發流程上就足以</p>
-
+            <p>為什麼要測試?<br>確保你程式的結果跟你預期所想的一樣<br>那這樣有什麼好處?<br>這樣大概會讓你少加班好幾小時吧 ….</p>
+<p>下面我會介紹如何用 mocha 去做測試<br>小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/01/how-to-test/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>

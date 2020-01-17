@@ -153,40 +153,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <p>有時候在使用類似 Apple Pay 的東西
-並不知道該如何去看手機中 Safari 的偵錯
-然後就會愣在那裡，並不知道該怎麼 Debug
-今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式</p>
-<p>&lt;!--more--&gt;</p>
-<h2><span id="前提">前提</span></h2>
-<p>首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！<br>
-沒有打開的話是不能使用 Develop Debug mode</p>
-<h2><span id="整體流程">整體流程</span></h2>
-<ol>
-<li>
-<p>把你的 iPhone 線接到 Mac 上</p>
-</li>
-<li>
-<p>在手機上面開起 Safari，然後打開一個頁面</p>
-</li>
-<li>
-<p>開啟 Mac 上的 Safari</p>
-</li>
-<li>
-<p>左上選單選擇 『開發者』(Develop)</p>
-</li>
-<li>
-<p>下面會有你手機的名稱，點下去就會看到手機 Safari 頁面
-<img src="/images/safari-1.png" alt></p>
-</li>
-<li>
-<p>接下來會跳出 Safari 的開發者模式，就可以繼續 Debug 拉 ~
-<img src="/images/safari-2.png" alt></p>
-</li>
-</ol>
-
+            <p>有時候在使用類似 Apple Pay 的東西<br>並不知道該如何去看手機中 Safari 的偵錯<br>然後就會愣在那裡，並不知道該怎麼 Debug<br>今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2018/04/21/apple-debug/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -230,67 +207,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
-加上小弟常用 nodejs + express 去寫前後端
-於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="介紹">介紹</span></h2>
-<p>在 express 裡面有一個 function 叫做 <code>express.static()</code>
-這個是一個 middleware，最常被用在要讀取一些靜態檔案上面
-以這個寫法來說 <code>app.use(express.static(__dirname + './public'))</code>
-是指向 <code>public</code> 這個資校夾裡面，假設裡面有一個檔案叫做 <code>index.html</code> 的話，並且伺服器的 port 是 8080
-那麼在網址列輸入 <code>http://localhost:8080/index.html</code> 這樣就可以讀到這個檔案了</p>
-<h2><span id="追朔源頭">追朔源頭</span></h2>
-<p>那我的疑問來了，我打開 Chrome Inspect 的 Network Tab 去看了一下他的 Response Headers
-發現一件很奇怪的事情，我明明什麼都沒有設定，卻出現幾個有關 Cache 的 Headers</p>
-<ol>
-<li>Accept-Ranges</li>
-<li>Cache-Control</li>
-<li>ETag</li>
-<li>Last-Modified</li>
-</ol>
-<p><img src="https://i.imgur.com/3O0nBTh.png" alt></p>
-<blockquote>
-<p>有關 Cache 的一些機制和理論就不多作介紹
-這裡單純就爬一下 Source Code，看看 express 對靜態檔案做了什麼</p>
-</blockquote>
-<h3><span id="express">express</span></h3>
-<p>在 express source code 中，發現他是用了另一個 library <code>server-static</code>
-於在就再來看看 <code>server-static</code> 做了什麼</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exports.static = <span class="built_in">require</span>(<span class="string">'serve-static'</span>);</span><br></pre></td></tr></table></figure></p>
-<h3><span id="serve-static">serve-static</span></h3>
-<p>我只列出關鍵幾行，其他行主要都是設置參數用而已</p>
-<p>從第一行可以看出，把 <code>serverStatic</code> 這個 function 給 export 出來了
-再往下看會發現有一個 <code>send</code> function 把 <code>path</code> 傳了進去
-然後在最後面，<code>stream.pipe(res)</code> 對 response 做了一些更動</p>
-<p>於是再往下找找看 <code>send()</code> 這個是什麼東西</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = serveStatic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> send = <span class="built_in">require</span>(<span class="string">'send'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">serveStatic</span> (<span class="params">root, options</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> stream = send(req, path, opts)</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// pipe</span></span><br><span class="line">    stream.pipe(res)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="send-send">send -- send</span></h3>
-<p>根據上一段程式最後一段 (12行)，他 call 了一個 <code>pipe</code> 的 function
-<code>pipe</code> function 裡面去 call <code>this.sendFile(path)</code>
-<code>this.sendFile</code> 裡面又去 call <code>self.send(path, stat)</code>
-然後在 <code>send</code> 這個 fucntion 裡面出現關鍵的 <code>function</code> -- <code>this.setHeader</code>
-看來 response headers 就是在這邊被更改了</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = send</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這邊回傳給到 server-static 去 call</span></span><br><span class="line"><span class="comment">// 也就是上一段程式碼的第 8 行，然後在第 </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">req, path, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> SendStream(req, path, options)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.pipe = <span class="function"><span class="keyword">function</span> <span class="title">pipe</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.sendFile(path)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.sendFile = <span class="function"><span class="keyword">function</span> <span class="title">sendFile</span> (<span class="params">path</span>) </span>&#123;</span><br><span class="line"><span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'stat "%s"'</span>, path)</span><br><span class="line">  self.send(path, stat)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SendStream.prototype.send = <span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'pipe "%s"'</span>, path)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// set header fields</span></span><br><span class="line">  <span class="keyword">this</span>.setHeader(path, stat)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="send-setheader">send -- setHeader</span></h3>
-<p>找到了對 header 做更動的地方後，以第 11 ~ 20 行中間這段 Code 來說
-去設置了 Cache-Control 的內容，依照整個邏輯下如果沒有特別設置，那麼 header 會長以下這樣</p>
-<p><code>Cache-Control: public, max-age=0</code></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">SendStream.prototype.setHeader = <span class="function"><span class="keyword">function</span> <span class="title">setHeader</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> res = <span class="keyword">this</span>.res</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.emit(<span class="string">'headers'</span>, res, path, stat)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._acceptRanges &amp;&amp; !res.getHeader(<span class="string">'Accept-Ranges'</span>)) &#123;</span><br><span class="line">    debug(<span class="string">'accept ranges'</span>)</span><br><span class="line">    res.setHeader(<span class="string">'Accept-Ranges'</span>, <span class="string">'bytes'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._cacheControl &amp;&amp; !res.getHeader(<span class="string">'Cache-Control'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> cacheControl = <span class="string">'public, max-age='</span> + <span class="built_in">Math</span>.floor(<span class="keyword">this</span>._maxage / <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>._immutable) &#123;</span><br><span class="line">      cacheControl += <span class="string">', immutable'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    debug(<span class="string">'cache-control %s'</span>, cacheControl)</span><br><span class="line">    res.setHeader(<span class="string">'Cache-Control'</span>, cacheControl)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._lastModified &amp;&amp; !res.getHeader(<span class="string">'Last-Modified'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> modified = stat.mtime.toUTCString()</span><br><span class="line">    debug(<span class="string">'modified %s'</span>, modified)</span><br><span class="line">    res.setHeader(<span class="string">'Last-Modified'</span>, modified)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._etag &amp;&amp; !res.getHeader(<span class="string">'ETag'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> val = etag(stat)</span><br><span class="line">    debug(<span class="string">'etag %s'</span>, val)</span><br><span class="line">    res.setHeader(<span class="string">'ETag'</span>, val)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="demo">DEMO</span></h2>
-<p>另外提供另個方法可以追回去 (我是懶得寫程式直接看 source code XD)
-安裝完環境之後要跑 server 的時候，可以這樣下</p>
-<p><code>DEBUG=* node server.js</code></p>
-<p>從圖片中可以發現，那些 log message 是一樣的</p>
-<p><img src="https://i.imgur.com/mhj2YxB.png" alt></p>
-<h2><span id="後記">後記</span></h2>
-<p>一直以來以為是 express 的做法讓檔案可以 cache 住
-原來一直都是默默無名的 opensouce library 在幫助 express 啊
-希望這篇有稍微幫助到對 express 處理 static files 有疑慮的人</p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近突然有一個想法開始研究起瀏覽器端的 Cache 方法<br>加上小弟常用 nodejs + express 去寫前後端<br>於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/12/11/express-static/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -334,42 +261,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
-上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
-所以必須在 API Gateway 必須要做 body mapping 的調整
-e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
-那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端
-&lt;!-- more --&gt;</p>
-<h2><span id="aws-api-gateway">AWS API Gateway</span></h2>
-<p>在上一篇，透過 Lambda 和 API Gateway 完成檔案上傳和下載之後
-出現了一個疑問，API Gateway 直接到 Server 這端，需不需要調整東西呢 ?</p>
-<p>在這樣的想法下，做了一個簡單的實現</p>
-<ol>
-<li>在 API Gateway 新增一個 API /upload (POST Method)</li>
-<li>用 nodejs 啟動 server (記得把 body-parser 改成 text 也支援的設定)
-在這樣的實驗之下，發現 Request 的 Content-Type 只有帶 multipart/form-data
-並沒有帶後面的 Boundary，這樣會沒有辦法去 Parse 上傳的檔案或是 text
-那會這樣的原因只會有一個，那就是 API Gateway 對我的 Headers 做了手腳</li>
-</ol>
-<p>後來的解決方式，是把設定 API Gateway 為 Proxy，就可以讓 bounday 成功 pass 到後端 Server
-那這後面就會介紹如何設定 API Gateway (基本上就只有一個地方，Integration Request &amp; Integration Response)</p>
-<h3><span id="upload">Upload</span></h3>
-<p>只要把 HTTP Proxy Integration 打勾即可，不用像上一篇要到其他地方做設定</p>
-<p><img src="https://i.imgur.com/xuGUHC1.png" alt></p>
-<h2><span id="server">Server</span></h2>
-<h3><span id="upload">Upload</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line">app.use(bodyParser.text(&#123;<span class="attr">type</span>: <span class="string">'*/*'</span>&#125;))</span><br><span class="line">app.post(<span class="string">'/upload_file'</span>,  (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="built_in">console</span>.log(req.headers);</span><br><span class="line">    res.json(&#123;&#125;)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="demo">DEMO</span></h2>
-<h3><span id="upload">Upload</span></h3>
-<p>從上傳的地方會看到 content-type 最後面會出現 boundary
-如果 API Gateway 沒有設成 Proxy 的話，是不會出現</p>
-<p>不會出現的話，會沒辦法用 content-type 後面的 boundary 去 parse 檔案的
-因為檔案之間會用 boundary 去區分，沒了這個就沒辦法識別傳了什麼上來</p>
-<p><img src="https://i.imgur.com/r4KL4RF.png" alt></p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳<br>上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON<br>所以必須在 API Gateway 必須要做 body mapping 的調整<br>e.g 透過 Binary Support 或是 Base64Enconde 的方式處理<br>那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端<br>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -413,22 +315,17 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
             
         </h1>
         <div class="content">
-            <p>今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost
-這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到</p>
-<p>&lt;!-- more --&gt;</p>
-<p>工具連結在此: <a href="https://ngrok.com/">Ngrok</a></p>
-<h2><span id="使用方式簡單介紹">使用方式簡單介紹</span></h2>
-<p>下載下來後，<code>unzip</code> 之後就可以做使用了
-如果在 localhost 開了一個 8080 想讓大家連
-可以在下這以下這行指令</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;ngrok http 8080</span><br></pre></td></tr></table></figure></p>
-<p>結果會長這樣，然後在網址列打上他給你的網址就可以直接連到你的 8080 port
-<img src="https://i.imgur.com/9wgzJP7.png" alt></p>
-<p>如果像是要用到 Apple Pay 一些特定服務只允許跑在 SSL 上面的話
-這個工具會非常有用，但畢竟是經過別人家重導 .... 所以小心用</p>
-
+            <p>今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost<br>這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/08/ngrok/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -472,69 +369,17 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
             
         </h1>
         <div class="content">
-            <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
-在 API Gateway 中要做幾項設定才有辦法達成
-加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
-這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-&lt;!-- more --&gt;</p>
-<h2><span id="api-gateway">API Gateway</span></h2>
-<p>主要調整得地方有兩個</p>
-<ol>
-<li>/upload Integration Request</li>
-<li>/download Integration Response</li>
-</ol>
-<p>另外還有一種特別的方式，是利用 API Gateway 的 Binary Support 去處理
-這種方式會列在最後面</p>
-<h3><span id="upload-integration-request">/upload Integration Request</span></h3>
-<ol>
-<li>到 body mapping template 底下調整成圖片樣子(Generate templaye 選擇 &quot;Method Request passthrough&quot;)</li>
-</ol>
-<p><img src="https://i.imgur.com/1vUOTvZ.png" alt></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需要修改的部分為第一行的 body</span></span><br><span class="line"><span class="comment">// 其他行不需要做調整</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: <span class="string">"$util.base64Encode($input.body)"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="download-integration-reponse">/download Integration Reponse</span></h3>
-<ol>
-<li>到 body mapping template 底下調整成圖片樣子</li>
-</ol>
-<p><img src="https://i.imgur.com/ZW32Fhb.png" alt>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$util.base64Decode($input.body)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="lambda">Lambda</span></h2>
-<p>主要是用 nodejs 去編寫處理上傳的部分</p>
-<h3><span id="handle-upload-request">Handle upload request</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multipart = <span class="built_in">require</span>(<span class="string">'parse-multipart'</span>);</span><br><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// convert base64 string to binary</span></span><br><span class="line">    <span class="keyword">const</span> buffer = <span class="keyword">new</span> Buffer(event.body, <span class="string">'base64'</span>)</span><br><span class="line">    <span class="keyword">const</span> boundary = multipart.getBoundary(event.params.header[<span class="string">'Content-Type'</span>])</span><br><span class="line">    <span class="keyword">const</span> parts = multipart.Parse(buffer, boundary)</span><br><span class="line">    <span class="keyword">return</span> callback(<span class="literal">null</span>, &#123;</span><br><span class="line">        s: parts</span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="handle-download-request">Handle download request</span></h3>
-<p>這邊範例是用去讀取 S3 的檔案</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    s3.getObject(&#123;</span><br><span class="line">        Bucket: <span class="string">'your-bucket'</span>,</span><br><span class="line">        Key: <span class="string">'download_file.json'</span></span><br><span class="line">    &#125;, (err, data) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) &#123;</span><br><span class="line">            <span class="keyword">return</span> callback(err)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 原本方式是會直接回傳 JSON (DEMO 有圖)</span></span><br><span class="line">        <span class="comment">// callback(null, data.Body)</span></span><br><span class="line">        <span class="comment">// </span></span><br><span class="line">        <span class="comment">// 正確方式，回傳 base64，然後讓 API Gateway 去 decode</span></span><br><span class="line">        callback(<span class="literal">null</span>, <span class="keyword">new</span> Buffer(data.Body).toString(<span class="string">'base64'</span>))</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="demo-with-postman">Demo with Postman</span></h2>
-<h3><span id="upload-file">Upload File</span></h3>
-<p>上傳要注意選 &quot;form-data&quot;
-然後隨便選擇一個檔案即可</p>
-<p><img src="https://i.imgur.com/QhjRLH3.png" alt></p>
-<h3><span id="download-file">Download File</span></h3>
-<p>如果沒有在 API Gateway 做調整的話會變成
-沒錯，Lambda 是會直接回傳 JSON 的
-他並不會回傳 binary 給你，所以才要到 API Gateway 和 Lambda 做一些調整 (要到 mapping template 調整)</p>
-<p><img src="https://i.imgur.com/qFc5FZC.png" alt></p>
-<p>修改之後</p>
-<p><img src="https://i.imgur.com/mijGJFI.png" alt></p>
-<p>然後可以改用程式下載檔案</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> r = request.post(<span class="string">'your_url'</span>)</span><br><span class="line">r.on(<span class="string">'response'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    res.pipe(fs.createWriteStream(<span class="string">'download_file.json'</span>))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h2><span id="額外補充-binary-support">額外補充 - Binary Support</span></h2>
-<h3><span id="upload-integration-request">/upload integration request</span></h3>
-<p>在 API Gateway 底下的 binary support 加上 multipart/form-data，API Gateway 就會自動幫我們做 base64 encode</p>
-<p>而在 mapping template 就改成這樣即可
-lambda 不需要做任何調整</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: $input.json(<span class="string">'$'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="註記">註記</span></h2>
-<ol>
-<li>API Gateway payload 有限制 10mb</li>
-<li>Lambda 有限制 6mb</li>
-</ol>
-<p>所以最大只能上傳或下載 6mb 的檔案
-但是，因為會轉成 base64，所以原本的 4mb 轉完可能變成 5mb
-這裡是特別要注意的地方</p>
-
+            <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載<br>在 API Gateway 中要做幾項設定才有辦法達成<br>加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整<br>這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分<br>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/04/handle-file-with-Lambda-and-API-Gateway/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -578,110 +423,18 @@ lambda 不需要做任何調整</p>
             
         </h1>
         <div class="content">
-            <p>為什麼要測試?
-確保你程式的結果跟你預期所想的一樣
-那這樣有什麼好處?
-這樣大概會讓你少加班好幾小時吧 ....</p>
-<p>下面我會介紹如何用 mocha 去做測試
-小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="介紹">介紹</span></h2>
-<p>測試是為了確保你的程式結果跟你預期所想的一樣
-那我們又該如何去測試？那又該測試什麼東西？</p>
-<p>在這邊我把該測試的東西分成三個方向，由小到大
-這篇文章重點會放在 Unit Test 的部分，其他會以 Unit Test 的概念延伸說明</p>
-<ol>
-<li>
-<p>Unit Test (本篇重點)
-測試你的 function 有沒有輸出正確結果</p>
-</li>
-<li>
-<p>API Test
-測試跟 API 相關的 Unit 有沒有正確執行</p>
-</li>
-<li>
-<p>User Story Test
-測試整個使用情景有沒有跟使用者所想的一樣</p>
-</li>
-</ol>
-<h2><span id="準備">準備</span></h2>
-<p>在開始要做測試之前需要安裝以下幾樣東西
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mocha 測試主要會用到的東西</span></span><br><span class="line"><span class="comment">// chai 一個很好用的 assertion library</span></span><br><span class="line"><span class="comment">// axios 發 request 用的 library</span></span><br><span class="line">npm install mocha chai axios</span><br></pre></td></tr></table></figure></p>
-<p>該建立的資料夾</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">|--- package.json</span><br><span class="line">|--- node_modules</span><br><span class="line">|--- test</span><br><span class="line">|    |--- test.js</span><br></pre></td></tr></table></figure></p>
-<h2><span id="如何測試">如何測試</span></h2>
-<p>想像一下我們現在有一個需求進來了
-『我要把我丟進去的數字都變成一個陣列然後回傳回來』</p>
-<p>所以根據這個狀況我可以列出一個測試的方式
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Test Case in test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;assert&#125; = <span class="built_in">require</span>(<span class="string">'chai'</span>)</span><br><span class="line">describe(<span class="string">'Unit Test'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">'Test function with one number'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> [], <span class="keyword">typeof</span> result)</span><br><span class="line">        assert.equal(<span class="number">1</span>, result.length)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-測試列出來了，但是程式完全還沒寫
-於是接下來先寫主要功能的程式</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這程式想放哪都可以，記得 require 近來就好</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transformToArray</span> (<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [number]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">transformToArray(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// result should be [1]</span></span><br></pre></td></tr></table></figure></p>
-<p>程式寫出來之後，可以正式執行測試了
-依照這個 test case 我們的程式是有正確執行的</p>
-<p><img src="https://i.imgur.com/oanbJ3s.png" alt></p>
-<p>接下來我在列出另一個 test case
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Test Case in test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;assert&#125; = <span class="built_in">require</span>(<span class="string">'chai'</span>)</span><br><span class="line">describe(<span class="string">'Unit Test'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">'Test function with one number'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> [], <span class="keyword">typeof</span> result)</span><br><span class="line">        assert.equal(<span class="number">1</span>, result.length)</span><br><span class="line">    &#125;);</span><br><span class="line">    it(<span class="string">'Test function with multiple numbers'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> result = transformToArray(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">        assert.equal(<span class="keyword">typeof</span> result, <span class="keyword">typeof</span> [])</span><br><span class="line">        assert.equal(result.length, <span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>Oops, test case 出錯了，代表我的程式爆炸了
-這時候該怎麼辦？
-那就是回去繼續修改我的程式讓他可以通過這個 test case</p>
-<p><img src="https://i.imgur.com/mXOfzFW.png" alt></p>
-<p>進行修改後，程式變成這樣</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Version 2 程式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> transformToArray = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> temp = []</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> i <span class="keyword">of</span> <span class="built_in">arguments</span>) &#123;</span><br><span class="line">        temp.push(<span class="built_in">arguments</span>[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> temp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>登愣，我們執行結果正確了</p>
-<p><img src="https://i.imgur.com/tAGBFrt.png" alt></p>
-<p>但是總覺得程式好像沒有寫得很漂亮於是改成</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Version 3 的程式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> transformToArray = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(<span class="built_in">arguments</span>).map(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">arguments</span>[key]</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在我們剛剛列出 test case 然後修正程式去符合新的 test case
-這整個開發流程，就屬於 TDD 的方式</p>
-<ol>
-<li>列出 test case</li>
-<li>開發程式</li>
-<li>Passed or Failed</li>
-<li>Refactor</li>
-</ol>
-<p>不過我個人是喜歡 BDD 的開發方式，兩個的主要差別我列在下面</p>
-<ul>
-<li>Test-driven Development 的方式，是以測試為主，列出各種 test case 讓程式可以正確執行</li>
-<li>Behavior-driven Development 的方式跟 TDD 很相似，但是他會以規格為主(有點像訂出 User Story 的感覺)</li>
-</ul>
-<p>BDD 比較符合我們現時開發上的流程，客戶需求進來
-變成一個 User Story，根據 User Story 寫出 Test Case
-接下來就是開發程式，讓程式可以通過這個 Test Case</p>
-<p>那關於測試 API 和 Uesr Story 的方式
-大體上跟 Unit Test 很相似，差在 Test Case 的寫法不太一樣而已</p>
-<p>對 API Test 來說，可能是 3 ~ 4 Unit 合成的一個 API
-例如 API 是『登入』，對登入來說 Input 是帳號密碼，Output 是有無驗證成功
-帳號密碼的驗證可能牽扯到 3 ~ 4 Unit，但是這已經在 Unit Test 那邊完成了
-所以對於 API Test 來說，可能會列出以下幾種 Test Case</p>
-<ol>
-<li>輸入正確帳號密碼，成功登入</li>
-<li>輸入錯誤帳號密碼，無法登入</li>
-<li>輸入正確帳號錯誤密碼，無法登入</li>
-<li>輸入錯誤帳號正確密碼，無法登入</li>
-</ol>
-<p>對 User Story 來說，可能是 3 ~ 4 個 API 合成的一個功能
-假如使用情形是，使用者登入了賣書網站
-搜尋了他想要的書本，根據搜尋會顯示或是找不到書本給使用者看
-那對於 User Story Test 來說，可能會列出以下幾種 Test Case</p>
-<p>First Test Case</p>
-<ol>
-<li>輸入正確帳號密碼，成功登入後</li>
-<li>在搜尋欄位輸入『nodejs』 然後顯示 nodejs 書籍</li>
-</ol>
-<p>Second Test Case</p>
-<ol>
-<li>輸入正確帳號密碼，成功登入後</li>
-<li>在搜尋欄位輸入『找不到』，然後顯示搜尋結果為 0 筆的頁面</li>
-</ol>
-<h2><span id="結語">結語</span></h2>
-<p>我認為用什麼樣的開發流程去測試程式都可以
-BDD TDD ATDD 等等，都是很好的開發流程
-對於不同團隊都會有各個團隊習慣的方式
-但最重要的是，要有『測試』這件事情出現在專案的開發流程上就足以</p>
-
+            <p>為什麼要測試?<br>確保你程式的結果跟你預期所想的一樣<br>那這樣有什麼好處?<br>這樣大概會讓你少加班好幾小時吧 ….</p>
+<p>下面我會介紹如何用 mocha 去做測試<br>小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/01/how-to-test/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -726,72 +479,17 @@ BDD TDD ATDD 等等，都是很好的開發流程
         </h1>
         <div class="content">
             <p>[Update] 2017-11-08 原本文章的 mapping 方式再依些特別狀況會出錯，在文章最下面加入了最新的 mapping 方式</p>
-<p>最近需要在 API Gateway 上面作 request 和 response 的參數調整
-這裡紀錄一下一些基本的使用語法
-<a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html#util-template-reference">官方網站</a>也有提供使用方式還有一些例子
-或是可以直接到 <a href="http://velocity.apache.org/engine/devel/vtl-reference.html">Apache Velocity Template Language</a></p>
-<p>&lt;!--more--&gt;</p>
-<h3><span id="if-else">if else</span></h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    #if ($variable &#x3D;&#x3D; &quot;cool&quot;)</span><br><span class="line">        &quot;variable&quot; : &quot;$variable&quot;</span><br><span class="line">    #else if ($variable &#x3D;&#x3D; &quot;hot&quot;)</span><br><span class="line">        &quot;variable&quot; : &quot;$variable&quot;</span><br><span class="line">    #end</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果參數是 cool 的話，顯示出來是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"variable"</span>: <span class="string">"cool"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="type">type</span></h3>
-<p>以上一個 case 來說，把 variable 改成是 1
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;variable&quot;: &quot;$variable&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣顯示出來會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"variable"</span>: <span class="string">"1"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>但是如果改成這種格式
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;variable&quot;: $variable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-這樣顯示出來會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"variable"</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這邊要注意的是，如果格式是以下這樣，然後參數是 &quot;test&quot;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;variable&quot;: $variable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-這樣顯示出來會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 這會直接讓 API Gateway mapping template 直接爆炸</span></span><br><span class="line">    <span class="string">"variable"</span>: test</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="key">key</span></h3>
-<p>如果把 $variable 設成 &quot;test&quot;，並用以下的 template
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;$variable&quot;: &quot;$variable&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-結果會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"test"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="foreach-and-keyset">foreach and keySet</span></h3>
-<p>資料如下
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"data"</span>: &#123;</span><br><span class="line">        <span class="string">"book"</span>: [&#123;</span><br><span class="line">            <span class="string">"title"</span>: <span class="string">"cool"</span>,</span><br><span class="line">            <span class="string">"serial"</span>: <span class="number">123</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            <span class="string">"title"</span>: <span class="string">"hot"</span>,</span><br><span class="line">            <span class="string">"serial"</span>: <span class="number">321</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"comment"</span>: <span class="string">"Hi"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我想要把他轉換成以下的格式，該怎麼用 mapping template
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"book_library"</span>: [&#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"cool"</span>,</span><br><span class="line">        <span class="string">"number"</span>: <span class="number">123</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"hot"</span>,</span><br><span class="line">        <span class="string">"number"</span>: <span class="number">321</span></span><br><span class="line">    &#125;],</span><br><span class="line">    <span class="string">"message"</span>: <span class="string">"Hi"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>mapping template 可以這樣寫
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#set($root = $input.path("$"))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// keySet 可以拿到這層所有的 key</span></span><br><span class="line">    <span class="comment">// 這裡可以拿到 data 和 comment ($rootKey)</span></span><br><span class="line">    #foreach($rootKey in $root.keySet())</span><br><span class="line">        #if($rootKey == "data")</span><br><span class="line">            <span class="string">"book_library"</span>: [</span><br><span class="line">                #foreach($elem in $root.get($rootKey))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// 這層可以達到 title 和 serial</span></span><br><span class="line">                    #foreach($i in $elem.keySet())</span><br><span class="line">                        #if($i == "title")</span><br><span class="line">                            <span class="string">"name"</span>: <span class="string">"$elem.get($i)"</span></span><br><span class="line">                        #elseif($i == "serial")</span><br><span class="line">                            <span class="comment">// 因為要讓這裡是數字，所以不加上雙引號</span></span><br><span class="line">                            <span class="string">"number"</span>: $elem.get($i)</span><br><span class="line">                        #end</span><br><span class="line">                    #if($foreach.hasNext),#end             </span><br><span class="line">                    #end</span><br><span class="line">                &#125;    </span><br><span class="line">                #if($foreach.hasNext),#end</span><br><span class="line">                #end</span><br><span class="line">            ]</span><br><span class="line">        #elseif ($rootKey == "comment")</span><br><span class="line">            <span class="string">"message"</span>: <span class="string">"$root.get($rootKey)"</span></span><br><span class="line">        #end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 這是為了讓</span></span><br><span class="line">    <span class="comment">// &#123;</span></span><br><span class="line">    <span class="comment">//     "test": 123</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 最後面的 123 加逗點用的</span></span><br><span class="line">    <span class="comment">// 如果是會後一個，就不會加逗點了</span></span><br><span class="line">    #if($foreach.hasNext),#end</span><br><span class="line">    #end</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="更好的寫法">更好的寫法</span></h3>
-<p>在 aws 官網中，除了拿到 raw payload 之外
-還可以利用 <code>$input.json()</code> 的寫法拿到格式更完整的資料
-因為在原本的方式中，如果拿到的字串包含 <code>\n</code>，這會讓 API Gateway 爆炸
-雖然可以透過 <code>$util.escapeJavaScript</code> 的方式避免
-但在每一個地方都加上 <code>$util.escapeJavaScript</code> 也是很蠢
-所以新的寫法會像是這樣</p>
-<ol>
-<li>
-<p>第一個地方是 <code>#set($count = $foreach.count - 1)</code> 這是為了拿到 <code>index</code></p>
-</li>
-<li>
-<p>第二個地方寫法就比較特別，拿到 <code>index</code> 之後，<code>$input.json($)</code> 這樣是拿到整個 payload (JSON)
-如果 <code>$rootKey = 'book_library'</code> 那這樣寫<code>$input.json(&quot;$['$rootKey']&quot;)</code> 等於 <code>$input.json(&quot;$['book_library']&quot;)</code> 的寫法，就可以拿到陣列了。
-那如果要拿第一個的話
-<code>$input.json(&quot;$['$rootKey'][0]&quot;)</code> 這樣就能拿到, 如果用變數取代的話，可以寫成
-<code>$input.json(&quot;$['$rootKey'][$count]&quot;)</code>
-拿到陣列後，要拿陣列裡面的物件就可以這樣寫
-<code>$input.json(&quot;$['$rootKey'][0]['$i']&quot;)</code> 等同於 <code>$input.json(&quot;$['$rootKey'][0]['title']&quot;)</code></p>
-</li>
-<li>
-<p>第三個就是讓剩餘的都直接拿出來就結束了</p>
-</li>
-</ol>
-<p>要特別注意的點是，不用加上 &quot;&quot; 在 <code>$input.json()</code> 外面了
-因為用 <code>$input.json()</code> 拿的已經是完整格式了
-<code>String</code> 就是 <code>String</code>，不用像上面的方式還要加上 &quot;&quot; 去讓他變成字串
-<code>Boolean</code> <code>Int</code> 等等全部都是，也不用擔心 <code>\n</code> 這個出現
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#set($root = $input.path("$"))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// keySet 可以拿到這層所有的 key</span></span><br><span class="line">    <span class="comment">// 這裡可以拿到 data 和 comment ($rootKey)</span></span><br><span class="line">    #foreach($rootKey in $root.keySet())</span><br><span class="line">        #if($rootKey == "data")</span><br><span class="line">            <span class="string">"book_library"</span>: [</span><br><span class="line">                #foreach($elem in $root.get($rootKey))</span><br><span class="line">                &#123;   </span><br><span class="line">                    <span class="comment">// ============= Here =================</span></span><br><span class="line">                    #set($count = $foreach.count - 1)</span><br><span class="line">                    <span class="comment">// ============= Here =================         </span></span><br><span class="line">                        </span><br><span class="line">                    <span class="comment">// 這層可以達到 title 和 serial</span></span><br><span class="line">                    #foreach($i in $elem.keySet())</span><br><span class="line">                        <span class="comment">// ============= Here =================</span></span><br><span class="line">                        #if($i == "title")</span><br><span class="line">                            <span class="string">"name"</span>: $input.json(<span class="string">"$['$rootkey'][$count]['$i']"</span>)</span><br><span class="line">                        #elseif($i == "serial")</span><br><span class="line">                            <span class="string">"number"</span>: $input.json(<span class="string">"$['$rootkey'][$count]['$i']"</span>)</span><br><span class="line">                        #end</span><br><span class="line">                        <span class="comment">// ============= Here =================</span></span><br><span class="line">                    #if($foreach.hasNext),#end             </span><br><span class="line">                    #end</span><br><span class="line">                &#125;    </span><br><span class="line">                #if($foreach.hasNext),#end</span><br><span class="line">                #end</span><br><span class="line">            ]</span><br><span class="line">        #elseif ($rootKey == "comment")</span><br><span class="line">            <span class="comment">// =============== Here ==============</span></span><br><span class="line">            <span class="string">"message"</span>: $input.json(<span class="string">"$.$rootkey"</span>)</span><br><span class="line">            <span class="comment">// =============== Here ==============</span></span><br><span class="line">        #end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 這是為了讓</span></span><br><span class="line">    <span class="comment">// &#123;</span></span><br><span class="line">    <span class="comment">//     "test": 123</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 最後面的 123 加逗點用的</span></span><br><span class="line">    <span class="comment">// 如果是會後一個，就不會加逗點了</span></span><br><span class="line">    #if($foreach.hasNext),#end</span><br><span class="line">    #end</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
+<p>最近需要在 API Gateway 上面作 request 和 response 的參數調整<br>這裡紀錄一下一些基本的使用語法<br><a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html#util-template-reference">官方網站</a>也有提供使用方式還有一些例子<br>或是可以直接到 <a href="http://velocity.apache.org/engine/devel/vtl-reference.html">Apache Velocity Template Language</a></p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/10/24/api-gateway-mapping-template/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -835,165 +533,17 @@ BDD TDD ATDD 等等，都是很好的開發流程
             
         </h1>
         <div class="content">
-            <p>最近遇到需要增進網站安全性的問題
-於是 survey 了幾個常見的 header 設置方式
-接下來會開始介紹每一個 header 的功能以及設置方式
-以及可以到這個網站進行檢測 <a href="https://securityheaders.io/">https://securityheaders.io/</a>
-個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
-&lt;!--more--&gt;</p>
-<h2><span id="set-cookie-設置方式">Set-Cookie 設置方式</span></h2>
-<p>防禦面向為: XSS</p>
-<p><code>Set-Cookie</code> 基本上是最多人使用的，但是 <code>Set-Cookie</code> 的設置方式如果沒有設定好是不安全的
-<code>Set-Cookie</code> 有以下兩個 header 可以設定</p>
-<ol>
-<li>
-<p>HttpOnly
-設置 <code>HttpOnly</code> 的 cookie 之後，會沒辦法用 <code>document.cookie</code> 的方式(任何 javascript)去存取 cookie</p>
-</li>
-<li>
-<p>Secure
-強制 cookie 只能在 HTTPS protocol 的環境下進行傳遞
-簡單來說設置 <code>Secure</code> 的 cookie 之後在非 HTTPS 的環境底下是會失效的</p>
-</li>
-</ol>
-<h3><span id="使用方式">使用方式</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">res.cookie(<span class="string">'cookie_name'</span>, <span class="string">'jack'</span>, &#123;</span><br><span class="line">    httpOnly: <span class="literal">true</span>,</span><br><span class="line">    secure: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="x-xss-protection">X-XSS-Protection</span></h2>
-<p>防禦面向為: XSS</p>
-<p>設定之後，如果瀏覽器偵測到 XSS 的攻擊，會根據設置的屬性做不同的反應
-p.s. 這個是舊有的屬性，基本上可以被 <code>Content-Security-Policy</code> 取代
-但是還是可以為那些沒有支援 <code>Content-Security-Policy</code> 的瀏覽器提供一層保護</p>
-<p><code>X-XSS-Protection</code> 有以下四個值可以設定</p>
-<ol>
-<li>
-<p>0
-關閉 XSS 過濾功能</p>
-</li>
-<li>
-<p>1
-開啟 XSS 過濾功能，如果偵測到 XSS 攻擊的話，瀏覽器會刪除不安全的部分</p>
-</li>
-<li>
-<p>1; mode=block
-開啟 XSS 過濾功能，如果偵測到 XSS 攻擊的話，瀏覽器不會把網頁給渲染出來</p>
-</li>
-<li>
-<p>1;report=&lt;reporting-URI&gt;  (Chromium only)
-開啟 XSS 過濾功能，如果偵測到 XSS 攻擊的話，瀏覽器會回報到指定的 URI</p>
-</li>
-</ol>
-<h3><span id="使用方式">使用方式</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'0'</span>)</span><br><span class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'1'</span>)</span><br><span class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'1; mode=block'</span>)</span><br><span class="line">res.setHeader(<span class="string">'X-XSS-Protection'</span>, <span class="string">'1;report=https://www.example.com'</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="content-security-policy">Content-Security-Policy</span></h2>
-<p>防禦面向為: XSS</p>
-<p><code>Content-Security-Policy</code> 是一個可以限制網站的 <code>script</code> <code>object</code> <code>style</code> <code>font</code> 的來源
-主要是用白名單的方式限制，甚至可以限制不允許 <code>eval</code> 這種東西出現
-簡單來說設定 <code>Content-Security-Policy</code> 之後，只有白名單內的 resource 可以存取
-因為值很多種，所以以下用例子來解釋，詳細可以參考 <a href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Headers/Content-Security-Policy">Content-Security-Policy</a>
-但基本上有以下幾種可以設定</p>
-<ol>
-<li>default-src</li>
-<li>script-src</li>
-<li>img-src</li>
-<li>font-src</li>
-<li>frame-src</li>
-</ol>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">'Content-Security-Policy'</span>, <span class="string">"default-src 'self'; script-src 'self' *.google.com 'unsafe-eval'; img-src 'self' *.amazonaws.com data:"</span>)</span><br></pre></td></tr></table></figure>
-以上面的例子來說
-default-src 'self' 代表網站 resource 只能讀取自己網站的，default 代表如果在其他設置欄位沒找到的話，會根據 default-src 為主
-script-src 'self' *.google.com 'unsafe-eval' 代表我用的 <code>script</code> src 可以存取自己網站以及 *.google.com 底下，以及可以允許 <code>eval</code>
-img-src 'self' *.amazonaws.com data:代表我用的 <code>script</code> src 可以存取自己網站以及 *.amazonaws.com 底下，以及比較特別的是可以存取 base64 格式的 image data</p>
-<h2><span id="x-frame-options">X-Frame-Options</span></h2>
-<p>防禦面向為: Clickjacking</p>
-<p><code>X-Frame-Options</code> 主要是設定網站是否能被其他網站透過 <code>iframe</code> <code>frame</code> 的方式遷入
-<code>X-Frame-Options</code> 有以下三個值可以設定</p>
-<ol>
-<li>
-<p>DENY
-不允許被任何網站用 <code>iframe</code> 的形式嵌入的
-假設在 www.example.com 設置了 <code>X-Frame-Options: DENY</code> 的話
-在 www.google.com 的話，是不能 html 裡面嵌入 <code>&lt;iframe src=&quot;www.example.com&quot;&gt;&lt;/iframe&gt;</code></p>
-</li>
-<li>
-<p>SAMEORIGIN
-允許同源底下的網站，用 <code>iframe</code> 方式嵌入</p>
-</li>
-<li>
-<p>ALLOW-FROM
-設定白名單的 list</p>
-</li>
-</ol>
-<h3><span id="使用方式">使用方式</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">'X-Frame-Options'</span>, <span class="string">'DENY'</span>)</span><br><span class="line">res.setHeader(<span class="string">'X-Frame-Options'</span>, <span class="string">'SAMEORIGIN'</span>)</span><br><span class="line">res.setHeader(<span class="string">'X-Frame-Options'</span>, <span class="string">'ALLOW-FROM https://example.com'</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="x-content-type-options">X-Content-Type-Options</span></h2>
-<p>用途: 避免瀏覽器誤判文件形態</p>
-<p><code>X-Content-Type-Options</code> 是拿來防止 Content-Type 被竄改
-比較要注意的是，這個屬性只會套用在 <code>script</code> <code>style</code>
-如果 <code>style</code> 的 <code>content-type</code> 不是 <code>text/css</code> 就會被拒絕
-如果 <code>script</code> 的 <code>content-type</code> 不是 <a href="https://html.spec.whatwg.org/multipage/scripting.html#javascript-mime-type">javascript MIME type</a> 就會被拒絕</p>
-<h3><span id="使用方式">使用方式</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">'X-Content-Type-Options'</span>, <span class="string">'nosniff'</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="strict-transport-security">Strict-Transport-Security</span></h2>
-<p>防禦面向: 強迫用戶使用 HTTPS，防範 MITM 攻擊</p>
-<p><code>Strict-Transport-Security</code> 是強化 HTTPS 機智的一種方式
-設置之後，即使是用 HTTP 連線，還是會被轉去使用 HTTPS 連線</p>
-<h3><span id="使用方式">使用方式</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">'Strict-Transport-Security'</span>, <span class="string">'max-age=16070400; includeSubDomains'</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="referrer-policy">Referrer-Policy</span></h2>
-<p>防禦面向: 增加隱私權</p>
-<p><code>Referrer</code> 代表的是你從 A 網站跳到 B 網站的時候，這個欄位會被記錄為 A
-簡單來說，他是記錄你上一個瀏覽的地方的東西</p>
-<p>他有以下幾個值可以設定，詳細可以參考<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">這裏</a></p>
-<ol>
-<li>
-<p>no-referrer
-不允許被記錄下來</p>
-</li>
-<li>
-<p>origin
-只有紀錄 origin，例如在 https://example.com/a.html 底下，只會傳送 https://example.com</p>
-</li>
-<li>
-<p>strict-origin
-只有在 HTTPS-&gt;HTTPS 之間才會被記錄下來</p>
-</li>
-<li>
-<p>no-referrer-when-downgrade (default)
-跟 strict-origin 一樣</p>
-</li>
-<li>
-<p>origin-when-cross-origin
-只有在 CORS 的時候, <code>referrer</code> 才會被送出，但只有 origin</p>
-</li>
-<li>
-<p>same-origin
-CORS 的時候, <code>referrer</code> 不會被記錄，同源的時候會有 <code>origin</code></p>
-</li>
-<li>
-<p>strict-origin-when-cross-origin
-只有在同源的時候才會送出 <code>referrer</code>，而且還是要 HTTPS -&gt; HTTPS</p>
-</li>
-<li>
-<p>unsafe-url
-不管怎樣都送就對拉</p>
-</li>
-</ol>
-<h3><span id="使用方式">使用方式</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">'Referrer-Policy'</span>, <span class="string">'no-referrer'</span>)</span><br><span class="line">res.setHeader(<span class="string">'Referrer-Policy'</span>, <span class="string">'unsafe-url'</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="public-key-pins">Public-Key-Pins</span></h2>
-<p>防禦面向: 中間人攻擊</p>
-<p>設定 <code>Public-Key-Pins</code> 之後，可以給予我們是否要主動信任 CA (憑證頒發機構) 的權利
-可以防止攻擊者透過 CA 錯誤的簽署憑證並進行中間人攻擊的安全機制</p>
-<h3><span id="使用方式">使用方式</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 裡面的 base64== 是要透過用自己的憑證，產出的 public keu</span></span><br><span class="line"><span class="comment">// 產出的 public key 配合 openssl 產出 fingerprint</span></span><br><span class="line"><span class="comment">// 把 fingerprint 貼上來取代掉 base64== 即可</span></span><br><span class="line">res.setHeader(<span class="string">'Public-Key-Pins'</span>, <span class="string">'pin-sha256="base64=="; max-age=2592000; includeSubDomains'</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="reference">Reference</span></h2>
-<p>https://developer.mozilla.org
-https://devco.re/blog/2014/03/10/security-issues-of-http-headers-1/
-https://devco.re/blog/2014/04/08/security-issues-of-http-headers-2-content-security-policy/
-https://devco.re/blog/2014/06/11/setcookie-httponly-security-issues-of-http-headers-3/</p>
-
+            <p>最近遇到需要增進網站安全性的問題<br>於是 survey 了幾個常見的 header 設置方式<br>接下來會開始介紹每一個 header 的功能以及設置方式<br>以及可以到這個網站進行檢測 <a href="https://securityheaders.io/">https://securityheaders.io/</a><br>個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主<br>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/10/20/secure-header/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -1037,32 +587,17 @@ https://devco.re/blog/2014/06/11/setcookie-httponly-security-issues-of-http-head
             
         </h1>
         <div class="content">
-            <p>稍微紀錄一下在 nodejs 裡面 module.exports 和 require
-以及在 ECMA6 的 export 和 import 的使用方式</p>
-<p>&lt;!--more--&gt;</p>
-<h2><span id="nodejs">nodejs</span></h2>
-<p>首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function
-然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    click: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Hi'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="comment">// 第一種</span></span><br><span class="line"><span class="keyword">const</span> a = <span class="built_in">require</span>(<span class="string">'./a.js'</span>)</span><br><span class="line">a.click()</span><br><span class="line"><span class="comment">// Hi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二種</span></span><br><span class="line"><span class="keyword">const</span> &#123;click&#125; = <span class="built_in">require</span>(<span class="string">'./a.js'</span>)</span><br><span class="line">click()</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure></p>
-<p>另外一種使用方式也可以達到同樣效果</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 這裡可以處理一些初始化的東西</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        click: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'Hi'</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="comment">// 第一種</span></span><br><span class="line"><span class="keyword">const</span> a = <span class="built_in">require</span>(<span class="string">'./a.js'</span>)()</span><br><span class="line">a.click()</span><br><span class="line"><span class="comment">// Hi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二種</span></span><br><span class="line"><span class="keyword">const</span> &#123;click&#125; = <span class="built_in">require</span>(<span class="string">'./a.js'</span>)()</span><br><span class="line">click()</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure></p>
-<p>接下來就用不同種例子，看看使用方式</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">const</span> a = <span class="built_in">require</span>(<span class="string">'./a.js'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(a)</span><br><span class="line"><span class="comment">// [1, 2, 3]</span></span><br></pre></td></tr></table></figure></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    name: <span class="string">'Hi'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">const</span> a = <span class="built_in">require</span>(<span class="string">'./a.js'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(a.name);</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure></p>
-<h2><span id="ecma6">ECMA6</span></h2>
-<p>我把上面的例子轉換成 ECMA6 import 和 export 的方式
-但是有些地方會有些許不同</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    click: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Hi'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> a <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line">a.click()</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">const</span> click = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hi'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">    click</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;click&#125; <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line">click()</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure></p>
-<p>也可以搭配 as 和 * 去做 import (無法跟 export default 做搭配)</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">const</span> click = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hi'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">    click</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> a <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line">a.click()</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure></p>
-<p>接下來就用不同種例子，看看使用方式</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> a <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="comment">// [1, 2, 3]</span></span><br></pre></td></tr></table></figure></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">    a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;a&#125; <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="comment">// [1, 2, 3]</span></span><br></pre></td></tr></table></figure></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">'hi'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同於</span></span><br><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    name: <span class="string">'hi'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> a</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> a <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line"><span class="built_in">console</span>.log(a.name);</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure></p>
-
+            <p>稍微紀錄一下在 nodejs 裡面 module.exports 和 require<br>以及在 ECMA6 的 export 和 import 的使用方式</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/10/19/module-export/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -1106,50 +641,17 @@ https://devco.re/blog/2014/06/11/setcookie-httponly-security-issues-of-http-head
             
         </h1>
         <div class="content">
-            <p>這次要跟大家介紹一下 Google 到底有多好用
-相信用過 Google 都知道，Google 的搜尋很方便
-但是你知道，Google 還有提供除了關鍵字搜尋以外的各種神奇的搜尋方式嗎 ?</p>
-<p>&lt;!--more--&gt;</p>
-<p>下面這張表就是 Google 提供的各種搜尋技巧
-先用幾個來讓大家了解如何使用這個方便的技巧吧！</p>
-<p><img src="https://i.imgur.com/MesRgnG.png" alt></p>
-<h2><span id="site">site:</span></h2>
-<p>假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜尋到的
-排名不高，曝光度也不高更是難上加難
-但是可以透過以下的方式搜尋到
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">site:yu-jack.github.io</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://i.imgur.com/2bsJgih.png" alt></p>
-<h2><span id="intitle">intitle:</span></h2>
-<p>intitle 就是搜尋 title 呈現的文字
-我們可以搜尋一個有趣的東西 &quot;Index Of&quot;</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intitle:&quot;Index Of&quot;</span><br></pre></td></tr></table></figure></p>
-<p>可以發現搜尋到一些看起來很像目錄的東西
-這個代表這個網站的開發者，沒有適當的處理這個問題
-這樣會導致網站的所有目錄曝光在公眾之下
-裡面是什麼，我就不點了，有興趣可以試試看</p>
-<p><img src="https://i.imgur.com/fDyTRKE.png" alt></p>
-<h2><span id="inurl">inurl:</span></h2>
-<p>inurl 就是搜尋 url 之中有沒有包含這個字串
-我用以下方式搜尋的話
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inurl:login</span><br></pre></td></tr></table></figure>
-就會發現一堆 url 包含 login 的網址出現</p>
-<p><img src="https://i.imgur.com/NJqZNLB.png" alt></p>
-<h2><span id="filetype">filetype</span></h2>
-<p>filetype 會去搜尋副檔名，但是他不能單獨使用
-必須跟其他指令混在一起使用</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inurl:ntust filetype:pdf</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://i.imgur.com/7hN7xmQ.png" alt></p>
-<h2><span id="結論">結論</span></h2>
-<p>這邊做了一點簡單的介紹而已，並沒有作太多詳細介紹
-但是可以參考以下的 PDF 去觀看更多不同的技巧
-<a href="https://ephrain.net/wp-content/uploads/2016/08/BH_EU_05-Long-1.pdf">Google Hacking for Penetration
-Testers</a></p>
-<p>下面這個是公開搜尋 keyword，也許可以直接搜尋到別人不想讓你看到的東西
-<a href="https://www.exploit-db.com/google-hacking-database/">Google Hacking Database</a></p>
-<p>介紹就到這邊，以後有空會再回來把這篇補詳細</p>
-
+            <p>這次要跟大家介紹一下 Google 到底有多好用<br>相信用過 Google 都知道，Google 的搜尋很方便<br>但是你知道，Google 還有提供除了關鍵字搜尋以外的各種神奇的搜尋方式嗎 ?</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/10/17/google-hacking/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>

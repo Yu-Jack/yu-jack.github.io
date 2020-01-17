@@ -163,65 +163,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>我們有時候要取得使用者 IP<br>
-往往都會用最簡單的方式取得 IP<br>
-以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>
-但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>
-取得到的 IP 會是 Load Balancer 的嗎?<br>
-而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>
-如果不知道的話，那這邊文章有可能會幫助到你</p>
-<p>&lt;!-- more --&gt;</p>
-<p>接下來會以 AWS 的 Load Balancer 以及伺服器上建立一個 Nginx 服務<br>
-然後還有一個 express server 服務來說明<br>
-從無 Load Balancer 到雙層 Load Balancer 的架構下分別該如何取得 IP</p>
-<h2><span id="direct-connection">Direct Connection</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-01-arch.png" alt></p>
-<p>當我們連線時直接連到伺服器時
-可以透過 express 的 <code>req.connection.remoteAddress</code> 取得到使用者的 IP (233.x.x.x)<br>
-原因是此時的呼叫者是使用者</p>
-<p><img src="/images/aws/aws-get-ip-01.png" alt></p>
-<h2><span id="單層-load-balancer">單層 Load Balancer</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-02-arch.png" alt></p>
-<p>當我們遇到只有一層 Load Balancer 時<br>
-透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的
-是 Load Balancer 的 IP (10.x.x.x, 圖中最下面)<br>
-原因是 Load Balancer 作為中介者，取得到了 Rqeuest 之後<br>
-會再往後端伺服器轉發，這時候呼叫者就是 Load Balancer 而不會是使用者<br>
-使用者真正的 IP 是會放在 header 的 <code>X-Forwarded-For</code> 上面 (233.x.x.x)</p>
-<blockquote>
-<p>這邊 Load Balancer 可以是 Nginx，但這邊我們用 AWS Load Balancer 做 DEMO<br>
-原因是我們後面會需要架構出兩層 Load Balancer 的狀況</p>
-</blockquote>
-<p><img src="/images/aws/aws-get-ip-02.png" alt></p>
-<h2><span id="雙層-load-balancer">雙層 Load Balancer</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-03-arch.png" alt></p>
-<p>而當我們再加上一層 Load Balancer 的時候 (這裡用 nginx 代替)<br>
-透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的是 Nginx 的 IP<br>
-因為呼叫者從上一個案例的 Load Balancer 變成了 Nginx<br>
-而我們這邊 Nginx 是架設在 localhost 裡面，所以可以看到 IP 是 127.0.0.1 (圖中最下面)<br>
-那前面 Load balancer 的 IP 就被放到 X-Forwarded-For 上面去了 (10.x.x.x 那個)</p>
-<p><img src="/images/aws/aws-get-ip-03.png" alt></p>
-<h2><span id="雙層-load-balancer-惡意-x-forwarded-for">雙層 Load Balancer + 惡意 X-Forwarded-For</span></h2>
-<p>架構示意圖如下<br>
-<img src="/images/aws/aws-get-ip-04-arch.png" alt></p>
-<p>狀況如同前面的 Case，但這邊唯一不一樣的是<br>
-萬一使用者自己在 X-Forwarded-For 加了 <code>X-Forwarded-For: 5.5.5.5, 6.6.6.6</code><br>
-這些資料是會被放到 X-Forwarded-For 最前面去的<br>
-所以在取得 IP 的時候要特別注意並不是取得 X-Forwarded-For 的第一個就可以了<br>
-應該要根據你前面放了多少個 Load Balancer 去決定要拿<strong><em>從後面數過來的第幾個</em></strong>才是正確的</p>
-<p><img src="/images/aws/aws-get-ip-04.png" alt></p>
-<h2><span id="references">References</span></h2>
-<p>其他還有很多詳細的介紹，非常推薦看以下這篇文章，大推！</p>
-<ol>
-<li>https://devco.re/blog/2014/06/19/client-ip-detection/</li>
-</ol>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我們有時候要取得使用者 IP<br>往往都會用最簡單的方式取得 IP<br>以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>取得到的 IP 會是 Load Balancer 的嗎?<br>而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>如果不知道的話，那這邊文章有可能會幫助到你  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/01/09/express-get-client-ip-from-load-balancer/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -265,67 +217,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
-加上小弟常用 nodejs + express 去寫前後端
-於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="介紹">介紹</span></h2>
-<p>在 express 裡面有一個 function 叫做 <code>express.static()</code>
-這個是一個 middleware，最常被用在要讀取一些靜態檔案上面
-以這個寫法來說 <code>app.use(express.static(__dirname + './public'))</code>
-是指向 <code>public</code> 這個資校夾裡面，假設裡面有一個檔案叫做 <code>index.html</code> 的話，並且伺服器的 port 是 8080
-那麼在網址列輸入 <code>http://localhost:8080/index.html</code> 這樣就可以讀到這個檔案了</p>
-<h2><span id="追朔源頭">追朔源頭</span></h2>
-<p>那我的疑問來了，我打開 Chrome Inspect 的 Network Tab 去看了一下他的 Response Headers
-發現一件很奇怪的事情，我明明什麼都沒有設定，卻出現幾個有關 Cache 的 Headers</p>
-<ol>
-<li>Accept-Ranges</li>
-<li>Cache-Control</li>
-<li>ETag</li>
-<li>Last-Modified</li>
-</ol>
-<p><img src="https://i.imgur.com/3O0nBTh.png" alt></p>
-<blockquote>
-<p>有關 Cache 的一些機制和理論就不多作介紹
-這裡單純就爬一下 Source Code，看看 express 對靜態檔案做了什麼</p>
-</blockquote>
-<h3><span id="express">express</span></h3>
-<p>在 express source code 中，發現他是用了另一個 library <code>server-static</code>
-於在就再來看看 <code>server-static</code> 做了什麼</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exports.static = <span class="built_in">require</span>(<span class="string">'serve-static'</span>);</span><br></pre></td></tr></table></figure></p>
-<h3><span id="serve-static">serve-static</span></h3>
-<p>我只列出關鍵幾行，其他行主要都是設置參數用而已</p>
-<p>從第一行可以看出，把 <code>serverStatic</code> 這個 function 給 export 出來了
-再往下看會發現有一個 <code>send</code> function 把 <code>path</code> 傳了進去
-然後在最後面，<code>stream.pipe(res)</code> 對 response 做了一些更動</p>
-<p>於是再往下找找看 <code>send()</code> 這個是什麼東西</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = serveStatic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> send = <span class="built_in">require</span>(<span class="string">'send'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">serveStatic</span> (<span class="params">root, options</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> stream = send(req, path, opts)</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// pipe</span></span><br><span class="line">    stream.pipe(res)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="send-send">send -- send</span></h3>
-<p>根據上一段程式最後一段 (12行)，他 call 了一個 <code>pipe</code> 的 function
-<code>pipe</code> function 裡面去 call <code>this.sendFile(path)</code>
-<code>this.sendFile</code> 裡面又去 call <code>self.send(path, stat)</code>
-然後在 <code>send</code> 這個 fucntion 裡面出現關鍵的 <code>function</code> -- <code>this.setHeader</code>
-看來 response headers 就是在這邊被更改了</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = send</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這邊回傳給到 server-static 去 call</span></span><br><span class="line"><span class="comment">// 也就是上一段程式碼的第 8 行，然後在第 </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">req, path, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> SendStream(req, path, options)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.pipe = <span class="function"><span class="keyword">function</span> <span class="title">pipe</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.sendFile(path)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.sendFile = <span class="function"><span class="keyword">function</span> <span class="title">sendFile</span> (<span class="params">path</span>) </span>&#123;</span><br><span class="line"><span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'stat "%s"'</span>, path)</span><br><span class="line">  self.send(path, stat)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SendStream.prototype.send = <span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'pipe "%s"'</span>, path)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// set header fields</span></span><br><span class="line">  <span class="keyword">this</span>.setHeader(path, stat)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="send-setheader">send -- setHeader</span></h3>
-<p>找到了對 header 做更動的地方後，以第 11 ~ 20 行中間這段 Code 來說
-去設置了 Cache-Control 的內容，依照整個邏輯下如果沒有特別設置，那麼 header 會長以下這樣</p>
-<p><code>Cache-Control: public, max-age=0</code></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">SendStream.prototype.setHeader = <span class="function"><span class="keyword">function</span> <span class="title">setHeader</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> res = <span class="keyword">this</span>.res</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.emit(<span class="string">'headers'</span>, res, path, stat)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._acceptRanges &amp;&amp; !res.getHeader(<span class="string">'Accept-Ranges'</span>)) &#123;</span><br><span class="line">    debug(<span class="string">'accept ranges'</span>)</span><br><span class="line">    res.setHeader(<span class="string">'Accept-Ranges'</span>, <span class="string">'bytes'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._cacheControl &amp;&amp; !res.getHeader(<span class="string">'Cache-Control'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> cacheControl = <span class="string">'public, max-age='</span> + <span class="built_in">Math</span>.floor(<span class="keyword">this</span>._maxage / <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>._immutable) &#123;</span><br><span class="line">      cacheControl += <span class="string">', immutable'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    debug(<span class="string">'cache-control %s'</span>, cacheControl)</span><br><span class="line">    res.setHeader(<span class="string">'Cache-Control'</span>, cacheControl)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._lastModified &amp;&amp; !res.getHeader(<span class="string">'Last-Modified'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> modified = stat.mtime.toUTCString()</span><br><span class="line">    debug(<span class="string">'modified %s'</span>, modified)</span><br><span class="line">    res.setHeader(<span class="string">'Last-Modified'</span>, modified)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._etag &amp;&amp; !res.getHeader(<span class="string">'ETag'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> val = etag(stat)</span><br><span class="line">    debug(<span class="string">'etag %s'</span>, val)</span><br><span class="line">    res.setHeader(<span class="string">'ETag'</span>, val)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="demo">DEMO</span></h2>
-<p>另外提供另個方法可以追回去 (我是懶得寫程式直接看 source code XD)
-安裝完環境之後要跑 server 的時候，可以這樣下</p>
-<p><code>DEBUG=* node server.js</code></p>
-<p>從圖片中可以發現，那些 log message 是一樣的</p>
-<p><img src="https://i.imgur.com/mhj2YxB.png" alt></p>
-<h2><span id="後記">後記</span></h2>
-<p>一直以來以為是 express 的做法讓檔案可以 cache 住
-原來一直都是默默無名的 opensouce library 在幫助 express 啊
-希望這篇有稍微幫助到對 express 處理 static files 有疑慮的人</p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近突然有一個想法開始研究起瀏覽器端的 Cache 方法<br>加上小弟常用 nodejs + express 去寫前後端<br>於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/12/11/express-static/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>

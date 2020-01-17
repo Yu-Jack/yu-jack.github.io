@@ -163,36 +163,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠<br>
-此時會需要把硬碟增加大小，以免整台機器爆掉<br>
-接下來會針對如何增加硬碟大小做說明</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="確認硬碟大小方法">確認硬碟大小方法</span></h2>
-<p>可以透過 <code>df -h .</code> 指令確認硬碟目前使用的大小<br>
-這時候可以看到硬碟配置的大小<br>
-<img src="/images/aws/aws-ec2-disk-01.png" alt></p>
-<p>接下來可以透過 <code>lsblk</code> 回找最大上限的配置可以是多少
-上面 xvda 就是最多可以有多少大小
-下面 xvda1 就是實際上目前有多少大小
-<img src="/images/aws/aws-ec2-disk-02.png" alt></p>
-<p>看另一個例子，以下圖的 xvdi 和 xvdi1 來說<br>
-可配置最大上限為 8G，但目前正在使用的最大上限為 1023 MB<br>
-<img src="/images/aws/aws-ec2-disk-03.png" alt></p>
-<h2><span id="增加硬碟大小">增加硬碟大小</span></h2>
-<p>到 EC2 的頁面點選要更新的 EC2，點選右下角 disk<br>
-<img src="/images/aws/aws-ec2-disk-04.png" alt></p>
-<p>點進去之後，就進入到另一個頁面，點選 Action &gt; Modify，會看到以下頁面，就可以增加大小了<br>
-<img src="/images/aws/aws-ec2-disk-05.png" alt></p>
-<p>接下來要到 EC2 裡面把實際上使用的大小擴充到可配置的最大空間<br>
-以剛剛的 xvdi 為例的話，需要執行以下兩個指令才可以擴充
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo growpart &#x2F;dev&#x2F;xvdi 1</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1</span><br></pre></td></tr></table></figure>
-這樣大小會直接擴充至可配置的最大上限，如果不想要配置到最大的話<br>
-可以在後面加上幾 G 去做限制，如下
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 擇一</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2G</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2048M</span><br></pre></td></tr></table></figure></p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠<br>此時會需要把硬碟增加大小，以免整台機器爆掉<br>接下來會針對如何增加硬碟大小做說明  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/01/06/aws-increase-disk-space-in-ec2/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -236,34 +217,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用<br>
-掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用</p>
-<p>&lt;!-- more --&gt;</p>
-<p>以 load balancer 來說<br>
-外面 https:443 進來後，要導入到 http:8080 的服務<br>
-就會需要把憑證解開，然後進一步把流量往裡面送<br>
-所以在 load balancer 上面就一定要掛載 private/public key 才有辦法去解開進來的流量<br>
-像是在選 load balancer 的頁面，選擇 port forwarding 的時候就會需要選擇要掛載哪一個 certificate<br>
-<img src="/images/aws/aws-acm-01.png" alt></p>
-<p>而在 cloudfront 的時候<br>
-在申請的同時也會需要填入要用哪一組憑證 (Customer Certificate)<br>
-<img src="/images/aws/aws-acm-04.png" alt></p>
-<p>當選入憑證的時候，Cloudfront 配給你的 domain 是 xxxxx.cloudfront.net 這種<br>
-但憑證假設安裝的事 api.example.com 這種，會導致不安全的提示出現<br>
-此時會需要到網域註冊商，把 CNAME api 指到 xxxxx.cloudfront.net<br>
-到時候瀏覽 api.exmaple.com 就會出現合法的憑證了</p>
-<h2><span id="如何更新憑證">如何更新憑證</span></h2>
-<p>首先要進入到 AWS 的 Certificate Manager 頁面，並且點選你想要 Reimport 的憑證<br>
-右上角會有一個藍色的『Reimport Certificate』按鈕，點選下去會到一個輸入頁面<br>
-<img src="/images/aws/aws-acm-02.png" alt></p>
-<p>到了輸入頁面會看到有 Certificate Body, Certificate Private Key, Certificate Chain<br>
-接下來就把跟網域註冊商申請到的憑證一個一個貼上去即可，注意這裡要是 PEM 格式<br>
-<img src="/images/aws/aws-acm-03.png" alt></p>
-<p>其實在新增憑證的時候，也是一模一樣的流程</p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用<br>掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/01/06/aws-certificate-manager/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -307,80 +271,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務<br>
-其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能<br>
-這邊就先不多作介紹，之後會寫在其他篇幅做介紹<br>
-那 CloudWatch 主要包含以下兩個大項目</p>
-<p>&lt;!-- more --&gt;</p>
-<ol>
-<li>Metric
-紀錄了 AWS 上面服務的狀態
-包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟大小
-API Gateway API Call Count、RDS CPU 用量等等
-針對用量還可以去做 Alarm 發信，或是觸發 Lambda 等等的功能
-<blockquote>
-<p>記憶體和硬碟大小需要額外設定
-可以參考 https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/mon-scripts.html</p>
-</blockquote>
-</li>
-<li>Log
-存放 Log 的地方，伺服器的 access log 或是程式的 log
-又或是 audit log 等等，基本上想看的 log 可以推上來做分析以及整理
-除此之外，s3 其實也是一個放 log 的好地方
-但 s3 的缺點是不能夠很便利的去線上觀看 log</li>
-</ol>
-<p>今天主要介紹的是 CloudWatch Logs Insights 功能
-透過 Insights 可以有效地查詢 Log 裡面的資料
-甚至還可以做統計以及剖析 Log 裡面的字串進行字串統計</p>
-<h2><span id="使用方式">使用方式</span></h2>
-<h3><span id="範例一-like">範例一 - like</span></h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| filter @message like &quot;Your Wanted Message&quot;</span><br></pre></td></tr></table></figure>
-第一行 fileds 主要指定最後出現的欄位會有什麼<br>
-第二行 sort 是根據 timestamp 進行由大至小的排序<br>
-第三行 filter 是針對 @message 的內容去搜尋</p>
-<p>最後只會顯示跟 like 後面有關的字串的結果而已</p>
-<p>這邊要另外注意的事情是，每一個指令都是有&lt;span style=&quot;color: red&quot;&gt;順序性&lt;/span&gt;的<br>
-以上面第三行的結果來說<br>
-假設第四行再下了一個 <code>filter @message like &quot;blablabla</code><br>
-一個跟前面完全沒有關係的訊息是找不到的<br>
-因為在第三行就把所有訊息都過慮剩下只有 &quot;Your Wanted Message&quot;<br>
-所以在第四行針對 &quot;Your Wanted Message&quot; 去搜尋 &quot;blablabla&quot; 當然就不會出現任何結果</p>
-<h3><span id="範例二-logstream">範例二 - @logStream</span></h3>
-<p>在整個操作 UI 上<br>
-最上面會有一個可以選 logGroup 的地方<br>
-但卻沒有選 logStream 的地方</p>
-<p><img src="/images/aws/aws-cloudwatch-logs-insights-01.png" alt></p>
-<p>此時會需要透過 filter 加上 @logStream 的方式才能找單獨的 stream<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="範例三-parse">範例三 - parse</span></h3>
-<p>假設今天要處理 access log 的 path 做統計的話<br>
-字串有一段內容是 &quot;GET /login HTTP/1.1&quot;<br>
-我想要 parse 出 /login 的話該怎麼做呢？<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * HTTP&#x2F;1.1&#39; as @path</span><br></pre></td></tr></table></figure>
-第三行 透過 parse 指令加上 * 可以把 * 的地方變成一個變數指定到 as 後面的變數去<br>
-這裡變數要不要加 @ 都可以，結果如下：<br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-02.png" alt></p>
-<p>那如果想要 parse 兩個變成變數呢?<br>
-很簡單，就是再多加一個 * 字號在後面即可<br>
-<code>| parse '&quot;GET * */1.1' as @path, @protocol</code><br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-03.png" alt></p>
-<h3><span id="範例四-stats-count">範例四 - stats count()</span></h3>
-<p>以前面的例子來說<br>
-我想知道在短時間內有幾個 login 的話<br>
-可以透過 stats 的指令去做統計<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * *&#x2F;1.1&#39; as @path, @protocol</span><br><span class="line">| stats count(*) as sum by @path</span><br></pre></td></tr></table></figure>
-第五行 透過 by 指令去 group by 用哪一個參數當作目標去做計算<br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-04.png" alt></p>
-<p>當然一樣可以多個 <code>| stats count(*) as sum by @path, @protocol</code><br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-05.png" alt></p>
-<h2><span id="後記">後記</span></h2>
-<p>以上介紹一些個人比較常用的指令，官網還有很多非常好用的指令<br>
-詳細有興趣可以到官網上查查看<br>
-https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html</p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務<br>其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能<br>這邊就先不多作介紹，之後會寫在其他篇幅做介紹<br>那 CloudWatch 主要包含以下兩個大項目  </p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/11/28/aws-cloudwatch-logs-insights/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -424,28 +325,17 @@ https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.h
             
         </h1>
         <div class="content">
-            <p>最近在使用 CloudFront Header forward 的設定
-CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon CloudFront</code>
-於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
-<p>&lt;!-- more --&gt;</p>
-<p>但由於 CF 上面的設定寫的不是很清楚
-於是發現以下這篇 <a href="https://aws.amazon.com/blogs/aws/enhanced-cloudfront-customization/">AWS 官方文章</a>
-這裡直接做一個總結</p>
-<ol>
-<li>None: 使用 CloudFront 原生的行為 (例如替換 <code>User-Agent</code>)</li>
-<li>Whitelists: 把 whitelists 裡面的參數，<strong>完整不動</strong> 的 Forward 到 Orign 去使用</li>
-<li>ALL: 把所有參數都 forward 到 Origin 去</li>
-</ol>
-<p>下面是一個 whitelist 的簡單範例</p>
-<p><img src="https://i.imgur.com/Dy57usH.png" alt></p>
-<p>以這張圖的設定的來說，代表 <code>User-Agent</code> 不會被 CloudFront 給自動替換掉
-而是會拿原生<code>User-Agent</code>直接 forward 到 Origin 去</p>
-<p>另外這邊要提醒，Cloudfront 預設是不會 Forward Headers, Cookies 和 Query String 的
-這邊要特別注意，要特別設定才可以
-那至於 Cookie 以及 Query String 的設定看上面就明瞭了</p>
-
+            <p>最近在使用 CloudFront Header forward 的設定<br>CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon CloudFront</code><br>於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2018/09/05/cloudfont-setting/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -489,42 +379,17 @@ CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Am
             
         </h1>
         <div class="content">
-            <h2><span id="前言">前言</span></h2>
-<p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
-上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
-所以必須在 API Gateway 必須要做 body mapping 的調整
-e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
-那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端
-&lt;!-- more --&gt;</p>
-<h2><span id="aws-api-gateway">AWS API Gateway</span></h2>
-<p>在上一篇，透過 Lambda 和 API Gateway 完成檔案上傳和下載之後
-出現了一個疑問，API Gateway 直接到 Server 這端，需不需要調整東西呢 ?</p>
-<p>在這樣的想法下，做了一個簡單的實現</p>
-<ol>
-<li>在 API Gateway 新增一個 API /upload (POST Method)</li>
-<li>用 nodejs 啟動 server (記得把 body-parser 改成 text 也支援的設定)
-在這樣的實驗之下，發現 Request 的 Content-Type 只有帶 multipart/form-data
-並沒有帶後面的 Boundary，這樣會沒有辦法去 Parse 上傳的檔案或是 text
-那會這樣的原因只會有一個，那就是 API Gateway 對我的 Headers 做了手腳</li>
-</ol>
-<p>後來的解決方式，是把設定 API Gateway 為 Proxy，就可以讓 bounday 成功 pass 到後端 Server
-那這後面就會介紹如何設定 API Gateway (基本上就只有一個地方，Integration Request &amp; Integration Response)</p>
-<h3><span id="upload">Upload</span></h3>
-<p>只要把 HTTP Proxy Integration 打勾即可，不用像上一篇要到其他地方做設定</p>
-<p><img src="https://i.imgur.com/xuGUHC1.png" alt></p>
-<h2><span id="server">Server</span></h2>
-<h3><span id="upload">Upload</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line">app.use(bodyParser.text(&#123;<span class="attr">type</span>: <span class="string">'*/*'</span>&#125;))</span><br><span class="line">app.post(<span class="string">'/upload_file'</span>,  (req, res, next) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body);</span><br><span class="line">    <span class="built_in">console</span>.log(req.headers);</span><br><span class="line">    res.json(&#123;&#125;)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="demo">DEMO</span></h2>
-<h3><span id="upload">Upload</span></h3>
-<p>從上傳的地方會看到 content-type 最後面會出現 boundary
-如果 API Gateway 沒有設成 Proxy 的話，是不會出現</p>
-<p>不會出現的話，會沒辦法用 content-type 後面的 boundary 去 parse 檔案的
-因為檔案之間會用 boundary 去區分，沒了這個就沒辦法識別傳了什麼上來</p>
-<p><img src="https://i.imgur.com/r4KL4RF.png" alt></p>
-
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳<br>上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON<br>所以必須在 API Gateway 必須要做 body mapping 的調整<br>e.g 透過 Binary Support 或是 Base64Enconde 的方式處理<br>那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端<br>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -568,69 +433,17 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
             
         </h1>
         <div class="content">
-            <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
-在 API Gateway 中要做幾項設定才有辦法達成
-加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
-這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-&lt;!-- more --&gt;</p>
-<h2><span id="api-gateway">API Gateway</span></h2>
-<p>主要調整得地方有兩個</p>
-<ol>
-<li>/upload Integration Request</li>
-<li>/download Integration Response</li>
-</ol>
-<p>另外還有一種特別的方式，是利用 API Gateway 的 Binary Support 去處理
-這種方式會列在最後面</p>
-<h3><span id="upload-integration-request">/upload Integration Request</span></h3>
-<ol>
-<li>到 body mapping template 底下調整成圖片樣子(Generate templaye 選擇 &quot;Method Request passthrough&quot;)</li>
-</ol>
-<p><img src="https://i.imgur.com/1vUOTvZ.png" alt></p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需要修改的部分為第一行的 body</span></span><br><span class="line"><span class="comment">// 其他行不需要做調整</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: <span class="string">"$util.base64Encode($input.body)"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="download-integration-reponse">/download Integration Reponse</span></h3>
-<ol>
-<li>到 body mapping template 底下調整成圖片樣子</li>
-</ol>
-<p><img src="https://i.imgur.com/ZW32Fhb.png" alt>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$util.base64Decode($input.body)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="lambda">Lambda</span></h2>
-<p>主要是用 nodejs 去編寫處理上傳的部分</p>
-<h3><span id="handle-upload-request">Handle upload request</span></h3>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multipart = <span class="built_in">require</span>(<span class="string">'parse-multipart'</span>);</span><br><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// convert base64 string to binary</span></span><br><span class="line">    <span class="keyword">const</span> buffer = <span class="keyword">new</span> Buffer(event.body, <span class="string">'base64'</span>)</span><br><span class="line">    <span class="keyword">const</span> boundary = multipart.getBoundary(event.params.header[<span class="string">'Content-Type'</span>])</span><br><span class="line">    <span class="keyword">const</span> parts = multipart.Parse(buffer, boundary)</span><br><span class="line">    <span class="keyword">return</span> callback(<span class="literal">null</span>, &#123;</span><br><span class="line">        s: parts</span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="handle-download-request">Handle download request</span></h3>
-<p>這邊範例是用去讀取 S3 的檔案</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    s3.getObject(&#123;</span><br><span class="line">        Bucket: <span class="string">'your-bucket'</span>,</span><br><span class="line">        Key: <span class="string">'download_file.json'</span></span><br><span class="line">    &#125;, (err, data) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) &#123;</span><br><span class="line">            <span class="keyword">return</span> callback(err)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 原本方式是會直接回傳 JSON (DEMO 有圖)</span></span><br><span class="line">        <span class="comment">// callback(null, data.Body)</span></span><br><span class="line">        <span class="comment">// </span></span><br><span class="line">        <span class="comment">// 正確方式，回傳 base64，然後讓 API Gateway 去 decode</span></span><br><span class="line">        callback(<span class="literal">null</span>, <span class="keyword">new</span> Buffer(data.Body).toString(<span class="string">'base64'</span>))</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="demo-with-postman">Demo with Postman</span></h2>
-<h3><span id="upload-file">Upload File</span></h3>
-<p>上傳要注意選 &quot;form-data&quot;
-然後隨便選擇一個檔案即可</p>
-<p><img src="https://i.imgur.com/QhjRLH3.png" alt></p>
-<h3><span id="download-file">Download File</span></h3>
-<p>如果沒有在 API Gateway 做調整的話會變成
-沒錯，Lambda 是會直接回傳 JSON 的
-他並不會回傳 binary 給你，所以才要到 API Gateway 和 Lambda 做一些調整 (要到 mapping template 調整)</p>
-<p><img src="https://i.imgur.com/qFc5FZC.png" alt></p>
-<p>修改之後</p>
-<p><img src="https://i.imgur.com/mijGJFI.png" alt></p>
-<p>然後可以改用程式下載檔案</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> r = request.post(<span class="string">'your_url'</span>)</span><br><span class="line">r.on(<span class="string">'response'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    res.pipe(fs.createWriteStream(<span class="string">'download_file.json'</span>))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h2><span id="額外補充-binary-support">額外補充 - Binary Support</span></h2>
-<h3><span id="upload-integration-request">/upload integration request</span></h3>
-<p>在 API Gateway 底下的 binary support 加上 multipart/form-data，API Gateway 就會自動幫我們做 base64 encode</p>
-<p>而在 mapping template 就改成這樣即可
-lambda 不需要做任何調整</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: $input.json(<span class="string">'$'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="註記">註記</span></h2>
-<ol>
-<li>API Gateway payload 有限制 10mb</li>
-<li>Lambda 有限制 6mb</li>
-</ol>
-<p>所以最大只能上傳或下載 6mb 的檔案
-但是，因為會轉成 base64，所以原本的 4mb 轉完可能變成 5mb
-這裡是特別要注意的地方</p>
-
+            <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載<br>在 API Gateway 中要做幾項設定才有辦法達成<br>加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整<br>這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分<br>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/04/handle-file-with-Lambda-and-API-Gateway/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -675,72 +488,17 @@ lambda 不需要做任何調整</p>
         </h1>
         <div class="content">
             <p>[Update] 2017-11-08 原本文章的 mapping 方式再依些特別狀況會出錯，在文章最下面加入了最新的 mapping 方式</p>
-<p>最近需要在 API Gateway 上面作 request 和 response 的參數調整
-這裡紀錄一下一些基本的使用語法
-<a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html#util-template-reference">官方網站</a>也有提供使用方式還有一些例子
-或是可以直接到 <a href="http://velocity.apache.org/engine/devel/vtl-reference.html">Apache Velocity Template Language</a></p>
-<p>&lt;!--more--&gt;</p>
-<h3><span id="if-else">if else</span></h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    #if ($variable &#x3D;&#x3D; &quot;cool&quot;)</span><br><span class="line">        &quot;variable&quot; : &quot;$variable&quot;</span><br><span class="line">    #else if ($variable &#x3D;&#x3D; &quot;hot&quot;)</span><br><span class="line">        &quot;variable&quot; : &quot;$variable&quot;</span><br><span class="line">    #end</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果參數是 cool 的話，顯示出來是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"variable"</span>: <span class="string">"cool"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="type">type</span></h3>
-<p>以上一個 case 來說，把 variable 改成是 1
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;variable&quot;: &quot;$variable&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣顯示出來會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"variable"</span>: <span class="string">"1"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>但是如果改成這種格式
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;variable&quot;: $variable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-這樣顯示出來會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"variable"</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這邊要注意的是，如果格式是以下這樣，然後參數是 &quot;test&quot;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;variable&quot;: $variable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-這樣顯示出來會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 這會直接讓 API Gateway mapping template 直接爆炸</span></span><br><span class="line">    <span class="string">"variable"</span>: test</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="key">key</span></h3>
-<p>如果把 $variable 設成 &quot;test&quot;，並用以下的 template
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;$variable&quot;: &quot;$variable&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-結果會是
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"test"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="foreach-and-keyset">foreach and keySet</span></h3>
-<p>資料如下
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"data"</span>: &#123;</span><br><span class="line">        <span class="string">"book"</span>: [&#123;</span><br><span class="line">            <span class="string">"title"</span>: <span class="string">"cool"</span>,</span><br><span class="line">            <span class="string">"serial"</span>: <span class="number">123</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            <span class="string">"title"</span>: <span class="string">"hot"</span>,</span><br><span class="line">            <span class="string">"serial"</span>: <span class="number">321</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"comment"</span>: <span class="string">"Hi"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我想要把他轉換成以下的格式，該怎麼用 mapping template
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"book_library"</span>: [&#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"cool"</span>,</span><br><span class="line">        <span class="string">"number"</span>: <span class="number">123</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"hot"</span>,</span><br><span class="line">        <span class="string">"number"</span>: <span class="number">321</span></span><br><span class="line">    &#125;],</span><br><span class="line">    <span class="string">"message"</span>: <span class="string">"Hi"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>mapping template 可以這樣寫
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#set($root = $input.path("$"))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// keySet 可以拿到這層所有的 key</span></span><br><span class="line">    <span class="comment">// 這裡可以拿到 data 和 comment ($rootKey)</span></span><br><span class="line">    #foreach($rootKey in $root.keySet())</span><br><span class="line">        #if($rootKey == "data")</span><br><span class="line">            <span class="string">"book_library"</span>: [</span><br><span class="line">                #foreach($elem in $root.get($rootKey))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// 這層可以達到 title 和 serial</span></span><br><span class="line">                    #foreach($i in $elem.keySet())</span><br><span class="line">                        #if($i == "title")</span><br><span class="line">                            <span class="string">"name"</span>: <span class="string">"$elem.get($i)"</span></span><br><span class="line">                        #elseif($i == "serial")</span><br><span class="line">                            <span class="comment">// 因為要讓這裡是數字，所以不加上雙引號</span></span><br><span class="line">                            <span class="string">"number"</span>: $elem.get($i)</span><br><span class="line">                        #end</span><br><span class="line">                    #if($foreach.hasNext),#end             </span><br><span class="line">                    #end</span><br><span class="line">                &#125;    </span><br><span class="line">                #if($foreach.hasNext),#end</span><br><span class="line">                #end</span><br><span class="line">            ]</span><br><span class="line">        #elseif ($rootKey == "comment")</span><br><span class="line">            <span class="string">"message"</span>: <span class="string">"$root.get($rootKey)"</span></span><br><span class="line">        #end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 這是為了讓</span></span><br><span class="line">    <span class="comment">// &#123;</span></span><br><span class="line">    <span class="comment">//     "test": 123</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 最後面的 123 加逗點用的</span></span><br><span class="line">    <span class="comment">// 如果是會後一個，就不會加逗點了</span></span><br><span class="line">    #if($foreach.hasNext),#end</span><br><span class="line">    #end</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="更好的寫法">更好的寫法</span></h3>
-<p>在 aws 官網中，除了拿到 raw payload 之外
-還可以利用 <code>$input.json()</code> 的寫法拿到格式更完整的資料
-因為在原本的方式中，如果拿到的字串包含 <code>\n</code>，這會讓 API Gateway 爆炸
-雖然可以透過 <code>$util.escapeJavaScript</code> 的方式避免
-但在每一個地方都加上 <code>$util.escapeJavaScript</code> 也是很蠢
-所以新的寫法會像是這樣</p>
-<ol>
-<li>
-<p>第一個地方是 <code>#set($count = $foreach.count - 1)</code> 這是為了拿到 <code>index</code></p>
-</li>
-<li>
-<p>第二個地方寫法就比較特別，拿到 <code>index</code> 之後，<code>$input.json($)</code> 這樣是拿到整個 payload (JSON)
-如果 <code>$rootKey = 'book_library'</code> 那這樣寫<code>$input.json(&quot;$['$rootKey']&quot;)</code> 等於 <code>$input.json(&quot;$['book_library']&quot;)</code> 的寫法，就可以拿到陣列了。
-那如果要拿第一個的話
-<code>$input.json(&quot;$['$rootKey'][0]&quot;)</code> 這樣就能拿到, 如果用變數取代的話，可以寫成
-<code>$input.json(&quot;$['$rootKey'][$count]&quot;)</code>
-拿到陣列後，要拿陣列裡面的物件就可以這樣寫
-<code>$input.json(&quot;$['$rootKey'][0]['$i']&quot;)</code> 等同於 <code>$input.json(&quot;$['$rootKey'][0]['title']&quot;)</code></p>
-</li>
-<li>
-<p>第三個就是讓剩餘的都直接拿出來就結束了</p>
-</li>
-</ol>
-<p>要特別注意的點是，不用加上 &quot;&quot; 在 <code>$input.json()</code> 外面了
-因為用 <code>$input.json()</code> 拿的已經是完整格式了
-<code>String</code> 就是 <code>String</code>，不用像上面的方式還要加上 &quot;&quot; 去讓他變成字串
-<code>Boolean</code> <code>Int</code> 等等全部都是，也不用擔心 <code>\n</code> 這個出現
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#set($root = $input.path("$"))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// keySet 可以拿到這層所有的 key</span></span><br><span class="line">    <span class="comment">// 這裡可以拿到 data 和 comment ($rootKey)</span></span><br><span class="line">    #foreach($rootKey in $root.keySet())</span><br><span class="line">        #if($rootKey == "data")</span><br><span class="line">            <span class="string">"book_library"</span>: [</span><br><span class="line">                #foreach($elem in $root.get($rootKey))</span><br><span class="line">                &#123;   </span><br><span class="line">                    <span class="comment">// ============= Here =================</span></span><br><span class="line">                    #set($count = $foreach.count - 1)</span><br><span class="line">                    <span class="comment">// ============= Here =================         </span></span><br><span class="line">                        </span><br><span class="line">                    <span class="comment">// 這層可以達到 title 和 serial</span></span><br><span class="line">                    #foreach($i in $elem.keySet())</span><br><span class="line">                        <span class="comment">// ============= Here =================</span></span><br><span class="line">                        #if($i == "title")</span><br><span class="line">                            <span class="string">"name"</span>: $input.json(<span class="string">"$['$rootkey'][$count]['$i']"</span>)</span><br><span class="line">                        #elseif($i == "serial")</span><br><span class="line">                            <span class="string">"number"</span>: $input.json(<span class="string">"$['$rootkey'][$count]['$i']"</span>)</span><br><span class="line">                        #end</span><br><span class="line">                        <span class="comment">// ============= Here =================</span></span><br><span class="line">                    #if($foreach.hasNext),#end             </span><br><span class="line">                    #end</span><br><span class="line">                &#125;    </span><br><span class="line">                #if($foreach.hasNext),#end</span><br><span class="line">                #end</span><br><span class="line">            ]</span><br><span class="line">        #elseif ($rootKey == "comment")</span><br><span class="line">            <span class="comment">// =============== Here ==============</span></span><br><span class="line">            <span class="string">"message"</span>: $input.json(<span class="string">"$.$rootkey"</span>)</span><br><span class="line">            <span class="comment">// =============== Here ==============</span></span><br><span class="line">        #end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 這是為了讓</span></span><br><span class="line">    <span class="comment">// &#123;</span></span><br><span class="line">    <span class="comment">//     "test": 123</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 最後面的 123 加逗點用的</span></span><br><span class="line">    <span class="comment">// 如果是會後一個，就不會加逗點了</span></span><br><span class="line">    #if($foreach.hasNext),#end</span><br><span class="line">    #end</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
+<p>最近需要在 API Gateway 上面作 request 和 response 的參數調整<br>這裡紀錄一下一些基本的使用語法<br><a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html#util-template-reference">官方網站</a>也有提供使用方式還有一些例子<br>或是可以直接到 <a href="http://velocity.apache.org/engine/devel/vtl-reference.html">Apache Velocity Template Language</a></p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/10/24/api-gateway-mapping-template/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
