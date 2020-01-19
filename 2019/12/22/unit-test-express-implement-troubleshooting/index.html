@@ -1,186 +1,272 @@
 <!DOCTYPE html>
-<html  lang="zh">
+<html lang="en">
+
+<canvas id="fireworks" style="position: fixed"></canvas>
+<!-- Head tag -->
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+    <!-- End Google Tag Manager -->
 
-<meta name="generator" content="Hexo 4.2.0" />
+    <title>
+        
+          express unit test 一些技巧教學以及困難點 - Jack Yu | 傑克
+        
+    </title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="canonical" href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/">
 
-<title>express unit test 一些技巧教學以及困難點 - 技術雜記 Technology Notes - Jack Yu</title>
-
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
-
-<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-    <meta name="description" content="前言上一篇我們講到使用 sinon 搭配 express 的使用基礎今天會介紹的是關於在 express 上實作 unit test 的幾個技巧以及可能會遇到的問題該如何解決問題，並依靠 sinon 去達到希望的功效">
-<meta property="og:type" content="article">
-<meta property="og:title" content="express unit test 一些技巧教學以及困難點">
-<meta property="og:url" content="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/index.html">
-<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu">
-<meta property="og:description" content="前言上一篇我們講到使用 sinon 搭配 express 的使用基礎今天會介紹的是關於在 express 上實作 unit test 的幾個技巧以及可能會遇到的問題該如何解決問題，並依靠 sinon 去達到希望的功效">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
-<meta property="article:published_time" content="2019-12-22T05:29:29.000Z">
-<meta property="article:modified_time" content="2020-01-14T16:21:35.565Z">
-<meta property="article:author" content="Jack Yu">
-<meta property="article:tag" content="Test">
-<meta property="article:tag" content="unit test">
-<meta property="article:tag" content="sinon">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
 
 
-
-
-
-
-
-<link rel="icon" href="/images/favicon.svg">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+    <!-- Custom CSS --> 
+    
+<link rel="stylesheet" href="/css/beantech.min.css">
 
     
+    <!-- Pygments Highlight CSS -->
     
-<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-
-    
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-
-    
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-    
-    
-    
-    
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-    
-    
-    
-    
-    
-    
-    
-    <link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-    
-    
-    
+<link rel="stylesheet" href="/css/highlight.css">
 
 
-<link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="is-2-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <!-- <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="express unit test 一些技巧教學以及困難點" height="28">
-            
-            </a>
-        </div> -->
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
+    
+<link rel="stylesheet" href="/css/widget.css">
+
+
+    
+<link rel="stylesheet" href="/css/rocket.css">
+
+
+    
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    
+<link rel="stylesheet" href="/css/toc.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-1515253208026743",
+        enable_page_level_ads: true
+      });
+    </script>
+    <style>
+        img {
+            border: 1px solid #00000042;
+            box-shadow: 1px 1px 5px;
+        }
+        div.post-container h2:not(.post-title) {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.3em;
+        }
+        div.post-container h1:not(.post-title) {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.3em;
+        }
+    </style>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/images/banner.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Test" title="Test">Test</a>
+                            
+                              <a class="tag" href="/tags/#unit test" title="unit test">unit test</a>
+                            
+                              <a class="tag" href="/tags/#sinon" title="sinon">sinon</a>
+                            
+                        </div>
+                        <h1>express unit test 一些技巧教學以及困難點</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Jack Yu on
+                            2019-12-22
+                        </span>
+                        <span id="busuanzi_container_page_pv">
+                            <span id="busuanzi_value_page_pv"></span> views
+                        </span>                              
+                    </div>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
-                
-                <a class="navbar-item"
-                href="/categories">Categories</a>
-                
-                <a class="navbar-item"
-                href="/tags">Tags</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜尋" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
+
+
+                </div>
             </div>
         </div>
     </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-12-22T05:29:29.000Z">2019-12-22</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Test/">Test</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">技術雜記 Technology Notes - Jack Yu</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">All Tags</a>
+                        </li>
+                        
                     
                     
-                    14 分鐘 閱讀文 (大約 2029 個字)
-                </span>
-                
-                
-                
-                <span id="busuanzi_container_page_pv">
-                    <span id="busuanzi_value_page_pv"></span> 觀看次數
-                </span>
-                
+                </ul>
             </div>
         </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                express unit test 一些技巧教學以及困難點
-            
-        </h1>
-        <div class="content">
-            <h2><span id="前言">前言</span></h2><p><a href="https://yu-jack.github.io/2019/12/10/unit-test-express/">上一篇</a>我們講到使用 sinon 搭配 express 的使用基礎<br>今天會介紹的是關於在 express 上<br>實作 unit test 的幾個技巧以及可能會遇到的問題<br>該如何解決問題，並依靠 sinon 去達到希望的功效  </p>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2><span id="前言">前言</span></h2><p><a href="https://yu-jack.github.io/2019/12/10/unit-test-express/">上一篇</a>我們講到使用 sinon 搭配 express 的使用基礎<br>今天會介紹的是關於在 express 上<br>實作 unit test 的幾個技巧以及可能會遇到的問題<br>該如何解決問題，並依靠 sinon 去達到希望的功效  </p>
 <a id="more"></a>
 <h2><span id="stub-同一個-object">stub 同一個 object</span></h2><p>在開始寫 unit test 之後<br>會開始發現一件事情，就是需要對同一個物件重複做 stub<br>在 a.test.js 需要 stub 一次<br>在 b.test.js 又需要 stub 一次  </p>
 <p>直覺上測試程式可能會變成以下的樣子<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// login.test.js</span></span><br><span class="line"><span class="keyword">const</span> apiServiceStub = sinon.stub(apiService);</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.login.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.login.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// register.test.js</span></span><br><span class="line"><span class="keyword">const</span> apiServiceStub = sinon.stub(apiService);</span><br><span class="line">describe(<span class="string">"[註冊功能]"</span>, () =&gt; &#123;</span><br><span class="line">    it(<span class="string">"註冊成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.register.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceStub.register.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 <p>我們在 login.test.js 以及 register.test.js<br>都對 apiServer 進行 stub 的動作<br>而這兩個檔案在獨立分別跑測試的時候是會成功的<br>但一起執行的時候卻會爆出以下的錯誤<br><code>TypeError: Attempted to wrap which is already wrapped</code><br>代表說，我們對同一個 object 重複做了 wrap<br><img src="/images/unit-test/problem-1.png" alt></p>
 <blockquote>
-<p>可到個人的 <a href="https://github.com/Yu-Jack/unit-test-practice">github 下載程式</a>，並執行 <code>npm run w1</code><br>就可以看到錯誤訊息了</p>
+<p>可到個人的 <a href="https://github.com/Yu-Jack/unit-test-practice" target="_blank" rel="noopener">github 下載程式</a>，並執行 <code>npm run w1</code><br>就可以看到錯誤訊息了</p>
 </blockquote>
 <p>要解決這個問題的話<br>我們必須透過 stub 指定的 method<br>再加上透過 restore 的方式釋放被 wrapped 物件的方法<br>如果不 restore 的話，物件就會一直是 wrappred 的狀態<br>然後就一直沒有辦法回復到原本物件應該有的狀態<br>所以更改過後程式碼如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// login.test.js</span></span><br><span class="line"><span class="keyword">let</span> apiServiceLogin</span><br><span class="line">describe(<span class="string">"[登入功能]"</span>, () =&gt; &#123;</span><br><span class="line">    before(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin = sinon.stub(apiService, <span class="string">"login"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    after(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceLogin.restore();</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">"登入成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"登入錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceLogin.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> loginController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"登入失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// register.test.js</span></span><br><span class="line"><span class="keyword">let</span> apiServiceRegisterStub;</span><br><span class="line">describe(<span class="string">"[註冊功能]"</span>, () =&gt; &#123;</span><br><span class="line">    before(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceRegisterStub = sinon.stub(apiService, <span class="string">"register"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    after(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        apiServiceRegisterStub.restore();</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊成功"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceRegisterStub.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊成功"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">"註冊錯誤"</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> req = mockRequest(&#123;</span><br><span class="line">            username: <span class="string">"123"</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">const</span> res = mockResponse();</span><br><span class="line">        apiServiceRegisterStub.withArgs(<span class="string">"123"</span>).resolves(&#123;</span><br><span class="line">            status: <span class="number">-1</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> registerController.run(req, res)</span><br><span class="line">        sinon.assert.calledWith(res.json, &#123;</span><br><span class="line">            message: <span class="string">"註冊失敗"</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        sinon.assert.calledOnce(res.json);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 <p>主要著手解決的地方在於兩點</p>
 <ol>
 <li><code>before</code> -&gt; 把 stub 的地方改放這 (不過個人實驗過，不放這也沒問題，放這只是比較有統一性)</li>
 <li><code>after</code> -&gt; 加上 <code>restore</code>，在做完測試的時候把整個物件給釋放出來<br>這點如果沒有做到的話，會導致在另一個 xxx.test.js 在使用同一個物件的方法時<br>爆出已經被 wrapped 過後的錯誤訊息  <blockquote>
-<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run w2</code> 即可看到錯誤訊息<br>裡面的範例是把 login.test.js restore 給註解掉後<br>故意讓 register.test.js 去對 login 做 stub 而不是 register<br>此時因為 login.test.js 做過一次 stub<br>register.test.js 再做一次 stub 就會出現錯誤了<br>成功的結果可以執行 <code>npm run c1</code>  看到</p>
+<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice" target="_blank" rel="noopener">個人專案</a>下執行 <code>npm run w2</code> 即可看到錯誤訊息<br>裡面的範例是把 login.test.js restore 給註解掉後<br>故意讓 register.test.js 去對 login 做 stub 而不是 register<br>此時因為 login.test.js 做過一次 stub<br>register.test.js 再做一次 stub 就會出現錯誤了<br>成功的結果可以執行 <code>npm run c1</code>  看到</p>
 </blockquote>
 </li>
 </ol>
@@ -191,7 +277,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2><span id="驗證-axios-的攔截器">驗證 axios 的攔截器</span></h2><p>有時候我們會為 axios 加上攔截功能<br>但如果要測試攔截功能，就又必須要有 server 才能辦到<br>此時可以在 test case 裡面加上 <code>http.createServer</code> 做到這件事情<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// network.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>);</span><br><span class="line"></span><br><span class="line">axios.interceptors.request.use(<span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log((<span class="string">"do something for request"</span>));</span><br><span class="line">    <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">axios.interceptors.response.use(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log((<span class="string">"do something for response"</span>));</span><br><span class="line">    <span class="keyword">return</span> response.data;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = axios;</span><br><span class="line"></span><br><span class="line"><span class="comment">// network.test.js</span></span><br><span class="line"><span class="keyword">let</span> server;</span><br><span class="line">describe(<span class="string">"[network 功能]"</span>, () =&gt; &#123;</span><br><span class="line">    afterEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        server.close();</span><br><span class="line">        server = <span class="literal">null</span>;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">"測試攔截功能(interceptors)"</span>, (done) =&gt; &#123;</span><br><span class="line">        server = http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> data = &#123;<span class="attr">a</span>:<span class="number">1</span>&#125;</span><br><span class="line">            res.end(<span class="built_in">JSON</span>.stringify(data));</span><br><span class="line">        &#125;).listen(<span class="number">4000</span>, () =&gt; &#123;</span><br><span class="line">            network.post(<span class="string">"http://localhost:4000"</span>).then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">                done();</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>配置好以上程式之後，可以在 terminal 看到兩個 console.log 的訊息<br>這就代表我們的攔截器有被執行到<br>個人認為攔截器測試獨立寫出來一個就可以<br>不用特地讓其他測試案例都一定要執行到這功能，不然就不叫 unit test 了  </p>
 <blockquote>
-<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run c3</code> 即可看到結果  </p>
+<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice" target="_blank" rel="noopener">個人專案</a>下執行 <code>npm run c3</code> 即可看到結果  </p>
 </blockquote>
 <h2><span id="測試-callback-function">測試 callback function</span></h2><p>有些時候我們會需要把一些在用 callback function 的程式<br>包起來改用 Promise 的方法使用，如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> test = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        obj.test(<span class="string">"qqqq"</span>, (data) =&gt; &#123;</span><br><span class="line">            res(data)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> data = <span class="keyword">await</span> test();</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br><span class="line"><span class="comment">// qqqq</span></span><br></pre></td></tr></table></figure></p>
 <p>在這種 callback 底下，可以透過 <code>sinon.yields</code> 去進行測試<br><code>sinon.yields</code> 的功能，就是可以強制讓你的 callback 被執行<br>而不會去執行原本 function 內 callback 應該要執行的內容<br>而且後面所帶的參數會變成你設定在 <code>yields(data1, data2)</code> 後面的 data1 data2<br>這邊展示一個範例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    test: <span class="function"><span class="keyword">function</span>(<span class="params">data, callback</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"running"</span>);</span><br><span class="line">        callback(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.test(<span class="string">"test"</span>, (data) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// running</span></span><br><span class="line"><span class="comment">// test</span></span><br></pre></td></tr></table></figure></p>
@@ -208,309 +294,223 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ol>
 <p><img src="/images/unit-test/nyc.png" alt></p>
 <blockquote>
-<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice">個人專案</a>下執行 <code>npm run nyc</code> 即可看到結果  </p>
+<p>可在<a href="https://github.com/Yu-Jack/unit-test-practice" target="_blank" rel="noopener">個人專案</a>下執行 <code>npm run nyc</code> 即可看到結果  </p>
 </blockquote>
 <h2><span id="結語">結語</span></h2><p>以上介紹幾個在實際撰寫 unit test 會遇到的困難點以及解決方法<br>未來還有遇到的話，會在陸陸續續補上來！</p>
 
-        </div>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/01/06/aws-certificate-manager/" data-toggle="tooltip" data-placement="top" title="AWS Certificate Manager 如何更換憑證 (Reimport Certificate)">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/12/10/unit-test-express/" data-toggle="tooltip" data-placement="top" title="unit test 是什麼? 又該如何在 express 開發上實作 unit test?">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
         
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/Test/" rel="tag">Test</a>, <a class="has-link-grey -link" href="/tags/sinon/" rel="tag">sinon</a>, <a class="has-link-grey -link" href="/tags/unit-test/" rel="tag">unit test</a>
-                </div>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#stub-同一個-object"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">stub 同一個 object</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#檢測-api-uri"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">檢測 API URI</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#驗證-axios-的攔截器"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">驗證 axios 的攔截器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#測試-callback-function"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">測試 callback function</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#測試涵蓋率-test-coverage"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">測試涵蓋率 (test coverage)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#結語"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">結語</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
             </div>
         </div>
-        
-        
-        
     </div>
-</div>
+</article>
 
 
 
 
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "yu-jack";
+    var disqus_identifier = "https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/";
+    var disqus_url = "https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/";
 
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/06/aws-certificate-manager/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">AWS Certificate Manager 如何更換憑證 (Reimport Certificate)</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/10/unit-test-express/">
-                <span class="level-item">unit test 是什麼? 又該如何在 express 開發上實作 unit test?</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">評論</h3>
-        
-<script>
-    var disqus_config = function () {
-        this.page.url = 'https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/';
-        this.page.identifier = '2019/12/22/unit-test-express-implement-troubleshooting/';
-    };
     (function() {
-        var d = document, s = d.createElement('script');  
-        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-
-<div id="disqus_thread">
-    
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-    </div>
-</div>
-</div>
-                
+<!-- disqus embedded js code start end -->
 
 
 
 
 
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
-    
-        
-    
-        
-            
 
-    <div class="card widget" id="toc">
-        <div class="card-content">
-            <div class="menu">
-                <h3 class="menu-label">
-                    文章目錄
-                </h3>
-                <ul class="menu-list"><li>
-        <a class="is-flex" href="#前言">
-        <span class="has-mr-6">1</span>
-        <span>前言</span>
-        </a></li><li>
-        <a class="is-flex" href="#stub-同一個-object">
-        <span class="has-mr-6">2</span>
-        <span>stub 同一個 object</span>
-        </a></li><li>
-        <a class="is-flex" href="#檢測-api-uri">
-        <span class="has-mr-6">3</span>
-        <span>檢測 API URI</span>
-        </a></li><li>
-        <a class="is-flex" href="#驗證-axios-的攔截器">
-        <span class="has-mr-6">4</span>
-        <span>驗證 axios 的攔截器</span>
-        </a></li><li>
-        <a class="is-flex" href="#測試-callback-function">
-        <span class="has-mr-6">5</span>
-        <span>測試 callback function</span>
-        </a></li><li>
-        <a class="is-flex" href="#測試涵蓋率-test-coverage">
-        <span class="has-mr-6">6</span>
-        <span>測試涵蓋率 (test coverage)</span>
-        </a></li><li>
-        <a class="is-flex" href="#結語">
-        <span class="has-mr-6">7</span>
-        <span>結語</span>
-        </a></li></ul>
-            </div>
-        </div>
-    </div>
-
-        
-    
-        
-    
-        
-    
-    
-        <div class="column-right-shadow is-hidden-widescreen ">
-        
-            
-        
-        </div>
-    
-</div>
-
-
-                
-
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right ">
-    
-        
-    
-    
-</div>
-
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
     <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="is-size-7">
-                &copy; 2020 Jack Yu&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
                 
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jack Yu 2020 
+                    <br>
+                    <span id="busuanzi_container_site_pv">
+                        Total <span id="busuanzi_value_site_pv"></span> views
+                    </span>
                 </p>
-            </div>
-            <div class="level-end">
-            
             </div>
         </div>
     </div>
 </footer>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-TW");</script>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
 
 
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
 <script>
-var IcarusThemeSettings = {
-    site: {
-        url: 'https://yu-jack.github.io',
-        external_link: {"enable":true,"exclude":[]}
-    },
-    article: {
-        highlight: {
-            clipboard: true,
-            fold: 'unfolded'
-        }
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
     }
-};
 </script>
 
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
 
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
 
 
-
-
-
-<script src="/js/animation.js"></script>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-<script src="/js/gallery.js" defer></script>
-
-
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<!-- jquery.tagcloud.js -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://yu-jack.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
 </script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<!--fastClick.js -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
 </script>
 
 
-<a id="back-to-top" title="回到頁首" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '頁面',
-                CATEGORIES: '分類',
-                TAGS: '標籤',
-                UNTITLED: '(無標題)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
+	<!-- <a id="rocket" href="#top" class=""></a> -->
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" async=""></script>
+    <script type="text/javascript" src="/js/fireworks.js" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
 </body>
+
 </html>
