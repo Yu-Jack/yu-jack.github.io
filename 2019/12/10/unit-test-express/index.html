@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="/img/ironman-draw.png">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.5/dist/medium-zoom.min.js"></script>
     
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -105,6 +106,14 @@
             padding-bottom: 0.3em;
         }
     </style>
+    <style>
+      .medium-zoom-overlay {
+        z-index: 5;
+      }
+      .medium-zoom-image {
+        z-index: 10;
+      }
+    </style>
 <meta name="generator" content="Hexo 4.2.0"></head>
 
 
@@ -146,8 +155,10 @@
                             2019-12-10
                         </span>
                         <span id="busuanzi_container_page_pv">
-                            <span id="busuanzi_value_page_pv"></span> views
-                        </span>                              
+                            <span id="busuanzi_value_page_pv"></span> views,
+                        </span>
+                        <span class="post-count">4k words,</span>
+                        <span class="post-read-time">17 min read</span>
                     </div>
                 
 
@@ -526,8 +537,9 @@
 <!-- Baidu Tongji -->
 
 
-
-
+<script>
+mediumZoom("img")
+</script>
 
 
 	<!-- <a id="rocket" href="#top" class=""></a> -->

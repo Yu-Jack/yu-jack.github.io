@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="/img/ironman-draw.png">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.5/dist/medium-zoom.min.js"></script>
     
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -105,6 +106,14 @@
             padding-bottom: 0.3em;
         }
     </style>
+    <style>
+      .medium-zoom-overlay {
+        z-index: 5;
+      }
+      .medium-zoom-image {
+        z-index: 10;
+      }
+    </style>
 <meta name="generator" content="Hexo 4.2.0"></head>
 
 
@@ -132,11 +141,11 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/tags/#cookie" title="cookie">cookie</a>
+                            
                               <a class="tag" href="/tags/#aws" title="aws">aws</a>
                             
                               <a class="tag" href="/tags/#CloudFront" title="CloudFront">CloudFront</a>
-                            
-                              <a class="tag" href="/tags/#cookie" title="cookie">cookie</a>
                             
                               <a class="tag" href="/tags/#query string" title="query string">query string</a>
                             
@@ -150,8 +159,10 @@
                             2018-09-05
                         </span>
                         <span id="busuanzi_container_page_pv">
-                            <span id="busuanzi_value_page_pv"></span> views
-                        </span>                              
+                            <span id="busuanzi_value_page_pv"></span> views,
+                        </span>
+                        <span class="post-count">234 words,</span>
+                        <span class="post-read-time">1 min read</span>
                     </div>
                 
 
@@ -468,8 +479,9 @@
 <!-- Baidu Tongji -->
 
 
-
-
+<script>
+mediumZoom("img")
+</script>
 
 
 	<!-- <a id="rocket" href="#top" class=""></a> -->

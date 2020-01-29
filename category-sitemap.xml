@@ -7,92 +7,92 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/AWS/</loc>
-        <lastmod>2020-01-14T16:21:14.290Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/Bot/</loc>
+        <lastmod>2020-01-29T08:25:29.302Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/categories/debug/</loc>
-        <lastmod>2020-01-14T16:21:14.290Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Development/</loc>
-        <lastmod>2020-01-14T16:21:14.290Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <lastmod>2020-01-29T08:25:29.306Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/categories/Google/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <lastmod>2020-01-29T08:25:29.313Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/tool/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Vue/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Bot/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/AWS/</loc>
+        <lastmod>2020-01-29T08:25:29.320Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/categories/Java/</loc>
-        <lastmod>2020-01-14T16:21:14.388Z</lastmod>
+        <lastmod>2020-01-29T08:25:29.328Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Test/</loc>
-        <lastmod>2020-01-14T16:21:35.565Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
+        <lastmod>2020-01-29T08:25:29.332Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/tool/</loc>
+        <lastmod>2020-01-29T08:25:29.333Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
+        <lastmod>2020-01-29T08:25:29.336Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/categories/Security/</loc>
-        <lastmod>2020-01-16T02:21:22.988Z</lastmod>
+        <lastmod>2020-01-29T08:25:29.337Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Development/</loc>
+        <lastmod>2020-01-29T08:25:29.339Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Vue/</loc>
+        <lastmod>2020-01-29T08:25:29.340Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
+        <lastmod>2020-01-29T08:25:29.340Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Test/</loc>
+        <lastmod>2020-01-29T08:25:29.342Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
