@@ -1,7 +1,7 @@
 ---
 title: JavaScript 運行機制解析 - 瀏覽器篇
 categories: JavaScript
-date: 2020-01-23 22:01:11
+date: 2020-01-29 23:01:11
 tags: [event loop, JavaScript,]
 header-img: /images/banner.jpg
 catalog: true
@@ -28,13 +28,13 @@ HTML Living Standard 基本上就是規範了瀏覽器內核心該如何實現�
 ![](/images/browser/event-loop.png)
 
 先以簡單的方式說明重點步驟  
-1. 1 ~ 6 重點在於執行 task queue 內的 first task  
+1. 1 ~ 6 重點在於執行 task queue 內的 oldest task  
 2. 7 執行 mircrotask checkpoint
     如果 microtask queue 不為空的話，則會執行 microtask queue 裡面的 microtask
     ![](/images/browser/microtask.png)
 3. 10 執行 rendering  
 
-但接下來就要開始問，什麼是 task ? 什麼事 microtask ? 什麼是 rendering ?
+但接下來就要開始問，什麼是 task ? 什麼是 microtask ? 什麼是 rendering ?
 
 ## task
 
@@ -60,6 +60,12 @@ task 主要包含以下職責
 > 個人是覺得以規範裡面的名詞去說明比較適合，所以這邊都只會稱 task
 
 另外在規範上面有提到每一輪的 event loop task 結束後不一定會需要 rendering  
+原因是為了要達到每秒 60 fps 的效果 (60 frams per second)  
+每次瀏覽器繪出一個 frame 的間隔時間為 16.7 ms  
+如果在 16.7ms 內進行兩次 DOM 操作的話，是有可能不會出現兩次渲染的  
+另一個發生的原因是在畫面上如果沒有可見的影響的渲染的話，這次就是不必要的渲染  
+![](/images/browser/no_need_rendering.png)
+
 
 ## microtask
 
@@ -68,7 +74,7 @@ microtask 是會在每一輪 event loop 進行渲染之前會被觸發
 直到整個 microtask queue 變成空的為止  
 也就是說在 microtask 執行的時候，又觸發 queue 新的 microtask 的話  
 這個新的 microtask 也是會在此輪 task 執行完之前執行，不會留到下一輪 task  
-比較著名的 microtask 就是 Promise  
+比較著名的 microtask 就是 `Promise` 以及 `MutationObserver`
 且此 microtask 擁有自己的 microtask queue，這裡的 queue 就是真的 queue 了  
 詳細可以在讀讀以下這張圖  
 ![](/images/browser/microtask.png)
@@ -77,22 +83,30 @@ microtask 是會在每一輪 event loop 進行渲染之前會被觸發
 ## rendering
 
 rendering 就是渲染  
-透過 parse HTML 變成 DOM Tree 以及 parse CSS 變成 CSSOM  
+透過 parse HTML 變成 DOM Tree 以及 parse CSS 變成 CSSOM Tree
 並且把 DOM Tree 跟 CSSOM 進行合成變成最後的 Render Tree  
-並根據這個 Render Tree 去計算要對整個畫面進行 Reflow (重排) 或是 Repaint (重繪)  
-> 補充一下，每一個瀏覽器的 rendering 機制都不太一樣
-> 不一定都會在每一個 event loop 結束後都會固定 rendering  
+並根據這個 Render Tree 去計算節點的位置去對整個畫面進行 Paint (繪製)  
+這整個過程就是 rendering  
+另外在修改 DOM 的狀況下，也會出現 Reflow (重排/回流) 或是 Repaint (重繪) 的現象  
+整個概念流程如圖下，詳細可以參考 [Google 的 轉譯樹狀結構的建構、版面配置和繪製](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-tw)
+![](/images/browser/render-tree-construction.png)
 
 ## 流程圖
 
-根據上面對 task 以及 microtask 的介紹以外  
-還有前言提到的整個 event loop 流程，可以簡化成以下這張流程圖  
+根據上面對 task 以及 microtask 的介紹以及 event loop 流程，可以簡化成以下這張流程圖  
 
 ![](/images/browser/flow.png)
 
 但這邊要注意的是，真正執行渲染時的 thread 跟執行 js 的 thread 是屬於不同個 thread  
 執行 js 程式的 thread 範疇是在 task 以及 microtask 中  
-但進行渲染時會是透過另一個 GUI thread 去進行渲染 (Reflow + Repaint)  
+但進行渲染時會是透過另一個 GUI thread 去進行渲染  
+> 詳細可以讀讀這篇文章 [「硬核JS」一次搞懂JS运行机制](https://juejin.im/post/5e22b391f265da3e204d8c14#heading-5)  
+> 這裡先幫忙釐清名詞以及簡單的知識，process 又名進程、處理程序，thread 又名線程、執行緒
+> 程式在執行時被稱為 process
+> 有時候我們寫的程式想要開另一條分支去幫忙做計算，那條分支被稱為 thread
+> 而 process 是由一個或是多個 thread 組合而成的  
+> 每個 process 是不會共享記憶體空間的，但是在 process 底下的 threads 們是可以互相共享的  
+
 此兩個 thread 是屬於互斥關係  
 可以試試以下代碼證明，GUI Thread 和 JS Thread 是互斥的  
 當還在執行 js 時，你是看不到他把畫面變成紅色的  
@@ -173,8 +187,8 @@ setTimeout(function test(){
 > 我查不太到這個代表的意思  
 > 但依照規範上面 event loop 的概念
 > 那個灰色的 task 標籤，就是代表每一次的 event loop
-> 另一個原因是在後面的 microtask 範例之中，也是被歸類在這個灰色 task 標籤下面
-> 要注意的是這個灰色 task 標籤根本文提到的 task 並無關係
+> 推測的一個原因是在後面的 microtask 範例中，執行 microtask 被歸類在這個灰色 task 標籤下面
+> 如有錯誤請糾正，感謝！！
 
 先放大最左邊黃色部份來看看 (大約 2440 ms)，會發現 task 尾端執行了一個叫做 test 的 function  
 還有一個 setTimeout 的 function (被稱為 test2)  
@@ -206,7 +220,7 @@ setTimeout(function test(){
 第一行是指定在渲染的時候要渲染藍色，但按照流程圖來說  
 最後要執行渲染之前還會先跑 microtask 的 callback  
 跑完 microtask 的 callback 後，指定在渲染時要是黑色  
-第一輪結束後，只會執行渲染黑色，所以畫面上只會先看到黑色  
+第一輪結束後，只會執行渲染黑色，所以畫面上只會看到黑色  
 而 log 的順序會是 1, 3, 2
 
 ```javascript
@@ -329,7 +343,8 @@ callback function 裡面有一個 setTimeout function
 這次介紹的是瀏覽器版本的 event loop，但其實 node.js 的 event loop 又不一樣  
 這個有機會再介紹 node.js 版本的 event loop 又是如何運作的  
 另外這邊文章也有簡單談到渲染引擎，這裡面還有牽扯到關於 Reflow 以及 Repaint 的行為
-這個會另外在開新的文章做說明
+這個也會另外在開新的文章做說明  
+另外本文提到有些名詞有結合中國的一些技術名詞，這樣大家在看中國的技術文章時會比較好同步  
 
 ## References
 1. [「前端进阶」从多线程到Event Loop全面梳理](https://juejin.im/post/5d5b4c2df265da03dd3d73e5#heading-4)
@@ -339,3 +354,4 @@ callback function 裡面有一個 setTimeout function
 3. [js引擎与GUI引擎是互斥的](https://www.kancloud.cn/xiak/quanduan/375582)
 4. [深入探究 eventloop 与浏览器渲染的时序问题](https://juejin.im/entry/596d78ee6fb9a06bb752475c)
 5. [从event loop规范探究javaScript异步及浏览器更新渲染时机](https://github.com/aooy/blog/issues/5)
+6. [Google 的 轉譯樹狀結構的建構、版面配置和繪製](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-tw)
