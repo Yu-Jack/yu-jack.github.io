@@ -157,7 +157,7 @@
                         <span id="busuanzi_container_page_pv">
                             <span id="busuanzi_value_page_pv"></span> views,
                         </span>
-                        <span class="post-count">380 words,</span>
+                        <span class="post-count">383 words,</span>
                         <span class="post-read-time">1 min read</span>
                     </div>
                 
@@ -264,13 +264,30 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2><span id="前言">前言</span></h2><p>AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用<br>掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用  </p>
-<a id="more"></a>
-<p>以 load balancer 來說<br>外面 https:443 進來後，要導入到 http:8080 的服務<br>就會需要把憑證解開，然後進一步把流量往裡面送<br>所以在 load balancer 上面就一定要掛載 private/public key 才有辦法去解開進來的流量<br>像是在選 load balancer 的頁面，選擇 port forwarding 的時候就會需要選擇要掛載哪一個 certificate<br><img src="/images/aws/aws-acm-01.png" alt></p>
-<p>而在 cloudfront 的時候<br>在申請的同時也會需要填入要用哪一組憑證 (Customer Certificate)<br><img src="/images/aws/aws-acm-04.png" alt></p>
-<p>當選入憑證的時候，Cloudfront 配給你的 domain 是 xxxxx.cloudfront.net 這種<br>但憑證假設安裝的事 api.example.com 這種，會導致不安全的提示出現<br>此時會需要到網域註冊商，把 CNAME api 指到 xxxxx.cloudfront.net<br>到時候瀏覽 api.exmaple.com 就會出現合法的憑證了  </p>
-<h2><span id="如何更新憑證">如何更新憑證</span></h2><p>首先要進入到 AWS 的 Certificate Manager 頁面，並且點選你想要 Reimport 的憑證<br>右上角會有一個藍色的『Reimport Certificate』按鈕，點選下去會到一個輸入頁面<br><img src="/images/aws/aws-acm-02.png" alt></p>
-<p>到了輸入頁面會看到有 Certificate Body, Certificate Private Key, Certificate Chain<br>接下來就把跟網域註冊商申請到的憑證一個一個貼上去即可，注意這裡要是 PEM 格式<br><img src="/images/aws/aws-acm-03.png" alt></p>
+                <h2><span id="前言">前言</span></h2>
+<p>AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用<br>
+掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用</p>
+<p>&lt;!-- more --&gt;</p>
+<p>以 load balancer 來說<br>
+外面 https:443 進來後，要導入到 http:8080 的服務<br>
+就會需要把憑證解開，然後進一步把流量往裡面送<br>
+所以在 load balancer 上面就一定要掛載 private/public key 才有辦法去解開進來的流量<br>
+像是在選 load balancer 的頁面，選擇 port forwarding 的時候就會需要選擇要掛載哪一個 certificate<br>
+<img src="/images/aws/aws-acm-01.png" alt></p>
+<p>而在 cloudfront 的時候<br>
+在申請的同時也會需要填入要用哪一組憑證 (Customer Certificate)<br>
+<img src="/images/aws/aws-acm-04.png" alt></p>
+<p>當選入憑證的時候，Cloudfront 配給你的 domain 是 xxxxx.cloudfront.net 這種<br>
+但憑證假設安裝的事 api.example.com 這種，會導致不安全的提示出現<br>
+此時會需要到網域註冊商，把 CNAME api 指到 xxxxx.cloudfront.net<br>
+到時候瀏覽 api.exmaple.com 就會出現合法的憑證了</p>
+<h2><span id="如何更新憑證">如何更新憑證</span></h2>
+<p>首先要進入到 AWS 的 Certificate Manager 頁面，並且點選你想要 Reimport 的憑證<br>
+右上角會有一個藍色的『Reimport Certificate』按鈕，點選下去會到一個輸入頁面<br>
+<img src="/images/aws/aws-acm-02.png" alt></p>
+<p>到了輸入頁面會看到有 Certificate Body, Certificate Private Key, Certificate Chain<br>
+接下來就把跟網域註冊商申請到的憑證一個一個貼上去即可，注意這裡要是 PEM 格式<br>
+<img src="/images/aws/aws-acm-03.png" alt></p>
 <p>其實在新增憑證的時候，也是一模一樣的流程</p>
 
                 
