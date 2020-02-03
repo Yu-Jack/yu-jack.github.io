@@ -56,13 +56,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
-        <lastmod>2020-01-29T08:25:29.336Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Security/</loc>
         <lastmod>2020-01-29T08:25:29.337Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -93,6 +86,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Test/</loc>
         <lastmod>2020-01-29T08:25:29.342Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
+        <lastmod>2020-02-03T04:42:21.328Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
