@@ -10,7 +10,7 @@ catalog: true
 ## 前言
 
 [上一篇](https://yu-jack.github.io/2019/12/10/unit-test-express/)我們講到使用 sinon 搭配 express 的使用基礎  
-今天會介紹的是關於在 express 上  
+今天會介紹的是關於在 nodejs 的 express unit test  
 實作 unit test 的幾個技巧以及可能會遇到的問題  
 該如何解決問題，並依靠 sinon 去達到希望的功效  
 
