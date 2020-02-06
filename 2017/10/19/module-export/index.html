@@ -281,6 +281,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">    a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;a&#125; <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="comment">// [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">'hi'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同於</span></span><br><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    name: <span class="string">'hi'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> a</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">import</span> a <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line"><span class="built_in">console</span>.log(a.name);</span><br><span class="line"><span class="comment">// Hi</span></span><br></pre></td></tr></table></figure>
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -304,7 +305,13 @@
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -314,6 +321,7 @@
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -344,6 +352,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 

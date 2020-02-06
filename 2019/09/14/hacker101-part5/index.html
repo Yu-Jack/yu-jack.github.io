@@ -289,6 +289,7 @@
 <p>重新輸入一個參數 <code>&lt;?php readfile(&quot;index.php&quot;) ?&gt;</code> 並且 approve<br>回到首頁檢視原始碼發現 FLAG !<br><img src="/images/ctf/part5-blog-3-10.png" alt></p>
 
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -312,7 +313,13 @@
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -322,6 +329,7 @@
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -352,6 +360,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 

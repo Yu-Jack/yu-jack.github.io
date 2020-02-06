@@ -288,6 +288,7 @@
 <h3><span id="選擇完成狀態的-coomponent">選擇完成狀態的 coomponent</span></h3><h4><span id="todo-displayvue">todo-display.vue</span></h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">class</span>=<span class="string">"ui dropdown"</span> <span class="attr">v-model</span>=<span class="string">"status"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">""</span>&gt;</span>Show All<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"done"</span> <span class="attr">selected</span>&gt;</span>Show Done<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"nondone"</span>&gt;</span>Show None-done<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    computed: &#123;</span><br><span class="line">        status: &#123;</span><br><span class="line">            <span class="keyword">get</span> () &#123; </span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.$store.state.status</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="keyword">set</span> (value) &#123;</span><br><span class="line">                <span class="keyword">this</span>.$store.commit(<span class="string">'setFilter'</span>, value)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -311,7 +312,13 @@
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -321,6 +328,7 @@
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -351,6 +359,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 

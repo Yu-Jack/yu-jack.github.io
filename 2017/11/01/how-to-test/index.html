@@ -329,6 +329,7 @@
 <h2><span id="結語">結語</span></h2><p>我認為用什麼樣的開發流程去測試程式都可以<br>BDD TDD ATDD 等等，都是很好的開發流程<br>對於不同團隊都會有各個團隊習慣的方式<br>但最重要的是，要有『測試』這件事情出現在專案的開發流程上就足以</p>
 
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -352,7 +353,13 @@
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -362,6 +369,7 @@
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -392,6 +400,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 

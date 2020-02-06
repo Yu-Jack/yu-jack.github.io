@@ -342,6 +342,7 @@ app.listen(<span class="number">7777</span>, () =&gt; {
 <h2><span id="後記">後記</span></h2><p>以上為簡單介紹如何在前後分離架構下依舊可以使用 session 的方式<br>而文章有提到 JWT，那是另一種驗證及授權方式，有機會再來談談這個技術實作的方式</p>
 
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -365,7 +366,13 @@ app.listen(<span class="number">7777</span>, () =&gt; {
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -375,6 +382,7 @@ app.listen(<span class="number">7777</span>, () =&gt; {
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -405,6 +413,8 @@ app.listen(<span class="number">7777</span>, () =&gt; {
         </div>
     </div>
 </article>
+
+
 
 
 

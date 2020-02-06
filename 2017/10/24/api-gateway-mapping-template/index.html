@@ -141,9 +141,9 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-                            
                               <a class="tag" href="/tags/#aws" title="aws">aws</a>
+                            
+                              <a class="tag" href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
                             
                         </div>
                         <h1>How to use mapping template with API Gateway in AWS</h1>
@@ -287,6 +287,7 @@
 <p>要特別注意的點是，不用加上 “” 在 <code>$input.json()</code> 外面了<br>因為用 <code>$input.json()</code> 拿的已經是完整格式了<br><code>String</code> 就是 <code>String</code>，不用像上面的方式還要加上 “” 去讓他變成字串<br><code>Boolean</code> <code>Int</code> 等等全部都是，也不用擔心 <code>\n</code> 這個出現<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#set($root = $input.path("$"))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// keySet 可以拿到這層所有的 key</span></span><br><span class="line">    <span class="comment">// 這裡可以拿到 data 和 comment ($rootKey)</span></span><br><span class="line">    #foreach($rootKey in $root.keySet())</span><br><span class="line">        #if($rootKey == "data")</span><br><span class="line">            <span class="string">"book_library"</span>: [</span><br><span class="line">                #foreach($elem in $root.get($rootKey))</span><br><span class="line">                &#123;   </span><br><span class="line">                    <span class="comment">// ============= Here =================</span></span><br><span class="line">                    #set($count = $foreach.count - 1)</span><br><span class="line">                    <span class="comment">// ============= Here =================         </span></span><br><span class="line">                        </span><br><span class="line">                    <span class="comment">// 這層可以達到 title 和 serial</span></span><br><span class="line">                    #foreach($i in $elem.keySet())</span><br><span class="line">                        <span class="comment">// ============= Here =================</span></span><br><span class="line">                        #if($i == "title")</span><br><span class="line">                            <span class="string">"name"</span>: $input.json(<span class="string">"$['$rootkey'][$count]['$i']"</span>)</span><br><span class="line">                        #elseif($i == "serial")</span><br><span class="line">                            <span class="string">"number"</span>: $input.json(<span class="string">"$['$rootkey'][$count]['$i']"</span>)</span><br><span class="line">                        #end</span><br><span class="line">                        <span class="comment">// ============= Here =================</span></span><br><span class="line">                    #if($foreach.hasNext),#end             </span><br><span class="line">                    #end</span><br><span class="line">                &#125;    </span><br><span class="line">                #if($foreach.hasNext),#end</span><br><span class="line">                #end</span><br><span class="line">            ]</span><br><span class="line">        #elseif ($rootKey == "comment")</span><br><span class="line">            <span class="comment">// =============== Here ==============</span></span><br><span class="line">            <span class="string">"message"</span>: $input.json(<span class="string">"$.$rootkey"</span>)</span><br><span class="line">            <span class="comment">// =============== Here ==============</span></span><br><span class="line">        #end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 這是為了讓</span></span><br><span class="line">    <span class="comment">// &#123;</span></span><br><span class="line">    <span class="comment">//     "test": 123</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 最後面的 123 加逗點用的</span></span><br><span class="line">    <span class="comment">// 如果是會後一個，就不會加逗點了</span></span><br><span class="line">    #if($foreach.hasNext),#end</span><br><span class="line">    #end</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -310,7 +311,13 @@
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -320,6 +327,7 @@
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -350,6 +358,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 

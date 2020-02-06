@@ -274,6 +274,7 @@
 <p>接下來要到 EC2 裡面把實際上使用的大小擴充到可配置的最大空間<br>以剛剛的 xvdi 為例的話，需要執行以下兩個指令才可以擴充<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo growpart &#x2F;dev&#x2F;xvdi 1</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1</span><br></pre></td></tr></table></figure><br>這樣大小會直接擴充至可配置的最大上限，如果不想要配置到最大的話<br>可以在後面加上幾 G 去做限制，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 擇一</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2G</span><br><span class="line">sudo resize2fs &#x2F;dev&#x2F;xvdi1 2048M</span><br></pre></td></tr></table></figure></p>
 
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -297,7 +298,13 @@
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -307,6 +314,7 @@
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -337,6 +345,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 

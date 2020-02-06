@@ -302,6 +302,7 @@
 <h2><span id="後記">後記</span></h2><p>這是看完 You don’t know JS 後做的一篇整理<br>如果有任何錯誤歡迎指教！<br>而整本書對於 this 的解釋非常詳細，如果有興趣的讀者可以找找這本書看看原文是如何寫的吧！<br>後續會再找時間整理關於 prototype (原形鏈) 的原理</p>
 
                 
+                
 
                 <hr>
                 <!-- Pager -->
@@ -325,7 +326,13 @@
                 <!-- 多说评论框 start -->
                 
                 <!-- 多说评论框 end -->
-
+                <div id="liker">
+                </div>
+                <script type="text/javascript">
+                    document.getElementById("liker").innerHTML = 
+                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+                </script>
                 <!-- disqus comment start -->
                 
                     <div class="comment">
@@ -335,6 +342,7 @@
                 <!-- disqus comment end -->
             </div>
             
+                
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
@@ -365,6 +373,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 
