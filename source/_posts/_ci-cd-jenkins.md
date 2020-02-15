@@ -17,7 +17,7 @@ catalog: true
 這一整個行為被稱為 CI/CD  
 
 CI 就是上述提到的版控、程式碼分析、建置、自動化測試
-CD 就是把程式放到正式環境去，讓真正的使用者使用
+CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用
 
 雖然大家都狂說 CI/CD 是很屌很猛  
 但其實工程師當久了  
@@ -29,6 +29,7 @@ CI/CD 工具只是輔助，重點是整套流程要出來才對
 根據不同流程，會有不同的 CI/CD 工具可以應用  
 應該先釐清公司的服務和架構該如何做到 CI/CD 再來去想用哪些工具  
 假如說公司都已經全都 container 化，那用 drone 或許是一個不錯的選擇  
+又或是現階段架構不大，可以採用人工介入的半自動 CI/CD 來減少全自動化的成本等等  
 在這推薦筆者覺得觀念寫得不錯的文章[架構師觀點: 你需要什麼樣的 CI / CD ?](https://columns.chicken-house.net/2017/08/05/what-cicd-do-you-need/)
 
 這篇文章主要是記錄筆者有在使用 CI/CD 流程的一部分筆記  
@@ -66,9 +67,9 @@ curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt-get install -y nodejs
 ```
 
-接下來用瀏覽器開啟 8080 port 去把 jenkins 給初始化  
+接下來用瀏覽器開啟 http://localhost:8080 去把 jenkins 給初始化  
 進到頁面首先會要求你輸入初始密碼  
-使用此指令把密碼取得，並複製上去即可完成  
+使用以下指令把密碼取得，並複製上去即可完成  
 `cat /var/jenkins_home/secrets/initialAdminPassword`  
 後面就是新增一個 admin 帳號和密碼就不截圖說明了  
 
@@ -95,10 +96,10 @@ apt-get install -y nodejs
 
 ### jenkins 設定
 
-首先進到 jenkins 的管理頁面，這裡以 8080 port 為主  
+首先進到 jenkins 的管理頁面，這裡以 http://localhost:8080 為主  
 首先為了要 bibucket 任何 push, merge 動作能夠在 jenkins 這邊去識別以下的條件  
 『當 jenkins 設定當 bibucket [push/merge/...等等] master 會建置，其餘 branch 不會建置』  
-就先必須安裝 bitbucket plugins 去做這件事情  
+就先必須安裝 bitbucket plugins 去做這件事情，不安裝的話 jenkins 無法識別 bitbucket 的通知  
 點選左邊『管理 jenkins』，然後點選『管理外掛程式』，把 bitbucket 先安裝好  
 除此之外要做到 slack 通知，也把『Slack Notification』此外掛裝好  
 ![](/images/jenkins/jenkins-plugins-01.png)
@@ -117,7 +118,7 @@ apt-get install -y nodejs
 ![](/images/jenkins/jenkins-03.png)
 
 輸入成功後，會跳回去剛剛的畫面，輸入正確的話就不會出現錯誤訊息  
-> 下列的 branch 設定意義是指  
+> 下圖的 branch 設定意義是指  
 > 當 bitbucket master 有變更的時候，會觸發此建置  
 > 但要注意，此設定要搭配 bitbucket plugin 合用才會有效喔  
 
@@ -216,7 +217,7 @@ Slack 裡面也會出現建置成功的通知
 這樣就算是打通 CI/CD 粗略流程了  
 實際上 CI 還要包含跑測試以及跑程式掃描  
 而 CD 還要有部署到伺服器  
-以 CD 來說可以用 `ssh user@server "sh ./deploy.sh"`  
+以 CD 來說可以利用 `ssh root@1.1.1.1 "echo 1"` 直接執行遠端伺服器的指令  
 去連到另一台伺服器去跑已經撰寫好了 deploy shell  
 或是有的使用 k8s 去做部署  
 又或是你家的 production server 就直接放在 jenkins server 上 XD
