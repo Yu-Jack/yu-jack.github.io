@@ -254,6 +254,40 @@
 
 <div class="post-preview">
 
+    <a href="/2019/09/30/http-smuggling/">
+        <h2 class="post-title">
+            HTTP Request Smuggling (HTTP 請求走私)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            什麼是 HTTP Request Smuggling ?今日常見的網頁應用程式往往會有多一層 server 的存在請求 –&gt; front-end server –&gt; back-end serverfront-end server 接收到請求的時候，會轉發到 back-end server 去處理  
+
+http request smuglling 的漏洞就是出現在『轉發』到 ba......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2019-09-30, 
+            7 min read, 
+            1.7k words
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#security" title="security">security</a>
+            
+              <a href="/tags/#network" title="network">network</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/09/14/hacker101-part5/">
         <h2 class="post-title">
             Hacker 101 CTF Write Up Part 5 - Cody's First Blog
@@ -262,19 +296,14 @@
             
         </h3>
         <div class="post-content-preview">
-            Cody's First Blog
-這題總共有 3 個 flag
-&lt;!-- more --&gt;
-0x00
-一開始畫面長這樣
+            Cody’s First Blog這題總共有 3 個 flag
+0x00一開始畫面長這樣
+裡面有提到好像是用 php 建立的試著提交看看 &lt;?php echo phpinfo(); ?&gt;就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
+0x01接下來看一下 source code 發現一個特別的地方  
 
-裡面有提到好像是用 php 建立的
-試著提交看看 &lt;?php echo phpinfo(); ?&gt;
-就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
+被註解掉的 admin path
 
-
-0x01
-接下來看一下 source code 發現一個特別的地方......
+Path: ......
         </div>
     </a>
     
@@ -282,7 +311,7 @@
             Posted by Jack Yu on
             2019-09-14, 
             3 min read, 
-            795 words
+            792 words
         </p>
         <div class="tags">
             
@@ -307,16 +336,11 @@
         </h3>
         <div class="post-content-preview">
             Photo Gallery
-&lt;!-- more --&gt;
-0x00
-一開始畫面長這樣
-
+0x00一開始畫面長這樣
 發現原始碼有一個 fetch?id=1
-
 點進去網址發現回傳一個 jpg 的 text 檔案
-
-從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的
-加個 ' 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error......
+從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的加個 ‘ 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error可能程式有哪邊出錯了，繼續往下測試
+不過當改下 f......
         </div>
     </a>
     
@@ -324,7 +348,7 @@
             Posted by Jack Yu on
             2019-09-10, 
             4 min read, 
-            913 words
+            920 words
         </p>
         <div class="tags">
             
@@ -348,15 +372,12 @@
             
         </h3>
         <div class="post-content-preview">
-            系列篇第三篇，目前題目寫下來都蠻有趣的
-&lt;!-- more --&gt;
-Ticketastic: Live Instance
-根據題目總共有 2 個 Flag
-0x00
-一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看
+            系列篇第三篇，目前題目寫下來都蠻有趣的  
 
-大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』
-不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/a......
+Ticketastic: Live Instance根據題目總共有 2 個 Flag
+0x00一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看
+大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/admin 可以先登入
+登入後可以看到有一個......
         </div>
     </a>
     
@@ -364,7 +385,7 @@ Ticketastic: Live Instance
             Posted by Jack Yu on
             2019-09-08, 
             1 min read, 
-            488 words
+            485 words
         </p>
         <div class="tags">
             
@@ -388,21 +409,14 @@ Ticketastic: Live Instance
             
         </h3>
         <div class="post-content-preview">
-            系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ
-&lt;!-- more --&gt;
-Micro-CMS v1
-根據題目總共有 4 個 Flag
-0x00
-打開頁面後頁面是
+            系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  
 
+Micro-CMS v1根據題目總共有 4 個 Flag
+0x00打開頁面後頁面是
 試著建立 post 試試看
-
 發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
-
 按了 Go Home 會去上一頁就跳出 FLAG 了
-
-0x01
-因為跳出 xss 的時候注......
+0x01因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8覺得很疑......
         </div>
     </a>
     
@@ -410,7 +424,7 @@ Micro-CMS v1
             Posted by Jack Yu on
             2019-09-06, 
             2 min read, 
-            680 words
+            681 words
         </p>
         <div class="tags">
             
@@ -434,19 +448,13 @@ Micro-CMS v1
             
         </h3>
         <div class="post-content-preview">
-            近期想到 HackerOne 找找 Bug Bounty
-卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄
-&lt;!-- more --&gt;
-Micro-CMS v2
-根據題目總共有 3 個 Flag
-0x00
-一進來頁面長這樣
+            近期想到 HackerOne 找找 Bug Bounty卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄
 
+Micro-CMS v2根據題目總共有 3 個 Flag
+0x00一進來頁面長這樣
 試著建立一個新的 Page, 發現要登入帳號密碼
-
 看到帳號密碼就是要先下個單引號，結果就噴出 exception 了
-
-根據 error 的 ......
+根據 error 的 sqlcur.execute(&#39;SELEC......
         </div>
     </a>
     
@@ -478,13 +486,10 @@ Micro-CMS v2
             
         </h3>
         <div class="post-content-preview">
-            這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下
-要如何達到使用 session 的方法
+            這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下要如何達到使用 session 的方法
 知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到重點筆記
-&lt;!-- more --&gt;
-前言
-以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面
-而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別......
+
+前言以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人但當我們在前後端完全分離的......
         </div>
     </a>
     
@@ -522,14 +527,9 @@ Micro-CMS v2
             
         </h3>
         <div class="post-content-preview">
-            上一篇主要是介紹如何使用
-這篇會介紹該如何去在每一種使用方式之中去做 Error Handling
-&lt;!-- more --&gt;
-callback
-相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情
-那就是 callback 第一個參數都會是 error
-雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的
-假設當......
+            上一篇主要是介紹如何使用這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  
+
+callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情那就是 callback 第一個參數都會是 error雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的假設當 callback 參數回傳越來越多的時候，......
         </div>
     </a>
     
@@ -569,15 +569,9 @@ callback
             
         </h3>
         <div class="post-content-preview">
-            前言
-相信寫過 js 的人對於 this 都有一定的認識
-但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純
-所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事
-以及最後面教學如何一步一步判定 this 會是指向什麼
-&lt;!-- more --&gt;
-this 是什麼 ？
-this 單純看英文解釋的話，是代表『自身』
-聽起來好像......
+            前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼
+
+this 是什麼 ？this 單純看英文解釋的話，是代表『自身』聽起來好像有這麼一回事，但實際上使用起來根本不是這樣實際上 ......
         </div>
     </a>
     
@@ -609,11 +603,8 @@ this 單純看英文解釋的話，是代表『自身』
             
         </h3>
         <div class="post-content-preview">
-            前言
-Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念
-就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用
-使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
-Thread Pool 也是這種概念，但在 JDK 1.5 之前......
+            前言Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
+Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本......
         </div>
     </a>
     
@@ -632,47 +623,6 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前......
               <a href="/tags/#Thread Pool" title="Thread Pool">Thread Pool</a>
             
               <a href="/tags/#TheadPoolExecutor" title="TheadPoolExecutor">TheadPoolExecutor</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/01/08/ssh-tunnel/">
-        <h2 class="post-title">
-            關於 SSH Tunnel 連線 (SSH Proxy, SSH Port Forwarding)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用
-&lt;!-- more --&gt;
-使用情境介紹
-一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
-這裡有兩台機器，分別為 A B
-B 為重要的服務或是資料
-A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
-這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2019-01-08, 
-            3 min read, 
-            842 words
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Development" title="Development">Development</a>
-            
-              <a href="/tags/#ssh" title="ssh">ssh</a>
-            
-              <a href="/tags/#ssh tunnel" title="ssh tunnel">ssh tunnel</a>
             
         </div>
     
@@ -753,6 +703,10 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
     <ul>
       
         <li>
+          <a href="/2020/02/17/ci-cd-jenkins/">CI/CD 實現 - bitbucket &amp; Jenkins 篇</a>
+        </li>
+      
+        <li>
           <a href="/2020/02/10/javascript-accumulator/">javascript 無限累加器</a>
         </li>
       
@@ -768,10 +722,6 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
           <a href="/2020/01/06/aws-increase-disk-space-in-ec2/">如何增加 EC2 硬碟大小 (Expand the disk space in EC2)</a>
         </li>
       
-        <li>
-          <a href="/2020/01/06/aws-certificate-manager/">AWS Certificate Manager 如何更換憑證 (Reimport Certificate)</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -784,7 +734,7 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -793,7 +743,7 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>

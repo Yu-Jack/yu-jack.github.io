@@ -254,6 +254,44 @@
 
 <div class="post-preview">
 
+    <a href="/2017/10/20/secure-header/">
+        <h2 class="post-title">
+            增加安全性的 HTTP Headers
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            最近遇到需要增進網站安全性的問題於是 survey 了幾個常見的 header 設置方式接下來會開始介紹每一個 header 的功能以及設置方式以及可以到這個網站進行檢測 https://securityheaders.io/個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
+Set-Cookie 設置方式防禦面向為: XSS
+Set-Cookie......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2017-10-20, 
+            6 min read, 
+            1.5k words
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#header" title="header">header</a>
+            
+              <a href="/tags/#security" title="security">security</a>
+            
+              <a href="/tags/#security header" title="security header">security header</a>
+            
+              <a href="/tags/#HTTPS" title="HTTPS">HTTPS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2017/10/19/module-export/">
         <h2 class="post-title">
             Module Export
@@ -262,13 +300,10 @@
             
         </h3>
         <div class="post-content-preview">
-            稍微紀錄一下在 nodejs 裡面 module.exports 和 require
-以及在 ECMA6 的 export 和 import 的使用方式
-&lt;!--more--&gt;
-nodejs
-首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function
-然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
-1234......
+            稍微紀錄一下在 nodejs 裡面 module.exports 和 require以及在 ECMA6 的 export 和 import 的使用方式
+
+nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
+123456789101112131415161......
         </div>
     </a>
     
@@ -276,7 +311,7 @@ nodejs
             Posted by Jack Yu on
             2017-10-19, 
             2 min read, 
-            448 words
+            445 words
         </p>
         <div class="tags">
             
@@ -300,15 +335,11 @@ nodejs
             
         </h3>
         <div class="post-content-preview">
-            這次要跟大家介紹一下 Google 到底有多好用
-相信用過 Google 都知道，Google 的搜尋很方便
-但是你知道，Google 還有提供除了關鍵字搜尋以外的各種神奇的搜尋方式嗎 ?
-&lt;!--more--&gt;
-下面這張表就是 Google 提供的各種搜尋技巧
-先用幾個來讓大家了解如何使用這個方便的技巧吧！
+            這次要跟大家介紹一下 Google 到底有多好用相信用過 Google 都知道，Google 的搜尋很方便但是你知道，Google 還有提供除了關鍵字搜尋以外的各種神奇的搜尋方式嗎 ?
 
-site:
-假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜尋到的......
+下面這張表就是 Google 提供的各種搜尋技巧先用幾個來讓大家了解如何使用這個方便的技巧吧！
+
+site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜尋到的排名不高，曝光度也不高更是難上加難但是可以......
         </div>
     </a>
     
@@ -316,7 +347,7 @@ site:
             Posted by Jack Yu on
             2017-10-17, 
             1 min read, 
-            463 words
+            456 words
         </p>
         <div class="tags">
             
@@ -342,12 +373,10 @@ site:
         <div class="post-content-preview">
             在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP
 
-申請完之後，可以看到 Features 那邊有很多不同的功能
-這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習
-&lt;!--more--&gt;
+申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習
 
-在開始正式介紹之前，我們可以思考一個情境
-身為工程師，就是會想要降低人工干涉的......
+
+在開始正式介紹之前，我們可以思考一個情境身為工程師，就是會想要降低人工干涉的事情，大量自動化那今天，我想要自動部署......
         </div>
     </a>
     
@@ -383,19 +412,17 @@ site:
             
         </h3>
         <div class="post-content-preview">
-            這篇文章主要在記錄如何用 vue + vuex + vue-router
-做出一個簡單的 TODO List 專案
-DEMO 網站
-Source Code
-&lt;!--more--&gt;
-先來訂一個 TODO List 的簡單需求表
+            這篇文章主要在記錄如何用 vue + vuex + vue-router做出一個簡單的 TODO List 專案DEMO 網站Source Code
 
+先來訂一個 TODO List 的簡單需求表
 能夠輸入項目
 能夠打勾確認完成
 能夠刪除項目
 能夠選擇顯示全部, 未完成, 完成的項目
 
-程式部分則會分為一個 vuex store 和三個 compon......
+程式部分則會分為一個 vuex store 和三個 components
+專門控管資料的 store
+輸入......
         </div>
     </a>
     
@@ -403,7 +430,7 @@ Source Code
             Posted by Jack Yu on
             2017-09-23, 
             3 min read, 
-            676 words
+            665 words
         </p>
         <div class="tags">
             
@@ -431,16 +458,12 @@ Source Code
             
         </h3>
         <div class="post-content-preview">
-            這篇文章主要是說明如何使用 TapPay 這個服務
-TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說
-有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com
-最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了
-這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面
-&lt;!--more--&gt;
+            這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com
+最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面
+
 環境設置
-
-
-TapP......
+TapPay Portal 申請
+ 要拿到以下的值才......
         </div>
     </a>
     
@@ -533,6 +556,10 @@ TapP......
     <ul>
       
         <li>
+          <a href="/2020/02/17/ci-cd-jenkins/">CI/CD 實現 - bitbucket &amp; Jenkins 篇</a>
+        </li>
+      
+        <li>
           <a href="/2020/02/10/javascript-accumulator/">javascript 無限累加器</a>
         </li>
       
@@ -548,10 +575,6 @@ TapP......
           <a href="/2020/01/06/aws-increase-disk-space-in-ec2/">如何增加 EC2 硬碟大小 (Expand the disk space in EC2)</a>
         </li>
       
-        <li>
-          <a href="/2020/01/06/aws-certificate-manager/">AWS Certificate Manager 如何更換憑證 (Reimport Certificate)</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -564,7 +587,7 @@ TapP......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -573,7 +596,7 @@ TapP......
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>
