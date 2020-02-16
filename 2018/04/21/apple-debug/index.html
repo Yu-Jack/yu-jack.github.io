@@ -159,7 +159,7 @@
                         <span id="busuanzi_container_page_pv">
                             <span id="busuanzi_value_page_pv"></span> views,
                         </span>
-                        <span class="post-count">202 words,</span>
+                        <span class="post-count">205 words,</span>
                         <span class="post-read-time">1 min read</span>
                     </div>
                 
@@ -254,6 +254,44 @@
 
     <!-- Main Content -->
     <!-- Modify by Yu-Hsuan Yen -->
+<style>
+    .header {
+      position: fixed;
+      top: 0;
+      z-index: 1;
+      width: 100%;
+      background-color: #f1f1f1;
+    }
+    
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: #ccc;
+    }
+    
+    .progress-bar {
+      height: 6px;
+      background: #76b779;
+      width: 0%;
+    }
+</style>
+
+<div class="header">
+    <div class="progress-container">
+      <div class="progress-bar" id="myBar"></div>
+    </div>  
+</div>
+<script>
+    // When the user scrolls the page, execute myFunction 
+    window.onscroll = function() {myFunction()};
+    
+    function myFunction() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("myBar").style.width = scrolled + "%";
+    }
+</script>
 
 <!-- Post Content -->
 <article>
@@ -266,17 +304,35 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>有時候在使用類似 Apple Pay 的東西<br>並不知道該如何去看手機中 Safari 的偵錯<br>然後就會愣在那裡，並不知道該怎麼 Debug<br>今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式</p>
-<a id="more"></a>
-<h2><span id="前提">前提</span></h2><p>首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！<br>沒有打開的話是不能使用 Develop Debug mode  </p>
-<h2><span id="整體流程">整體流程</span></h2><ol>
-<li>把你的 iPhone 線接到 Mac 上</li>
-<li>在手機上面開起 Safari，然後打開一個頁面</li>
-<li>開啟 Mac 上的 Safari</li>
-<li>左上選單選擇 『開發者』(Develop)</li>
-<li><p>下面會有你手機的名稱，點下去就會看到手機 Safari 頁面<br><img src="/images/safari-1.png" alt></p>
+                <p>有時候在使用類似 Apple Pay 的東西
+並不知道該如何去看手機中 Safari 的偵錯
+然後就會愣在那裡，並不知道該怎麼 Debug
+今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式</p>
+<p>&lt;!--more--&gt;</p>
+<h2><span id="前提">前提</span></h2>
+<p>首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！<br>
+沒有打開的話是不能使用 Develop Debug mode</p>
+<h2><span id="整體流程">整體流程</span></h2>
+<ol>
+<li>
+<p>把你的 iPhone 線接到 Mac 上</p>
 </li>
-<li><p>接下來會跳出 Safari 的開發者模式，就可以繼續 Debug 拉 ~<br><img src="/images/safari-2.png" alt></p>
+<li>
+<p>在手機上面開起 Safari，然後打開一個頁面</p>
+</li>
+<li>
+<p>開啟 Mac 上的 Safari</p>
+</li>
+<li>
+<p>左上選單選擇 『開發者』(Develop)</p>
+</li>
+<li>
+<p>下面會有你手機的名稱，點下去就會看到手機 Safari 頁面
+<img src="/images/safari-1.png" alt></p>
+</li>
+<li>
+<p>接下來會跳出 Safari 的開發者模式，就可以繼續 Debug 拉 ~
+<img src="/images/safari-2.png" alt></p>
 </li>
 </ol>
 
