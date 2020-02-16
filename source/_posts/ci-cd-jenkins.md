@@ -1,7 +1,7 @@
 ---
 title: CI/CD 實現 - bitbucket & Jenkins 篇
 categories: DevOps
-date: 2020-02-17 21:07:54
+date: 2020-02-17 05:07:54
 tags: [jenkins, DevOps, w3HexSchool, CI/CD]
 header-img: /images/banner.jpg
 catalog: true
