@@ -220,6 +220,6 @@ Slack 裡面也會出現建置成功的通知
 以 CD 來說可以利用 `ssh root@1.1.1.1 "echo 1"` 直接執行遠端伺服器的指令  
 去連到另一台伺服器去跑已經撰寫好了 deploy shell  
 或是有的使用 k8s 去做部署  
-又或是你家的 production server 就直接放在 jenkins server 上 XD
+又或是你家的 production server 就直接放在 jenkins server 上 XD  
 這些東西都是要根據每個公司不同的伺服器架構去決定要如何去撰寫  
 這裡就不詳細介紹該如何去實作了  
