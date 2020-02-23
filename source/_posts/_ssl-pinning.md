@@ -1,14 +1,17 @@
 ---
-title: 看完你就懂的 SSL Pinning！
+title: 從 SSL 到 SSL Pinning 看完你就懂！
 categories: Security
 date: 2020-03-02 00:02:54
-tags: [Security, ssl, w3HexSchool]
+tags: [Security, SSL, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
 ---
 
 ## 前言
 
+看不懂跟我說，我想辦法補充 XD  
+
+正文開始 ...
 某天有人問我  
 
 某: SSL Pinning 是什麼東西啊?  
@@ -27,8 +30,23 @@ SSL 全名是，Secure Sockets Layer
 但這是屬於舊的標準，新的標準則是 Transport Layer Security (TLS)  
 
 但不管新舊標準，他們的目的都是同一個  
-那就是保護使用者資料的安全性  
-要提到 SSL 是怎麼運作的，我們首先要知道 公私鑰 的概念  
+那就是保護使用者資料的安全性，但 ... 怎樣算保護呢?  
+
+先來說一般的狀況，沒有 SSL 的時候  
+A 跟 B 兩家房子，之間有一個傳輸通道  
+是用來傳輸各種訊息或是物資，但！！！這個通道是透明的  
+也就是說，其他人可以跟清楚的看到 A 跟 B 到底在秘密地交換什麼東西  
+而有了 SSL 後，就是從原本的透明傳輸管道升級成非透明的傳輸管道  
+這樣其他人就不容易的去看到 A 跟 B 在運送什麼東西了  
+
+![](/images/ssl/ssl-00.png)
+
+> 這裡就不提到 http 和 https 的概念  
+> 但可以簡單說，http 有了 ssl 就升級為 https  
+> http 就是透明管道
+> https 就是非透明管道  
+
+那麼 SSL 是怎麼運作的，我們首先要知道 公私鑰 的概念  
 SSL 其中有一段是透過非對稱式加密的公私鑰達到認證並建立連線通道  
 建立安全連線通道後，會利用對稱式加密對這之間所有資料進行加解密  
 
