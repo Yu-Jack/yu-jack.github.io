@@ -86,7 +86,7 @@ widgets:         # here are widget you can use, you can comment out
 - featured-tags
 - short-about
 - recent-posts
-- friends-blog
+# - friends-blog
 - archive
 - category
 
