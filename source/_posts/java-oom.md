@@ -131,6 +131,16 @@ Widnwos 則是會在 `C:\Program Files\Java\jdk1.8.0_65`
 
 以上是簡單介紹針對 OOM 除錯的一個心得和介紹  
 
+## Tomcat 設定方法
+
+在 tomcat 預設的資料夾底下，進入到 bin 的資料夾  
+並且新增一個 setenv.sh 的檔案  
+linux 用戶新增一行程式  
+`export JAVA_OPTS="-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"`  
+
+windows 用戶則是  
+`JAVA_OPTS="-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"`  
+
 ## 後記
 
 實際上並沒有一個銀彈可以順利地解決 OOM 的方法  
