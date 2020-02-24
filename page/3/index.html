@@ -254,6 +254,46 @@
 
 <div class="post-preview">
 
+    <a href="/2019/02/19/java-executor/">
+        <h2 class="post-title">
+            Java Executor、TheadPoolExecutor 設定參數基本介紹
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言
+Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念
+就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用
+使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
+Thread Pool 也是這種概念，但在 JDK 1.5 之前......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Jack Yu on
+            2019-02-19, 
+            6 min read, 
+            1.5k words
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Java" title="Java">Java</a>
+            
+              <a href="/tags/#Executor" title="Executor">Executor</a>
+            
+              <a href="/tags/#Thread Pool" title="Thread Pool">Thread Pool</a>
+            
+              <a href="/tags/#TheadPoolExecutor" title="TheadPoolExecutor">TheadPoolExecutor</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/01/08/ssh-tunnel/">
         <h2 class="post-title">
             關於 SSH Tunnel 連線 (SSH Proxy, SSH Port Forwarding)
@@ -263,10 +303,13 @@
         </h3>
         <div class="post-content-preview">
             這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用
-
-使用情境介紹一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
-這裡有兩台機器，分別為 A BB 為重要的服務或是資料A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
-這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑這件事實在是太麻煩了（汗所以可......
+&lt;!-- more --&gt;
+使用情境介紹
+一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
+這裡有兩台機器，分別為 A B
+B 為重要的服務或是資料
+A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
+這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到......
         </div>
     </a>
     
@@ -274,7 +317,7 @@
             Posted by Jack Yu on
             2019-01-08, 
             3 min read, 
-            837 words
+            842 words
         </p>
         <div class="tags">
             
@@ -300,11 +343,13 @@
             
         </h3>
         <div class="post-content-preview">
-            最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
-
-但由於 CF 上面的設定寫的不是很清楚於是發現以下這篇 AWS 官方文章這裡直接做一個總結
-
-None: 使用 CloudF......
+            最近在使用 CloudFront Header forward 的設定
+CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
+於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
+&lt;!-- more --&gt;
+但由於 CF 上面的設定寫的不是很清楚
+於是發現以下這篇 AWS 官方文章
+這裡直......
         </div>
     </a>
     
@@ -312,7 +357,7 @@ None: 使用 CloudF......
             Posted by Jack Yu on
             2018-09-05, 
             1 min read, 
-            234 words
+            237 words
         </p>
         <div class="tags">
             
@@ -342,8 +387,9 @@ None: 使用 CloudF......
             
         </h3>
         <div class="post-content-preview">
-            [Update 2019-05-02] 關於 Error Handing 可以看下一篇文章
-這篇主要紀錄 callback, promise, async/await 的使用方式以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, e......
+            &lt;span style=&quot;color: green&quot;&gt;[Update 2019-05-02]&lt;/span&gt; 關於 Error Handing 可以看下一篇文章
+這篇主要紀錄 callback, promise, async/await 的使用方式
+以及為何會從到 callback 和 promise 的 hell world 進入到 async/a......
         </div>
     </a>
     
@@ -383,9 +429,14 @@ None: 使用 CloudF......
             
         </h3>
         <div class="post-content-preview">
-            有時候在使用類似 Apple Pay 的東西並不知道該如何去看手機中 Safari 的偵錯然後就會愣在那裡，並不知道該怎麼 Debug今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
-
-前提首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！沒有打開的話是不能使用 Develop Debug mode  ......
+            有時候在使用類似 Apple Pay 的東西
+並不知道該如何去看手機中 Safari 的偵錯
+然後就會愣在那裡，並不知道該怎麼 Debug
+今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
+&lt;!--more--&gt;
+前提
+首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！
+沒有打開的話是不能使......
         </div>
     </a>
     
@@ -393,7 +444,7 @@ None: 使用 CloudF......
             Posted by Jack Yu on
             2018-04-21, 
             1 min read, 
-            202 words
+            205 words
         </p>
         <div class="tags">
             
@@ -421,9 +472,14 @@ None: 使用 CloudF......
             
         </h3>
         <div class="post-content-preview">
-            前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
-
-介紹在 express 裡面有一個 function 叫做 express.static()這個是一個 middleware，最常被用在要讀取一些靜態檔案上面以這個寫法來說......
+            前言
+最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
+加上小弟常用 nodejs + express 去寫前後端
+於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
+&lt;!-- more --&gt;
+介紹
+在 express 裡面有一個 function 叫做 express.static()
+這個是一個 middleware......
         </div>
     </a>
     
@@ -431,7 +487,7 @@ None: 使用 CloudF......
             Posted by Jack Yu on
             2017-12-11, 
             4 min read, 
-            937 words
+            939 words
         </p>
         <div class="tags">
             
@@ -455,7 +511,12 @@ None: 使用 CloudF......
             
         </h3>
         <div class="post-content-preview">
-            前言這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON所以必須在 API Gateway 必須要做 body mapping 的調整e.g 透過 Binary Support 或是 Base64Enconde 的方式處理那這次的紀錄是讓 AWS 的 API......
+            前言
+這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
+上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
+所以必須在 API Gateway 必須要做 body mapping 的調整
+e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
+那這次的紀錄是讓 AWS ......
         </div>
     </a>
     
@@ -463,13 +524,13 @@ None: 使用 CloudF......
             Posted by Jack Yu on
             2017-11-15, 
             1 min read, 
-            471 words
+            477 words
         </p>
         <div class="tags">
             
-              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-            
               <a href="/tags/#aws" title="aws">aws</a>
+            
+              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
             
               <a href="/tags/#lambda" title="lambda">lambda</a>
             
@@ -493,12 +554,15 @@ None: 使用 CloudF......
             
         </h3>
         <div class="post-content-preview">
-            今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到
-
+            今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost
+這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到
+&lt;!-- more --&gt;
 工具連結在此: Ngrok
-使用方式簡單介紹下載下來後，unzip 之後就可以做使用了如果在 localhost 開了一個 8080 想讓大家連可以在下這以下這行指令
-1.&#x2F;ngrok http 8080
-結果會長這樣，然後在網址列......
+使用方式簡單介紹
+下載下來後，unzip 之後就可以做使用了
+如果在 localhost 開了一個 8080 想讓大家連
+可以在下這以下這行指令
+1.&#x2F;ngrok ......
         </div>
     </a>
     
@@ -506,7 +570,7 @@ None: 使用 CloudF......
             Posted by Jack Yu on
             2017-11-08, 
             1 min read, 
-            202 words
+            205 words
         </p>
         <div class="tags">
             
@@ -530,8 +594,11 @@ None: 使用 CloudF......
             
         </h3>
         <div class="post-content-preview">
-            這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-API Gateway主要......
+            這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
+在 API Gateway 中要做幾項設定才有辦法達成
+加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
+這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
+&lt;!-- mo......
         </div>
     </a>
     
@@ -539,13 +606,13 @@ API Gateway主要......
             Posted by Jack Yu on
             2017-11-04, 
             2 min read, 
-            607 words
+            616 words
         </p>
         <div class="tags">
             
-              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-            
               <a href="/tags/#aws" title="aws">aws</a>
+            
+              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
             
               <a href="/tags/#lambda" title="lambda">lambda</a>
             
@@ -569,11 +636,17 @@ API Gateway主要......
             
         </h3>
         <div class="post-content-preview">
-            為什麼要測試?確保你程式的結果跟你預期所想的一樣那這樣有什麼好處?這樣大概會讓你少加班好幾小時吧 ….
-下面我會介紹如何用 mocha 去做測試小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~
-
-介紹測試是為了確保你的程式結果跟你預期所想的一樣那我們又該如何去測試？那又該測試什麼東西？
-在這邊我把該測試的東西分成三個方向，由小到大這篇文章重點會放在 Unit Test ......
+            為什麼要測試?
+確保你程式的結果跟你預期所想的一樣
+那這樣有什麼好處?
+這樣大概會讓你少加班好幾小時吧 ....
+下面我會介紹如何用 mocha 去做測試
+小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~
+&lt;!-- more --&gt;
+介紹
+測試是為了確保你的程式結果跟你預期所想的一樣
+那我們又該如何去測試？那又該測試什麼東西？
+在這邊我把該測試的東西分成三個......
         </div>
     </a>
     
@@ -590,41 +663,6 @@ API Gateway主要......
               <a href="/tags/#Development" title="Development">Development</a>
             
               <a href="/tags/#mocha" title="mocha">mocha</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/10/24/api-gateway-mapping-template/">
-        <h2 class="post-title">
-            How to use mapping template with API Gateway in AWS
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            [Update] 2017-11-08 原本文章的 mapping 方式再依些特別狀況會出錯，在文章最下面加入了最新的 mapping 方式
-最近需要在 API Gateway 上面作 request 和 response 的參數調整這裡紀錄一下一些基本的使用語法官方網站也有提供使用方式還有一些例子或是可以直接到 Apache Velocity Template Language
-
-if e......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Jack Yu on
-            2017-10-24, 
-            4 min read, 
-            1k words
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#API Gateway" title="API Gateway">API Gateway</a>
-            
-              <a href="/tags/#aws" title="aws">aws</a>
             
         </div>
     
@@ -705,6 +743,10 @@ if e......
     <ul>
       
         <li>
+          <a href="/2020/02/24/java-oom/">java.lang.OutOfMemoryError Java heap space? 怎麼解?</a>
+        </li>
+      
+        <li>
           <a href="/2020/02/17/ci-cd-jenkins/">CI/CD 實現 - bitbucket &amp; Jenkins 篇</a>
         </li>
       
@@ -720,23 +762,15 @@ if e......
           <a href="/2020/01/09/express-get-client-ip-from-load-balancer/">如何從多層 Load Balancer / Nginx 取得使用者正確的 IP?</a>
         </li>
       
-        <li>
-          <a href="/2020/01/06/aws-increase-disk-space-in-ec2/">如何增加 EC2 硬碟大小 (Expand the disk space in EC2)</a>
-        </li>
-      
     </ul>
   </div>
-
-        <hr>
-    
-        <!-- Friends Blog -->
 
         <hr>
     
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
@@ -745,7 +779,7 @@ if e......
 
     <h5>categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bot/">Bot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Development/">Development</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Google/">Google</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NodeJs/">NodeJs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Payment-Gateway/">Payment Gateway</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/debug/">debug</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">1</span></li></ul>
     </div>
 
         <hr>
@@ -788,6 +822,13 @@ if e......
         </div>
     </div>
 </footer>
+
+<script src="/js/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', '/js/particles.json', function() {
+        console.log('callback - particles.js config loaded');
+    });
+</script>
 
 <!-- jQuery -->
 
