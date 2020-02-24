@@ -157,7 +157,7 @@
                         <span id="busuanzi_container_page_pv">
                             <span id="busuanzi_value_page_pv"></span> views,
                         </span>
-                        <span class="post-count">842 words,</span>
+                        <span class="post-count">837 words,</span>
                         <span class="post-read-time">3 min read</span>
                     </div>
                 
@@ -303,50 +303,20 @@
                 post-container">
 
                 <p>這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用</p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="使用情境介紹">使用情境介紹</span></h2>
-<p>一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的</p>
-<p>這裡有兩台機器，分別為 A B
-B 為重要的服務或是資料
-A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)</p>
-<p>這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑
-這件事實在是太麻煩了（汗
-所以可以的話希望可以直接在 A 機器上面就能夠讀取到 B 的服務或是資料
-這樣的話就能夠方便直接在本地開發
-而要達成這件事情的方法就是透過 SSH Tunnel 的方式去達成</p>
-<h2><span id="ssh-tunnel-介紹">SSH Tunnel 介紹</span></h2>
-<p>SSH Tunnel 在者裡面扮演的角色可以這樣思考</p>
-<p>你在住家附近有一口水井，但你水井完全是沒有水可以取用
-然後在距離很遠的地方有一個水庫，要喝水的必須到水庫取水並放回住家附近的水井
-有一個作法就是，把水井和水庫之間挖一條通道，讓水庫的水直接導入到水井
-這個<code>通道</code>就是我們 SSH Tunnel 扮演的角色</p>
+<a id="more"></a>
+<h2><span id="使用情境介紹">使用情境介紹</span></h2><p>一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的</p>
+<p>這裡有兩台機器，分別為 A B<br>B 為重要的服務或是資料<br>A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)</p>
+<p>這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑<br>這件事實在是太麻煩了（汗<br>所以可以的話希望可以直接在 A 機器上面就能夠讀取到 B 的服務或是資料<br>這樣的話就能夠方便直接在本地開發<br>而要達成這件事情的方法就是透過 SSH Tunnel 的方式去達成</p>
+<h2><span id="ssh-tunnel-介紹">SSH Tunnel 介紹</span></h2><p>SSH Tunnel 在者裡面扮演的角色可以這樣思考</p>
+<p>你在住家附近有一口水井，但你水井完全是沒有水可以取用<br>然後在距離很遠的地方有一個水庫，要喝水的必須到水庫取水並放回住家附近的水井<br>有一個作法就是，把水井和水庫之間挖一條通道，讓水庫的水直接導入到水井<br>這個<code>通道</code>就是我們 SSH Tunnel 扮演的角色</p>
 <p>而用比較技術的說法的話，SSH Tunnel 就是做到了 Port Forwarding 的功用</p>
-<h2><span id="ssh-tunnel-使用方式">SSH Tunnel 使用方式</span></h2>
-<p>這邊主要會是用 Linux 原生指令 ssh 去完成 SSH Tunnel
-在這之前我們先回想一下 ssh 連線的方式！</p>
-<p>當已經有一台 server 上面跑著一個網頁的服務
-而你可以透過以下指令 ssh 連線到那一台 server 上
-<code>ssh root@127.0.0.1</code>
-ssh 連線上去之後，上面有跑一個 Nginx 的服務在 80 port
-這時候在 server 上執行 <code>curl localhost</code> 會發現有成功回傳 Nginx 的 Hello 頁面</p>
-<p>此時如果你想要在自己的電腦上就能讀取這個網頁或是資料庫該怎麼辦?
-這邊我們就要介紹 <code>-L</code> 這個 option 可以幫你達成這個目標！
-Template: <code>ssh -L [local_port]:localhost:[remote_port] root@127.0.0.1</code></p>
-<p>所以如果我要把 server 上的 80 port 網頁服務導入到本地端的 8080 port 該怎麼做呢?
-可以使用以下這行指令
-<code>ssh -L 8080:localhost:80 root@127.0.0.1</code>
-然後在瀏覽器打開 http://localhost:8080 即可看到 server 上面的網頁！</p>
-<p>接著又有另一種情境出現了
-就是在 server 上要讀取 local port 的服務的時候該怎麼辦呢?
-這裡就可以使用另一種相反的方式，也就是透過 <code>-R</code> 去達成
-<code>-R</code> 簡單來說就是反過來，你可以把本地機器上的服務 port 導入到 server 讓他連線！
-Template: <code>ssh -R [remote_port]:localhsot:[local_port] root@127.0.0.1</code></p>
-<p>舉例來說，在本地端起了一個 8080 port 的服務
-如果要在 server 上 6666 port 讀取的話可以透過以下方式取得！
-<code>ssh -R 6666:localhost:8080 root@127.0.0.1</code></p>
-<h2><span id="後記">後記</span></h2>
-<p>最近還蠻常會使用到這個方式去連線，於是在這邊特別把它記錄下來
-然而這種方式只是圖個方便，需要的時候做個 forwarding 而已</p>
+<h2><span id="ssh-tunnel-使用方式">SSH Tunnel 使用方式</span></h2><p>這邊主要會是用 Linux 原生指令 ssh 去完成 SSH Tunnel<br>在這之前我們先回想一下 ssh 連線的方式！</p>
+<p>當已經有一台 server 上面跑著一個網頁的服務<br>而你可以透過以下指令 ssh 連線到那一台 server 上<br><code>ssh root@127.0.0.1</code><br>ssh 連線上去之後，上面有跑一個 Nginx 的服務在 80 port<br>這時候在 server 上執行 <code>curl localhost</code> 會發現有成功回傳 Nginx 的 Hello 頁面</p>
+<p>此時如果你想要在自己的電腦上就能讀取這個網頁或是資料庫該怎麼辦?<br>這邊我們就要介紹 <code>-L</code> 這個 option 可以幫你達成這個目標！<br>Template: <code>ssh -L [local_port]:localhost:[remote_port] root@127.0.0.1</code> </p>
+<p>所以如果我要把 server 上的 80 port 網頁服務導入到本地端的 8080 port 該怎麼做呢?<br>可以使用以下這行指令<br><code>ssh -L 8080:localhost:80 root@127.0.0.1</code><br>然後在瀏覽器打開 <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> 即可看到 server 上面的網頁！</p>
+<p>接著又有另一種情境出現了<br>就是在 server 上要讀取 local port 的服務的時候該怎麼辦呢?<br>這裡就可以使用另一種相反的方式，也就是透過 <code>-R</code> 去達成<br><code>-R</code> 簡單來說就是反過來，你可以把本地機器上的服務 port 導入到 server 讓他連線！<br>Template: <code>ssh -R [remote_port]:localhsot:[local_port] root@127.0.0.1</code></p>
+<p>舉例來說，在本地端起了一個 8080 port 的服務<br>如果要在 server 上 6666 port 讀取的話可以透過以下方式取得！<br><code>ssh -R 6666:localhost:8080 root@127.0.0.1</code></p>
+<h2><span id="後記">後記</span></h2><p>最近還蠻常會使用到這個方式去連線，於是在這邊特別把它記錄下來<br>然而這種方式只是圖個方便，需要的時候做個 forwarding 而已</p>
 
                 
                 

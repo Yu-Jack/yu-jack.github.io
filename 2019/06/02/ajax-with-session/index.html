@@ -306,124 +306,78 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下
-要如何達到使用 session 的方法</p>
-<p>知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到<a href="#%E9%87%8D%E9%BB%9E%E7%AD%86%E8%A8%98">重點筆記</a></p>
-<p>&lt;!-- more --&gt;</p>
-<h2><span id="前言">前言</span></h2>
-<p>以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面<br>
-而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人<br>
-但當我們在前後端完全分離的狀況下，該怎麼去達到這件事情呢?</p>
-<h2><span id="cors">CORS</span></h2>
-<p>瀏覽器有一個限制，當這個 request 請求起始的地方跟 endpoint 不一致得時候會造成所謂 CORS 的問題<br>
-舉例來說，假設網站架設在 https://www.example.com 底下，但是你的 API Server 是在 https://www.example1.com 的話<br>
-這樣網站 POST 到 API Server 的請求就會被阻擋 (這時 request 是從 html 頁面發起)</p>
+                <p>這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下<br>要如何達到使用 session 的方法</p>
+<p>知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到<a href="#重點筆記">重點筆記</a></p>
+<a id="more"></a>
+<h2><span id="前言">前言</span></h2><p>以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面<br>而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人<br>但當我們在前後端完全分離的狀況下，該怎麼去達到這件事情呢?</p>
+<h2><span id="cors">CORS</span></h2><p>瀏覽器有一個限制，當這個 request 請求起始的地方跟 endpoint 不一致得時候會造成所謂 CORS 的問題<br>舉例來說，假設網站架設在 <a href="https://www.example.com" target="_blank" rel="noopener">https://www.example.com</a> 底下，但是你的 API Server 是在 <a href="https://www.example1.com" target="_blank" rel="noopener">https://www.example1.com</a> 的話<br>這樣網站 POST 到 API Server 的請求就會被阻擋 (這時 request 是從 html 頁面發起)  </p>
 <p>因為這個限制，API Server 往往要在 Header 上加上以下幾個東西去符合瀏覽器的規範</p>
 <ol>
 <li>Access-Control-Allow-Headers</li>
 <li>Access-Control-Allow-Origin</li>
 <li>Access-Control-Allow-Methods</li>
 </ol>
-<p>透過設置這三個 header 的參數，就可以讓前端合法的使用 API Server 了
-所以按照剛剛的邏輯去加上 Header 會這樣加<br>
-Access-Control-Allow-Headers: *<br>
-Access-Control-Allow-Origin: https://www.example.com<br>
-Access-Control-Allow-Methods: POST</p>
-<p>然而在使用前後端分離的架構下，身份驗證以及授權就相對上就變得比較難一點<br>
-雖然解法上還可以使用 JWT 去解決這個問題，但這篇文章主要會鎖定在用 sessino 的方式去解決</p>
-<p>題外話，有一種方式也可以繞過 CORS，就是以 Proxy Server 的方式去實作
-以下用著名的 Vue cli 為圖解
-<img src="/images/vue-cli-proxy.png" alt></p>
-<h2><span id="xhr-credential">XHR Credential</span></h2>
-<p>當加上以上三個 CORS 的規範後<br>
-會發現在發出 request 的時候，是不會帶入 cookie 去給 server 做驗證<br>
-<img src="https://imgur.com/ATihx4F.png" alt></p>
-<p>這時候就可以透過 xhr 裡面的 credential 去設定<br>
-當把這個欄位設定成 true 的時候，request 就會夾帶 cookie 到 server 去<br>
-<img src="https://i.imgur.com/neAHW1c.png" alt></p>
-<h2><span id="詳細操作說明">詳細操作說明</span></h2>
-<p>提到前後端完全分離的話，那我們就要準備兩個 server
-一台 server 專門是讀取靜態 html 的 server<br>
-一台 server 專門是處理 API 的 server</p>
-<h3><span id="html-server">html server</span></h3>
-<p>透過 Node.js 快速建立一個可以讀取靜態檔案的 server</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line">app.use(express.static(<span class="string">"./public"</span>));</span><br><span class="line">app.listen(<span class="number">8888</span>);</span><br></pre></td></tr></table></figure></p>
+<p>透過設置這三個 header 的參數，就可以讓前端合法的使用 API Server 了<br>所以按照剛剛的邏輯去加上 Header 會這樣加<br>Access-Control-Allow-Headers: *<br>Access-Control-Allow-Origin: <a href="https://www.example.com" target="_blank" rel="noopener">https://www.example.com</a><br>Access-Control-Allow-Methods: POST  </p>
+<p>然而在使用前後端分離的架構下，身份驗證以及授權就相對上就變得比較難一點<br>雖然解法上還可以使用 JWT 去解決這個問題，但這篇文章主要會鎖定在用 sessino 的方式去解決</p>
+<p>題外話，有一種方式也可以繞過 CORS，就是以 Proxy Server 的方式去實作<br>以下用著名的 Vue cli 為圖解<br><img src="/images/vue-cli-proxy.png" alt></p>
+<h2><span id="xhr-credential">XHR Credential</span></h2><p>當加上以上三個 CORS 的規範後<br>會發現在發出 request 的時候，是不會帶入 cookie 去給 server 做驗證<br><img src="https://imgur.com/ATihx4F.png" alt></p>
+<p>這時候就可以透過 xhr 裡面的 credential 去設定<br>當把這個欄位設定成 true 的時候，request 就會夾帶 cookie 到 server 去<br><img src="https://i.imgur.com/neAHW1c.png" alt></p>
+<h2><span id="詳細操作說明">詳細操作說明</span></h2><p>提到前後端完全分離的話，那我們就要準備兩個 server<br>一台 server 專門是讀取靜態 html 的 server<br>一台 server 專門是處理 API 的 server  </p>
+<h3><span id="html-server">html server</span></h3><p>透過 Node.js 快速建立一個可以讀取靜態檔案的 server</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line">app.use(express.static(<span class="string">"./public"</span>));</span><br><span class="line">app.listen(<span class="number">8888</span>);</span><br></pre></td></tr></table></figure>
 <p>而 <code>public/index.html</code> 的內容為</p>
-<p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> ajax = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="actionscript">    ajax.open(<span class="string">'POST'</span>, <span class="string">'http://localhost:7777/test'</span>);</span></span><br><span class="line"><span class="actionscript">    ajax.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>);</span></span><br><span class="line"><span class="actionscript">    ajax.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line">        if (ajax.status === 200) &#123;</span><br><span class="line"><span class="actionscript">            alert(<span class="string">'Received '</span> + ajax.responseText);</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="javascript">    ajax.send(<span class="built_in">JSON</span>.stringify(&#123;</span></span><br><span class="line"><span class="actionscript">        data: <span class="string">"hi from html"</span></span></span><br><span class="line">    &#125;));</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h3><span id="api-server">api server</span></h3>
-<p>另一台主要當作 api server<br>
-主要就印出 session id 來觀看每一次的 request 是不是同一個人</p>
-<pre><code class="language-javascript">const express = require('express');
-const app = express();
-const session = require('express-session')
-var sess = {
-  secret: 'keyboard cat',
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> ajax = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="actionscript">    ajax.open(<span class="string">'POST'</span>, <span class="string">'http://localhost:7777/test'</span>);</span></span><br><span class="line"><span class="actionscript">    ajax.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>);</span></span><br><span class="line"><span class="actionscript">    ajax.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line">        if (ajax.status === 200) &#123;</span><br><span class="line"><span class="actionscript">            alert(<span class="string">'Received '</span> + ajax.responseText);</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="javascript">    ajax.send(<span class="built_in">JSON</span>.stringify(&#123;</span></span><br><span class="line"><span class="actionscript">        data: <span class="string">"hi from html"</span></span></span><br><span class="line">    &#125;));</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3><span id="api-server">api server</span></h3><p>另一台主要當作 api server<br>主要就印出 session id 來觀看每一次的 request 是不是同一個人</p>
+<pre><code class="javascript"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);
+<span class="keyword">const</span> app = express();
+<span class="keyword">const</span> session = <span class="built_in">require</span>(<span class="string">'express-session'</span>)
+<span class="keyword">var</span> sess = {
+  secret: <span class="string">'keyboard cat'</span>,
   cookie: {},
-  resave: true,
-  saveUninitialized: false,
+  resave: <span class="literal">true</span>,
+  saveUninitialized: <span class="literal">false</span>,
 }
 
-const bodyParser = require('body-parser');
+<span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: <span class="literal">true</span>
 }));
 app.use(session(sess))
-app.use((req, res, next) =&gt; {
-    res.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;X-Requested-With, Accept, Content-Type, Cookie&quot;)
-    res.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)
-    res.setHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH&quot;)
+app.use(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> {
+    res.setHeader(<span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"X-Requested-With, Accept, Content-Type, Cookie"</span>)
+    res.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>)
+    res.setHeader(<span class="string">"Access-Control-Allow-Methods"</span>, <span class="string">"GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH"</span>)
     next();
 })
-app.post('/test', (req, res) =&gt; {
-    console.log(req.sessionID);
-    req.session.a = &quot;hi&quot;
-    res.json({a: 1})
+app.post(<span class="string">'/test'</span>, (req, res) =&gt; {
+    <span class="built_in">console</span>.log(req.sessionID);
+    req.session.a = <span class="string">"hi"</span>
+    res.json({<span class="attr">a</span>: <span class="number">1</span>})
 })
 
-app.listen(7777, () =&gt; {
-    console.log('start');
+app.listen(<span class="number">7777</span>, () =&gt; {
+    <span class="built_in">console</span>.log(<span class="string">'start'</span>);
 });
 </code></pre>
-<h3><span id="實作">實作</span></h3>
-<p>透過執行以上的兩個 server 程式，寫後近到 http://localhost:8080 之後<br>
-按下幾次重整，可以看到 api server 印出來的 session 每一次都是不同個<br>
-<img src="https://imgur.com/s8uwa99.png" alt></p>
-<p>接下來就是要透過 xhr 的 credential 去設定
-在 ajax 送出之前要加上 <code>ajax.withCredentials = true;</code> 這樣才可以把 Cookie 夾帶上去<br>
-但會發現瀏覽器卻爆出另一個錯誤訊息<br>
-<code>The value of the 'Access-Control-Allow-Credentials' header in the response is '' which must be 'true' when the request's credentials mode is 'include'</code><br>
-<img src="https://imgur.com/B4OEBSz.png" alt>
-這是前後端必須要同步都使用 credentials 才可以用<br>
-於是在後端 server 加上 <code>Access-Control-Allow-Credentials: true</code></p>
-<p>但再度重整之後又發現新的錯誤！
-<code>The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.</code>
-<img src="https://imgur.com/HBreO9s.png" alt></p>
-<p>其實這也是限制的一種，當使用到 credentials 的時候，後端必須多限制只有一個 domain 能使用<br>
-<code>Access-Control-Allow-Origin: http://localhost:8888</code><br>
-這樣設定之後按幾次重整就會發現 session id 是一致的了
-<img src="https://imgur.com/DY6aSrr.png" alt></p>
-<h2><span id="重點筆記">重點筆記</span></h2>
-<h3><span id="後端必須加上以下的-headers">後端必須加上以下的 headers</span></h3>
-<ol>
+<h3><span id="實作">實作</span></h3><p>透過執行以上的兩個 server 程式，寫後近到 <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> 之後<br>按下幾次重整，可以看到 api server 印出來的 session 每一次都是不同個<br><img src="https://imgur.com/s8uwa99.png" alt></p>
+<p>接下來就是要透過 xhr 的 credential 去設定<br>在 ajax 送出之前要加上 <code>ajax.withCredentials = true;</code> 這樣才可以把 Cookie 夾帶上去<br>但會發現瀏覽器卻爆出另一個錯誤訊息<br><code>The value of the &#39;Access-Control-Allow-Credentials&#39; header in the response is &#39;&#39; which must be &#39;true&#39; when the request&#39;s credentials mode is &#39;include&#39;</code><br><img src="https://imgur.com/B4OEBSz.png" alt><br>這是前後端必須要同步都使用 credentials 才可以用<br>於是在後端 server 加上 <code>Access-Control-Allow-Credentials: true</code></p>
+<p>但再度重整之後又發現新的錯誤！<br><code>The value of the &#39;Access-Control-Allow-Origin&#39; header in the response must not be the wildcard &#39;*&#39; when the request&#39;s credentials mode is &#39;include&#39;.</code><br><img src="https://imgur.com/HBreO9s.png" alt></p>
+<p>其實這也是限制的一種，當使用到 credentials 的時候，後端必須多限制只有一個 domain 能使用<br> <code>Access-Control-Allow-Origin: http://localhost:8888</code><br>這樣設定之後按幾次重整就會發現 session id 是一致的了<br><img src="https://imgur.com/DY6aSrr.png" alt></p>
+<h2><span id="重點筆記">重點筆記</span></h2><h3><span id="後端必須加上以下的-headers">後端必須加上以下的 headers</span></h3><ol>
 <li>Access-Control-Allow-Headers: *</li>
-<li>Access-Control-Allow-Origin: http://localhost:8888
-<blockquote>
+<li>Access-Control-Allow-Origin: <a href="http://localhost:8888" target="_blank" rel="noopener">http://localhost:8888</a><blockquote>
 <p>只能指定一個 domain，不能用 * 字號</p>
 </blockquote>
 </li>
 <li>Access-Control-Allow-Methods: *</li>
 <li>Access-Control-Allow-Credentials: true</li>
 </ol>
-<p>1, 3 兩點根據需要使用的 method 和 headers 再去客製化<br>
-以資安來說建議不寫上 <code>*</code>，寫上有使用的就可以了</p>
-<h3><span id="前端則是必須在-xhr-上面加上">前端則是必須在 xhr 上面加上</span></h3>
-<ol>
+<p>1, 3 兩點根據需要使用的 method 和 headers 再去客製化<br>以資安來說建議不寫上 <code>*</code>，寫上有使用的就可以了</p>
+<h3><span id="前端則是必須在-xhr-上面加上">前端則是必須在 xhr 上面加上</span></h3><ol>
 <li>xhr.withCredentials = true</li>
 </ol>
-<h2><span id="後記">後記</span></h2>
-<p>以上為簡單介紹如何在前後分離架構下依舊可以使用 session 的方式<br>
-而文章有提到 JWT，那是另一種驗證及授權方式，有機會再來談談這個技術實作的方式</p>
+<h2><span id="後記">後記</span></h2><p>以上為簡單介紹如何在前後分離架構下依舊可以使用 session 的方式<br>而文章有提到 JWT，那是另一種驗證及授權方式，有機會再來談談這個技術實作的方式</p>
 
                 
                 

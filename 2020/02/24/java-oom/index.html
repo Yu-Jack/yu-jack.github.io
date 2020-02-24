@@ -300,92 +300,32 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2><span id="前言">前言</span></h2>
-<p>因為工作關係，其實不只會碰到 node.js<br>
-有時候還會協助其他專案，而有的專案就是用 java 寫的<br>
-很久之前在伺服器噴出一個 <code>OutOfMemoryError: Java heap space</code> 的錯誤<br>
-就開始尋錯之旅了 ...</p>
-<p>但這裡不會真實把工作上的專案的 bug 記錄在這裡 XD
-只會以簡單的程式去表達當時除錯的流程<br>
-基本上發摟這方法，應該能夠鎖定問題點<br>
-不行的話 ... 您看看就好 XD</p>
-<h2><span id="還原案發現場">還原案發現場</span></h2>
-<p>先上一段程式來模擬可以噴出 OutOfMemoryError<br>
-此程式是無限迴圈地往 Map 裡面塞東西<br>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        Map&lt;Integer, String&gt; map = <span class="keyword">new</span> HashMap&lt;Integer, String&gt;();</span><br><span class="line">        Random r = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            map.put(r.nextInt(), <span class="string">"value"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>透過 <code>javac Test.java</code> 編譯成功後<br>
-再透過 <code>java -Xmx12m Test</code> 去執行指令<br>
-這裡的 <code>-Xmx12m</code> 是一個關鍵，這裡指定了這個 java 程式<br>
-能使用的 heap memory 的上限為 12M<br>
-此時執行完指令的時候會噴出以下錯誤<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">        at java.util.HashMap.resize(HashMap.java:703)</span><br><span class="line">        at java.util.HashMap.putVal(HashMap.java:662)</span><br><span class="line">        at java.util.HashMap.put(HashMap.java:611)</span><br><span class="line">        at Test.main(Test.java:13)</span><br></pre></td></tr></table></figure></p>
-<p>這樣可以看到噴出此錯誤訊息<br>
-這代表說假設你電腦本身記憶體空間 8G<br>
-但你分配給 java 應用程式的記憶體只有 12 MB 的時候<br>
-它不會跨過這個 12 MB 限制，即使電腦還有將近 8G 的記憶體空間，它是不會超過 12 MB<br>
-總歸一句話，使用的記憶體超出了我們設定給他的限制會導致 OOM (Out of Memory)</p>
+                <h2><span id="前言">前言</span></h2><p>因為工作關係，其實不只會碰到 node.js<br>有時候還會協助其他專案，而有的專案就是用 java 寫的<br>很久之前在伺服器噴出一個 <code>OutOfMemoryError: Java heap space</code> 的錯誤<br>就開始尋錯之旅了 …  </p>
+<p>但這裡不會真實把工作上的專案的 bug 記錄在這裡 XD<br>只會以簡單的程式去表達當時除錯的流程<br>基本上發摟這方法，應該能夠鎖定問題點<br>不行的話 … 您看看就好 XD</p>
+<h2><span id="還原案發現場">還原案發現場</span></h2><p>先上一段程式來模擬可以噴出 OutOfMemoryError<br>此程式是無限迴圈地往 Map 裡面塞東西<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        Map&lt;Integer, String&gt; map = <span class="keyword">new</span> HashMap&lt;Integer, String&gt;();</span><br><span class="line">        Random r = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            map.put(r.nextInt(), <span class="string">"value"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>透過 <code>javac Test.java</code> 編譯成功後<br>再透過 <code>java -Xmx12m Test</code> 去執行指令<br>這裡的 <code>-Xmx12m</code> 是一個關鍵，這裡指定了這個 java 程式<br>能使用的 heap memory 的上限為 12M<br>此時執行完指令的時候會噴出以下錯誤<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">        at java.util.HashMap.resize(HashMap.java:703)</span><br><span class="line">        at java.util.HashMap.putVal(HashMap.java:662)</span><br><span class="line">        at java.util.HashMap.put(HashMap.java:611)</span><br><span class="line">        at Test.main(Test.java:13)</span><br></pre></td></tr></table></figure></p>
+<p>這樣可以看到噴出此錯誤訊息<br>這代表說假設你電腦本身記憶體空間 8G<br>但你分配給 java 應用程式的記憶體只有 12 MB 的時候<br>它不會跨過這個 12 MB 限制，即使電腦還有將近 8G 的記憶體空間，它是不會超過 12 MB<br>總歸一句話，使用的記憶體超出了我們設定給他的限制會導致 OOM (Out of Memory)  </p>
 <blockquote>
-<p>這裡可以注意到叫做『Heap Space』<br>
-也就是程式運行時 JVM 可調配讓程式使用的記憶體空間<br>
-Class 實例化的 Instance 也是被放在這個區域<br>
-除了 Heap 之外，還有 PermGen 的設定<br>
-PermGen 指的是 Memory 永久保存區
-是存放 Class, Meta Info 的地方<br>
-如果太小可能就會在 pre compile 的階段把 PermGen 弄爆</p>
+<p>這裡可以注意到叫做『Heap Space』<br>也就是程式運行時 JVM 可調配讓程式使用的記憶體空間<br>Class 實例化的 Instance 也是被放在這個區域<br>除了 Heap 之外，還有 PermGen 的設定<br>PermGen 指的是 Memory 永久保存區<br>是存放 Class, Meta Info 的地方<br>如果太小可能就會在 pre compile 的階段把 PermGen 弄爆</p>
 </blockquote>
-<h2><span id="解決方法">解決方法</span></h2>
-<p>通常記憶體不夠，就是給他開大加下去！<br>
-但萬一你的程式剛好是無窮迴圈地往某一個地方塞東西<br>
-這樣加大記憶體就沒有任何意義了<br>
-因為這屬於程式上的 Bug，要解決的不是記憶體<br>
-而是<s>寫出這程式的人</s>解決程式邏輯的 Bug 才對</p>
-<p>但如果是本身記憶體真的不夠用<br>
-那就是加上記憶體試試看，如果加了好幾 XXG 上去依舊不能用<br>
-就開始要分析出錯的原因了</p>
-<p>至於要如何分析, 雖然 log 會噴出 Exception 的訊息<br>
-但總不會一直蹲在 log 前面看 Exception 哪天噴出來<br>
-就算 log 以雲端方式保存，Exception 能分析的程度還是有限</p>
-<p>所以可以加上以下指令把當時噴出 OOM 的詳細狀況 dump 出來<br>
--XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp
-會把在 OOM 的時候, 把整個 heap 等等當下執行詳細的狀況儲存變成一個檔案
-以上述的範例來說，使用的完整指令為<br>
-<code>java -Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp Test</code><br>
-這樣出現 OOM 的時候，就會往 /tmp 底下放入一個副檔名為 .hprof 可分析檔案<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">java -Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath&#x3D;&#x2F;tmp Test</span><br><span class="line"></span><br><span class="line">java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">Dumping heap to &#x2F;tmp&#x2F;java_pid57606.hprof ...</span><br><span class="line">Heap dump file created [19050199 bytes in 0.163 secs]</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">        at java.util.HashMap.resize(HashMap.java:703)</span><br><span class="line">        at java.util.HashMap.putVal(HashMap.java:662)</span><br><span class="line">        at java.util.HashMap.put(HashMap.java:611)</span><br><span class="line">        at Test.main(Test.java:13)</span><br></pre></td></tr></table></figure></p>
+<h2><span id="解決方法">解決方法</span></h2><p>通常記憶體不夠，就是給他開大加下去！<br>但萬一你的程式剛好是無窮迴圈地往某一個地方塞東西<br>這樣加大記憶體就沒有任何意義了<br>因為這屬於程式上的 Bug，要解決的不是記憶體<br>而是<del>寫出這程式的人</del>解決程式邏輯的 Bug 才對</p>
+<p>但如果是本身記憶體真的不夠用<br>那就是加上記憶體試試看，如果加了好幾 XXG 上去依舊不能用<br>就開始要分析出錯的原因了  </p>
+<p>至於要如何分析, 雖然 log 會噴出 Exception 的訊息<br>但總不會一直蹲在 log 前面看 Exception 哪天噴出來<br>就算 log 以雲端方式保存，Exception 能分析的程度還是有限  </p>
+<p>所以可以加上以下指令把當時噴出 OOM 的詳細狀況 dump 出來<br>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp<br>會把在 OOM 的時候, 把整個 heap 等等當下執行詳細的狀況儲存變成一個檔案<br>以上述的範例來說，使用的完整指令為<br><code>java -Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp Test</code><br>這樣出現 OOM 的時候，就會往 /tmp 底下放入一個副檔名為 .hprof 可分析檔案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">java -Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath&#x3D;&#x2F;tmp Test</span><br><span class="line"></span><br><span class="line">java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">Dumping heap to &#x2F;tmp&#x2F;java_pid57606.hprof ...</span><br><span class="line">Heap dump file created [19050199 bytes in 0.163 secs]</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">        at java.util.HashMap.resize(HashMap.java:703)</span><br><span class="line">        at java.util.HashMap.putVal(HashMap.java:662)</span><br><span class="line">        at java.util.HashMap.put(HashMap.java:611)</span><br><span class="line">        at Test.main(Test.java:13)</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>不過要注意的是<br>
-當應用程式越龐大的時候，產生出來的 hprof 就會越大<br>
-高達 GB 等級以上也是很常見的<br>
-所以伺服器保留適當的空間就很重要</p>
+<p>不過要注意的是<br>當應用程式越龐大的時候，產生出來的 hprof 就會越大<br>高達 GB 等級以上也是很常見的<br>所以伺服器保留適當的空間就很重要  </p>
 </blockquote>
-<p>這時再透過 java 內建的一個分析程式 jvisualvm 去分析這個檔案就可以找到出現 OOM 的地方<br>
-通常 jvisualvm 是位在 java home 裡面 bin 底下的位置，以 Mac 來說是在這個路徑底下<br>
-<code>/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/bin/jvisualvm</code>
-Widnwos 則是會在 <code>C:\Program Files\Java\jdk1.8.0_65</code></p>
+<p>這時再透過 java 內建的一個分析程式 jvisualvm 去分析這個檔案就可以找到出現 OOM 的地方<br>通常 jvisualvm 是位在 java home 裡面 bin 底下的位置，以 Mac 來說是在這個路徑底下<br><code>/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/bin/jvisualvm</code><br>Widnwos 則是會在 <code>C:\Program Files\Java\jdk1.8.0_65</code>  </p>
 <blockquote>
-<p>這前提是你沒有自行更改安裝的位置<br>
-有更改安裝位置的話，那你自己應該就知道在哪了 XD</p>
+<p>這前提是你沒有自行更改安裝的位置<br>有更改安裝位置的話，那你自己應該就知道在哪了 XD  </p>
 </blockquote>
-<p>打開後長這樣，然後開啟剛剛 dump 出來的 hprof 檔案<br>
-<img src="/images/java-oom/java-oom-01.png" alt></p>
-<p>在裡面會看到一個『Thead casuing OutOfMemoryError exception: main』<br>
-<img src="/images/java-oom/java-oom-02.png" alt></p>
-<p>點選 main 後就可以看到錯誤的地方<br>
-<img src="/images/java-oom/java-oom-03.png" alt></p>
-<p>點上面 class 可以獲得比較詳細的資訊，包含使用記憶體多少的量都能夠知道<br>
-<img src="/images/java-oom/java-oom-04.png" alt></p>
-<p>以上是簡單介紹針對 OOM 除錯的一個心得和介紹</p>
-<h2><span id="後記">後記</span></h2>
-<p>實際上並沒有一個銀彈可以順利地解決 OOM 的方法<br>
-必須找到是程式的邏輯 Bug 導致 OOM<br>
-又或是本身程式就是需要比較大的記憶體<br>
-又或是第三方的 Library 寫不好<br>
-又或是流量太大開太多 Thread<br>
-原因有很多種，只能透過分析的方式找到引起的主因<br>
-否則，單純加大記憶體不會解決根本原因<br>
-不然只持推遲爆炸的時間點而已 (汗...</p>
-<p>不管哪種語言排除 OOM 的流程都是大同小異<br>
-這邊就先記錄以 Java 的方式 (畢竟剛好工作上碰到</p>
+<p>打開後長這樣，然後開啟剛剛 dump 出來的 hprof 檔案<br><img src="/images/java-oom/java-oom-01.png" alt></p>
+<p>在裡面會看到一個『Thead casuing OutOfMemoryError exception: main』<br><img src="/images/java-oom/java-oom-02.png" alt></p>
+<p>點選 main 後就可以看到錯誤的地方<br><img src="/images/java-oom/java-oom-03.png" alt></p>
+<p>點上面 class 可以獲得比較詳細的資訊，包含使用記憶體多少的量都能夠知道<br><img src="/images/java-oom/java-oom-04.png" alt></p>
+<p>以上是簡單介紹針對 OOM 除錯的一個心得和介紹  </p>
+<h2><span id="後記">後記</span></h2><p>實際上並沒有一個銀彈可以順利地解決 OOM 的方法<br>必須找到是程式的邏輯 Bug 導致 OOM<br>又或是本身程式就是需要比較大的記憶體<br>又或是第三方的 Library 寫不好<br>又或是流量太大開太多 Thread<br>原因有很多種，只能透過分析的方式找到引起的主因<br>否則，單純加大記憶體不會解決根本原因<br>不然只持推遲爆炸的時間點而已 (汗…  </p>
+<p>不管哪種語言排除 OOM 的流程都是大同小異<br>這邊就先記錄以 Java 的方式 (畢竟剛好工作上碰到</p>
 
                 
                 
