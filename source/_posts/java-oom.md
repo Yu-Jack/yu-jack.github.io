@@ -134,11 +134,12 @@ Widnwos 則是會在 `C:\Program Files\Java\jdk1.8.0_65`
 ## Tomcat 設定方法
 
 在 tomcat 預設的資料夾底下，進入到 bin 的資料夾  
-並且新增一個 setenv.sh 的檔案  
 linux 用戶新增一行程式  
+新增一個 setenv.sh 的檔案  
 `export JAVA_OPTS="-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"`  
 
 windows 用戶則是  
+新增一個 setenv.bat 的檔案  
 `JAVA_OPTS="-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"`  
 
 ## 後記
