@@ -141,9 +141,9 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#w3HexSchool" title="w3HexSchool">w3HexSchool</a>
-                            
                               <a class="tag" href="/tags/#java" title="java">java</a>
+                            
+                              <a class="tag" href="/tags/#w3HexSchool" title="w3HexSchool">w3HexSchool</a>
                             
                         </div>
                         <h1>java.lang.OutOfMemoryError Java heap space? 怎麼解?</h1>
@@ -155,7 +155,7 @@
                         <span id="busuanzi_container_page_pv">
                             <span id="busuanzi_value_page_pv"></span> views,
                         </span>
-                        <span class="post-count">1.4k words,</span>
+                        <span class="post-count">1.5k words,</span>
                         <span class="post-read-time">5 min read</span>
                     </div>
                 
@@ -324,8 +324,8 @@
 <p>點選 main 後就可以看到錯誤的地方<br><img src="/images/java-oom/java-oom-03.png" alt></p>
 <p>點上面 class 可以獲得比較詳細的資訊，包含使用記憶體多少的量都能夠知道<br><img src="/images/java-oom/java-oom-04.png" alt></p>
 <p>以上是簡單介紹針對 OOM 除錯的一個心得和介紹  </p>
-<h2><span id="tomcat-設定方法">Tomcat 設定方法</span></h2><p>在 tomcat 預設的資料夾底下，進入到 bin 的資料夾<br>並且新增一個 setenv.sh 的檔案<br>linux 用戶新增一行程式<br><code>export JAVA_OPTS=&quot;-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp&quot;</code>  </p>
-<p>windows 用戶則是<br><code>JAVA_OPTS=&quot;-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp&quot;</code>  </p>
+<h2><span id="tomcat-設定方法">Tomcat 設定方法</span></h2><p>在 tomcat 預設的資料夾底下，進入到 bin 的資料夾<br>linux 用戶新增一行程式<br>新增一個 setenv.sh 的檔案<br><code>export JAVA_OPTS=&quot;-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp&quot;</code>  </p>
+<p>windows 用戶則是<br>新增一個 setenv.bat 的檔案<br><code>JAVA_OPTS=&quot;-Xmx12m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp&quot;</code>  </p>
 <h2><span id="後記">後記</span></h2><p>實際上並沒有一個銀彈可以順利地解決 OOM 的方法<br>必須找到是程式的邏輯 Bug 導致 OOM<br>又或是本身程式就是需要比較大的記憶體<br>又或是第三方的 Library 寫不好<br>又或是流量太大開太多 Thread<br>原因有很多種，只能透過分析的方式找到引起的主因<br>否則，單純加大記憶體不會解決根本原因<br>不然只持推遲爆炸的時間點而已 (汗…  </p>
 <p>不管哪種語言排除 OOM 的流程都是大同小異<br>這邊就先記錄以 Java 的方式 (畢竟剛好工作上碰到</p>
 
