@@ -10,7 +10,7 @@ catalog: true
 <span style="color: green">[Update 2019-05-02]</span> 關於 Error Handing 可以看[下一篇文章](/2019/05/02/promise-2/)
 
 這篇主要紀錄 callback, promise, async/await 的使用方式
-以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界
+以及如何從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界
 建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, event-driven 的觀念有一些涉略
 
 <!--more-->
