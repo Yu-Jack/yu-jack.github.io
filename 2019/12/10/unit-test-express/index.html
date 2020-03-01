@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
 <head>
     <meta charset="utf-8">
@@ -10,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keyword"  content="">
-    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- <link rel="shortcut icon" href="/img/ironman-draw.png"> -->
     <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.5/dist/medium-zoom.min.js"></script>
     
     <!-- Google Tag Manager -->
@@ -427,7 +426,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Table of Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#test-double-測試替身"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Test Double - 測試替身</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#stub"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">stub</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#spy"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">spy</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mock"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">mock</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#fake"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">fake</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#小結結語"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">小結結語</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#實作"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">實作</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#express-with-sinon-stub"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Express with Sinon Stub</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sinon-stub-介紹"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">Sinon Stub 介紹</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#如何在-express-上使用-stub"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">如何在 express 上使用 stub</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#express-with-sinon-spy"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">Express with Sinon Spy</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sinon-spy"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">Sinon Spy</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#如何在-express-上使用-spy"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">如何在 express 上使用  spy</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#express-with-sinon-mock"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">Express with Sinon Mock</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sinon-mock"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">Sinon Mock</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#如何在-express-上使用-mock"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">如何在 express 上使用 mock</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#express-with-sinon-fake"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">Express with Sinon Fake</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sinon-fake"><span class="toc-nav-number">3.4.1.</span> <span class="toc-nav-text">Sinon Fake</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#結語"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">結語</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#references"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">References</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Test Double - 測試替身</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">stub</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">spy</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">mock</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">fake</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">小結結語</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">實作</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Express with Sinon Stub</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">Sinon Stub 介紹</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">如何在 express 上使用 stub</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">Express with Sinon Spy</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">Sinon Spy</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">如何在 express 上使用  spy</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">Express with Sinon Mock</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">Sinon Mock</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">如何在 express 上使用 mock</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">Express with Sinon Fake</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.4.1.</span> <span class="toc-nav-text">Sinon Fake</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">結語</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">References</span></a></li></ol>
         
         </div>
       </aside>
@@ -505,13 +504,6 @@
     </div>
 </footer>
 
-<script src="/js/particles.min.js"></script>
-<script>
-    particlesJS.load('particles-js', '/js/particles.json', function() {
-        console.log('callback - particles.js config loaded');
-    });
-</script>
-
 <!-- jQuery -->
 
 <script src="/js/jquery.min.js"></script>
@@ -586,10 +578,6 @@
 
 
 
-
-<!-- Baidu Tongji -->
-
-
 <script>
 mediumZoom("img")
 </script>
@@ -601,7 +589,6 @@ mediumZoom("img")
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" async=""></script>
-    <script type="text/javascript" src="/js/fireworks.js" async=""></script>
 <!-- Image to hack wechat -->
 <img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->

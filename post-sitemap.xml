@@ -7,6 +7,22 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2020/03/02/ssl-pinning/</loc>
+        <lastmod>2020-03-01T15:13:23.498Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2018/07/22/promise/</loc>
+        <lastmod>2020-02-25T14:37:50.682Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2020/02/24/java-oom/</loc>
         <lastmod>2020-02-25T03:36:52.391Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -81,14 +97,6 @@
     <url>
         <loc>https://yu-jack.github.io/2017/10/20/secure-header/</loc>
         <lastmod>2020-01-29T08:25:29.337Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2018/07/22/promise/</loc>
-        <lastmod>2020-01-29T08:25:29.336Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

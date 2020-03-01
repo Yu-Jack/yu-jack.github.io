@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
 <head>
     <meta charset="utf-8">
@@ -10,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keyword"  content="">
-    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- <link rel="shortcut icon" href="/img/ironman-draw.png"> -->
     <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.5/dist/medium-zoom.min.js"></script>
     
     <!-- Google Tag Manager -->
@@ -375,7 +374,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Table of Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#先來訂一個-todo-list-的簡單需求表"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">先來訂一個 TODO List 的簡單需求表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#程式部分則會分為一個-vuex-store-和三個-components"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">程式部分則會分為一個 vuex store 和三個 components</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#專門控管資料的-store"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">專門控管資料的 store</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#storejs"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">store.js</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#輸入項目-component"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">輸入項目 component</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#todo-inputvue"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">todo-input.vue</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#顯示項目-component"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">顯示項目 component</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#todo-itemvue"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">todo-item.vue</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#選擇完成狀態的-coomponent"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">選擇完成狀態的 coomponent</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#todo-displayvue"><span class="toc-nav-number">2.4.1.</span> <span class="toc-nav-text">todo-display.vue</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">先來訂一個 TODO List 的簡單需求表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">程式部分則會分為一個 vuex store 和三個 components</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">專門控管資料的 store</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">store.js</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">輸入項目 component</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">todo-input.vue</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">顯示項目 component</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">todo-item.vue</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">選擇完成狀態的 coomponent</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.4.1.</span> <span class="toc-nav-text">todo-display.vue</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>
@@ -453,13 +452,6 @@
     </div>
 </footer>
 
-<script src="/js/particles.min.js"></script>
-<script>
-    particlesJS.load('particles-js', '/js/particles.json', function() {
-        console.log('callback - particles.js config loaded');
-    });
-</script>
-
 <!-- jQuery -->
 
 <script src="/js/jquery.min.js"></script>
@@ -534,10 +526,6 @@
 
 
 
-
-<!-- Baidu Tongji -->
-
-
 <script>
 mediumZoom("img")
 </script>
@@ -549,7 +537,6 @@ mediumZoom("img")
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" async=""></script>
-    <script type="text/javascript" src="/js/fireworks.js" async=""></script>
 <!-- Image to hack wechat -->
 <img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->

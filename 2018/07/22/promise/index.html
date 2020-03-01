@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<canvas id="fireworks" style="position: fixed"></canvas>
 <!-- Head tag -->
 <head>
     <meta charset="utf-8">
@@ -10,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keyword"  content="">
-    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- <link rel="shortcut icon" href="/img/ironman-draw.png"> -->
     <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.5/dist/medium-zoom.min.js"></script>
     
     <!-- Google Tag Manager -->
@@ -309,7 +308,7 @@
                 post-container">
 
                 <p><span style="color: green">[Update 2019-05-02]</span> 關於 Error Handing 可以看<a href="/2019/05/02/promise-2/">下一篇文章</a></p>
-<p>這篇主要紀錄 callback, promise, async/await 的使用方式<br>以及為何會從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界<br>建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, event-driven 的觀念有一些涉略</p>
+<p>這篇主要紀錄 callback, promise, async/await 的使用方式<br>以及如何從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界<br>建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, event-driven 的觀念有一些涉略</p>
 <a id="more"></a>
 <h2><span id="callback">Callback</span></h2><p>Callback 是 JS 很常用的一種使用方式<br>簡單來說，就是把 function 當作參數傳進去使用<br>以下是簡單的使用範例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This test function is done."</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main start."</span>)</span><br><span class="line">    callback()</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main end."</span>)</span><br><span class="line">&#125;</span><br><span class="line">main(test)</span><br><span class="line"><span class="comment">// This is main start.</span></span><br><span class="line"><span class="comment">// This test function is done.</span></span><br><span class="line"><span class="comment">// This is main end.</span></span><br></pre></td></tr></table></figure></p>
 <p>但是 callback 使用上往往沒那麼簡單，基本上都會牽扯到 API 相關的用法<br>所以會變成下面這樣的方式<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 這邊模擬 test 這個 function 去 call 其他 API 要等待的情況</span></span><br><span class="line">    <span class="comment">// 等了一秒後才會執行 console.log 這個函式</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"This test function is done."</span>)</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main start."</span>)</span><br><span class="line">    callback()</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"This is main end."</span>)</span><br><span class="line">&#125;</span><br><span class="line">main(test)</span><br><span class="line"><span class="comment">// This is main start.</span></span><br><span class="line"><span class="comment">// This is main end.</span></span><br><span class="line"><span class="comment">// This test function is done.</span></span><br></pre></td></tr></table></figure></p>
@@ -373,7 +372,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Table of Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#callback"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Callback</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#promise"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Promise</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#asyncawait"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">async&#x2F;await</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#結語"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">結語</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Callback</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Promise</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">async&#x2F;await</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">結語</span></a></li></ol>
         
         </div>
       </aside>
@@ -451,13 +450,6 @@
     </div>
 </footer>
 
-<script src="/js/particles.min.js"></script>
-<script>
-    particlesJS.load('particles-js', '/js/particles.json', function() {
-        console.log('callback - particles.js config loaded');
-    });
-</script>
-
 <!-- jQuery -->
 
 <script src="/js/jquery.min.js"></script>
@@ -532,10 +524,6 @@
 
 
 
-
-<!-- Baidu Tongji -->
-
-
 <script>
 mediumZoom("img")
 </script>
@@ -547,7 +535,6 @@ mediumZoom("img")
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" async=""></script>
-    <script type="text/javascript" src="/js/fireworks.js" async=""></script>
 <!-- Image to hack wechat -->
 <img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
