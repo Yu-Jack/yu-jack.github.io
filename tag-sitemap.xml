@@ -422,13 +422,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
-        <lastmod>2020-02-16T16:15:05.462Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/CI-CD/</loc>
         <lastmod>2020-02-16T16:15:05.462Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -438,13 +431,6 @@
     <url>
         <loc>https://yu-jack.github.io/tags/java/</loc>
         <lastmod>2020-02-25T03:36:52.391Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
-        <lastmod>2020-02-25T14:37:50.682Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -485,13 +471,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-03-03T06:43:55.384Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/Security/</loc>
         <lastmod>2020-03-03T06:43:55.384Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -501,6 +480,27 @@
     <url>
         <loc>https://yu-jack.github.io/tags/SSL/</loc>
         <lastmod>2020-03-03T06:43:55.384Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
+        <lastmod>2020-03-09T02:34:19.641Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
+        <lastmod>2020-03-09T02:34:19.641Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
+        <lastmod>2020-03-09T02:34:19.641Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
