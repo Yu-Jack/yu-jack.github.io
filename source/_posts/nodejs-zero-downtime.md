@@ -1,7 +1,7 @@
 ---
 title: Node.js 如何實現 zero downtime 更新呢?
 categories: NodeJs
-date: 2020-03-09 00:02:54
+date: 2020-03-09 10:33:54
 tags: [nodejs, DevOps, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
