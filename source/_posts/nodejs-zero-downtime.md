@@ -24,9 +24,7 @@ catalog: true
 在左邊可以看到，如果我要更新 a.js 的程式內容  
 我必須要先按下 Ctrl + C 把 node.js 取消掉然後重新下 node a.js 才可以  
 但取消的同時，右邊的客戶就會中斷，沒辦法繼續發送請求  
-<video width="100%" controls>
-    <source src="/images/nodejs/case-01.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-01.mp4" type="video/mp4"></video>
 
 ## Case 2
 
@@ -36,9 +34,7 @@ pm2 是一個管理 Node.js process 的工具，很多 production 環境也有�
 但如果沒用正確，依舊會導致客戶端中斷連線的可能性  
 下面使用 pm2 把 Node.js 啟動，我使用 `pm2 start a.js`  
 然後我要重新啟動 a.js 的時候，我使用了 `pm2 restart a.js`，依舊造成客戶斷線  
-<video width="100%" controls>
-    <source src="/images/nodejs/case-02.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-02.mp4" type="video/mp4"></video>
 
 ## Case 3-1
 
@@ -48,9 +44,7 @@ pm2 是一個管理 Node.js process 的工具，很多 production 環境也有�
 能接受的 request 量就會比只有 1 個 process 的時候還要更多  
 在 pm2 裡面，是透過 `pm2 start a.js -i max` 的方式啟用最大核心數  
 然後當程式修改的時候，可以透過 `pm2 reload a.js` 讓程式重起，但不會影響客戶斷線  
-<video width="100%" controls>
-    <source src="/images/nodejs/case-03-01.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-03-01.mp4" type="video/mp4"></video>
 
 ## Case 3-2
 
@@ -58,9 +52,7 @@ pm2 是一個管理 Node.js process 的工具，很多 production 環境也有�
 萬一我們只有一個核心，也就是說只有一個 Node.js process 的時候  
 我們去重新啟用的時候，依舊會發生讓客戶斷線的問題  
 
-<video width="100%" controls>
-    <source src="/images/nodejs/case-03-02.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-03-02.mp4" type="video/mp4"></video>
 
 ## 中場補充  
 
@@ -79,9 +71,7 @@ express 會等到請求處理完事件後才會關閉
 而是會等到使用者 response 拿到後，才會關閉 server  
 關閉後左邊 server 就會觸發 callback 印出 `server is closed`  
 
-<video width="100%" controls>
-    <source src="/images/nodejs/case-00-01.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-00-01.mp4" type="video/mp4"></video>
 
 ### 中場補充 case 02
 
@@ -98,9 +88,7 @@ express 會等到請求處理完事件後才會關閉
 而是會等到使用者 response 拿到後，才會關閉 server  
 關閉後左邊 server 就會觸發 callback 印出 `server is closed`  
 
-<video width="100%" controls>
-    <source src="/images/nodejs/case-00-02.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-00-02.mp4" type="video/mp4"></video>
 
 
 ## Case 4
@@ -124,9 +112,7 @@ process.on('SIGINT', () => {
   });
 });
 ```
-<video width="100%" controls>
-    <source src="/images/nodejs/case-04.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-04.mp4" type="video/mp4"></video>
 
 ## Case 5
 
@@ -143,9 +129,7 @@ pm2 option --kill-timeout: 3s
 那麼強迫程式關閉的時間就形同虛設，因為最終還是會吃 kill timeout 的時間  
 讓我們來看看以下的例子吧！(這個例子就沒有特別設置 kill timeout 而是用預設的)  
 
-<video width="100%" controls>
-    <source src="/images/nodejs/case-05.mp4" type="video/mp4">
-</video>
+<video width="100%" controls><source src="/images/nodejs/case-05.mp4" type="video/mp4"></video>
 
 ## 後記
 
