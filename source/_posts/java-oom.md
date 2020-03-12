@@ -1,6 +1,6 @@
 ---
 title: java.lang.OutOfMemoryError Java heap space? 怎麼解?
-categories: DevOps
+categories: Java
 date: 2020-02-24 10:07:54
 tags: [java, w3HexSchool]
 header-img: /images/banner.jpg
