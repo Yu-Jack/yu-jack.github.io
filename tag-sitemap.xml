@@ -408,13 +408,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/java/</loc>
-        <lastmod>2020-02-25T03:36:52.391Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
         <lastmod>2020-02-25T14:37:50.682Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -492,15 +485,22 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
+        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
         <lastmod>2020-03-12T16:14:28.541Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
-        <lastmod>2020-03-12T16:14:28.541Z</lastmod>
+        <loc>https://yu-jack.github.io/tags/java/</loc>
+        <lastmod>2020-03-12T16:16:22.387Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
+        <lastmod>2020-03-12T16:16:22.387Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
