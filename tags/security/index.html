@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>標籤: Security - 技術雜記 Technology Notes</title>
+<title>標籤: security - 技術雜記 Technology Notes</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -20,7 +20,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="技術雜記 Technology Notes">
-<meta property="og:url" content="https://yu-jack.github.io/tags/Security/index.html">
+<meta property="og:url" content="https://yu-jack.github.io/tags/security/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
@@ -126,7 +126,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/tags">標籤</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Security</a></li>
+            <li class="is-active"><a href="#" aria-current="page">security</a></li>
         </ul>
         </nav>
     </div>
@@ -139,7 +139,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-01T16:02:54.000Z">2020-03-02</time>
+                <time class="level-item has-text-grey" datetime="2019-10-20T13:08:38.000Z">2019-10-20</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/Security/">Security</a>
@@ -149,7 +149,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    27 分鐘 閱讀文 (大約 4124 個字)
+                    13 分鐘 閱讀文 (大約 1883 個字)
                 </span>
                 
                 
@@ -159,23 +159,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/03/02/ssl-pinning/">從 SSL 到 SSL Pinning 看完你就懂！</a>
+                <a class="has-link-black-ter" href="/2019/10/20/hacker101-part6/">Hacker 101 CTF Write Up Part 6 - Encrypted Pastebin (Padding Oracle 以及翻轉攻擊)</a>
             
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-看不懂跟我說，我想辦法補充 XD
-正文開始 ...
-某天有人問我
-某: SSL Pinning 是什麼東西啊?
-我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制
-某: ...... 你這樣說最好是有人聽得懂
-我: 我錯了 ... 給點機會讓我重新解釋解釋
-為了要了解這個的意思
-我們要先來說說 SSL 是什麼
-而 SSL Pinning 又是要 pin 什麼東西
-然...
+                Encrypted Pastebin這題總共有四個 flag
+
+0x00一開始畫面長這樣
+試著輸入值之後，發現上面有一段 ?post= 資料
+嘗試更改之後，發現 flag
+0x01根據上一個 error message 得知有用到 base64所以可以知道 ?post= 的是 base64接下來再輸入一些奇怪的值試試看
+發現程式使用的是 aes-128-cbc 去把資料作加密且根據錯誤訊息表...
             </div>
         
         
@@ -183,7 +178,433 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/03/02/ssl-pinning/#more">繼續閱讀</a>
+                <a class="button is-size-7 is-light" href="/2019/10/20/hacker101-part6/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-30T07:44:52.000Z">2019-09-30</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    12 分鐘 閱讀文 (大約 1841 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/09/30/http-smuggling/">HTTP Request Smuggling (HTTP 請求走私)</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                什麼是 HTTP Request Smuggling ?今日常見的網頁應用程式往往會有多一層 server 的存在請求 –&gt; front-end server –&gt; back-end serverfront-end server 接收到請求的時候，會轉發到 back-end server 去處理  
+
+http request smuglling 的漏洞就是出現在『轉發』到 ba...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/30/http-smuggling/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-14T14:28:20.000Z">2019-09-14</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分鐘 閱讀文 (大約 858 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/09/14/hacker101-part5/">Hacker 101 CTF Write Up Part 5 - Cody&#39;s First Blog</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                Cody’s First Blog這題總共有 3 個 flag
+0x00一開始畫面長這樣
+裡面有提到好像是用 php 建立的試著提交看看 &lt;?php echo phpinfo(); ?&gt;就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
+0x01接下來看一下 source code 發現一個特別的地方  
+
+被註解掉的 admin path
+
+Path: ...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/14/hacker101-part5/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-10T14:28:20.000Z">2019-09-10</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分鐘 閱讀文 (大約 926 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/09/10/hacker101-part4/">Hacker 101 CTF Write Up Part 4 - Photo Gallery</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                Photo Gallery
+0x00一開始畫面長這樣
+發現原始碼有一個 fetch?id=1
+點進去網址發現回傳一個 jpg 的 text 檔案
+從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的加個 ‘ 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error可能程式有哪邊出錯了，繼續往下測試
+不過當改下 f...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/10/hacker101-part4/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-08T14:28:20.000Z">2019-09-08</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分鐘 閱讀文 (大約 582 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/09/08/hacker101-part3/">Hacker 101 CTF Write Up Part 3 - Ticketastic Live Instance</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                系列篇第三篇，目前題目寫下來都蠻有趣的  
+
+Ticketastic: Live Instance根據題目總共有 2 個 Flag
+0x00一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看
+大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/admin 可以先登入
+登入後可以看到有一個...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/08/hacker101-part3/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-06T13:28:20.000Z">2019-09-06</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分鐘 閱讀文 (大約 841 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/09/06/hacker101-part2/">Hacker 101 CTF Write Up Part 2 - Micro-CMS v1, Petshop Pro</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  
+
+Micro-CMS v1根據題目總共有 4 個 Flag
+0x00打開頁面後頁面是
+試著建立 post 試試看
+發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
+按了 Go Home 會去上一頁就跳出 FLAG 了
+0x01因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8覺得很疑...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/06/hacker101-part2/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-04T12:28:20.000Z">2019-09-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    7 分鐘 閱讀文 (大約 1008 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/09/04/hacker101-part1/">Hacker 101 CTF Write Up Part 1 - Micro-CMS v2, TempImage</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                近期想到 HackerOne 找找 Bug Bounty卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄
+
+Micro-CMS v2根據題目總共有 3 個 Flag
+0x00一進來頁面長這樣
+試著建立一個新的 Page, 發現要登入帳號密碼
+看到帳號密碼就是要先下個單引號，結果就噴出 exception 了
+根據 error 的 sqlcur.execute(&#39;SELEC...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/09/04/hacker101-part1/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2017-10-20T15:26:59.000Z">2017-10-20</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    10 分鐘 閱讀文 (大約 1516 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2017/10/20/secure-header/">增加安全性的 HTTP Headers</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                最近遇到需要增進網站安全性的問題於是 survey 了幾個常見的 header 設置方式接下來會開始介紹每一個 header 的功能以及設置方式以及可以到這個網站進行檢測 https://securityheaders.io/個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
+Set-Cookie 設置方式防禦面向為: XSS
+Set-Cookie...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/10/20/secure-header/#more">繼續閱讀</a>
                 </div>
             </div>
         </div>
@@ -575,378 +996,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <span class="level-item tag">1</span>
                 </span>
             </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2017/12/">
-                <span class="level-start">
-                    <span class="level-item">十二月 2017</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2017/11/">
-                <span class="level-start">
-                    <span class="level-item">十一月 2017</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">4</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2017/10/">
-                <span class="level-start">
-                    <span class="level-item">十月 2017</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">5</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2017/09/">
-                <span class="level-start">
-                    <span class="level-item">九月 2017</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">2</span>
-                </span>
-            </a>
-        </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-    
-    
-        <div class="column-right-shadow is-hidden-widescreen ">
-        
-            <div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-09T02:33:54.000Z">2020-03-09</time></div>
-                    <a href="/2020/03/09/nodejs-zero-downtime/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Node.js 如何實現 zero downtime 更新呢?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/NodeJs/">NodeJs</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-01T16:02:54.000Z">2020-03-02</time></div>
-                    <a href="/2020/03/02/ssl-pinning/" class="title has-link-black-ter is-size-6 has-text-weight-normal">從 SSL 到 SSL Pinning 看完你就懂！</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Security/">Security</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-24T02:07:54.000Z">2020-02-24</time></div>
-                    <a href="/2020/02/24/java-oom/" class="title has-link-black-ter is-size-6 has-text-weight-normal">java.lang.OutOfMemoryError Java heap space? 怎麼解?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-16T21:07:54.000Z">2020-02-17</time></div>
-                    <a href="/2020/02/17/ci-cd-jenkins/" class="title has-link-black-ter is-size-6 has-text-weight-normal">CI/CD 實現 - bitbucket &amp; Jenkins 篇</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-09T16:01:14.000Z">2020-02-10</time></div>
-                    <a href="/2020/02/10/javascript-accumulator/" class="title has-link-black-ter is-size-6 has-text-weight-normal">javascript 無限累加器</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-        
-        </div>
-    
-</div>
-
-
-                
-
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
-    
-        <div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-09T02:33:54.000Z">2020-03-09</time></div>
-                    <a href="/2020/03/09/nodejs-zero-downtime/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Node.js 如何實現 zero downtime 更新呢?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/NodeJs/">NodeJs</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-01T16:02:54.000Z">2020-03-02</time></div>
-                    <a href="/2020/03/02/ssl-pinning/" class="title has-link-black-ter is-size-6 has-text-weight-normal">從 SSL 到 SSL Pinning 看完你就懂！</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Security/">Security</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-24T02:07:54.000Z">2020-02-24</time></div>
-                    <a href="/2020/02/24/java-oom/" class="title has-link-black-ter is-size-6 has-text-weight-normal">java.lang.OutOfMemoryError Java heap space? 怎麼解?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-16T21:07:54.000Z">2020-02-17</time></div>
-                    <a href="/2020/02/17/ci-cd-jenkins/" class="title has-link-black-ter is-size-6 has-text-weight-normal">CI/CD 實現 - bitbucket &amp; Jenkins 篇</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-09T16:01:14.000Z">2020-02-10</time></div>
-                    <a href="/2020/02/10/javascript-accumulator/" class="title has-link-black-ter is-size-6 has-text-weight-normal">javascript 無限累加器</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-    
-    
-</div>
-
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="is-size-7">
-                &copy; 2020 Jack Yu&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-            </div>
-        </div>
-    </div>
-</footer>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-TW");</script>
-
-
-<script>
-var IcarusThemeSettings = {
-    site: {
-        url: 'https://yu-jack.github.io',
-        external_link: {"enable":true,"exclude":[]}
-    },
-    article: {
-        highlight: {
-            clipboard: true,
-            fold: 'unfolded'
-        }
-    }
-};
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-
-
-
-
-
-<script src="/js/animation.js"></script>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-<script src="/js/gallery.js" defer></script>
-
-
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
-
-
-<a id="back-to-top" title="回到頁首" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '頁面',
-                CATEGORIES: '分類',
-                TAGS: '標籤',
-                UNTITLED: '(無標題)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</body>
-</html>  </a>
         </li>
         
         <li>
