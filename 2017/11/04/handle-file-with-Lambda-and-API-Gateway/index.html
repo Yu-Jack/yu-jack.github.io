@@ -18,12 +18,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分">
+    <meta name="description" content="這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載 在 API Gateway 中要做幾項設定才有辦法達成 加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整 這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分 &lt;!-- more">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 1">
 <meta property="og:url" content="https://yu-jack.github.io/2017/11/04/handle-file-with-Lambda-and-API-Gateway/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes">
-<meta property="og:description" content="這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分">
+<meta property="og:description" content="這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載 在 API Gateway 中要做幾項設定才有辦法達成 加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整 這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分 &lt;!-- more">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2017-11-04T13:03:47.000Z">
@@ -170,42 +170,66 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content">
-                <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載<br>在 API Gateway 中要做幾項設定才有辦法達成<br>加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整<br>這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分<br><a id="more"></a></p>
-<h2><span id="api-gateway">API Gateway</span></h2><p>主要調整得地方有兩個</p>
+                <p>這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
+在 API Gateway 中要做幾項設定才有辦法達成
+加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
+這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
+&lt;!-- more --&gt;</p>
+<h2><span id="api-gateway">API Gateway</span></h2>
+<p>主要調整得地方有兩個</p>
 <ol>
 <li>/upload Integration Request</li>
 <li>/download Integration Response</li>
 </ol>
-<p>另外還有一種特別的方式，是利用 API Gateway 的 Binary Support 去處理<br>這種方式會列在最後面</p>
-<h3><span id="upload-integration-request">/upload Integration Request</span></h3><ol>
-<li>到 body mapping template 底下調整成圖片樣子(Generate templaye 選擇 “Method Request passthrough”)</li>
+<p>另外還有一種特別的方式，是利用 API Gateway 的 Binary Support 去處理
+這種方式會列在最後面</p>
+<h3><span id="upload-integration-request">/upload Integration Request</span></h3>
+<ol>
+<li>到 body mapping template 底下調整成圖片樣子(Generate templaye 選擇 &quot;Method Request passthrough&quot;)</li>
 </ol>
 <p><img src="https://i.imgur.com/1vUOTvZ.png" alt></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需要修改的部分為第一行的 body</span></span><br><span class="line"><span class="comment">// 其他行不需要做調整</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: <span class="string">"$util.base64Encode($input.body)"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3><span id="download-integration-reponse">/download Integration Reponse</span></h3><ol>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需要修改的部分為第一行的 body</span></span><br><span class="line"><span class="comment">// 其他行不需要做調整</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: <span class="string">"$util.base64Encode($input.body)"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3><span id="download-integration-reponse">/download Integration Reponse</span></h3>
+<ol>
 <li>到 body mapping template 底下調整成圖片樣子</li>
 </ol>
-<p><img src="https://i.imgur.com/ZW32Fhb.png" alt><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$util.base64Decode($input.body)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="lambda">Lambda</span></h2><p>主要是用 nodejs 去編寫處理上傳的部分</p>
-<h3><span id="handle-upload-request">Handle upload request</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multipart = <span class="built_in">require</span>(<span class="string">'parse-multipart'</span>);</span><br><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// convert base64 string to binary</span></span><br><span class="line">    <span class="keyword">const</span> buffer = <span class="keyword">new</span> Buffer(event.body, <span class="string">'base64'</span>)</span><br><span class="line">    <span class="keyword">const</span> boundary = multipart.getBoundary(event.params.header[<span class="string">'Content-Type'</span>])</span><br><span class="line">    <span class="keyword">const</span> parts = multipart.Parse(buffer, boundary)</span><br><span class="line">    <span class="keyword">return</span> callback(<span class="literal">null</span>, &#123;</span><br><span class="line">        s: parts</span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3><span id="handle-download-request">Handle download request</span></h3><p>這邊範例是用去讀取 S3 的檔案</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    s3.getObject(&#123;</span><br><span class="line">        Bucket: <span class="string">'your-bucket'</span>,</span><br><span class="line">        Key: <span class="string">'download_file.json'</span></span><br><span class="line">    &#125;, (err, data) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) &#123;</span><br><span class="line">            <span class="keyword">return</span> callback(err)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 原本方式是會直接回傳 JSON (DEMO 有圖)</span></span><br><span class="line">        <span class="comment">// callback(null, data.Body)</span></span><br><span class="line">        <span class="comment">// </span></span><br><span class="line">        <span class="comment">// 正確方式，回傳 base64，然後讓 API Gateway 去 decode</span></span><br><span class="line">        callback(<span class="literal">null</span>, <span class="keyword">new</span> Buffer(data.Body).toString(<span class="string">'base64'</span>))</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2><span id="demo-with-postman">Demo with Postman</span></h2><h3><span id="upload-file">Upload File</span></h3><p>上傳要注意選 “form-data”<br>然後隨便選擇一個檔案即可</p>
+<p><img src="https://i.imgur.com/ZW32Fhb.png" alt>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$util.base64Decode($input.body)</span><br></pre></td></tr></table></figure></p>
+<h2><span id="lambda">Lambda</span></h2>
+<p>主要是用 nodejs 去編寫處理上傳的部分</p>
+<h3><span id="handle-upload-request">Handle upload request</span></h3>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multipart = <span class="built_in">require</span>(<span class="string">'parse-multipart'</span>);</span><br><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// convert base64 string to binary</span></span><br><span class="line">    <span class="keyword">const</span> buffer = <span class="keyword">new</span> Buffer(event.body, <span class="string">'base64'</span>)</span><br><span class="line">    <span class="keyword">const</span> boundary = multipart.getBoundary(event.params.header[<span class="string">'Content-Type'</span>])</span><br><span class="line">    <span class="keyword">const</span> parts = multipart.Parse(buffer, boundary)</span><br><span class="line">    <span class="keyword">return</span> callback(<span class="literal">null</span>, &#123;</span><br><span class="line">        s: parts</span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3><span id="handle-download-request">Handle download request</span></h3>
+<p>這邊範例是用去讀取 S3 的檔案</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">exports.handler = <span class="function">(<span class="params">event, context, callback</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    s3.getObject(&#123;</span><br><span class="line">        Bucket: <span class="string">'your-bucket'</span>,</span><br><span class="line">        Key: <span class="string">'download_file.json'</span></span><br><span class="line">    &#125;, (err, data) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) &#123;</span><br><span class="line">            <span class="keyword">return</span> callback(err)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 原本方式是會直接回傳 JSON (DEMO 有圖)</span></span><br><span class="line">        <span class="comment">// callback(null, data.Body)</span></span><br><span class="line">        <span class="comment">// </span></span><br><span class="line">        <span class="comment">// 正確方式，回傳 base64，然後讓 API Gateway 去 decode</span></span><br><span class="line">        callback(<span class="literal">null</span>, <span class="keyword">new</span> Buffer(data.Body).toString(<span class="string">'base64'</span>))</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2><span id="demo-with-postman">Demo with Postman</span></h2>
+<h3><span id="upload-file">Upload File</span></h3>
+<p>上傳要注意選 &quot;form-data&quot;
+然後隨便選擇一個檔案即可</p>
 <p><img src="https://i.imgur.com/QhjRLH3.png" alt></p>
-<h3><span id="download-file">Download File</span></h3><p>如果沒有在 API Gateway 做調整的話會變成<br>沒錯，Lambda 是會直接回傳 JSON 的<br>他並不會回傳 binary 給你，所以才要到 API Gateway 和 Lambda 做一些調整 (要到 mapping template 調整)</p>
+<h3><span id="download-file">Download File</span></h3>
+<p>如果沒有在 API Gateway 做調整的話會變成
+沒錯，Lambda 是會直接回傳 JSON 的
+他並不會回傳 binary 給你，所以才要到 API Gateway 和 Lambda 做一些調整 (要到 mapping template 調整)</p>
 <p><img src="https://i.imgur.com/qFc5FZC.png" alt></p>
 <p>修改之後</p>
 <p><img src="https://i.imgur.com/mijGJFI.png" alt></p>
 <p>然後可以改用程式下載檔案</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> r = request.post(<span class="string">'your_url'</span>)</span><br><span class="line">r.on(<span class="string">'response'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    res.pipe(fs.createWriteStream(<span class="string">'download_file.json'</span>))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2><span id="額外補充-binary-support">額外補充 - Binary Support</span></h2><h3><span id="upload-integration-request">/upload integration request</span></h3><p>在 API Gateway 底下的 binary support 加上 multipart/form-data，API Gateway 就會自動幫我們做 base64 encode</p>
-<p>而在 mapping template 就改成這樣即可<br>lambda 不需要做任何調整</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: $input.json(<span class="string">'$'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2><span id="註記">註記</span></h2><ol>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> r = request.post(<span class="string">'your_url'</span>)</span><br><span class="line">r.on(<span class="string">'response'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    res.pipe(fs.createWriteStream(<span class="string">'download_file.json'</span>))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2><span id="額外補充-binary-support">額外補充 - Binary Support</span></h2>
+<h3><span id="upload-integration-request">/upload integration request</span></h3>
+<p>在 API Gateway 底下的 binary support 加上 multipart/form-data，API Gateway 就會自動幫我們做 base64 encode</p>
+<p>而在 mapping template 就改成這樣即可
+lambda 不需要做任何調整</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"body"</span>: $input.json(<span class="string">'$'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2><span id="註記">註記</span></h2>
+<ol>
 <li>API Gateway payload 有限制 10mb</li>
 <li>Lambda 有限制 6mb</li>
 </ol>
-<p>所以最大只能上傳或下載 6mb 的檔案<br>但是，因為會轉成 base64，所以原本的 4mb 轉完可能變成 5mb<br>這裡是特別要注意的地方</p>
+<p>所以最大只能上傳或下載 6mb 的檔案
+但是，因為會轉成 base64，所以原本的 4mb 轉完可能變成 5mb
+這裡是特別要注意的地方</p>
 
             </div>
         

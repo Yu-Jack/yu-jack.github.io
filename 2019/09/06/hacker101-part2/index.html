@@ -18,12 +18,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ">
+    <meta name="description" content="系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ &lt;!-- more --&gt; Micro-CMS v1 根據題目總共有 4 個 Flag 0x00 打開頁面後頁面是  試著建立 post 試試看  發現有 XSS 跳出來，但打開原始碼沒發現什麼變化  按了 Go Home 會去上一頁就跳出 FLAG 了  0x01 因為跳出 xss 的時候注意到">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hacker 101 CTF Write Up Part 2 - Micro-CMS v1, Petshop Pro">
 <meta property="og:url" content="https://yu-jack.github.io/2019/09/06/hacker101-part2/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes">
-<meta property="og:description" content="系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ">
+<meta property="og:description" content="系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ &lt;!-- more --&gt; Micro-CMS v1 根據題目總共有 4 個 Flag 0x00 打開頁面後頁面是  試著建立 post 試試看  發現有 XSS 跳出來，但打開原始碼沒發現什麼變化  按了 Go Home 會去上一頁就跳出 FLAG 了  0x01 因為跳出 xss 的時候注意到">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-09-06T13:28:20.000Z">
@@ -167,35 +167,92 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content">
-                <p>系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  </p>
-<a id="more"></a>
-<h1><span id="micro-cms-v1">Micro-CMS v1</span></h1><p>根據題目總共有 4 個 Flag</p>
-<h2><span id="0x00">0x00</span></h2><p>打開頁面後頁面是<br><img src="/images/ctf/part2-cms-v1-1-01.png" alt></p>
-<p>試著建立 post 試試看<br><img src="/images/ctf/part2-cms-v1-1-02.png" alt></p>
-<p>發現有 XSS 跳出來，但打開原始碼沒發現什麼變化<br><img src="/images/ctf/part2-cms-v1-1-03.png" alt></p>
-<p>按了 Go Home 會去上一頁就跳出 FLAG 了<br><img src="/images/ctf/part2-cms-v1-1-04.png" alt></p>
-<h2><span id="0x01">0x01</span></h2><p>因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8<br>覺得很疑惑，因為總共才三筆資料，id 怎麼會是 8?<br><img src="/images/ctf/part2-cms-v1-2-01.png" alt></p>
-<p>於是就 8 7 6 回去一個一個看看是不是有什麼玄機<br>發現 id 是 6 的時候，出現了 forbidden 的字樣，寫著不可讀<br><img src="/images/ctf/part2-cms-v1-2-02.png" alt></p>
-<p>竟然不可讀的話，試著加上 edit 發現可以編輯，且內容有 FLAG<br><img src="/images/ctf/part2-cms-v1-2-03.png" alt></p>
-<h2><span id="0x02">0x02</span></h2><p>接下來就試著對每一個頁面的 id 做 SQL Injection<br>發現在 edit 的頁面狀況下，id 會有 SQL Injection<br>於是就跳出 FLAG 了<br><img src="/images/ctf/part2-cms-v1-3-01.png" alt></p>
-<h2><span id="0x03">0x03</span></h2><p>這個漏洞我找非常非常的久<br>才發現原來的 <code>&lt;svg/onload=alert(&#39;xss&#39;)</code> payload 是跳不出 FLAG 的<br>要用 <code>&lt;img src=&quot;&quot; onerror=&quot;javascript:alert(&#39;xss&#39;)&quot;/&gt;</code> 才跳得出來<br><img src="/images/ctf/part2-cms-v1-4-01.png" alt><br><img src="/images/ctf/part2-cms-v1-4-02.png" alt></p>
-<p>打開原始碼發現 FLAG 就藏在下面<br>第一張是 <code>img</code> tag 的原始碼<br>第二張是 <code>svg</code> tag 的原始碼<br>兩個都可以觸發 xss，但只有 <code>img</code> 有 FLAG<br>不知道為何 <code>svg</code> 那一個 payload 不能觸發<br>可能是這題的解答，有希望某一些固定的 tag 去寫<br>才會造成 <code>svg</code> payload 跳不出 FLAG<br><img src="/images/ctf/part2-cms-v1-4-03.png" alt><br><img src="/images/ctf/part2-cms-v1-4-04.png" alt></p>
-<h1><span id="petshop-pro">Petshop Pro</span></h1><p>根據題目總共有 3 個 Flag</p>
-<h2><span id="0x00">0x00</span></h2><p>進去之後頁面長這樣<br><img src="/images/ctf/part2-pet-0-01.png" alt></p>
-<p>按下 Add to Cart 之後<br><img src="/images/ctf/part2-pet-0-02.png" alt></p>
-<p>在按下 checkout<br><img src="/images/ctf/part2-pet-0-03.png" alt></p>
-<p>看來是一個結帳流程，講到錢就想來試試看能不能 0 元結帳<br>看了一下 source code 發現有一個 hidden input<br><img src="/images/ctf/part2-pet-0-04.png" alt></p>
-<p>並且用 javascript 把價格更改成 0 元後送出<br><img src="/images/ctf/part2-pet-0-05.png" alt></p>
-<p>送出後價格為 0 元且拿到 FLAG<br><img src="/images/ctf/part2-pet-0-06.png" alt></p>
-<h2><span id="0x01">0x01</span></h2><p>透過 nmap 找到登入點為 <code>/login</code> 之後<br><img src="/images/ctf/part2-pet-1-01.png" alt></p>
-<p>稍微試著輸入單引號看看會不會有 SQL Injection 問題，結果沒有 QQ<br>但因為輸入 username 的時候，輸入錯誤會爆出 <strong>Invalid username</strong><br><img src="/images/ctf/part2-pet-1-02.png" alt><br>代表說此系統設計方式，如果輸入正確的 username 的話，應該不會爆出這個錯誤<br>根據以上邏輯先寫出第一版程式找找看 username<br><script src="//gist.github.com/e49a273bd60048ffbcd0ddf99c4f5196.js?file=brute_username.js"></script></p>
-<p>找到 username 後輸入，的確變成 <strong>Invalid password</strong><br>那就繼續找密碼<br><img src="/images/ctf/part2-pet-1-04.png" alt><br><img src="/images/ctf/part2-pet-1-03.png" alt></p>
-<p>接下來用一樣的方式找到密碼<br><img src="/images/ctf/part2-pet-1-05.png" alt><br><script src="//gist.github.com/ec81363f36c5d82438d5388e95266bb7.js?file=brute_password.js"></script></p>
-<p>登入成功，出現 FLAG!<br><img src="/images/ctf/part2-pet-1-06.png" alt></p>
-<h2><span id="0x02">0x02</span></h2><p>登入後發現可以編輯商品<br><img src="/images/ctf/part2-pet-2-01.png" alt><br><img src="/images/ctf/part2-pet-2-02.png" alt></p>
-<p>試著輸入 xss payload，跳出 xss，但打開原始碼沒發現任何東西<br><img src="/images/ctf/part2-pet-2-03.png" alt></p>
-<p>試著加入購物車發現，也會跳出 xss<br><img src="/images/ctf/part2-pet-2-04.png" alt></p>
-<p>打開原始碼發現 FLAG!<br><img src="/images/ctf/part2-pet-2-05.png" alt></p>
+                <p>系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ</p>
+<p>&lt;!-- more --&gt;</p>
+<h1><span id="micro-cms-v1">Micro-CMS v1</span></h1>
+<p>根據題目總共有 4 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>打開頁面後頁面是
+<img src="/images/ctf/part2-cms-v1-1-01.png" alt></p>
+<p>試著建立 post 試試看
+<img src="/images/ctf/part2-cms-v1-1-02.png" alt></p>
+<p>發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
+<img src="/images/ctf/part2-cms-v1-1-03.png" alt></p>
+<p>按了 Go Home 會去上一頁就跳出 FLAG 了
+<img src="/images/ctf/part2-cms-v1-1-04.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8<br>
+覺得很疑惑，因為總共才三筆資料，id 怎麼會是 8?<br>
+<img src="/images/ctf/part2-cms-v1-2-01.png" alt></p>
+<p>於是就 8 7 6 回去一個一個看看是不是有什麼玄機<br>
+發現 id 是 6 的時候，出現了 forbidden 的字樣，寫著不可讀<br>
+<img src="/images/ctf/part2-cms-v1-2-02.png" alt></p>
+<p>竟然不可讀的話，試著加上 edit 發現可以編輯，且內容有 FLAG
+<img src="/images/ctf/part2-cms-v1-2-03.png" alt></p>
+<h2><span id="0x02">0x02</span></h2>
+<p>接下來就試著對每一個頁面的 id 做 SQL Injection<br>
+發現在 edit 的頁面狀況下，id 會有 SQL Injection<br>
+於是就跳出 FLAG 了<br>
+<img src="/images/ctf/part2-cms-v1-3-01.png" alt></p>
+<h2><span id="0x03">0x03</span></h2>
+<p>這個漏洞我找非常非常的久<br>
+才發現原來的 <code>&lt;svg/onload=alert('xss')</code> payload 是跳不出 FLAG 的<br>
+要用 <code>&lt;img src=&quot;&quot; onerror=&quot;javascript:alert('xss')&quot;/&gt;</code> 才跳得出來<br>
+<img src="/images/ctf/part2-cms-v1-4-01.png" alt>
+<img src="/images/ctf/part2-cms-v1-4-02.png" alt></p>
+<p>打開原始碼發現 FLAG 就藏在下面<br>
+第一張是 <code>img</code> tag 的原始碼<br>
+第二張是 <code>svg</code> tag 的原始碼<br>
+兩個都可以觸發 xss，但只有 <code>img</code> 有 FLAG<br>
+不知道為何 <code>svg</code> 那一個 payload 不能觸發<br>
+可能是這題的解答，有希望某一些固定的 tag 去寫<br>
+才會造成 <code>svg</code> payload 跳不出 FLAG<br>
+<img src="/images/ctf/part2-cms-v1-4-03.png" alt>
+<img src="/images/ctf/part2-cms-v1-4-04.png" alt></p>
+<h1><span id="petshop-pro">Petshop Pro</span></h1>
+<p>根據題目總共有 3 個 Flag</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>進去之後頁面長這樣
+<img src="/images/ctf/part2-pet-0-01.png" alt></p>
+<p>按下 Add to Cart 之後
+<img src="/images/ctf/part2-pet-0-02.png" alt></p>
+<p>在按下 checkout
+<img src="/images/ctf/part2-pet-0-03.png" alt></p>
+<p>看來是一個結帳流程，講到錢就想來試試看能不能 0 元結帳<br>
+看了一下 source code 發現有一個 hidden input
+<img src="/images/ctf/part2-pet-0-04.png" alt></p>
+<p>並且用 javascript 把價格更改成 0 元後送出
+<img src="/images/ctf/part2-pet-0-05.png" alt></p>
+<p>送出後價格為 0 元且拿到 FLAG
+<img src="/images/ctf/part2-pet-0-06.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>透過 nmap 找到登入點為 <code>/login</code> 之後<br>
+<img src="/images/ctf/part2-pet-1-01.png" alt></p>
+<p>稍微試著輸入單引號看看會不會有 SQL Injection 問題，結果沒有 QQ<br>
+但因為輸入 username 的時候，輸入錯誤會爆出 <strong>Invalid username</strong><br>
+<img src="/images/ctf/part2-pet-1-02.png" alt>
+代表說此系統設計方式，如果輸入正確的 username 的話，應該不會爆出這個錯誤<br>
+根據以上邏輯先寫出第一版程式找找看 username<br>
+<script src="//gist.github.com/e49a273bd60048ffbcd0ddf99c4f5196.js?file=brute_username.js"></script></p>
+<p>找到 username 後輸入，的確變成 <strong>Invalid password</strong><br>
+那就繼續找密碼
+<img src="/images/ctf/part2-pet-1-04.png" alt>
+<img src="/images/ctf/part2-pet-1-03.png" alt></p>
+<p>接下來用一樣的方式找到密碼
+<img src="/images/ctf/part2-pet-1-05.png" alt>
+<script src="//gist.github.com/ec81363f36c5d82438d5388e95266bb7.js?file=brute_password.js"></script></p>
+<p>登入成功，出現 FLAG!
+<img src="/images/ctf/part2-pet-1-06.png" alt></p>
+<h2><span id="0x02">0x02</span></h2>
+<p>登入後發現可以編輯商品
+<img src="/images/ctf/part2-pet-2-01.png" alt>
+<img src="/images/ctf/part2-pet-2-02.png" alt></p>
+<p>試著輸入 xss payload，跳出 xss，但打開原始碼沒發現任何東西
+<img src="/images/ctf/part2-pet-2-03.png" alt></p>
+<p>試著加入購物車發現，也會跳出 xss
+<img src="/images/ctf/part2-pet-2-04.png" alt></p>
+<p>打開原始碼發現 FLAG!
+<img src="/images/ctf/part2-pet-2-05.png" alt></p>
 
             </div>
         

@@ -164,11 +164,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠此時會需要把硬碟增加大小，以免整台機器爆掉接下來會針對如何增加硬碟大小做說明  
+                前言
+在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠
+此時會需要把硬碟增加大小，以免整台機器爆掉
+接下來會針對如何增加硬碟大小做說明
+&lt;!-- more --&gt;
+確認硬碟大小方法
+可以透過 df -h . 指令確認硬碟目前使用的大小
+這時候可以看到硬碟配置的大小
 
-確認硬碟大小方法可以透過 df -h . 指令確認硬碟目前使用的大小這時候可以看到硬碟配置的大小
-接下來可以透過 lsblk 回找最大上限的配置可以是多少上面 xvda 就是最多可以有多少大小下面 xvda1 就是實際上目前有多少大小
-看...
+接下來可以透過 lsblk 回找最大上限的配置可以是多少
+上面 xvda 就是最多可以有多少大...
             </div>
         
         
@@ -224,9 +230,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用  
-
-以 load balancer 來說外面 https:443 進來後，要導入到 http:8080 的服務就會需要把憑證解開，然後進一步把流量往裡面送所以在 load balancer 上面就一定要掛載 private/public ke...
+                前言
+AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用
+掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用
+&lt;!-- more --&gt;
+以 load balancer 來說
+外面 https:443 進來後，要導入到 http:8080 的服務
+就會需要把憑證解開，然後進一步把流量往裡面送
+所以在 load balancer 上面就一...
             </div>
         
         
@@ -282,10 +293,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能這邊就先不多作介紹，之後會寫在其他篇幅做介紹那 CloudWatch 主要包含以下兩個大項目  
+                前言
+AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務
+其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能
+這邊就先不多作介紹，之後會寫在其他篇幅做介紹
+那 CloudWatch 主要包含以下兩個大項目
+&lt;!-- more --&gt;
 
-
-Metric 紀錄了 AWS 上面服務的狀態 包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟大小 API Gateway API...
+Metric
+紀錄了 AWS 上面服務的狀態
+包含 EC2 的 CPU、網路使用量、記憶體用量...
             </div>
         
         
@@ -341,11 +358,13 @@ Metric 紀錄了 AWS 上面服務的狀態 包含 EC2 的 CPU、網路使用量�
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
-
-但由於 CF 上面的設定寫的不是很清楚於是發現以下這篇 AWS 官方文章這裡直接做一個總結
-
-None: 使用 CloudF...
+                最近在使用 CloudFront Header forward 的設定
+CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
+於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
+&lt;!-- more --&gt;
+但由於 CF 上面的設定寫的不是很清楚
+於是發現以下這篇 AWS 官方文章
+這裡直...
             </div>
         
         
@@ -401,7 +420,12 @@ None: 使用 CloudF...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON所以必須在 API Gateway 必須要做 body mapping 的調整e.g 透過 Binary Support 或是 Base64Enconde 的方式處理那這次的紀錄是讓 AWS 的 API...
+                前言
+這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
+上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
+所以必須在 API Gateway 必須要做 body mapping 的調整
+e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
+那這次的紀錄是讓 AWS ...
             </div>
         
         
@@ -457,8 +481,11 @@ None: 使用 CloudF...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-API Gateway主要...
+                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
+在 API Gateway 中要做幾項設定才有辦法達成
+加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
+這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
+&lt;!-- mo...
             </div>
         
         
@@ -515,9 +542,11 @@ API Gateway主要...
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 [Update] 2017-11-08 原本文章的 mapping 方式再依些特別狀況會出錯，在文章最下面加入了最新的 mapping 方式
-最近需要在 API Gateway 上面作 request 和 response 的參數調整這裡紀錄一下一些基本的使用語法官方網站也有提供使用方式還有一些例子或是可以直接到 Apache Velocity Template Language
-
-if e...
+最近需要在 API Gateway 上面作 request 和 response 的參數調整
+這裡紀錄一下一些基本的使用語法
+官方網站也有提供使用方式還有一些例子
+或是可以直接到 Apache Velocity Template Language
+&l...
             </div>
         
         
