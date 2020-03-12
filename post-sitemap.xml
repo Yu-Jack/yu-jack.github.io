@@ -7,8 +7,8 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2020/03/09/nodejs-zero-downtime/</loc>
-        <lastmod>2020-03-09T02:34:19.641Z</lastmod>
+        <loc>https://yu-jack.github.io/2017/11/01/how-to-test/</loc>
+        <lastmod>2020-03-11T14:42:35.361Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -16,7 +16,15 @@
 
     <url>
         <loc>https://yu-jack.github.io/2020/03/02/ssl-pinning/</loc>
-        <lastmod>2020-03-03T06:43:55.384Z</lastmod>
+        <lastmod>2020-03-09T13:42:28.491Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2020/03/09/nodejs-zero-downtime/</loc>
+        <lastmod>2020-03-09T02:34:19.641Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -159,14 +167,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2017/11/01/how-to-test/</loc>
-        <lastmod>2020-01-29T08:25:29.321Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/</loc>
         <lastmod>2020-01-29T08:25:29.320Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -199,7 +199,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2019/09/10/hacker101-part4/</loc>
+        <loc>https://yu-jack.github.io/2019/09/08/hacker101-part3/</loc>
         <lastmod>2020-01-29T08:25:29.316Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -207,7 +207,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/2019/09/08/hacker101-part3/</loc>
+        <loc>https://yu-jack.github.io/2019/09/10/hacker101-part4/</loc>
         <lastmod>2020-01-29T08:25:29.316Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>

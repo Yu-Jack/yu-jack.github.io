@@ -1,306 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<!-- Head tag -->
+<html  lang="zh">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword"  content="">
-    <!-- <link rel="shortcut icon" href="/img/ironman-draw.png"> -->
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.5/dist/medium-zoom.min.js"></script>
-    
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NKT99TP');</script>
-    <!-- End Google Tag Manager -->
+    <meta charset="utf-8" />
 
-    <title>
-        
-          從 SSL 到 SSL Pinning 看完你就懂！ - Jack Yu | 傑克
-        
-    </title>
+<meta name="generator" content="Hexo 4.2.0" />
 
-    <link rel="canonical" href="https://yu-jack.github.io/2020/03/02/ssl-pinning/">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-    <!-- Bootstrap Core CSS -->
-    
-<link rel="stylesheet" href="/css/bootstrap.min.css">
+<title>從 SSL 到 SSL Pinning 看完你就懂！ - 技術雜記 Technology Notes</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <!-- Custom CSS --> 
-    
-<link rel="stylesheet" href="/css/beantech.min.css">
+    <meta name="description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又是要 pin 什麼東西然後中間人又是哪個小三??">
+<meta property="og:type" content="article">
+<meta property="og:title" content="從 SSL 到 SSL Pinning 看完你就懂！">
+<meta property="og:url" content="https://yu-jack.github.io/2020/03/02/ssl-pinning/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes">
+<meta property="og:description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又是要 pin 什麼東西然後中間人又是哪個小三??">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-03-01T16:02:54.000Z">
+<meta property="article:modified_time" content="2020-03-09T13:42:28.491Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="w3HexSchool">
+<meta property="article:tag" content="Security">
+<meta property="article:tag" content="SSL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
 
-    
-    <!-- Pygments Highlight CSS -->
-    
-<link rel="stylesheet" href="/css/highlight.css">
 
 
-    
-<link rel="stylesheet" href="/css/widget.css">
 
 
-    
-<link rel="stylesheet" href="/css/rocket.css">
 
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
 
     
-<link rel="stylesheet" href="/css/signature.css">
-
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
 
     
-<link rel="stylesheet" href="/css/toc.css">
-
-
-    <!-- Custom Fonts -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-    <!-- Hux change font-awesome CDN to qiniu -->
-    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-
-    <!-- Hux Delete, sad but pending in China
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
-    css'>
-    -->
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- ga & ba script hoook -->
-    <script></script>
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-1515253208026743",
-        enable_page_level_ads: true
-      });
-    </script>
-    <style>
-        img {
-            border: 1px solid #00000042;
-            box-shadow: 1px 1px 5px;
-        }
-        div.post-container h2:not(.post-title) {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.3em;
-        }
-        div.post-container h1:not(.post-title) {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.3em;
-        }
-    </style>
-    <style>
-      .medium-zoom-overlay {
-        z-index: 5;
-      }
-      .medium-zoom-image {
-        z-index: 10;
-      }
-    </style>
-<meta name="generator" content="Hexo 4.2.0"></head>
-
-
-<!-- hack iOS CSS :active style -->
-<body ontouchstart="">
-	<!-- Modified by Yu-Hsuan Yen -->
-<!-- Post Header -->
-<style type="text/css">
-    header.intro-header{
-        
-            background-image: url('/images/banner.jpg')
-            /*post*/
-        
-    }
     
-</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
 
-<header class="intro-header" >
-    <!-- Signature -->
-    <div id="signature">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                
-                    <div class="post-heading">
-                        <div class="tags">
-                            
-                              <a class="tag" href="/tags/#w3HexSchool" title="w3HexSchool">w3HexSchool</a>
-                            
-                              <a class="tag" href="/tags/#Security" title="Security">Security</a>
-                            
-                              <a class="tag" href="/tags/#SSL" title="SSL">SSL</a>
-                            
-                        </div>
-                        <h1>從 SSL 到 SSL Pinning 看完你就懂！</h1>
-                        <h2 class="subheading"></h2>
-                        <span class="meta">
-                            Posted by Jack Yu on
-                            2020-03-02
-                        </span>
-                        <span id="busuanzi_container_page_pv">
-                            <span id="busuanzi_value_page_pv"></span> views,
-                        </span>
-                        <span class="post-count">3.7k words,</span>
-                        <span class="post-read-time">14 min read</span>
-                    </div>
-                
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-	
-    <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">技術雜記 Technology Notes</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <!-- Known Issue, found by Hux:
-            <nav>'s height woule be hold on by its content.
-            so, when navbar scale out, the <nav> will cover tags.
-            also mask any touch event of tags, unfortunately.
-        -->
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/tags/">All Tags</a>
-                        </li>
-                        
-                    
-                    
-                </ul>
-            </div>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
-<script>
-    // Drop Bootstarp low-performance Navbar
-    // Use customize navbar with high-quality material design animation
-    // in high-perf jank-free CSS3 implementation
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
-
-    $toggle.addEventListener('click', handleMagic)
-    function handleMagic(e){
-        if ($navbar.className.indexOf('in') > 0) {
-        // CLOSE
-            $navbar.className = " ";
-            // wait until animation end.
-            setTimeout(function(){
-                // prevent frequently toggle
-                if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
-                }
-            },400)
-        }else{
-        // OPEN
-            $collapse.style.height = "auto"
-            $navbar.className += " in";
-        }
-    }
-</script>
-
-
-    <!-- Main Content -->
-    <!-- Modify by Yu-Hsuan Yen -->
-<style>
-    .header {
-      position: fixed;
-      top: 0;
-      z-index: 10;
-      width: 100%;
-      background-color: #f1f1f1;
-    }
     
-    .progress-container {
-      width: 100%;
-      height: 6px;
-      background: #ccc;
-    }
     
-    .progress-bar {
-      height: 6px;
-      background: #76b779;
-      width: 0%;
-    }
-</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
 
-<div class="header">
-    <div class="progress-container">
-      <div class="progress-bar" id="myBar"></div>
-    </div>  
-</div>
-<script>
-    // When the user scrolls the page, execute myFunction 
-    window.onscroll = function() {myFunction()};
     
-    function myFunction() {
-      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      var scrolled = (winScroll / height) * 100;
-      document.getElementById("myBar").style.width = scrolled + "%";
-    }
-</script>
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
 
-<!-- Post Content -->
-<article id="particles-js">
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
     <div class="container">
-        <div class="row">
-
-            <!-- Post Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="從 SSL 到 SSL Pinning 看完你就懂！" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-01T16:02:54.000Z">2020-03-02</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    27 分鐘 閱讀文 (大約 4124 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                從 SSL 到 SSL Pinning 看完你就懂！
+            
+        </h1>
+        
+            <div class="content">
                 <h2><span id="前言">前言</span></h2><p>看不懂跟我說，我想辦法補充 XD  </p>
 <p>正文開始 …<br>某天有人問我  </p>
 <p>某: SSL Pinning 是什麼東西啊?<br>我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制<br>某: …… 你這樣說最好是有人聽得懂<br>我: 我錯了 … 給點機會讓我重新解釋解釋  </p>
@@ -327,7 +194,7 @@
 <li>Key Exchange <span style="color: #1eb6a7">(綠色部分)</span>: 交換一把對稱式加密金鑰  </li>
 <li>Encrypted Data Transfer <span style="color: #f85d72">(紅色部分)</span>: 瀏覽器和伺服器利用第二步的對稱式加密金鑰，對通訊間的資料進行加解密</li>
 </ol>
-<p>可以參考下面的簡略圖，但更詳細的就不是本篇探討的地方<br>詳細可以參閱<a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6" target="_blank" rel="noopener">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a>看更多細節<br><img src="/images/ssl/ssl-02.png" alt></p>
+<p>可以參考下面的簡略圖，但更詳細的就不是本篇探討的地方<br>詳細可以參閱<a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a>看更多細節<br><img src="/images/ssl/ssl-02.png" alt></p>
 <blockquote>
 <p>第二個步驟的交換，可以利用伺服器憑證的公鑰加密對稱式金鑰<br>伺服器收到這個加密後的對稱式金鑰，就可以用私鑰解密，然後取得對稱式金鑰<br>但如果是使用 Diffie — Hellman 去交換對稱式金鑰的話<br>就不需要用公鑰加密，私鑰解密了<br>因為 Diffie — Hellman 可以”安全地”告訴對方密碼而不用擔心密碼被竊聽.</p>
 </blockquote>
@@ -337,7 +204,7 @@
 <blockquote>
 <p>因為這憑證很長一串，這裡就不截圖顯示了<br>各位可以自行在電腦上面執行試試看  </p>
 </blockquote>
-<p>那為什麼透過憑證可以取得到公鑰呢? 因為從私鑰中是可以算出 public key 出來的<br>產生憑證的流程是，一開始產生出來的公私鑰匙，透過私鑰產出一個憑證申請檔案<br>此檔案經過第三方的認證之後，就會成了憑證<br>所以透過憑證可以把公鑰取得回來  </p>
+<p>那為什麼透過憑證可以取得到公鑰呢? 因為從私鑰中是可以算出 public key 出來的<br>產生憑證的流程是，一開始產生出來的公私鑰匙，透過私鑰產出一個憑證申請檔案<br>這個憑證申請檔案會包含一些申請者的資訊以及公鑰<br>此檔案經過第三方的認證之後，就會成了憑證<br>所以透過憑證可以把公鑰取得回來  </p>
 <blockquote>
 <p>私鑰產生出來之後，是要被嚴格保管的，絕對不能洩漏出去，所以才會稱為私鑰<br>但公鑰就沒關係了，所以才會叫做公開金鑰 (公鑰)  </p>
 </blockquote>
@@ -381,228 +248,311 @@
 <h2><span id="後記">後記</span></h2><p>不過還是要注意的是，萬一私鑰被洩露<br>然後 App 的 SSL Pinning 是寫死在程式裡面，這樣 App 就 100% 一定要升級版本，否則會出問題<br>但如果你說，專門有一台憑證 API 去跟他要公鑰，其實這也會有問題<br>因為攻擊者還是有辦法去偽造回傳的結果的 XD  </p>
 <p>另外如果對模擬中間人攻擊有興趣的，可以參考 burpsuit 的使用方法去學習<br>屆時再使用 openssl s_client 的時候，記得最後面加上  -proxy 127.0.0.1:8080 連到 proxy 去模擬  </p>
 <h2><span id="references">References</span></h2><ol>
-<li><a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6" target="_blank" rel="noopener">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a><br> 這裡有一系列對 SSL/TLS 的概念講解，推薦大家去閱讀看看</li>
-<li><a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E5%8D%81%E4%BA%8C-chain-of-trust-f00da1f2cc15" target="_blank" rel="noopener">那些關於SSL/TLS的二三事(十二) — Chain of Trust</a></li>
-<li><a href="https://medium.com/@appmattus/android-security-ssl-pinning-1db8acb6621e" target="_blank" rel="noopener">Android Security: SSL Pinning</a></li>
+<li><a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a><br> 這裡有一系列對 SSL/TLS 的概念講解，推薦大家去閱讀看看</li>
+<li><a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E5%8D%81%E4%BA%8C-chain-of-trust-f00da1f2cc15">那些關於SSL/TLS的二三事(十二) — Chain of Trust</a></li>
+<li><a href="https://medium.com/@appmattus/android-security-ssl-pinning-1db8acb6621e">Android Security: SSL Pinning</a></li>
 </ol>
 
-                
-                
-
-                <hr>
-                <!-- Pager -->
-                <ul class="pager">
-                    
-                        <li class="previous">
-                            <a href="/2020/03/09/nodejs-zero-downtime/" data-toggle="tooltip" data-placement="top" title="Node.js 如何實現 zero downtime 更新呢?">&larr; Previous Post</a>
-                        </li>
-                    
-                    
-                        <li class="next">
-                            <a href="/2020/02/24/java-oom/" data-toggle="tooltip" data-placement="top" title="java.lang.OutOfMemoryError Java heap space? 怎麼解?">Next Post &rarr;</a>
-                        </li>
-                    
-                </ul>
-
-                <!-- duoshuo Share start -->
-                
-                <!-- 多说 Share end-->
-
-                <!-- 多说评论框 start -->
-                
-                <!-- 多说评论框 end -->
-                <!-- <div id="liker">
-                </div>
-                <script type="text/javascript">
-                    document.getElementById("liker").innerHTML = 
-                    "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
-                    encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
-                </script> -->
-                <!-- disqus comment start -->
-                
-                    <div class="comment">
-                        <div id="disqus_thread" class="disqus-thread"></div>
-                    </div>
-                
-                <!-- disqus comment end -->
             </div>
-            
-                
-            <!-- Tabe of Content -->
-            <!-- Table of Contents -->
-
-    
-      <aside id="sidebar">
-        <div id="toc" class="toc-article">
-        <strong class="toc-title">Table of Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什麼是-ssl"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">什麼是 SSL?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什麼是-ssl-pinning"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">什麼是 SSL Pinning ?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#中間人攻擊"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">中間人攻擊</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#憑證鍊"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">憑證鍊</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#後記"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">後記</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#references"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">References</span></a></li></ol>
         
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/SSL/" rel="tag">SSL</a>, <a class="has-link-grey -link" href="/tags/Security/" rel="tag">Security</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
         </div>
-      </aside>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/09/nodejs-zero-downtime/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Node.js 如何實現 zero downtime 更新呢?</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/24/java-oom/">
+                <span class="level-item">java.lang.OutOfMemoryError Java heap space? 怎麼解?</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/03/02/ssl-pinning/';
+        this.page.identifier = '2020/03/02/ssl-pinning/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
     
-
-                
-            <!-- Sidebar Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                <!-- Featured Tags -->
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
                 
 
-                <!-- Friends Blog -->
-                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+    
+        
+            
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#什麼是-ssl">
+        <span class="has-mr-6">2</span>
+        <span>什麼是 SSL?</span>
+        </a></li><li>
+        <a class="is-flex" href="#什麼是-ssl-pinning">
+        <span class="has-mr-6">3</span>
+        <span>什麼是 SSL Pinning ?</span>
+        </a></li><li>
+        <a class="is-flex" href="#中間人攻擊">
+        <span class="has-mr-6">4</span>
+        <span>中間人攻擊</span>
+        </a></li><li>
+        <a class="is-flex" href="#憑證鍊">
+        <span class="has-mr-6">5</span>
+        <span>憑證鍊</span>
+        </a></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">6</span>
+        <span>後記</span>
+        </a></li><li>
+        <a class="is-flex" href="#references">
+        <span class="has-mr-6">7</span>
+        <span>References</span>
+        </a></li></ul>
             </div>
         </div>
     </div>
-</article>
+
+        
+    
+        
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            
+        
+        </div>
+    
+</div>
 
 
-
-
-<!-- disqus embedded js code start (one page only need to embed once) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "yu-jack";
-    var disqus_identifier = "https://yu-jack.github.io/2020/03/02/ssl-pinning/";
-    var disqus_url = "https://yu-jack.github.io/2020/03/02/ssl-pinning/";
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus embedded js code start end -->
-
+                
 
 
 
 
 
-    <!-- Footer -->
-    <!-- Footer -->
-<footer>
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right ">
+    
+        
+    
+    
+</div>
+
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 
-                
-                
-
-                
-
-                
-
-                
-
-                
-
-                </ul>
-                <p class="copyright text-muted">
-                    Copyright &copy; Jack Yu 2020 
-                    <br>
-                    <span id="busuanzi_container_site_pv">
-                        Total <span id="busuanzi_value_site_pv"></span> views
-                    </span>
                 </p>
+            </div>
+            <div class="level-end">
+            
             </div>
         </div>
     </div>
 </footer>
-
-<!-- jQuery -->
-
-<script src="/js/jquery.min.js"></script>
-
-
-<!-- Bootstrap Core JavaScript -->
-
-<script src="/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
 
 
-<!-- Custom Theme JavaScript -->
-
-<script src="/js/hux-blog.min.js"></script>
-
-
-
-<!-- async load function -->
 <script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
+};
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
-     so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
--->
-<!--
-    <script>
-        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
-            hljs.initHighlightingOnLoad();
-        })
-    </script>
-    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
--->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
-<!-- jquery.tagcloud.js -->
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
-    // only load tagcloud.js in tag.html
-    if($('#tag_cloud').length !== 0){
-        async("https://yu-jack.github.io/js/jquery.tagcloud.js",function(){
-            $.fn.tagcloud.defaults = {
-                //size: {start: 1, end: 1, unit: 'em'},
-                color: {start: '#bbbbee', end: '#0085a1'},
-            };
-            $('#tag_cloud a').tagcloud();
-        })
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
 </script>
 
-<!--fastClick.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
-    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-        var $nav = document.querySelector("nav");
-        if($nav) FastClick.attach($nav);
-    })
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
 </script>
 
 
-<!-- Google Analytics -->
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
 <script>
-mediumZoom("img")
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
 </script>
-
-
-	<!-- <a id="rocket" href="#top" class=""></a> -->
-	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" async=""></script>
-<!-- Image to hack wechat -->
-<img src="https://yu-jack.github.io/img/icon_wechat.png" width="0" height="0" />
-<!-- Migrate from head to bottom, no longer block render and still work -->
-
 </body>
-
 </html>
