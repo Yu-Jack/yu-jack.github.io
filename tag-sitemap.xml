@@ -184,14 +184,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
+        <loc>https://yu-jack.github.io/tags/aws/</loc>
         <lastmod>2020-01-29T08:25:29.320Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/aws/</loc>
+        <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
         <lastmod>2020-01-29T08:25:29.320Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -408,13 +408,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
-        <lastmod>2020-02-25T14:37:50.682Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/promise/</loc>
         <lastmod>2020-02-25T14:37:50.682Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -499,8 +492,15 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
+        <lastmod>2020-03-16T02:20:37.917Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-03-12T16:16:22.387Z</lastmod>
+        <lastmod>2020-03-16T02:20:37.917Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>JavaScript 真的是直譯式語言嗎？ - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言   這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋下面文章統一都會用直譯去做解釋   編譯語言被稱為編譯語言有一個特性此語言會透過編譯器編譯成另一個語言而編譯器是什麼呢?   先來說說">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 真的是直譯式語言嗎？">
+<meta property="og:url" content="https://yu-jack.github.io/2020/03/16/javascript-is-compiler-or-interpreter-language/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言   這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋下面文章統一都會用直譯去做解釋   編譯語言被稱為編譯語言有一個特性此語言會透過編譯器編譯成另一個語言而編譯器是什麼呢?   先來說說">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-03-16T02:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-16T02:20:37.917Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="w3HexSchool">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="JavaScript 真的是直譯式語言嗎？" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-16T02:00:00.000Z">2020-03-16</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    11 分鐘 閱讀文 (大約 1713 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                JavaScript 真的是直譯式語言嗎？
+            
+        </h1>
+        
+            <div class="content">
+                <h2><span id="前言">前言</span></h2><p>網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言<br>這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言  </p>
+<p>這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋<br>下面文章統一都會用直譯去做解釋  </p>
+<h2><span id="編譯語言">編譯語言</span></h2><p>被稱為編譯語言有一個特性<br>此語言會透過編譯器編譯成另一個語言<br>而編譯器是什麼呢?  </p>
+<p>先來說說一個情境<br>在這個世界中我在 A 國家扮演著一種角色<br>這個角色是一個專門的手抄者，做的事情就是專門把英文的書翻成中文書<br>讓 A 國的人也能夠讀懂英文的書<br>這裡的手抄者，可以想像成就是編譯器的存在  </p>
+<p>透過手抄者生產出來的書，還沒有人去讀是不會產生任何效果的<br>編譯器也是如此，編譯器把 C++ 等等語言轉變成 byte code<br>這個 byte codes 還沒被電腦執行之前，是沒有任何作用的  </p>
+<p>所以編譯語言做的事情就是，把 A 語言的程式碼轉換成 B 語言的程式碼  </p>
+<h2><span id="直譯語言">直譯語言</span></h2><p>被稱為直譯語言有一個特性<br>此語言會透過直譯器直接去執行，並輸出結果<br>這個直譯器又是什麼呢?  </p>
+<p>再來換另一個情境<br>在這個世界中我是 A 國家的一個角色<br>這個角色是一個專門的口譯者，做的事情就是專門把英文的語言翻成中文的語言給 A 國的人聽<br>讓 A 國的人能夠聽懂英文  </p>
+<p>這裡的口譯者總共做了兩件事情  </p>
+<ol>
+<li>分析英文語句以及文法  </li>
+<li>把分析完的結果轉成中文說出來  </li>
+</ol>
+<p>這裡的口譯者，可以想像成就是直譯器的存在<br>其實這也跟上述手抄者在做的事情很類似，兩者一樣都是在翻譯一種語言，只是結果不盡相同  </p>
+<h2><span id="簡單總整比較一下">簡單總整比較一下</span></h2><p>兩者之間的行為差別  </p>
+<ul>
+<li>編譯器<br>  把 A 語言轉換成其他可以讓機器執行的 B 語言，但不會去執行，<span style="color: red">產生的結果是語言</span>  </li>
+<li>直譯器<br>  讀取 A 語言，並且執行它，不會輸出額外的語言，<span style="color: red">產生的結果是運行結果</span>  </li>
+</ul>
+<p>兩者之間的效能</p>
+<ul>
+<li>編譯器<br>  會把大多數的時間花在編譯上，而且編譯出來的另一種語言很接近電腦能讀的語言，所以實際上執行的時候效率是很高的</li>
+<li>直譯器<br>  會讀取原始碼之後，立刻進行分析，分析完又馬上執行。牽扯到語法分析、編譯成機器能讀的語言、交給電腦執行。要如何把這整個流程進料減少分析以及編譯的次數是效能的一大考量  </li>
+</ul>
+<blockquote>
+<p>不管是編譯器或是直譯器，都是會需要詞法以及語法分析</p>
+</blockquote>
+<p>用一張圖來表示編譯以及直譯語言的差別<br><img src="/images/compiler_interpreter/compiler_interpreter-01.jpg" alt>  </p>
+<blockquote>
+<p>圖片出自<a href="http://huang-jerryc.com/2016/11/20/do-you-konw-the-different-between-compiler-and-interpreter/">你知道「编译」与「解释」的区别吗？</a>  </p>
+</blockquote>
+<h2><span id="js-是哪一種">js 是哪一種 ?</span></h2><p>常常有人說 js 直譯 (interpreter) 語言，因為不需要編譯 (compiler)，而且是直接跑在瀏覽器上<br>不像 C++ 那樣需要編譯後才可以執行，所以 js 都是一行一行執行的！  </p>
+<p>且慢 ……</p>
+<p>你知道 js 裡面有一個 hoisting 的概念嗎?  </p>
+<blockquote>
+<p>關於 js hoisting 的文章<br>建議可以看看<a href="https://blog.techbridge.cc/2018/11/10/javascript-hoisting/">我知道你懂 hoisting，可是你了解到多深？</a><br>裡面講得非常詳細</p>
+</blockquote>
+<p>當你執行以下程式是得到 <code>Uncaught ReferenceError: test is not defined</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(test); <span class="comment">// Uncaught ReferenceError: test is not defined</span></span><br></pre></td></tr></table></figure></p>
+<p>但當你執行以下程式卻得到 <code>undefined</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(test); <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> test = <span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
+<p>如果是一行一行執行，那為什麼上面兩者的結果是不同的呢?<br>在讀過編譯器和直譯器後，我想各位讀者應該有些答案了  </p>
+<p>在主流瀏覽器的實現下，js 『看起來』像是直譯語言<br>但在這個黑箱子背後，也是有編譯的步驟存在<br>這樣 js 是不是直譯語言呢?<br>我們來看看其他地方針對直譯式語言或是 JavaScript 是如何介紹的  </p>
+<p><a href="https://www.iteye.com/blog/rednaxelafx-492667">虚拟机随谈（一）：解释器，树遍历解释器，基于栈与基于寄存器，大杂烩</a>提到以下這一段話</p>
+<blockquote>
+<p>一般在網路上都會看到 Python、Ruby、JavaScript 都是直譯語言，是通過直譯器來實現<br>這其實很容易造成誤解，語言一般只會定義抽象語義，而不會強制性要求採用某種實現方式  </p>
+</blockquote>
+<p>且在<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/About_JavaScript"> MDN Web Docs </a>上面是這樣對 JavaScript 進行介紹的</p>
+<blockquote>
+<p>JavaScript (JS) is a lightweight, interpreted, or just-in-time <span style="color:red">compiled</span> programming language with first-class functions.  </p>
+</blockquote>
+<p>在<a href="https://en.wikipedia.org/wiki/Interpreted_language">維基百科</a>上則是這樣對直譯式語言進行解釋的</p>
+<blockquote>
+<p>Many languages have been implemented using both compilers and interpreters,<br>including BASIC, C, Lisp, and Pascal. Java and C# are compiled into bytecode, the virtual-machine-friendly interpreted language.<br>Lisp implementations can freely mix interpreted and compiled code.  </p>
+</blockquote>
+<p>所以以使用的案例來說，在瀏覽器上的 js 是直譯語言<br>不過是哪一種，需要看用哪一種方式實現這種語言的執行方式<br>因為說到底語言只是定義抽象語義，並無強制要用哪一種類型實現  </p>
+<p>前面有提到效率，那是不是 js 效率就很低?<br>且慢！看看我們 Chrome V8 大大就完美呈現什麼叫做媲美編譯語言的效能了<br>有興趣的可以去看看各種 V8 比較效能的文章  </p>
+<h2><span id="後記">後記</span></h2><p>希望這篇有幫助到正在了解 js 是編譯或是直譯語言的小夥伴們  </p>
+<h2><span id="references">References</span></h2><ol>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/About_JavaScript">MDN</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Interpreted_language">Wiki</a></li>
+<li><a href="https://www.iteye.com/blog/rednaxelafx-492667">虚拟机随谈（一）：解释器，树遍历解释器，基于栈与基于寄存器，大杂烩</a></li>
+<li><a href="https://blog.techbridge.cc/2018/11/10/javascript-hoisting/">我知道你懂 hoisting，可是你了解到多深？</a></li>
+<li><a href="http://huang-jerryc.com/2016/11/20/do-you-konw-the-different-between-compiler-and-interpreter/">你知道「编译」与「解释」的区别吗？</a></li>
+</ol>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/JavaScript/" rel="tag">JavaScript</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/09/nodejs-zero-downtime/">
+                <span class="level-item">Node.js 如何實現 zero downtime 更新呢?</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/03/16/javascript-is-compiler-or-interpreter-language/';
+        this.page.identifier = '2020/03/16/javascript-is-compiler-or-interpreter-language/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
+                
+
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+    
+        
+            
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#編譯語言">
+        <span class="has-mr-6">2</span>
+        <span>編譯語言</span>
+        </a></li><li>
+        <a class="is-flex" href="#直譯語言">
+        <span class="has-mr-6">3</span>
+        <span>直譯語言</span>
+        </a></li><li>
+        <a class="is-flex" href="#簡單總整比較一下">
+        <span class="has-mr-6">4</span>
+        <span>簡單總整比較一下</span>
+        </a></li><li>
+        <a class="is-flex" href="#js-是哪一種">
+        <span class="has-mr-6">5</span>
+        <span>js 是哪一種 ?</span>
+        </a></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">6</span>
+        <span>後記</span>
+        </a></li><li>
+        <a class="is-flex" href="#references">
+        <span class="has-mr-6">7</span>
+        <span>References</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+        
+    
+        
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            
+        
+        </div>
+    
+</div>
+
+
+                
+
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right ">
+    
+        
+    
+    
+</div>
+
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
