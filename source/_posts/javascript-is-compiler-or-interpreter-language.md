@@ -1,7 +1,7 @@
 ---
 title: JavaScript 真的是直譯式語言嗎？
 categories: JavaScript
-date: 2020-03-16 12:00:00
+date: 2020-03-16 10:00:00
 tags: [JavaScript, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
@@ -121,6 +121,7 @@ var test = 1;
 
 所以以使用的案例來說，在瀏覽器上的 js 是直譯語言
 不過是哪一種，需要看用哪一種方式實現這種語言的執行方式  
+因為說到底語言只是定義抽象語義，並無強制要用哪一種類型實現  
 
 前面有提到效率，那是不是 js 效率就很低?  
 且慢！看看我們 Chrome V8 大大就完美呈現什麼叫做媲美編譯語言的效能了  
