@@ -6,7 +6,7 @@ tags: [aws, ec2, ipv6, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
 ---
-## 前言 
+## 前言
 
 要讓 ec2 支援 ipv6 要先注意以下三點事項  
 確認好這三點可以先 Marked 一下待會要額外做哪一些設定  
@@ -44,7 +44,7 @@ catalog: true
 
 接下來最後一點, 就要看機器狀況, 如同一開始提到的兩個情況
 
-1. 2016.09 後 Linux 不需要多作設定 
+1. 2016.09 後 Linux 不需要多作設定
 2. 如果機器是用 AMI 建立的話, 需要手動設定 ipv6 的設定才能啟用 ipv6
     其他版本 OS 使用方法可以參考 [Configure IPv6 on Your Instances](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-dhcpv6)
 
@@ -53,18 +53,20 @@ catalog: true
 ## Ubuntu 14 版本啟用 ip v6 的方式
 
 1. 修改 /etc/network/interfaces.d/eth0.cfg 內容
-    請在 iface 的下面一段加上 `up dhclient -6 $IFACE` 
+    請在 iface 的下面一段加上 `up dhclient -6 $IFACE`
+
     ```sh=
     # 原本
     auto eth0
     iface eth0 inet dhcp
-    
+
     # 修改後
     auto eth0
     iface eth0 inet dhcp
         up dhclient -6 $IFACE
     ```
-2. 接著 `sudo reboot` 
+
+2. 接著 `sudo reboot`
 3. 輸入 `ifconfig` 確認 ipv6 是否正確, 如果不正確, 輸入 `sudo dhclient -6` 啟用 ipv6
 
 其他版本 OS 使用方法可以參考 [Configure IPv6 on Your Instances](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-dhcpv6)
