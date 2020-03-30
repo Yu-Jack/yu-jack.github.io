@@ -2,7 +2,7 @@
 title: 如何啟用 AWS EC2 Ipv6 ?
 categories: AWS
 date: 2020-03-30 11:50:13
-tags: [aws, ec2, ipv6]
+tags: [aws, ec2, ipv6, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
 ---
