@@ -93,13 +93,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/ec2/</loc>
-        <lastmod>2020-01-29T08:25:29.309Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/disk/</loc>
         <lastmod>2020-01-29T08:25:29.309Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -179,13 +172,6 @@
     <url>
         <loc>https://yu-jack.github.io/tags/CTF/</loc>
         <lastmod>2020-01-29T08:25:29.318Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/aws/</loc>
-        <lastmod>2020-01-29T08:25:29.320Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -508,6 +494,27 @@
     <url>
         <loc>https://yu-jack.github.io/tags/%25E8%25AE%2580%25E6%259B%25B8%25E5%25BF%2583%25E5%25BE%2597/</loc>
         <lastmod>2020-03-23T02:06:19.205Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/aws/</loc>
+        <lastmod>2020-03-30T04:11:54.653Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/ec2/</loc>
+        <lastmod>2020-03-30T04:11:54.653Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/ipv6/</loc>
+        <lastmod>2020-03-30T04:11:54.653Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

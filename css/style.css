@@ -544,3 +544,6 @@ img {
   border: 1px solid rgba(0,0,0,0.259);
   box-shadow: 1px 1px 5px;
 }
+.content ul {
+  margin-bottom: 1.2em;
+}
