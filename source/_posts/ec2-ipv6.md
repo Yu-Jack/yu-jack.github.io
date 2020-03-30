@@ -13,8 +13,8 @@ catalog: true
 
 1. 確認 ec2 instance type 是否支援 ipv6, 可參考 [Instance Types](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html)
 2. 確認 ec2 instance 是在 public subnet 還是 private subnet
-    * public subnet → 要用到 internet network gateway  
-    * private subnet → 要用到 egress-only network gateway
+    * public subnet → 要用到 internet gateway  
+    * private subnet → 要用到 egress-only internet gateway
 3. 確認 ec2 建立的方式, 以下有兩點要注意
     * 2016.09 後 Linux 不需要多作設定
     * 如果機器是用 AMI 建立的話, 需要手動設定 ipv6 的設定才能啟用 ipv6
@@ -32,7 +32,7 @@ catalog: true
 3. 設定 Route Table 對外的部分
     Desitination: `::/0`  
     以下二擇一, 根據 ec2 所在的環境判斷  
-    (Private Subnet) Target: egress-only network gateway  
+    (Private Subnet) Target: egress-only internet gateway  
     (Public Subnet) Target: Internet network gateway  
 4. 設定 ec2 的 Security Group, Outbound 的部分要設定
     Desitination: `::/0`  
