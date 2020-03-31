@@ -277,7 +277,7 @@ openssl x509 -inform pem -in cert1.pem
 `sh getPKfromDomain.sh github.com`，就會出現憑證鏈全部的公鑰 (都是 sha256 + base64 後  
 ```
 #!/bin/bash
-certs=`openssl s_client -connect $1:443 -showcerts </dev/null 2>/dev/null | sed -n '/Certificate chain/,/Server certificate/p'`
+certs=`openssl s_client -connect $1:443 -servername $1 -showcerts </dev/null 2>/dev/null | sed -n '/Certificate chain/,/Server certificate/p'`
 rest=$certs
 while [[ "$rest" =~ '-----BEGIN CERTIFICATE-----' ]]
 do
