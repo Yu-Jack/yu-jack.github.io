@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2020/03/02/ssl-pinning/</loc>
+        <lastmod>2020-03-31T10:44:10.388Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2020/03/30/ec2-ipv6/</loc>
         <lastmod>2020-03-30T09:18:30.932Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -49,14 +57,6 @@
     <url>
         <loc>https://yu-jack.github.io/2017/11/01/how-to-test/</loc>
         <lastmod>2020-03-11T14:42:35.361Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2020/03/02/ssl-pinning/</loc>
-        <lastmod>2020-03-09T13:42:28.491Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
