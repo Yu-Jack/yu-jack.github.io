@@ -169,7 +169,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>網路上有許多文章在討論瀏覽器內 event loop 的機制<br>不少文章都有探討到所謂宏任務 (macrotask or task) 以及微任務 (microtask) 東西<br>但我開始好奇這東西在瀏覽器內的規範是如何去寫這些東西以及定義這些名詞<br>又或是名詞是不是真的跟網路文章說的一樣<br>於是開始想深入了解，究竟在瀏覽器規範中，是怎麼是對 event loop 去說明的  </p>
 <p>如果要開始看規範的話，原本是想針對 ECMA 內的 JS 機制去閱讀<br>但深入一看才發現，ECMA 內根本沒有針對 JS event loop 的機制去做說明<br>經過一段時間查找後，才發現真正定義 event loop 執行順序以及方法的細節是被歸類在 HTML Living Standard 裡面  </p>
 <p>HTML Living Standard 基本上就是規範了瀏覽器內核心該如何實現的一套規則<br><a href="https://html.spec.whatwg.org/">官網在此</a>，在此規範裡面就有提到 event loop 的機制  </p>

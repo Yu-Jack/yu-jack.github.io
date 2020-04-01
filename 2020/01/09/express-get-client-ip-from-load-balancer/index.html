@@ -170,7 +170,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>我們有時候要取得使用者 IP<br>往往都會用最簡單的方式取得 IP<br>以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>取得到的 IP 會是 Load Balancer 的嗎?<br>而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>如果不知道的話，那這邊文章有可能會幫助到你  </p>
 <a id="more"></a>
 <p>接下來會以 AWS 的 Load Balancer 以及伺服器上建立一個 Nginx 服務<br>然後還有一個 express server 服務來說明<br>從無 Load Balancer 到雙層 Load Balancer 的架構下分別該如何取得 IP</p>

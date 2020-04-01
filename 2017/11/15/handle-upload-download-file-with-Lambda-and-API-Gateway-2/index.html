@@ -170,7 +170,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳<br>上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON<br>所以必須在 API Gateway 必須要做 body mapping 的調整<br>e.g 透過 Binary Support 或是 Base64Enconde 的方式處理<br>那這次的紀錄是讓 AWS 的 API  Gateway 的 Upload 直接通往到後面的 Server 端<br><a id="more"></a></p>
 <h2><span id="aws-api-gateway">AWS API Gateway</span></h2><p>在上一篇，透過 Lambda 和 API Gateway 完成檔案上傳和下載之後<br>出現了一個疑問，API Gateway 直接到 Server 這端，需不需要調整東西呢 ?</p>
 <p>在這樣的想法下，做了一個簡單的實現</p>

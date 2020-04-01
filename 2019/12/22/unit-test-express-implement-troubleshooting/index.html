@@ -168,7 +168,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p><a href="https://yu-jack.github.io/2019/12/10/unit-test-express/">上一篇</a>我們講到使用 sinon 搭配 express 的使用基礎<br>今天會介紹的是關於在 nodejs 的 express unit test<br>實作 unit test 的幾個技巧以及可能會遇到的問題<br>該如何解決問題，並依靠 sinon 去達到希望的功效  </p>
 <a id="more"></a>
 <h2><span id="stub-同一個-object">stub 同一個 object</span></h2><p>在開始寫 unit test 之後<br>會開始發現一件事情，就是需要對同一個物件重複做 stub<br>在 a.test.js 需要 stub 一次<br>在 b.test.js 又需要 stub 一次  </p>

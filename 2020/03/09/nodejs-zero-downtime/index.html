@@ -168,7 +168,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>工作久了，一定都會面臨到一個問題<br>就是 Zero Downtime 更新 (零停機更新)<br>簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』<br>這邊就紀錄如何去實現這需求  </p>
 <p>相信寫過 node.js 的人會知道<br>在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線<br>那究竟要如何達到 zero downtime 更新呢?<br>我們來看看以下的 Cases，左邊是模擬伺服器，右邊則是模擬客戶端  </p>
 <h2><span id="case-1">Case 1</span></h2><p>在左邊可以看到，如果我要更新 a.js 的程式內容<br>我必須要先按下 Ctrl + C 把 node.js 取消掉然後重新下 node a.js 才可以<br>但取消的同時，右邊的客戶就會中斷，沒辦法繼續發送請求  </p>

@@ -171,7 +171,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <p>上一篇主要是介紹如何使用<br>這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  </p>
 <a id="more"></a>
 <h2><span id="callback">callback</span></h2><p>相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情<br>那就是 callback 第一個參數都會是 error<br>雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的<br>假設當 callback 參數回傳越來越多的時候，總不可能把 error 放在最後一個去處理<br>因為你會始終不知道哪一個會是 error (就算寫註解也會讀到瘋掉)<br>試想一下這幾段 code 就可以理解了</p>

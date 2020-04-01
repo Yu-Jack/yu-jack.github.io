@@ -168,7 +168,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用<br>掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用  </p>
 <a id="more"></a>
 <p>以 load balancer 來說<br>外面 https:443 進來後，要導入到 http:8080 的服務<br>就會需要把憑證解開，然後進一步把流量往裡面送<br>所以在 load balancer 上面就一定要掛載 private/public key 才有辦法去解開進來的流量<br>像是在選 load balancer 的頁面，選擇 port forwarding 的時候就會需要選擇要掛載哪一個 certificate<br><img src="/images/aws/aws-acm-01.png" alt></p>

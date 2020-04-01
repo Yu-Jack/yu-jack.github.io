@@ -169,7 +169,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念<br>就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用<br>使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用</p>
 <p>Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本中是沒有一個管控的方式<br>幾乎都是用 new Thread 的方式去創建使用<br>在 JDK 1.5 之後的版本則是出了 Exectuor 去管控 Thread Pool</p>
 <a id="more"></a>

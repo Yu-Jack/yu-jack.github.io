@@ -167,7 +167,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>最近突然有一個想法開始研究起瀏覽器端的 Cache 方法<br>加上小弟常用 nodejs + express 去寫前後端<br>於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事</p>
 <a id="more"></a>
 <h2><span id="介紹">介紹</span></h2><p>在 express 裡面有一個 function 叫做 <code>express.static()</code><br>這個是一個 middleware，最常被用在要讀取一些靜態檔案上面<br>以這個寫法來說 <code>app.use(express.static(__dirname + &#39;./public&#39;))</code><br>是指向 <code>public</code> 這個資校夾裡面，假設裡面有一個檔案叫做 <code>index.html</code> 的話，並且伺服器的 port 是 8080<br>那麼在網址列輸入 <code>http://localhost:8080/index.html</code> 這樣就可以讀到這個檔案了</p>

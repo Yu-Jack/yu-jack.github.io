@@ -169,7 +169,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <p>最近遇到需要增進網站安全性的問題<br>於是 survey 了幾個常見的 header 設置方式<br>接下來會開始介紹每一個 header 的功能以及設置方式<br>以及可以到這個網站進行檢測 <a href="https://securityheaders.io/">https://securityheaders.io/</a><br>個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主<br><a id="more"></a></p>
 <h2><span id="set-cookie-設置方式">Set-Cookie 設置方式</span></h2><p>防禦面向為: XSS</p>
 <p><code>Set-Cookie</code> 基本上是最多人使用的，但是 <code>Set-Cookie</code> 的設置方式如果沒有設定好是不安全的<br><code>Set-Cookie</code> 有以下兩個 header 可以設定</p>

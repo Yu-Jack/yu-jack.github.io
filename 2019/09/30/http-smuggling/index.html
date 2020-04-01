@@ -167,7 +167,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
         </h1>
         
-            <div class="content">
+            <div class="content" style="word-break: break-all;">
                 <h1><span id="什麼是-http-request-smuggling">什麼是 HTTP Request Smuggling ?</span></h1><p>今日常見的網頁應用程式往往會有多一層 server 的存在<br>請求 –&gt; front-end server –&gt; back-end server<br>front-end server 接收到請求的時候，會轉發到 back-end server 去處理  </p>
 <a id="more"></a>
 <p>http request smuglling 的漏洞就是出現在『轉發』到 back-end server 這裏<br>有時候為了效能關係，front-end server 到 back-end server 這一段<br>會把所有請求塞在同一段 TCP Connection 裡面 (重複利用 TCP Connection)，如下圖<br><img src="/images/http-request-smuggling/image-01.png" alt></p>
