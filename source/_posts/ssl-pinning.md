@@ -195,8 +195,8 @@ Intermediate 是被 Root 簽署認證
 是我自行把中間人的 Root 憑證給安裝到電腦中，才會被攻擊  
 實際上，其實有可能透過社交工程的方法，引誘使用者安裝這些不安全的 Root 憑證  
 
-> 以 Android 來說，可能會在 Settings > Security > Trusted Credentials 看到很多根憑證
-> 以 Mac 電腦來說，可以在 terminal 使用 `open file:///System/Library/Security/Certificates.bundle/Contents/Resources/TrustStore.html`  
+> 以 Android 來說，可能會在 Settings > Security > Trusted Credentials 看到很多根憑證  
+> 以 Mac 電腦來說，可以在 terminal 使用 open file:///System/Library/Security/Certificates.bundle/Contents/Resources/TrustStore.html  
 > 打開後就會看到裝在這台電腦上面所有信任的 Root 憑證  
 
 那問題就來了，我要如果要做 SSL Pinning 要針對誰做 SSL Pinning 呢?  
