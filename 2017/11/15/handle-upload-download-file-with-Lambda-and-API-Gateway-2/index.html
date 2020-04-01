@@ -30,8 +30,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="article:published_time" content="2017-11-14T17:03:47.000Z">
 <meta property="article:modified_time" content="2020-01-29T08:25:29.320Z">
 <meta property="article:author" content="Jack Yu">
-<meta property="article:tag" content="aws">
 <meta property="article:tag" content="API Gateway">
+<meta property="article:tag" content="aws">
 <meta property="article:tag" content="lambda">
 <meta property="article:tag" content="upload file">
 <meta property="article:tag" content="download file">
@@ -231,8 +231,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content" id="liker">
+    </div>
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
         
 <script>
     var disqus_config = function () {
@@ -252,6 +254,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
     </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
 </div>
 </div>
                 
