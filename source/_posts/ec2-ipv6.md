@@ -8,7 +8,7 @@ catalog: true
 ---
 ## 前言
 
-要讓 ec2 支援 ipv6 要先注意以下三點事項  
+要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項  
 確認好這三點可以先 Marked 一下待會要額外做哪一些設定  
 
 1. 確認 ec2 instance type 是否支援 ipv6, 可參考 [Instance Types](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html)
