@@ -1,7 +1,7 @@
 ---
-title: Single Sign On 實作方式介紹 - part 1
+title: Single Sign On 實作方式介紹 (iframe & cookie)
 categories: Security
-date: 2020-03-30 10:05:21
+date: 2020-04-06 10:05:21
 tags: [Security, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
@@ -16,10 +16,14 @@ SSO 是 Sinsgle Sign On, 也就是單點登入
 1. 使用者只需要紀錄一套帳號密碼就可以在其他地方登入  
 2. 開發新的系統時, 不需要重新實作登入系統, 直接用 SSO 機制就可以完成登入系統  
 
-但因為以上的優點, 如果大家都只用同一套登入系統的話  
-這樣所有帳號密碼都會被一個系統大商持有  
-這可是有很多寶貴的資訊, 所以想當然爾, 大商有機會的話就會提供這套機制讓別人使用  
-所以這也算是一個缺點之一
+談論到 SSO 就會有 OAuth 出現  
+但要注意的是, SSO 和 OAuth 是兩種不同的概念  
+最重要的差別在於有沒有**第三方系統干涉**  
+
+使用場景看看以下的例子  
+SSO: 在公司內部系統上, 想要登入一次, 其他內部系統就不用登入也可以操作  
+OAuth: 在電商平台 A, B 上, 我不想要重新註冊, 於是我直接用 Google 登入  
+當然 OAuth 不止還有這樣的功能, 但這篇暫時不提  
 
 那麼要如何實現 SSO 呢?  
 實現 SSO 的概念有很多種做法, 相信有人會聽過用 CAS 或 Oath 去實作  
@@ -135,8 +139,8 @@ set-cookie 的方式如同上面的設置方式
 這樣就能達到 SSO, 只是這方式好不好, 見仁見智  
 也許小型網站適合 (2,3 個), 但因為機制上面還有一些安全疑慮要解決  
 所以在使用的時候要想清楚流程去避免 cookie 被盜用還包含要如何進行驗證 (可以用 JWT)  
-而比較好的方式是透過 CAS 或 Oath 去實作 (Part 2 會介紹)  
-畢竟 CAS 和 Oath 已經算是有完整機制的實作方法, 安全性上還是相對安全  
+而比較好的方式是透過 CAS 去實作  
+畢竟 CAS 已經算是有完整機制的實作方法, 安全性上還是相對安全  
 
 這邊附上程式碼可以測試
 > 如果要向筆者一樣, 可以更改 localhost 的 domain name  
@@ -192,9 +196,7 @@ app.listen(3000)
 ## 後記
 
 先以不同 domain 的方式配合 cookie 讓大家知道 cookie 的受限程度  
-接下來第二篇著重的重點在於不同 domain 的 SSO  
-第二篇就會介紹如何用別的機制去實現更好更安全的 SSO  
+接下來第二篇著重的重點在於不同 domain 下利用 CAS 去實現 SSO  
 
-## Reference 
-
+## Reference
 1. [全面介绍SSO（单点登录](https://juejin.im/post/5de46d28e51d4532c21facb3)
