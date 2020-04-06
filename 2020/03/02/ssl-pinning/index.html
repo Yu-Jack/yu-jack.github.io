@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又是要 pin 什麼東西然後中間人又是哪個小三??">
+    <meta name="description" content="前言 看不懂跟我說，我想辦法補充 XD 正文開始 ... 某天有人問我 某: SSL Pinning 是什麼東西啊? 我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制 某: ...... 你這樣說最好是有人聽得懂 我: 我錯了 ... 給點機會讓我重新解釋解釋 為了要了解這個的意思 我們要先來說說 SSL 是什麼 而 SSL Pinning 又是要 pin 什麼東西 然後中間">
 <meta property="og:type" content="article">
 <meta property="og:title" content="從 SSL 到 SSL Pinning 看完你就懂！">
 <meta property="og:url" content="https://yu-jack.github.io/2020/03/02/ssl-pinning/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又是要 pin 什麼東西然後中間人又是哪個小三??">
+<meta property="og:description" content="前言 看不懂跟我說，我想辦法補充 XD 正文開始 ... 某天有人問我 某: SSL Pinning 是什麼東西啊? 我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制 某: ...... 你這樣說最好是有人聽得懂 我: 我錯了 ... 給點機會讓我重新解釋解釋 為了要了解這個的意思 我們要先來說說 SSL 是什麼 而 SSL Pinning 又是要 pin 什麼東西 然後中間">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-03-01T16:02:54.000Z">
@@ -169,87 +169,198 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>看不懂跟我說，我想辦法補充 XD  </p>
-<p>正文開始 …<br>某天有人問我  </p>
-<p>某: SSL Pinning 是什麼東西啊?<br>我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制<br>某: …… 你這樣說最好是有人聽得懂<br>我: 我錯了 … 給點機會讓我重新解釋解釋  </p>
-<p>為了要了解這個的意思<br>我們要先來說說 SSL 是什麼<br>而 SSL Pinning 又是要 pin 什麼東西<br>然後中間人又是哪個小三??</p>
-<h2><span id="什麼是-ssl">什麼是 SSL?</span></h2><p>SSL 全名是，Secure Sockets Layer<br>但這是屬於舊的標準，新的標準則是 Transport Layer Security (TLS)  </p>
-<p>但不管新舊標準，他們的目的都是同一個<br>那就是保護使用者資料的安全為目的，但 … 怎樣算保護呢?  </p>
+                <h2><span id="前言">前言</span></h2>
+<p>看不懂跟我說，我想辦法補充 XD</p>
+<p>正文開始 ...
+某天有人問我</p>
+<p>某: SSL Pinning 是什麼東西啊?<br>
+我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制<br>
+某: ...... 你這樣說最好是有人聽得懂<br>
+我: 我錯了 ... 給點機會讓我重新解釋解釋</p>
+<p>為了要了解這個的意思<br>
+我們要先來說說 SSL 是什麼<br>
+而 SSL Pinning 又是要 pin 什麼東西<br>
+然後中間人又是哪個小三??</p>
+<h2><span id="什麼是-ssl">什麼是 SSL?</span></h2>
+<p>SSL 全名是，Secure Sockets Layer<br>
+但這是屬於舊的標準，新的標準則是 Transport Layer Security (TLS)</p>
+<p>但不管新舊標準，他們的目的都是同一個<br>
+那就是保護使用者資料的安全為目的，但 ... 怎樣算保護呢?</p>
 <blockquote>
-<p>這裡提到安全其實又會切分成三個種類<br>可用性、機密性、完整性，這個有機會再開個篇章來談談<br>這邊就先當成是保護資料安全吧！</p>
+<p>這裡提到安全其實又會切分成三個種類<br>
+可用性、機密性、完整性，這個有機會再開個篇章來談談<br>
+這邊就先當成是保護資料安全吧！</p>
 </blockquote>
-<p>先來說一般的狀況，沒有 SSL 的時候<br>A 跟 B 兩家房子，之間有一個傳輸通道<br>是用來傳輸各種訊息或是物資，但！！！這個通道是透明的<br>也就是說，其他人可以跟清楚的看到 A 跟 B 到底在秘密地交換什麼東西<br>而有了 SSL 後，就是從原本的透明傳輸管道升級成非透明的傳輸管道<br>這樣其他人就不容易的去看到 A 跟 B 在運送什麼東西了  </p>
+<p>先來說一般的狀況，沒有 SSL 的時候<br>
+A 跟 B 兩家房子，之間有一個傳輸通道<br>
+是用來傳輸各種訊息或是物資，但！！！這個通道是透明的<br>
+也就是說，其他人可以跟清楚的看到 A 跟 B 到底在秘密地交換什麼東西<br>
+而有了 SSL 後，就是從原本的透明傳輸管道升級成非透明的傳輸管道<br>
+這樣其他人就不容易的去看到 A 跟 B 在運送什麼東西了</p>
 <p><img src="/images/ssl/ssl-00.png" alt></p>
 <blockquote>
-<p>這裡就不提到 http 和 https 的概念<br>但可以簡單說，http 有了 ssl 就升級為 https<br>http 就是透明管道<br>https 就是非透明管道  </p>
+<p>這裡就不提到 http 和 https 的概念<br>
+但可以簡單說，http 有了 ssl 就升級為 https<br>
+http 就是透明管道
+https 就是非透明管道</p>
 </blockquote>
-<p>那麼 SSL 是怎麼運作的，我們首先要知道 公私鑰 的概念<br>SSL 其中有一段是透過非對稱式加密的公私鑰達到認證並建立連線通道<br>建立安全連線通道後，會利用對稱式加密對這之間所有資料進行加解密  </p>
-<p>聽起來很饒口 … 沒關係為了要了解整個概念<br>我們必須先來談談對稱式加密和非對稱式加密  </p>
-<p>首先是對稱式加密<br>假如有一種加密的演算法是『把字母往後位移 k 個位子，把位移後的結果以及 k 給對方』<br>所以當 A 想要告訴 B 一件事情<br>A 就透過這種加密方法把 HI 這個詞，往後位移 2 個位子，就變成 JK<br>當 B 收到位移數是 2 以及 JK 的時候，B 就可以透過這個位移數 2 把他回推成 HI<br>這裡的 2 就是我們的 k 也就是我們的金鑰，A 和 B 都是拿到同樣的數字 2<br>這就是對稱式加密的一種概念  </p>
-<p>那非對稱式就是 A 和 B 拿到的金鑰是不同個的 (以上述例子，A 拿公鑰，B 拿私鑰)<br>而公私鑰，一定是一組一對一配對起來的，如果公鑰是 O 私鑰是 P<br>那絕對是 OP 為一組，不會有 WP 這種組合出現或是 OW 這種組合出現<br>而如何實現這種演算法，請參考 RSA 相關的文章，這裡就不多做解釋 (不然就跑題了  </p>
-<p>所以在 SSL 的概念裡面會有公私鑰，這裡有兩個概念<br>第一種：資料透過私鑰加密，再透過公鑰解密 -&gt; 驗證訊息來源是否真的是擁有私鑰的人<br>第二種：資料透過公鑰加密，再透過私鑰解密 -&gt; 把資料加密，並可還原資料  </p>
-<p>在 SSL 整個通訊協議中，當瀏覽器收到伺服器 A 送來可支援的加密演算法時<br>會看到利用第一種方式去驗證伺服器 A 傳送過來的資料是否真的是伺服器 A 而不是 B 的<br>接下來會選擇一把對稱式加密金鑰，然後利用第二種方式加密傳給伺服器<br>伺服器解密後取得這把對稱式加密金鑰，之後瀏覽器和伺服器之間的通訊就用這把對稱式金鑰加解密  </p>
+<p>那麼 SSL 是怎麼運作的，我們首先要知道 公私鑰 的概念<br>
+SSL 其中有一段是透過非對稱式加密的公私鑰達到認證並建立連線通道<br>
+建立安全連線通道後，會利用對稱式加密對這之間所有資料進行加解密</p>
+<p>聽起來很饒口 ... 沒關係為了要了解整個概念<br>
+我們必須先來談談對稱式加密和非對稱式加密</p>
+<p>首先是對稱式加密<br>
+假如有一種加密的演算法是『把字母往後位移 k 個位子，把位移後的結果以及 k 給對方』<br>
+所以當 A 想要告訴 B 一件事情<br>
+A 就透過這種加密方法把 HI 這個詞，往後位移 2 個位子，就變成 JK<br>
+當 B 收到位移數是 2 以及 JK 的時候，B 就可以透過這個位移數 2 把他回推成 HI<br>
+這裡的 2 就是我們的 k 也就是我們的金鑰，A 和 B 都是拿到同樣的數字 2<br>
+這就是對稱式加密的一種概念</p>
+<p>那非對稱式就是 A 和 B 拿到的金鑰是不同個的 (以上述例子，A 拿公鑰，B 拿私鑰)<br>
+而公私鑰，一定是一組一對一配對起來的，如果公鑰是 O 私鑰是 P<br>
+那絕對是 OP 為一組，不會有 WP 這種組合出現或是 OW 這種組合出現<br>
+而如何實現這種演算法，請參考 RSA 相關的文章，這裡就不多做解釋 (不然就跑題了</p>
+<p>所以在 SSL 的概念裡面會有公私鑰，這裡有兩個概念<br>
+第一種：資料透過私鑰加密，再透過公鑰解密 -&gt; 驗證訊息來源是否真的是擁有私鑰的人<br>
+第二種：資料透過公鑰加密，再透過私鑰解密 -&gt; 把資料加密，並可還原資料</p>
+<p>在 SSL 整個通訊協議中，當瀏覽器收到伺服器 A 送來可支援的加密演算法時<br>
+會看到利用第一種方式去驗證伺服器 A 傳送過來的資料是否真的是伺服器 A 而不是 B 的<br>
+接下來會選擇一把對稱式加密金鑰，然後利用第二種方式加密傳給伺服器<br>
+伺服器解密後取得這把對稱式加密金鑰，之後瀏覽器和伺服器之間的通訊就用這把對稱式金鑰加解密</p>
 <p>整個 SSL 建立的步驟可以分為以下三個大項</p>
 <ol>
-<li>Authentication <span style="color: #4087c6">(藍色部分)</span>: 使用非對稱式加密演算法進行伺服器數位簽章的認證  </li>
-<li>Key Exchange <span style="color: #1eb6a7">(綠色部分)</span>: 交換一把對稱式加密金鑰  </li>
-<li>Encrypted Data Transfer <span style="color: #f85d72">(紅色部分)</span>: 瀏覽器和伺服器利用第二步的對稱式加密金鑰，對通訊間的資料進行加解密</li>
+<li>Authentication &lt;span style=&quot;color: #4087c6&quot;&gt;(藍色部分)&lt;/span&gt;: 使用非對稱式加密演算法進行伺服器數位簽章的認證</li>
+<li>Key Exchange &lt;span style=&quot;color: #1eb6a7&quot;&gt;(綠色部分)&lt;/span&gt;: 交換一把對稱式加密金鑰</li>
+<li>Encrypted Data Transfer &lt;span style=&quot;color: #f85d72&quot;&gt;(紅色部分)&lt;/span&gt;: 瀏覽器和伺服器利用第二步的對稱式加密金鑰，對通訊間的資料進行加解密</li>
 </ol>
-<p>可以參考下面的簡略圖，但更詳細的就不是本篇探討的地方<br>詳細可以參閱<a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a>看更多細節<br><img src="/images/ssl/ssl-02.png" alt></p>
+<p>可以參考下面的簡略圖，但更詳細的就不是本篇探討的地方<br>
+詳細可以參閱<a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a>看更多細節<br>
+<img src="/images/ssl/ssl-02.png" alt></p>
 <blockquote>
-<p>第二個步驟的交換，可以利用伺服器憑證的公鑰加密對稱式金鑰<br>伺服器收到這個加密後的對稱式金鑰，就可以用私鑰解密，然後取得對稱式金鑰<br>但如果是使用 Diffie — Hellman 去交換對稱式金鑰的話<br>就不需要用公鑰加密，私鑰解密了<br>因為 Diffie — Hellman 可以”安全地”告訴對方密碼而不用擔心密碼被竊聽.</p>
+<p>第二個步驟的交換，可以利用伺服器憑證的公鑰加密對稱式金鑰<br>
+伺服器收到這個加密後的對稱式金鑰，就可以用私鑰解密，然後取得對稱式金鑰<br>
+但如果是使用 Diffie — Hellman 去交換對稱式金鑰的話<br>
+就不需要用公鑰加密，私鑰解密了<br>
+因為 Diffie — Hellman 可以&quot;安全地&quot;告訴對方密碼而不用擔心密碼被竊聽.</p>
 </blockquote>
-<p>剛剛提到的憑證，就是我們瀏覽器上面會看到鎖頭，點開後那就是憑證  </p>
+<p>剛剛提到的憑證，就是我們瀏覽器上面會看到鎖頭，點開後那就是憑證</p>
 <p><img src="/images/ssl/ssl-01.png" alt></p>
-<p>執行此指令可以看到完整的憑證<br><code>openssl s_client -connect github.com:443 -servername github.com -showcerts</code></p>
+<p>執行此指令可以看到完整的憑證<br>
+<code>openssl s_client -connect github.com:443 -servername github.com -showcerts</code></p>
 <blockquote>
-<p>因為這憑證很長一串，這裡就不截圖顯示了<br>各位可以自行在電腦上面執行試試看  </p>
+<p>因為這憑證很長一串，這裡就不截圖顯示了<br>
+各位可以自行在電腦上面執行試試看</p>
 </blockquote>
-<p>那為什麼透過憑證可以取得到公鑰呢? 因為從私鑰中是可以算出 public key 出來的<br>產生憑證的流程是，一開始產生出來的公私鑰匙，透過私鑰產出一個憑證申請檔案<br>這個憑證申請檔案會包含一些申請者的資訊以及公鑰<br>此檔案經過第三方的認證之後，就會成了憑證<br>所以透過憑證可以把公鑰取得回來  </p>
+<p>那為什麼透過憑證可以取得到公鑰呢? 因為從私鑰中是可以算出 public key 出來的<br>
+產生憑證的流程是，一開始產生出來的公私鑰匙，透過私鑰產出一個憑證申請檔案<br>
+這個憑證申請檔案會包含一些申請者的資訊以及公鑰<br>
+此檔案經過第三方的認證之後，就會成了憑證<br>
+所以透過憑證可以把公鑰取得回來</p>
 <blockquote>
-<p>私鑰產生出來之後，是要被嚴格保管的，絕對不能洩漏出去，所以才會稱為私鑰<br>但公鑰就沒關係了，所以才會叫做公開金鑰 (公鑰)  </p>
+<p>私鑰產生出來之後，是要被嚴格保管的，絕對不能洩漏出去，所以才會稱為私鑰<br>
+但公鑰就沒關係了，所以才會叫做公開金鑰 (公鑰)</p>
 </blockquote>
-<h2><span id="什麼是-ssl-pinning">什麼是 SSL Pinning ?</span></h2><p>前面有提到一個概念，公私鑰是一對一配對的<br>所以同一組公私鑰出來的憑證，這個憑證裡面的公鑰絕對是不會變的<br>而 SSL Pinning 就是要把 SSL 固定起來<br>這個固定就是利用公鑰的特性達到的  </p>
-<p>假設今天我有一個 App 是專門瀏覽 github.com 用的<br>github.com 憑證內的公鑰是 O 的話<br>而我 App 裡面的程式，已經有預先寫好 O 這個公鑰<br>所以當我瀏覽 github.com 的時候，取得憑證內的公鑰 O<br>拿這個公鑰 O 去跟程式裡面寫好的 O 比對是一樣的，就繼續連線<br>不一樣的話就拒絕連線，因為不一樣的話，一定是有什麼狀況發生，不要連線比較好<br>這就是 SSL Pinning，確保連線的網址憑證是安全的  </p>
-<p>而發生不一樣的狀況，通常是所謂的中間人攻擊  </p>
-<h2><span id="中間人攻擊">中間人攻擊</span></h2><p>在正常連線的狀況下，都是屬於下圖的狀況 (這邊以最單純只有 server 的架構來表示<br><img src="/images/ssl/ssl-03.png" alt></p>
-<p>中間人攻擊，就是中間卡了一個人幫你跟伺服器進行資料交換<br>這樣就代表所有東西都會被這個中間人看光光<br><img src="/images/ssl/ssl-04.png" alt></p>
-<p>接下來可能會有一個疑惑，我都用 SSL 了，他怎麼會看到我傳送的封包?<br>但其實當中間卡一個人的時候，你並不會知道中間真的有卡了一人在幫你交換資料<br>以你連線到 github.com 的時候，如果你不特別去點憑證來看<br>你其實並不會知道到底是怎麼一回事，讓我們看看下面 gif 的例子  </p>
+<h2><span id="什麼是-ssl-pinning">什麼是 SSL Pinning ?</span></h2>
+<p>前面有提到一個概念，公私鑰是一對一配對的<br>
+所以同一組公私鑰出來的憑證，這個憑證裡面的公鑰絕對是不會變的<br>
+而 SSL Pinning 就是要把 SSL 固定起來<br>
+這個固定就是利用公鑰的特性達到的</p>
+<p>假設今天我有一個 App 是專門瀏覽 github.com 用的<br>
+github.com 憑證內的公鑰是 O 的話<br>
+而我 App 裡面的程式，已經有預先寫好 O 這個公鑰<br>
+所以當我瀏覽 github.com 的時候，取得憑證內的公鑰 O<br>
+拿這個公鑰 O 去跟程式裡面寫好的 O 比對是一樣的，就繼續連線<br>
+不一樣的話就拒絕連線，因為不一樣的話，一定是有什麼狀況發生，不要連線比較好<br>
+這就是 SSL Pinning，確保連線的網址憑證是安全的</p>
+<p>而發生不一樣的狀況，通常是所謂的中間人攻擊</p>
+<h2><span id="中間人攻擊">中間人攻擊</span></h2>
+<p>在正常連線的狀況下，都是屬於下圖的狀況 (這邊以最單純只有 server 的架構來表示<br>
+<img src="/images/ssl/ssl-03.png" alt></p>
+<p>中間人攻擊，就是中間卡了一個人幫你跟伺服器進行資料交換<br>
+這樣就代表所有東西都會被這個中間人看光光<br>
+<img src="/images/ssl/ssl-04.png" alt></p>
+<p>接下來可能會有一個疑惑，我都用 SSL 了，他怎麼會看到我傳送的封包?<br>
+但其實當中間卡一個人的時候，你並不會知道中間真的有卡了一人在幫你交換資料<br>
+以你連線到 github.com 的時候，如果你不特別去點憑證來看<br>
+你其實並不會知道到底是怎麼一回事，讓我們看看下面 gif 的例子</p>
 <p><img src="/images/ssl/ssl-05.gif" alt></p>
-<p>左邊是我用無痕模擬被中間人攻擊的狀況，右邊則是我一般上網的狀況<br>不點憑證之前，你其實很難分辨出來到底哪一種有問題<br>這邊附上各個截圖，上圖為 gif 左邊，下圖為 gif 右邊<br><img src="/images/ssl/ssl-07.png" alt><br><img src="/images/ssl/ssl-06.png" alt></p>
-<p>其實中間人的角色，其實就是充當伺服器再跟你進行 SSL 通道的建立<br>所以對瀏覽器來說，這個中間人就是真正的伺服器，只是瀏覽器並不知情而已  </p>
-<p>但其實現實上瀏覽器其實不會那麼笨<br>因為瀏覽器本身都會有一些本來就可以信任的 Root 憑證<br>所以當瀏覽器遇到這種 Root 憑證怪怪的，基本上都是會拒絕連線的  </p>
-<p>這裡會可以連線是因為我先讓我的瀏覽器無條件相信這個中間人的 Root 憑證<br>Root 憑證和一般我們所講的憑證有什麼不同，後面會介紹到  </p>
-<p>當不信任的狀況，瀏覽器就會出現以下的警告視窗<br>裡面的英文訊息其實就很完整解釋，這個伺服器送回了異常的憑證，所以 Chrome 大大幫你擋掉<br>不過如果你像我一樣設定好讓 Chrome 大大無條件相信的話，就不會出現這個警告視窗了<br><img src="/images/ssl/ssl-08.png" alt></p>
-<p>某: 我們已經知道 SSL 是什麼，也知道中間人攻擊是什麼了<br>某: 但我們到底要如何做到 SSL Pinning 去預防這件事情呢<br>某: 是只要取得 github.com 的憑證公鑰去驗證就好了嗎  </p>
-<p>我: 摁 … 且慢, 其實憑證還有所謂的憑證鍊, 就像上圖點開憑證會看到很像鏈子一整串的憑證<br>我: 可以回去看上面那兩個 github.com 的圖裡面的憑證的顯示方法<br>某: 等等！怎麼還有啊！也解釋太久了吧<br>我: 幫我充值一下時間，快要結束了  </p>
-<h2><span id="憑證鍊">憑證鍊</span></h2><p>從圖中可以看到憑證從上到下總計有三個<br><img src="/images/ssl/ssl-06.png" alt></p>
-<p>從上到下分別為  </p>
+<p>左邊是我用無痕模擬被中間人攻擊的狀況，右邊則是我一般上網的狀況<br>
+不點憑證之前，你其實很難分辨出來到底哪一種有問題<br>
+這邊附上各個截圖，上圖為 gif 左邊，下圖為 gif 右邊
+<img src="/images/ssl/ssl-07.png" alt>
+<img src="/images/ssl/ssl-06.png" alt></p>
+<p>其實中間人的角色，其實就是充當伺服器再跟你進行 SSL 通道的建立<br>
+所以對瀏覽器來說，這個中間人就是真正的伺服器，只是瀏覽器並不知情而已</p>
+<p>但其實現實上瀏覽器其實不會那麼笨<br>
+因為瀏覽器本身都會有一些本來就可以信任的 Root 憑證
+所以當瀏覽器遇到這種 Root 憑證怪怪的，基本上都是會拒絕連線的</p>
+<p>這裡會可以連線是因為我先讓我的瀏覽器無條件相信這個中間人的 Root 憑證<br>
+Root 憑證和一般我們所講的憑證有什麼不同，後面會介紹到</p>
+<p>當不信任的狀況，瀏覽器就會出現以下的警告視窗<br>
+裡面的英文訊息其實就很完整解釋，這個伺服器送回了異常的憑證，所以 Chrome 大大幫你擋掉<br>
+不過如果你像我一樣設定好讓 Chrome 大大無條件相信的話，就不會出現這個警告視窗了<br>
+<img src="/images/ssl/ssl-08.png" alt></p>
+<p>某: 我們已經知道 SSL 是什麼，也知道中間人攻擊是什麼了<br>
+某: 但我們到底要如何做到 SSL Pinning 去預防這件事情呢<br>
+某: 是只要取得 github.com 的憑證公鑰去驗證就好了嗎</p>
+<p>我: 摁 ... 且慢, 其實憑證還有所謂的憑證鍊, 就像上圖點開憑證會看到很像鏈子一整串的憑證<br>
+我: 可以回去看上面那兩個 github.com 的圖裡面的憑證的顯示方法<br>
+某: 等等！怎麼還有啊！也解釋太久了吧<br>
+我: 幫我充值一下時間，快要結束了</p>
+<h2><span id="憑證鍊">憑證鍊</span></h2>
+<p>從圖中可以看到憑證從上到下總計有三個<br>
+<img src="/images/ssl/ssl-06.png" alt></p>
+<p>從上到下分別為</p>
 <ol>
 <li>Root Certificate: DigitCert High Assurance EV ROOT CA</li>
 <li>Intermediate Certificate: DigitCert SHA2 Extended Validation Server CA</li>
-<li>Leaf Certificate: github.com </li>
+<li>Leaf Certificate: github.com</li>
 </ol>
-<p>Leaf 是被 Intermediate 簽署認證<br>Intermediate 是被 Root 簽署認證  </p>
-<p>而 Root 憑證本身就會被安裝在手機以及瀏覽器以內<br>但談到我剛剛有一個 github.com 被中間人攻擊的例子<br>是我自行把中間人的 Root 憑證給安裝到電腦中，才會被攻擊<br>實際上，其實有可能透過社交工程的方法，引誘使用者安裝這些不安全的 Root 憑證  </p>
+<p>Leaf 是被 Intermediate 簽署認證<br>
+Intermediate 是被 Root 簽署認證</p>
+<p>而 Root 憑證本身就會被安裝在手機以及瀏覽器以內<br>
+但談到我剛剛有一個 github.com 被中間人攻擊的例子<br>
+是我自行把中間人的 Root 憑證給安裝到電腦中，才會被攻擊<br>
+實際上，其實有可能透過社交工程的方法，引誘使用者安裝這些不安全的 Root 憑證</p>
 <blockquote>
-<p>以 Android 來說，可能會在 Settings &gt; Security &gt; Trusted Credentials 看到很多根憑證<br>以 Mac 電腦來說，可以在 terminal 使用 open file:///System/Library/Security/Certificates.bundle/Contents/Resources/TrustStore.html<br>打開後就會看到裝在這台電腦上面所有信任的 Root 憑證  </p>
+<p>以 Android 來說，可能會在 Settings &gt; Security &gt; Trusted Credentials 看到很多根憑證<br>
+以 Mac 電腦來說，可以在 terminal 使用 open file:///System/Library/Security/Certificates.bundle/Contents/Resources/TrustStore.html<br>
+打開後就會看到裝在這台電腦上面所有信任的 Root 憑證</p>
 </blockquote>
-<p>那問題就來了，我要如果要做 SSL Pinning 要針對誰做 SSL Pinning 呢?<br>答案其實是不用只選一個，也不一定要全部都選<br>但基本上 Pinning Leaf 可以 100% 確認這一定是你的伺服器<br>但如果當你的私鑰被洩漏出去，那個中間人也有辦法做出跟你一樣的公鑰出來的<br>所以也會有人選擇不只 pinning Leaf，直接全部 pinning 也是一種方法  </p>
-<p>除了 Pinning 公鑰之外，也會有人選擇 Pinning 整個憑證的方式<br>以 github.com 憑證來說有以下兩種顯示方式  </p>
+<p>那問題就來了，我要如果要做 SSL Pinning 要針對誰做 SSL Pinning 呢?<br>
+答案其實是不用只選一個，也不一定要全部都選<br>
+但基本上 Pinning Leaf 可以 100% 確認這一定是你的伺服器<br>
+但如果當你的私鑰被洩漏出去，那個中間人也有辦法做出跟你一樣的公鑰出來的<br>
+所以也會有人選擇不只 pinning Leaf，直接全部 pinning 也是一種方法</p>
+<p>除了 Pinning 公鑰之外，也會有人選擇 Pinning 整個憑證的方式<br>
+以 github.com 憑證來說有以下兩種顯示方式</p>
 <ol>
 <li>公鑰: o5oa5F4LbZEfeZ0kXDgmaU2K3sIPYtbQpT3EQLJZquM= (sha256 + base64 後)</li>
-<li>憑證檔: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">MIIHQjCCBiqgAwIBAgIQCgYwQn9bvO1pVzllk7ZFHzANBgkqhkiG9w0BAQsFADB1</span><br><span class="line">MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3</span><br><span class="line">d3cuZGlnaWNlcnQuY29tMTQwMgYDVQQDEytEaWdpQ2VydCBTSEEyIEV4dGVuZGVk</span><br><span class="line">IFZhbGlkYXRpb24gU2VydmVyIENBMB4XDTE4MDUwODAwMDAwMFoXDTIwMDYwMzEy</span><br><span class="line">MDAwMFowgccxHTAbBgNVBA8MFFByaXZhdGUgT3JnYW5pemF0aW9uMRMwEQYLKwYB</span><br><span class="line">BAGCNzwCAQMTAlVTMRkwFwYLKwYBBAGCNzwCAQITCERlbGF3YXJlMRAwDgYDVQQF</span><br><span class="line">Ewc1MTU3NTUwMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQG</span><br><span class="line">A1UEBxMNU2FuIEZyYW5jaXNjbzEVMBMGA1UEChMMR2l0SHViLCBJbmMuMRMwEQYD</span><br><span class="line">VQQDEwpnaXRodWIuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA</span><br><span class="line">xjyq8jyXDDrBTyitcnB90865tWBzpHSbindG&#x2F;XqYQkzFMBlXmqkzC+FdTRBYyneZ</span><br><span class="line">w5Pz+XWQvL+74JW6LsWNc2EF0xCEqLOJuC9zjPAqbr7uroNLghGxYf13YdqbG5oj</span><br><span class="line">&#x2F;4x+ogEG3dF&#x2F;U5YIwVr658DKyESMV6eoYV9mDVfTuJastkqcwero+5ZAKfYVMLUE</span><br><span class="line">sMwFtoTDJFmVf6JlkOWwsxp1WcQ&#x2F;MRQK1cyqOoUFUgYylgdh3yeCDPeF22Ax8AlQ</span><br><span class="line">xbcaI+GwfQL1FB7Jy+h+KjME9lE&#x2F;UpgV6Qt2R1xNSmvFCBWu+NFX6epwFP&#x2F;JRbkM</span><br><span class="line">fLz0beYFUvmMgLtwVpEPSwIDAQABo4IDeTCCA3UwHwYDVR0jBBgwFoAUPdNQpdag</span><br><span class="line">re7zSmAKZdMh1Pj41g8wHQYDVR0OBBYEFMnCU2FmnV+rJfQmzQ84mqhJ6kipMCUG</span><br><span class="line">A1UdEQQeMByCCmdpdGh1Yi5jb22CDnd3dy5naXRodWIuY29tMA4GA1UdDwEB&#x2F;wQE</span><br><span class="line">AwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwdQYDVR0fBG4wbDA0</span><br><span class="line">oDKgMIYuaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL3NoYTItZXYtc2VydmVyLWcy</span><br><span class="line">LmNybDA0oDKgMIYuaHR0cDovL2NybDQuZGlnaWNlcnQuY29tL3NoYTItZXYtc2Vy</span><br><span class="line">dmVyLWcyLmNybDBLBgNVHSAERDBCMDcGCWCGSAGG&#x2F;WwCATAqMCgGCCsGAQUFBwIB</span><br><span class="line">FhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BTMAcGBWeBDAEBMIGIBggrBgEF</span><br><span class="line">BQcBAQR8MHowJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBS</span><br><span class="line">BggrBgEFBQcwAoZGaHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0</span><br><span class="line">U0hBMkV4dGVuZGVkVmFsaWRhdGlvblNlcnZlckNBLmNydDAMBgNVHRMBAf8EAjAA</span><br><span class="line">MIIBfgYKKwYBBAHWeQIEAgSCAW4EggFqAWgAdgCkuQmQtBhYFIe7E6LMZ3AKPDWY</span><br><span class="line">BPkb37jjd80OyA3cEAAAAWNBYm0KAAAEAwBHMEUCIQDRZp38cTWsWH2GdBpe&#x2F;uPT</span><br><span class="line">Wnsu&#x2F;m4BEC2+dIcvSykZYgIgCP5gGv6yzaazxBK2NwGdmmyuEFNSg2pARbMJlUFg</span><br><span class="line">U5UAdgBWFAaaL9fC7NP14b1Esj7HRna5vJkRXMDvlJhV1onQ3QAAAWNBYm0tAAAE</span><br><span class="line">AwBHMEUCIQCi7omUvYLm0b2LobtEeRAYnlIo7n6JxbYdrtYdmPUWJQIgVgw1AZ51</span><br><span class="line">vK9ENinBg22FPxb82TvNDO05T17hxXRC2IYAdgC72d+8H4pxtZOUI5eqkntHOFeV</span><br><span class="line">CqtS6BqQlmQ2jh7RhQAAAWNBYm3fAAAEAwBHMEUCIQChzdTKUU2N+XcqcK0OJYrN</span><br><span class="line">8EYynloVxho4yPk6Dq3EPgIgdNH5u8rC3UcslQV4B9o0a0w204omDREGKTVuEpxG</span><br><span class="line">eOQwDQYJKoZIhvcNAQELBQADggEBAHAPWpanWOW&#x2F;ip2oJ5grAH8mqQfaunuCVE+v</span><br><span class="line">ac+88lkDK&#x2F;LVdFgl2B6kIHZiYClzKtfczG93hWvKbST4NRNHP9LiaQqdNC17e5vN</span><br><span class="line">HnXVUGw+yxyjMLGqkgepOnZ2Rb14kcTOGp4i5AuJuuaMwXmCo7jUwPwfLe1NUlVB</span><br><span class="line">Kqg6LK0Hcq4K0sZnxE8HFxiZ92WpV2AVWjRMEc&#x2F;2z2shNoDvxvFUYyY1Oe67xINk</span><br><span class="line">myQKc+ygSBZzyLnXSFVWmHr3u5dcaaQGGAR42v6Ydr4iL38Hd4dOiBma+FXsXBIq</span><br><span class="line">WUjbST4VXmdaol7uzFMojA4zkxQDZAvF5XgJlAFadfySna&#x2F;teik&#x3D;</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure>
-</li>
+<li>憑證檔:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">MIIHQjCCBiqgAwIBAgIQCgYwQn9bvO1pVzllk7ZFHzANBgkqhkiG9w0BAQsFADB1</span><br><span class="line">MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3</span><br><span class="line">d3cuZGlnaWNlcnQuY29tMTQwMgYDVQQDEytEaWdpQ2VydCBTSEEyIEV4dGVuZGVk</span><br><span class="line">IFZhbGlkYXRpb24gU2VydmVyIENBMB4XDTE4MDUwODAwMDAwMFoXDTIwMDYwMzEy</span><br><span class="line">MDAwMFowgccxHTAbBgNVBA8MFFByaXZhdGUgT3JnYW5pemF0aW9uMRMwEQYLKwYB</span><br><span class="line">BAGCNzwCAQMTAlVTMRkwFwYLKwYBBAGCNzwCAQITCERlbGF3YXJlMRAwDgYDVQQF</span><br><span class="line">Ewc1MTU3NTUwMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQG</span><br><span class="line">A1UEBxMNU2FuIEZyYW5jaXNjbzEVMBMGA1UEChMMR2l0SHViLCBJbmMuMRMwEQYD</span><br><span class="line">VQQDEwpnaXRodWIuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA</span><br><span class="line">xjyq8jyXDDrBTyitcnB90865tWBzpHSbindG&#x2F;XqYQkzFMBlXmqkzC+FdTRBYyneZ</span><br><span class="line">w5Pz+XWQvL+74JW6LsWNc2EF0xCEqLOJuC9zjPAqbr7uroNLghGxYf13YdqbG5oj</span><br><span class="line">&#x2F;4x+ogEG3dF&#x2F;U5YIwVr658DKyESMV6eoYV9mDVfTuJastkqcwero+5ZAKfYVMLUE</span><br><span class="line">sMwFtoTDJFmVf6JlkOWwsxp1WcQ&#x2F;MRQK1cyqOoUFUgYylgdh3yeCDPeF22Ax8AlQ</span><br><span class="line">xbcaI+GwfQL1FB7Jy+h+KjME9lE&#x2F;UpgV6Qt2R1xNSmvFCBWu+NFX6epwFP&#x2F;JRbkM</span><br><span class="line">fLz0beYFUvmMgLtwVpEPSwIDAQABo4IDeTCCA3UwHwYDVR0jBBgwFoAUPdNQpdag</span><br><span class="line">re7zSmAKZdMh1Pj41g8wHQYDVR0OBBYEFMnCU2FmnV+rJfQmzQ84mqhJ6kipMCUG</span><br><span class="line">A1UdEQQeMByCCmdpdGh1Yi5jb22CDnd3dy5naXRodWIuY29tMA4GA1UdDwEB&#x2F;wQE</span><br><span class="line">AwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwdQYDVR0fBG4wbDA0</span><br><span class="line">oDKgMIYuaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL3NoYTItZXYtc2VydmVyLWcy</span><br><span class="line">LmNybDA0oDKgMIYuaHR0cDovL2NybDQuZGlnaWNlcnQuY29tL3NoYTItZXYtc2Vy</span><br><span class="line">dmVyLWcyLmNybDBLBgNVHSAERDBCMDcGCWCGSAGG&#x2F;WwCATAqMCgGCCsGAQUFBwIB</span><br><span class="line">FhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BTMAcGBWeBDAEBMIGIBggrBgEF</span><br><span class="line">BQcBAQR8MHowJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBS</span><br><span class="line">BggrBgEFBQcwAoZGaHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0</span><br><span class="line">U0hBMkV4dGVuZGVkVmFsaWRhdGlvblNlcnZlckNBLmNydDAMBgNVHRMBAf8EAjAA</span><br><span class="line">MIIBfgYKKwYBBAHWeQIEAgSCAW4EggFqAWgAdgCkuQmQtBhYFIe7E6LMZ3AKPDWY</span><br><span class="line">BPkb37jjd80OyA3cEAAAAWNBYm0KAAAEAwBHMEUCIQDRZp38cTWsWH2GdBpe&#x2F;uPT</span><br><span class="line">Wnsu&#x2F;m4BEC2+dIcvSykZYgIgCP5gGv6yzaazxBK2NwGdmmyuEFNSg2pARbMJlUFg</span><br><span class="line">U5UAdgBWFAaaL9fC7NP14b1Esj7HRna5vJkRXMDvlJhV1onQ3QAAAWNBYm0tAAAE</span><br><span class="line">AwBHMEUCIQCi7omUvYLm0b2LobtEeRAYnlIo7n6JxbYdrtYdmPUWJQIgVgw1AZ51</span><br><span class="line">vK9ENinBg22FPxb82TvNDO05T17hxXRC2IYAdgC72d+8H4pxtZOUI5eqkntHOFeV</span><br><span class="line">CqtS6BqQlmQ2jh7RhQAAAWNBYm3fAAAEAwBHMEUCIQChzdTKUU2N+XcqcK0OJYrN</span><br><span class="line">8EYynloVxho4yPk6Dq3EPgIgdNH5u8rC3UcslQV4B9o0a0w204omDREGKTVuEpxG</span><br><span class="line">eOQwDQYJKoZIhvcNAQELBQADggEBAHAPWpanWOW&#x2F;ip2oJ5grAH8mqQfaunuCVE+v</span><br><span class="line">ac+88lkDK&#x2F;LVdFgl2B6kIHZiYClzKtfczG93hWvKbST4NRNHP9LiaQqdNC17e5vN</span><br><span class="line">HnXVUGw+yxyjMLGqkgepOnZ2Rb14kcTOGp4i5AuJuuaMwXmCo7jUwPwfLe1NUlVB</span><br><span class="line">Kqg6LK0Hcq4K0sZnxE8HFxiZ92WpV2AVWjRMEc&#x2F;2z2shNoDvxvFUYyY1Oe67xINk</span><br><span class="line">myQKc+ygSBZzyLnXSFVWmHr3u5dcaaQGGAR42v6Ydr4iL38Hd4dOiBma+FXsXBIq</span><br><span class="line">WUjbST4VXmdaol7uzFMojA4zkxQDZAvF5XgJlAFadfySna&#x2F;teik&#x3D;</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure></li>
 </ol>
-<p>如果上面兩種擇一的話，選擇公鑰是會比較適合的<br>因為同一把私鑰簽署出來的憑證的公鑰一定都會一樣，但如果是憑證內容就都會不一樣<br>可以使用下面的指令試試看出來的結果<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 產出私鑰</span><br><span class="line">openssl genrsa -out key.pem 2048</span><br><span class="line"></span><br><span class="line">// 用同一把私鑰，產出兩組不同的憑證</span><br><span class="line">openssl req -x509 -new -key key.pem -sha256 -nodes -keyout key.pem -out cert1.pem -days 30</span><br><span class="line">openssl req -x509 -new -key key.pem -sha256 -nodes -keyout key.pem -out cert2.pem -days 30</span><br><span class="line"></span><br><span class="line">// 顯示公鑰是一樣</span><br><span class="line">openssl x509 -pubkey -noout -<span class="keyword">in</span> cert1.pem</span><br><span class="line">openssl x509 -pubkey -noout -<span class="keyword">in</span> cert2.pem</span><br><span class="line"></span><br><span class="line">// 顯示憑證內容是不一樣</span><br><span class="line">openssl x509 -inform pem -<span class="keyword">in</span> cert2.pem</span><br><span class="line">openssl x509 -inform pem -<span class="keyword">in</span> cert1.pem</span><br></pre></td></tr></table></figure></p>
-<p>這邊附上一個可以取得憑證公鑰的方法，把下面程式貼到 getPKfromDomain.sh 底下<br><code>sh getPKfromDomain.sh github.com</code>，就會出現憑證鏈全部的公鑰 (都是 sha256 + base64 後<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">certs&#x3D;&#96;openssl s_client -connect $1:443 -servername $1 -showcerts &lt;&#x2F;dev&#x2F;null 2&gt;&#x2F;dev&#x2F;null | sed -n &#39;&#x2F;Certificate chain&#x2F;,&#x2F;Server certificate&#x2F;p&#39;&#96;</span><br><span class="line">rest&#x3D;$certs</span><br><span class="line">while [[ &quot;$rest&quot; &#x3D;~ &#39;-----BEGIN CERTIFICATE-----&#39; ]]</span><br><span class="line">do</span><br><span class="line">    cert&#x3D;&quot;$&#123;rest%%-----END CERTIFICATE-----*&#125;-----END CERTIFICATE-----&quot;</span><br><span class="line">    rest&#x3D;$&#123;rest#*-----END CERTIFICATE-----&#125;</span><br><span class="line">    echo &#96;echo &quot;$cert&quot; | grep &#39;s:&#39; | sed &#39;s&#x2F;.*s:\(.*\)&#x2F;\1&#x2F;&#39;&#96;</span><br><span class="line">    echo &quot;$cert&quot; | openssl x509 -pubkey -noout | </span><br><span class="line">        openssl rsa -pubin -outform der 2&gt;&#x2F;dev&#x2F;null | </span><br><span class="line">        openssl dgst -sha256 -binary | openssl enc -base64</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
-<p>以 github.com 來說，結果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sh getPKfromDomain.sh github.com</span><br><span class="line">&#x2F;businessCategory&#x3D;Private Organization&#x2F;jurisdictionCountryName&#x3D;US&#x2F;jurisdictionStateOrProvinceName&#x3D;Delaware&#x2F;serialNumber&#x3D;5157550&#x2F;C&#x3D;US&#x2F;ST&#x3D;California&#x2F;L&#x3D;San Francisco&#x2F;O&#x3D;GitHub, Inc.&#x2F;CN&#x3D;github.com</span><br><span class="line">o5oa5F4LbZEfeZ0kXDgmaU2K3sIPYtbQpT3EQLJZquM&#x3D;</span><br><span class="line"></span><br><span class="line">&#x2F;C&#x3D;US&#x2F;O&#x3D;DigiCert Inc&#x2F;OU&#x3D;www.digicert.com&#x2F;CN&#x3D;DigiCert SHA2 Extended Validation Server CA</span><br><span class="line">RRM1dGqnDFsCJXBTHky16vi1obOlCgFFn&#x2F;yOhI&#x2F;y+ho&#x3D;</span><br></pre></td></tr></table></figure></p>
-<p>那如果當我的手機被中間人攻擊的話，拿到的就是下面這結果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;C&#x3D;PortSwigger&#x2F;O&#x3D;PortSwigger&#x2F;OU&#x3D;PortSwigger CA&#x2F;CN&#x3D;github.com</span><br><span class="line">Dl+WeZh7lkGAd7otN+2fZEKoYTap20PkS4xpiUTi61Q&#x3D;</span><br><span class="line"></span><br><span class="line">&#x2F;C&#x3D;PortSwigger&#x2F;ST&#x3D;PortSwigger&#x2F;L&#x3D;PortSwigger&#x2F;O&#x3D;PortSwigger&#x2F;OU&#x3D;PortSwigger CA&#x2F;CN&#x3D;PortSwigger CA</span><br><span class="line">Dl+WeZh7lkGAd7otN+2fZEKoYTap20PkS4xpiUTi61Q&#x3D;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="後記">後記</span></h2><p>不過還是要注意的是，萬一私鑰被洩露<br>然後 App 的 SSL Pinning 是寫死在程式裡面，這樣 App 就 100% 一定要升級版本，否則會出問題<br>但如果你說，專門有一台憑證 API 去跟他要公鑰，其實這也會有問題<br>因為攻擊者還是有辦法去偽造回傳的結果的 XD  </p>
-<p>另外如果對模擬中間人攻擊有興趣的，可以參考 burpsuit 的使用方法去學習<br>屆時再使用 openssl s_client 的時候，記得最後面加上  -proxy 127.0.0.1:8080 連到 proxy 去模擬  </p>
-<h2><span id="references">References</span></h2><ol>
-<li><a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a><br> 這裡有一系列對 SSL/TLS 的概念講解，推薦大家去閱讀看看</li>
+<p>如果上面兩種擇一的話，選擇公鑰是會比較適合的<br>
+因為同一把私鑰簽署出來的憑證的公鑰一定都會一樣，但如果是憑證內容就都會不一樣<br>
+可以使用下面的指令試試看出來的結果<br>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 產出私鑰</span><br><span class="line">openssl genrsa -out key.pem 2048</span><br><span class="line"></span><br><span class="line">// 用同一把私鑰，產出兩組不同的憑證</span><br><span class="line">openssl req -x509 -new -key key.pem -sha256 -nodes -keyout key.pem -out cert1.pem -days 30</span><br><span class="line">openssl req -x509 -new -key key.pem -sha256 -nodes -keyout key.pem -out cert2.pem -days 30</span><br><span class="line"></span><br><span class="line">// 顯示公鑰是一樣</span><br><span class="line">openssl x509 -pubkey -noout -<span class="keyword">in</span> cert1.pem</span><br><span class="line">openssl x509 -pubkey -noout -<span class="keyword">in</span> cert2.pem</span><br><span class="line"></span><br><span class="line">// 顯示憑證內容是不一樣</span><br><span class="line">openssl x509 -inform pem -<span class="keyword">in</span> cert2.pem</span><br><span class="line">openssl x509 -inform pem -<span class="keyword">in</span> cert1.pem</span><br></pre></td></tr></table></figure></p>
+<p>這邊附上一個可以取得憑證公鑰的方法，把下面程式貼到 getPKfromDomain.sh 底下<br>
+<code>sh getPKfromDomain.sh github.com</code>，就會出現憑證鏈全部的公鑰 (都是 sha256 + base64 後<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">certs&#x3D;&#96;openssl s_client -connect $1:443 -servername $1 -showcerts &lt;&#x2F;dev&#x2F;null 2&gt;&#x2F;dev&#x2F;null | sed -n &#39;&#x2F;Certificate chain&#x2F;,&#x2F;Server certificate&#x2F;p&#39;&#96;</span><br><span class="line">rest&#x3D;$certs</span><br><span class="line">while [[ &quot;$rest&quot; &#x3D;~ &#39;-----BEGIN CERTIFICATE-----&#39; ]]</span><br><span class="line">do</span><br><span class="line">    cert&#x3D;&quot;$&#123;rest%%-----END CERTIFICATE-----*&#125;-----END CERTIFICATE-----&quot;</span><br><span class="line">    rest&#x3D;$&#123;rest#*-----END CERTIFICATE-----&#125;</span><br><span class="line">    echo &#96;echo &quot;$cert&quot; | grep &#39;s:&#39; | sed &#39;s&#x2F;.*s:\(.*\)&#x2F;\1&#x2F;&#39;&#96;</span><br><span class="line">    echo &quot;$cert&quot; | openssl x509 -pubkey -noout | </span><br><span class="line">        openssl rsa -pubin -outform der 2&gt;&#x2F;dev&#x2F;null | </span><br><span class="line">        openssl dgst -sha256 -binary | openssl enc -base64</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
+<p>以 github.com 來說，結果如下
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sh getPKfromDomain.sh github.com</span><br><span class="line">&#x2F;businessCategory&#x3D;Private Organization&#x2F;jurisdictionCountryName&#x3D;US&#x2F;jurisdictionStateOrProvinceName&#x3D;Delaware&#x2F;serialNumber&#x3D;5157550&#x2F;C&#x3D;US&#x2F;ST&#x3D;California&#x2F;L&#x3D;San Francisco&#x2F;O&#x3D;GitHub, Inc.&#x2F;CN&#x3D;github.com</span><br><span class="line">o5oa5F4LbZEfeZ0kXDgmaU2K3sIPYtbQpT3EQLJZquM&#x3D;</span><br><span class="line"></span><br><span class="line">&#x2F;C&#x3D;US&#x2F;O&#x3D;DigiCert Inc&#x2F;OU&#x3D;www.digicert.com&#x2F;CN&#x3D;DigiCert SHA2 Extended Validation Server CA</span><br><span class="line">RRM1dGqnDFsCJXBTHky16vi1obOlCgFFn&#x2F;yOhI&#x2F;y+ho&#x3D;</span><br></pre></td></tr></table></figure></p>
+<p>那如果當我的手機被中間人攻擊的話，拿到的就是下面這結果<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;C&#x3D;PortSwigger&#x2F;O&#x3D;PortSwigger&#x2F;OU&#x3D;PortSwigger CA&#x2F;CN&#x3D;github.com</span><br><span class="line">Dl+WeZh7lkGAd7otN+2fZEKoYTap20PkS4xpiUTi61Q&#x3D;</span><br><span class="line"></span><br><span class="line">&#x2F;C&#x3D;PortSwigger&#x2F;ST&#x3D;PortSwigger&#x2F;L&#x3D;PortSwigger&#x2F;O&#x3D;PortSwigger&#x2F;OU&#x3D;PortSwigger CA&#x2F;CN&#x3D;PortSwigger CA</span><br><span class="line">Dl+WeZh7lkGAd7otN+2fZEKoYTap20PkS4xpiUTi61Q&#x3D;</span><br></pre></td></tr></table></figure></p>
+<h2><span id="後記">後記</span></h2>
+<p>不過還是要注意的是，萬一私鑰被洩露<br>
+然後 App 的 SSL Pinning 是寫死在程式裡面，這樣 App 就 100% 一定要升級版本，否則會出問題<br>
+但如果你說，專門有一台憑證 API 去跟他要公鑰，其實這也會有問題<br>
+因為攻擊者還是有辦法去偽造回傳的結果的 XD</p>
+<p>另外如果對模擬中間人攻擊有興趣的，可以參考 burpsuit 的使用方法去學習<br>
+屆時再使用 openssl s_client 的時候，記得最後面加上  -proxy 127.0.0.1:8080 連到 proxy 去模擬</p>
+<h2><span id="references">References</span></h2>
+<ol>
+<li><a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B9%9D-ssl-communication-31a2a8a888a6">那些關於SSL/TLS的二三事(九) — SSL (HTTPS)Communication</a>
+這裡有一系列對 SSL/TLS 的概念講解，推薦大家去閱讀看看</li>
 <li><a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E5%8D%81%E4%BA%8C-chain-of-trust-f00da1f2cc15">那些關於SSL/TLS的二三事(十二) — Chain of Trust</a></li>
 <li><a href="https://medium.com/@appmattus/android-security-ssl-pinning-1db8acb6621e">Android Security: SSL Pinning</a></li>
 </ol>
