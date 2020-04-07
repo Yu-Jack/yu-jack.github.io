@@ -79,7 +79,7 @@ pagination_dir: page
 
 
 sidebar: true    # whether or not using Sidebar.
-sidebar-about-description: "嗨，我是 Jack<br>這記錄了不同類型的技術文章<br>想為台灣技術圈增添多樣化"
+sidebar-about-description: "嗨，我是 Jack<br>這記錄了不同類型的技術文章<br>想為台灣技術圈貢獻些東西<br>jk82421@gmail.com"
 sidebar-avatar:       # use absolute URL, seeing it's used in both `/` and `/about/`
 
 widgets:         # here are widget you can use, you can comment out
