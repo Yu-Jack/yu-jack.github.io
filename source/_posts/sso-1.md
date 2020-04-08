@@ -2,7 +2,7 @@
 title: Single Sign On 實作方式介紹 (iframe & cookie)
 categories: Security
 date: 2020-04-06 10:05:21
-tags: [Security, w3HexSchool]
+tags: [Security, SSO, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
 ---

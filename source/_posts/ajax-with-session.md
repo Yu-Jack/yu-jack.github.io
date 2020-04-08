@@ -138,7 +138,7 @@ app.post('/test', (req, res) => {
 app.listen(7777, () => {
     console.log('start');
 });
-```  
+```
 
 ### 實作
 
