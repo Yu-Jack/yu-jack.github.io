@@ -23,27 +23,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/session/</loc>
-        <lastmod>2020-01-29T08:25:29.304Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/cors/</loc>
-        <lastmod>2020-01-29T08:25:29.304Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/credential/</loc>
-        <lastmod>2020-01-29T08:25:29.304Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/apple-pay/</loc>
         <lastmod>2020-01-29T08:25:29.306Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -95,13 +74,6 @@
     <url>
         <loc>https://yu-jack.github.io/tags/disk/</loc>
         <lastmod>2020-01-29T08:25:29.309Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/cookie/</loc>
-        <lastmod>2020-01-29T08:25:29.310Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -457,13 +429,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
-        <lastmod>2020-03-21T04:40:43.260Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/DevOps/</loc>
         <lastmod>2020-03-21T04:40:43.260Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -507,14 +472,56 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-04-06T03:04:10.769Z</lastmod>
+        <lastmod>2020-04-07T15:04:54.377Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/Security/</loc>
-        <lastmod>2020-04-06T03:04:10.769Z</lastmod>
+        <lastmod>2020-04-07T15:04:54.377Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/SSO/</loc>
+        <lastmod>2020-04-07T15:04:54.377Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
+        <lastmod>2020-04-08T10:12:03.768Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/session/</loc>
+        <lastmod>2020-04-08T10:12:03.768Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/cookie/</loc>
+        <lastmod>2020-04-08T10:12:03.768Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/cors/</loc>
+        <lastmod>2020-04-08T10:12:03.768Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/credential/</loc>
+        <lastmod>2020-04-08T10:12:03.768Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

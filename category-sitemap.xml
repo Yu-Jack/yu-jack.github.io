@@ -84,13 +84,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
-        <lastmod>2020-03-21T04:40:43.260Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/%25E8%25AE%2580%25E6%259B%25B8%25E5%25BF%2583%25E5%25BE%2597/</loc>
         <lastmod>2020-03-30T04:47:47.585Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -106,7 +99,14 @@
 
     <url>
         <loc>https://yu-jack.github.io/categories/Security/</loc>
-        <lastmod>2020-04-06T03:04:10.769Z</lastmod>
+        <lastmod>2020-04-07T15:04:54.377Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
+        <lastmod>2020-04-08T10:12:03.768Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
