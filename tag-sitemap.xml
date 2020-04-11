@@ -471,27 +471,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-04-07T15:04:54.377Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/Security/</loc>
-        <lastmod>2020-04-07T15:04:54.377Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/SSO/</loc>
-        <lastmod>2020-04-07T15:04:54.377Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/nodejs/</loc>
         <lastmod>2020-04-08T10:12:03.768Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -522,6 +501,27 @@
     <url>
         <loc>https://yu-jack.github.io/tags/credential/</loc>
         <lastmod>2020-04-08T10:12:03.768Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
+        <lastmod>2020-04-11T12:40:49.403Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/Security/</loc>
+        <lastmod>2020-04-11T12:40:49.403Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/SSO/</loc>
+        <lastmod>2020-04-11T12:40:49.403Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方登入後, 在其他地方都不用再重新登入』透過實現 SSO 可以達到以下幾個好處    使用者只需要紀錄一套帳號密碼就可以在其他地方登入   開發新的系統時, 不需要重新實作登入系統, 直接用 SSO 機制就可以完成登入系統    談論到 SSO 就會有 OAuth 出現但要注意的是, SSO 和 OAut">
+    <meta name="description" content="前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用透過實現 SSO 可以達到以下幾個好處    使用者只需要紀錄一套帳號密碼就可以在其他地方登入   開發新的系統時, 不需要重新實作登入系統">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Single Sign On 實作方式介紹 (iframe &amp; cookie)">
 <meta property="og:url" content="https://yu-jack.github.io/2020/04/06/sso-1/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方登入後, 在其他地方都不用再重新登入』透過實現 SSO 可以達到以下幾個好處    使用者只需要紀錄一套帳號密碼就可以在其他地方登入   開發新的系統時, 不需要重新實作登入系統, 直接用 SSO 機制就可以完成登入系統    談論到 SSO 就會有 OAuth 出現但要注意的是, SSO 和 OAut">
+<meta property="og:description" content="前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用透過實現 SSO 可以達到以下幾個好處    使用者只需要紀錄一套帳號密碼就可以在其他地方登入   開發新的系統時, 不需要重新實作登入系統">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-04-06T02:05:21.000Z">
-<meta property="article:modified_time" content="2020-04-07T15:04:54.377Z">
+<meta property="article:modified_time" content="2020-04-11T12:40:49.403Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="Security">
@@ -150,7 +150,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    12 分鐘 閱讀文 (大約 1726 個字)
+                    12 分鐘 閱讀文 (大約 1782 個字)
                 </span>
                 
                 
@@ -169,19 +169,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>SSO 是 Sinsgle Sign On, 也就是單點登入<br>簡單來說就是『我希望我在一個地方登入後, 在其他地方都不用再重新登入』<br>透過實現 SSO 可以達到以下幾個好處  </p>
+                <h2><span id="前言">前言</span></h2><p>SSO 是 Sinsgle Sign On, 也就是單點登入<br>簡單來說就是『我希望我在一個地方登入後, 在其他地方也能使用同一組帳號密碼登入』<br>然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用<br>透過實現 SSO 可以達到以下幾個好處  </p>
 <ol>
 <li>使用者只需要紀錄一套帳號密碼就可以在其他地方登入  </li>
 <li>開發新的系統時, 不需要重新實作登入系統, 直接用 SSO 機制就可以完成登入系統  </li>
 </ol>
-<p>談論到 SSO 就會有 OAuth 出現<br>但要注意的是, SSO 和 OAuth 是兩種不同的概念<br>最重要的差別在於有沒有<strong>第三方系統干涉</strong>  </p>
-<p>使用場景看看以下的例子<br>SSO: 在公司內部系統上, 想要登入一次, 其他內部系統就不用登入也可以操作<br>OAuth: 在電商平台 A, B 上, 我不想要重新註冊, 於是我直接用 Google 登入<br>當然 OAuth 不止還有這樣的功能, 但這篇暫時不提  </p>
+<p>談論到 SSO 就會有 OAuth 出現<br>但要注意的是, SSO 和 OAuth 是兩種不同的概念<br>最重要的差別在於有沒有<strong>第三方系統干涉</strong>以及<strong>認證</strong>和<strong>授權</strong>之間的差別  </p>
+<p>使用場景看看以下的例子<br>SSO: 在公司內部系統上, 全部只要用一組帳號密碼就可以, 不用各個系統都要一組帳號密碼<br>OAuth: 在電商平台 A, B 上, 我不想要重新註冊, 於是我透過 Google 登入, 並授權 A, B 能夠讀取我在 Google 上面的信箱資料  </p>
 <p>那麼要如何實現 SSO 呢?<br>實現 SSO 的概念有很多種做法, 相信有人會聽過用 CAS 去實作<br>但這篇暫時還不會探討到 CAS 的實作方式  </p>
 <p>而是先以 domain 的切入點去做講解<br>我們先列舉不同情境, 而不同情境有不同實現方式  </p>
 <h2><span id="同一個-second-level-domain">同一個 second level domain</span></h2><p>可以利用 cookie 的機制<br>把 cookie 寫入到 second level domain 上<br>這樣其他 third level domain 都可以同時存取到這個 cookie  </p>
 <p>舉個例子來說<br>在 test1.example.com 登入後, 把 cookie 寫入到 example.com<br>屆時再 <a href="http://test2.example.com">http://test2.example.com</a> 也可以存取 example.com 的 cookie<br>代表說 <a href="http://test2.example.com">http://test2.example.com</a> 也享有剛剛在 <a href="http://test1.example.com">http://test1.example.com</a> 登入後權利  </p>
 <p>這種情況就很單純, 很適合用在應用都是在同一個網域下的狀況<br>但現實情況通常不會這麼單純, 所以就會有不同 domain 的情況出現  </p>
-<h2><span id="不同個-second-or-top-level-domain">不同個 second or top level domain</span></h2><p>這裡實作分成就有很多種方式了<br>像是可以把 cookie 寫入到各個 domain 去<br>又或是可以用 CAS or Oath 去實作  </p>
+<h2><span id="不同個-second-or-top-level-domain">不同個 second or top level domain</span></h2><p>這裡實作分成就有很多種方式了<br>像是可以把 cookie 寫入到各個 domain 去<br>又或是可以用 CAS 去實作  </p>
 <h3><span id="把-cookie-寫入到多個-domain">把 Cookie 寫入到多個 domain</span></h3><p>這個方法說來弔詭<br>我們先來說說 cookie 的機制, cookie 在 domain A 寫入的時候<br>domain A 是不能寫入到其他 domain B, C 之類的地方  </p>
 <p>假設在 <a href="http://test.example1.com">http://test.example1.com</a> 登入, 此時我能把 cookie 寫入到 example1.com<br>但我卻不能把 cookie 寫入到 <a href="http://test1.example2.com">http://test1.example2.com</a><br>所以我們會需要利用其他方式去寫入 <a href="http://test1.example2.com">http://test1.example2.com</a> 的 cookie  </p>
 <p>以下方式在 Chrome 80 <strong>以後</strong>必須要 https 才可以, 但 firefox 74 版本是可以用 http 的</p>
