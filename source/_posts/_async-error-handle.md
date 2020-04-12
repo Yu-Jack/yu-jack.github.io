@@ -203,6 +203,12 @@ async function to(promise) {
 }
 ```
 
+另外有另一種寫法也可以有一樣的效果  
+就是把 wrapper function 直接寫在 await 後面一樣可以達到效果  
+```javascript
+let [error, result] = await test1().then(result => [null, result]).catch(error => [error, null]);
+```
+
 ### try-catch block
 
 透過 try-catch block 可以輕鬆直接在 catch 的時候去統一處理 error  
