@@ -39,6 +39,8 @@ CAS 全名是 Central Authentication Service
 7. 驗證成功, 生成自己的 cookie & session 給這個客戶使用  
 8. 接著進行登入成功的頁面, 開始使用服務 A  
 
+![Case A](/images/sso/case-01.png)
+
 ## 第二次登入使用 B 流程
 
 1. 使用者開啟應用服務 B 的頁面, 但使用者尚未得到應用服務 B 的認證  
@@ -51,6 +53,13 @@ CAS 全名是 Central Authentication Service
 6. 應用服務 B 拿著剛剛的 cookie 資料, 送往到 CAS Server 進行驗證  
 7. 驗證成功, 應用服務 B 生成自己的 cookie & session 給這個客戶使用  
 8. 接著進行登入成功的頁面, 開始使用服務 B  
+
+![Case B](/images/sso/case-02.png)
+
+> 為何要驗證 ticket 是因為導轉回來的 query string 是可能被更改的  
+> 所以要先確保回來的 ticket 真的是 CAS Server 給的, 而不是哪一個駭客幹的  
+> 在 DEMO 專案裡面, 每一段我都有加上 checksum  
+> 這是為了保證這一定是 CAS Server 傳送的 (達到資料一致性)  
 
 ## 實作 CAS 流程
 
@@ -167,6 +176,10 @@ if (req.session.login) {
 重點程式碼就介紹到這篇, 剩下的可以直接 clone 我的 [CAS 測試專案](https://github.com/Yu-Jack/cas-example)(Node.js 版) 玩玩看  
 至於其他程式碼就是做一些保護機制、錯誤訊息顯示簡單的 DB  
 讓在執行流程順暢以及比較知道執行時到了哪一個步驟  
+
+## DEMO
+
+<video width="100%" controls><source src="/images/sso/cas-example.mp4" type="video/mp4"></video>
 
 ## 後記
 
