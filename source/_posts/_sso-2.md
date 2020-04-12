@@ -30,7 +30,7 @@ CAS 全名是 Central Authentication Service
 
 ## 第一次登入使用 A 流程
 
-1. 使用者開啟應用服務 A 的頁面, 但使用者尚未登入獲得認證  
+1. 使用者開啟應用服務 A 的頁面, 但使用者尚未登入獲得認證, 並點下登入按鈕  
 2. 使用者被導轉到 CAS Server 的登入頁面  
 3. 使用者在 CAS Server 進行登入  
 4. 使用者登入成功之後, CAS Server 會寫入一個 cookie 在 CAS Server 的網域下並產生 session   
@@ -43,7 +43,7 @@ CAS 全名是 Central Authentication Service
 
 ## 第二次登入使用 B 流程
 
-1. 使用者開啟應用服務 B 的頁面, 但使用者尚未得到應用服務 B 的認證  
+1. 使用者開啟應用服務 B 的頁面, 但使用者尚未得到應用服務 B 的認證, 並點下登入按鈕  
 2. 使用者被導轉到 CAS Server  
 3. 此時因為在第一次登入 CAS Server 已經寫入 cookie CAS Server 的網域  
     當使用者被轉到 CAS Server 後, CAS Server 會取得此使用者的資訊  
