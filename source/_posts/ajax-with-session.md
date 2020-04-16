@@ -49,11 +49,11 @@ Access-Control-Allow-Methods: POST
 
 當加上以上三個 CORS 的規範後  
 會發現在發出 request 的時候，是不會帶入 cookie 去給 server 做驗證  
-![](https://imgur.com/ATihx4F.png)
+![](/images/ajax-session/ajax-01.png)
 
 這時候就可以透過 xhr 裡面的 credential 去設定  
 當把這個欄位設定成 true 的時候，request 就會夾帶 cookie 到 server 去  
-![](https://i.imgur.com/neAHW1c.png)
+![](/images/ajax-session/ajax-02.png)
 
 ## 詳細操作說明  
 
@@ -144,37 +144,49 @@ app.listen(7777, () => {
 
 透過執行以上的兩個 server 程式，寫後近到 http://localhost:8080 之後  
 按下幾次重整，可以看到 api server 印出來的 session 每一次都是不同個  
-![](https://imgur.com/s8uwa99.png)
+![](/images/ajax-session/ajax-03.png)
 
-接下來就是要透過 xhr 的 credential 去設定
+接下來就是要透過 xhr 的 credential 去設定  
 在 ajax 送出之前要加上 `ajax.withCredentials = true;` 這樣才可以把 Cookie 夾帶上去  
 但會發現瀏覽器卻爆出另一個錯誤訊息  
-`The value of the 'Access-Control-Allow-Credentials' header in the response is '' which must be 'true' when the request's credentials mode is 'include'`  
-![](https://imgur.com/B4OEBSz.png)
-這是前後端必須要同步都使用 credentials 才可以用  
-於是在後端 server 加上 `Access-Control-Allow-Credentials: true`
+> The value of the 'Access-Control-Allow-Credentials' header in the response is '' which must be 'true' when the request's credentials mode is 'include'  
 
-但再度重整之後又發現新的錯誤！
-`The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.`
-![](https://imgur.com/HBreO9s.png)
+![](/images/ajax-session/ajax-04.png)
+
+
+這是前後端必須要同步都使用 credentials 才可以用  
+於是在後端 server 加上 `Access-Control-Allow-Credentials: true`  
+但再度重整之後又發現新的錯誤！  
+> The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+
+![](/images/ajax-session/ajax-05.png)
 
 其實這也是限制的一種，當使用到 credentials 的時候，後端必須多限制只有一個 domain 能使用  
- `Access-Control-Allow-Origin: http://localhost:8888`  
-這樣設定之後按幾次重整就會發現 session id 是一致的了
-![](https://imgur.com/DY6aSrr.png)
+`Access-Control-Allow-Origin: http://localhost:8888`  
+這樣設定之後按幾次重整就會發現 session id 是一致的了  
+![](/images/ajax-session/ajax-06.png)
+
+這邊要額外注意, 如果 `Access-Control-Allow-Headers: *` 會被瀏覽器阻擋  
+因為瀏覽器政策關係, 是一定需要設定的, 否則會噴出以下錯誤  
+> Access to XMLHttpRequest at 'http://localhost:7777/test' from origin 'http://localhost:8080' has been blocked by CORS policy: Request header field content-type is not allowed by Access-Control-Allow-Headers in preflight response.
+
+![](/images/ajax-session/ajax-07.png)
+
 
 ## 重點筆記
 
 ### 後端必須加上以下的 headers
 
-1. Access-Control-Allow-Headers: *
+1. Access-Control-Allow-Headers: X-Requested-With, Accept, Content-Type, Cookie  
+    (各種前端要帶上來的 Header 皆需要設定)
 2. Access-Control-Allow-Origin: http://localhost:8888
     > 只能指定一個 domain，不能用 * 字號
 3. Access-Control-Allow-Methods: *
 4. Access-Control-Allow-Credentials: true
 
 1, 3 兩點根據需要使用的 method 和 headers 再去客製化  
-以資安來說建議不寫上 `*`，寫上有使用的就可以了
+瀏覽器上 header 是不允許填入 * 的  
+但是 method 可以，但建議上填有用到的就好  
 
 ### 前端則是必須在 xhr 上面加上
 
