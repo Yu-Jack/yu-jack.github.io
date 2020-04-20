@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言試想一下，我們把專案 push 上去後接下來就是要進行本地測試測試完成後，把專案推上去，把 PR 發給相關人員通過後需要把大家的 branch 都合併然後我們就要把這個程式放到正式環境這一整個行為被稱為 CI&#x2F;CD   CI 就是上述提到的版控、程式碼分析、建置、自動化測試CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛但其實工程">
+    <meta name="description" content="前言試想一下，我們把專案寫完之後接下來就是要進行本地測試測試完成後，把專案推上去，把 PR 發給相關人員通過後需要把大家的 branch 都合併然後我們就要把這個程式放到正式環境這一整個行為被稱為 CI&#x2F;CD   CI 就是上述提到的版控、程式碼分析、建置、自動化測試CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛但其實工程師當久了版">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CI&#x2F;CD 實現 - bitbucket &amp; Jenkins 篇">
 <meta property="og:url" content="https://yu-jack.github.io/2020/02/17/ci-cd-jenkins/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言試想一下，我們把專案 push 上去後接下來就是要進行本地測試測試完成後，把專案推上去，把 PR 發給相關人員通過後需要把大家的 branch 都合併然後我們就要把這個程式放到正式環境這一整個行為被稱為 CI&#x2F;CD   CI 就是上述提到的版控、程式碼分析、建置、自動化測試CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛但其實工程">
+<meta property="og:description" content="前言試想一下，我們把專案寫完之後接下來就是要進行本地測試測試完成後，把專案推上去，把 PR 發給相關人員通過後需要把大家的 branch 都合併然後我們就要把這個程式放到正式環境這一整個行為被稱為 CI&#x2F;CD   CI 就是上述提到的版控、程式碼分析、建置、自動化測試CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛但其實工程師當久了版">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-02-16T21:07:54.000Z">
-<meta property="article:modified_time" content="2020-02-16T16:15:05.462Z">
+<meta property="article:modified_time" content="2020-04-20T12:43:35.136Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="DevOps">
@@ -170,7 +170,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>試想一下，我們把專案 push 上去後<br>接下來就是要進行本地測試<br>測試完成後，把專案推上去，把 PR 發給相關人員通過後<br>需要把大家的 branch 都合併<br>然後我們就要把這個程式放到正式環境<br>這一整個行為被稱為 CI/CD  </p>
+                <h2><span id="前言">前言</span></h2><p>試想一下，我們把專案寫完之後<br>接下來就是要進行本地測試<br>測試完成後，把專案推上去，把 PR 發給相關人員通過後<br>需要把大家的 branch 都合併<br>然後我們就要把這個程式放到正式環境<br>這一整個行為被稱為 CI/CD  </p>
 <p>CI 就是上述提到的版控、程式碼分析、建置、自動化測試<br>CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用</p>
 <p>雖然大家都狂說 CI/CD 是很屌很猛<br>但其實工程師當久了<br>版控、程式碼分析、建置、自動化測試、部署這一整套流程<br>自然而然能夠自動化就自動化，才沒在管叫做 CI/CD (雖然有了這名詞溝通上很方便就是了XD<br>而且每個公司的 CI/CD 流程都會根據架構服務有所變形  </p>
 <p>CI/CD 工具只是輔助，重點是整套流程要出來才對<br>根據不同流程，會有不同的 CI/CD 工具可以應用<br>應該先釐清公司的服務和架構該如何做到 CI/CD 再來去想用哪些工具<br>假如說公司都已經全都 container 化，那用 drone 或許是一個不錯的選擇<br>又或是現階段架構不大，可以採用人工介入的半自動 CI/CD 來減少全自動化的成本等等<br>在這推薦筆者覺得觀念寫得不錯的文章<a href="https://columns.chicken-house.net/2017/08/05/what-cicd-do-you-need/">架構師觀點: 你需要什麼樣的 CI / CD ?</a></p>

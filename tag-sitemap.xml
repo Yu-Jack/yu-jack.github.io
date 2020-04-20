@@ -352,20 +352,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/jenkins/</loc>
-        <lastmod>2020-02-16T16:15:05.462Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/CI-CD/</loc>
-        <lastmod>2020-02-16T16:15:05.462Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/promise/</loc>
         <lastmod>2020-02-25T14:37:50.682Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -424,13 +410,6 @@
     <url>
         <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
         <lastmod>2020-03-16T02:20:37.917Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
-        <lastmod>2020-03-21T04:40:43.260Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -513,13 +492,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-04-19T07:07:00.438Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/Security/</loc>
         <lastmod>2020-04-19T07:07:00.438Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -529,6 +501,34 @@
     <url>
         <loc>https://yu-jack.github.io/tags/SSO/</loc>
         <lastmod>2020-04-19T07:07:00.438Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
+        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
+        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/jenkins/</loc>
+        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/CI-CD/</loc>
+        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

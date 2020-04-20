@@ -56,13 +56,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
-        <lastmod>2020-02-16T16:15:05.462Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Test/</loc>
         <lastmod>2020-03-11T14:42:35.361Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -107,6 +100,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Security/</loc>
         <lastmod>2020-04-19T07:07:00.438Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
+        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
