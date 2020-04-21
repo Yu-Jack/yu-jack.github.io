@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋   正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)   OAuth在 RFC 上面對於 OAuth 的定義如下    OAuth provides a method for clients to access se">
+    <meta name="description" content="前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋   正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)   OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的文章時">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OAuth 是什麼? 跟 SSO 有什麼關係或差別?">
 <meta property="og:url" content="https://yu-jack.github.io/2020/04/13/sso-vs-oauth/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋   正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)   OAuth在 RFC 上面對於 OAuth 的定義如下    OAuth provides a method for clients to access se">
+<meta property="og:description" content="前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋   正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)   OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的文章時">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-04-13T02:05:21.000Z">
-<meta property="article:modified_time" content="2020-04-21T02:53:57.933Z">
+<meta property="article:modified_time" content="2020-04-21T02:57:30.801Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="Security">
@@ -151,7 +151,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    11 分鐘 閱讀文 (大約 1650 個字)
+                    11 分鐘 閱讀文 (大約 1670 個字)
                 </span>
                 
                 
@@ -172,20 +172,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別<br>這篇會針對它們之間的差別進行解釋  </p>
 <h2><span id="正文">正文</span></h2><p>我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)  </p>
-<h3><span id="oauth">OAuth</span></h3><p>在 RFC 上面對於 OAuth 的定義如下  </p>
+<h3><span id="oauth">OAuth</span></h3><p>OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的<br>但在對角色和細節流程上面的定義不大一樣<br>這會到 OAuth 2.0 實作的文章時稍微提到一些大體差別  </p>
+<p>這邊就針對 OAuth 2.0 去進行簡單介紹<br>在 RFC 上面對於 OAuth 2.0 的定義如下  </p>
 <blockquote>
-<p>OAuth provides a method for clients to access server resources on<br>behalf of a resource owner (such as a different client or an end-user).<br>It also provides a process for end-users to authorize third- party<br>access to their server resources without sharing their<br>credentials (typically, a username and password pair), using user-agent redirections.  </p>
+<p>The OAuth 2.0 authorization framework enables a third-party<br>application to obtain limited access to an HTTP service, either on<br>behalf of a resource owner by orchestrating an approval interaction<br>between the resource owner and the HTTP service, or by allowing the<br>third-party application to obtain access on its own behalf.  </p>
 </blockquote>
 <p>簡單來說, OAuth 能夠讓第三方應用程式去取得使用者的資料<br>舉例來說就是 Google 製作了 OAuth 服務讓 PChome (第三方) 能夠取得使用者在 Google 上面的資料  </p>
 <p>這邊有三個重要的地方  </p>
 <ol>
 <li>authorization (授權)  </li>
 <li>third-party application (第三方應用程式)  </li>
-<li>approval interaction between the resource owner and the HTTP service   </li>
+<li>approval interaction between the resource owner and the HTTP service  </li>
 </ol>
 <p>Authorization 是一種授權的概念, 也就是當你登入成功之後, 你被賦予了可以使用多少服務的權限<br>所以 OAuth 是一種<span style="color: red">授權</span>框架, 它可以授權其它第三方應用程式取得使用者資料<br>當然還是要經過使用者允許之後 (approval interaction), 才會授權給第三方取得使用者的資料  </p>
 <blockquote>
-<p>OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的<br>但在對角色和細節流程上面的定義不大一樣<br>這會到 OAuth 2.0 介紹的文章時稍微提到一些大體差別  </p>
+<p>這在 OAuth 1.0 以及 OAuth 2.0 裡面都是一樣的  </p>
 </blockquote>
 <h3><span id="sso">SSO</span></h3><p>在 RFC 上面對於 SSO 的定義蠻有趣的, 它是直接給例子 XD  </p>
 <blockquote>
@@ -212,8 +213,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>所以其實 OAuth 和 SSO 的概念其實是很相近, 所以這也是常常被搞混的其中一點  </p>
 <h2><span id="後記">後記</span></h2><p>寫一寫才發現, 這篇應該當第一篇才對 XD  </p>
 <h2><span id="references">References</span></h2><ol>
-<li><a href="https://tools.ietf.org/html/rfc5849">OAuth</a></li>
-<li><a href="https://tools.ietf.org/html/rfc7642#section-3.2">SSO</a></li>
+<li><a href="https://tools.ietf.org/html/rfc6749#section-1">https://tools.ietf.org/html/rfc6749#section-1</a></li>
+<li><a href="https://tools.ietf.org/html/rfc7642#section-3.2">https://tools.ietf.org/html/rfc7642#section-3.2</a></li>
 <li><a href="https://blog.51cto.com/favccxx/1635938">OAuth与SSO、REST有哪些区别与联系</a></li>
 </ol>
 
