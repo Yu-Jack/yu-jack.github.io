@@ -450,13 +450,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/OAuth/</loc>
-        <lastmod>2020-04-13T02:42:52.305Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/nodejs/</loc>
         <lastmod>2020-04-16T12:43:25.516Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -492,27 +485,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/Security/</loc>
-        <lastmod>2020-04-19T07:07:00.438Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/SSO/</loc>
-        <lastmod>2020-04-19T07:07:00.438Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/DevOps/</loc>
         <lastmod>2020-04-20T12:43:35.136Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -529,6 +501,34 @@
     <url>
         <loc>https://yu-jack.github.io/tags/CI-CD/</loc>
         <lastmod>2020-04-20T12:43:35.136Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
+        <lastmod>2020-04-21T02:53:57.933Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/Security/</loc>
+        <lastmod>2020-04-21T02:53:57.933Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/SSO/</loc>
+        <lastmod>2020-04-21T02:53:57.933Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/OAuth/</loc>
+        <lastmod>2020-04-21T02:53:57.933Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
