@@ -20,11 +20,11 @@ OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出�
 
 在 RFC 上面對於 OAuth 的定義如下  
 
-> The OAuth 2.0 authorization framework enables a third-party  
-> application to obtain limited access to an HTTP service, either on  
-> behalf of a resource owner by orchestrating an approval interaction  
-> between the resource owner and the HTTP service, or by allowing the  
-> third-party application to obtain access on its own behalf.  
+> OAuth provides a method for clients to access server resources on  
+> behalf of a resource owner (such as a different client or an end-user).  
+> It also provides a process for end-users to authorize third- party  
+> access to their server resources without sharing their  
+> credentials (typically, a username and password pair), using user-agent redirections.  
 
 簡單來說, OAuth 能夠讓第三方應用程式去取得使用者的資料  
 舉例來說就是 Google 製作了 OAuth 服務讓 PChome (第三方) 能夠取得使用者在 Google 上面的資料  
@@ -38,6 +38,10 @@ OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出�
 Authorization 是一種授權的概念, 也就是當你登入成功之後, 你被賦予了可以使用多少服務的權限  
 所以 OAuth 是一種<span style="color: red">授權</span>框架, 它可以授權其它第三方應用程式取得使用者資料  
 當然還是要經過使用者允許之後 (approval interaction), 才會授權給第三方取得使用者的資料  
+
+> OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的  
+> 但在對角色和細節流程上面的定義不大一樣  
+> 這會到 OAuth 2.0 介紹的文章時稍微提到一些大體差別  
 
 ### SSO
 
@@ -131,6 +135,6 @@ Google 不會叫你重新按下 Approve 才能使用 Gmail, 而是直接跳到 G
 
 ## References
 
-1. https://tools.ietf.org/html/rfc6749#section-1
-2. https://tools.ietf.org/html/rfc7642#section-3.2
+1. [OAuth](https://tools.ietf.org/html/rfc5849)
+2. [SSO](https://tools.ietf.org/html/rfc7642#section-3.2)
 3. [OAuth与SSO、REST有哪些区别与联系](https://blog.51cto.com/favccxx/1635938)
