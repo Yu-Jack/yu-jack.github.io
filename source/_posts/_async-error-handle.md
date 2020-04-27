@@ -1,7 +1,7 @@
 ---
 title: 如何不用 try-catch 去寫 async/await
 categories: JavaScript
-date: 2020-04-27 10:14:27
+date: 2020-05-04 10:14:27
 tags: [JavaScript, promise, async, await, nodejs]
 header-img: /images/banner.jpg
 catalog: true
@@ -9,7 +9,7 @@ catalog: true
 
 ## 前言
 
-在上一篇有討論到如何去寫 async/await 的 try-catch 比較好  
+在[上一篇](https://yu-jack.github.io/2019/05/02/promise-2/)有討論到如何去寫 async/await 的 try-catch 比較好  
 那這篇會注重在另一種不需要 try-catch 的寫法上  
 
 那因為用 try-catch 和不用 try-catch 的場景比較不一樣  
