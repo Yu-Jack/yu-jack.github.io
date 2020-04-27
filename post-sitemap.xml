@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2020/04/27/oauth-implement/</loc>
+        <lastmod>2020-04-27T02:31:34.052Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2020/04/13/sso-vs-oauth/</loc>
         <lastmod>2020-04-23T15:58:02.622Z</lastmod>
         <changefreq>weekly</changefreq>
