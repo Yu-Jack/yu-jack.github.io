@@ -1,7 +1,7 @@
 ---
 title: 如何不用 try-catch 去寫 async/await
 categories: JavaScript
-date: 2020-05-04 10:14:27
+date: 2020-05-04 22:13:27
 tags: [JavaScript, promise, async, await, nodejs]
 header-img: /images/banner.jpg
 catalog: true
@@ -10,9 +10,9 @@ catalog: true
 ## 前言
 
 在[上一篇](https://yu-jack.github.io/2019/05/02/promise-2/)有討論到如何去寫 async/await 的 try-catch 比較好  
-那這篇會注重在另一種不需要 try-catch 的寫法上  
+那這篇會注重在另一種在最外層不需要 try-catch 的寫法上  
 
-那因為用 try-catch 和不用 try-catch 的場景比較不一樣  
+那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)  
 最後面會去比較這兩種寫法的優劣
 
 ## 寫法一
@@ -235,7 +235,7 @@ try {
 
 不過要注意一下商業邏輯的部分, 以剛剛的[寫法三](#寫法三)的例子  
 是因為 function 回傳值就只有兩種, 所以才可以透過[寫法三](#寫法三)去修改, 就又變成 try-catch 的形式  
-只是這種改底層的方式, 如果此 functino 在其他地方邏輯是, 此 function 成功後才能繼續往下跑其他 function  
+只是這種改底層的方式, 如果此 function 在其他地方邏輯是, 此 function 成功後才能繼續往下跑其他 function  
 這樣有可能會讓其他地方邏輯爆掉, 請特別注意這件事  
 
 但如果商業邏輯是不管第一個是否成功, 第二個都要執行這種 (不根據第一個執行的結果去處理)  
