@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>如何不用 try-catch 去寫 async/await - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言在上一篇有討論到如何去寫 async&#x2F;await 的 try-catch 比較好那這篇會注重在另一種在最外層不需要 try-catch 的寫法上   那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)最後面會去比較這兩種寫法的優劣 寫法一先來複習之前提到過的寫法   1234567891011121314151617181920212223242526272">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何不用 try-catch 去寫 async&#x2F;await">
+<meta property="og:url" content="https://yu-jack.github.io/2020/05/04/async-error-handle/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言在上一篇有討論到如何去寫 async&#x2F;await 的 try-catch 比較好那這篇會注重在另一種在最外層不需要 try-catch 的寫法上   那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)最後面會去比較這兩種寫法的優劣 寫法一先來複習之前提到過的寫法   1234567891011121314151617181920212223242526272">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-05-04T14:13:27.000Z">
+<meta property="article:modified_time" content="2020-05-04T14:15:20.649Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="nodejs">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="promise">
+<meta property="article:tag" content="async">
+<meta property="article:tag" content="await">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="如何不用 try-catch 去寫 async/await" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-04T14:13:27.000Z">2020-05-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    9 分鐘 閱讀文 (大約 1383 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                如何不用 try-catch 去寫 async/await
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>在<a href="https://yu-jack.github.io/2019/05/02/promise-2/">上一篇</a>有討論到如何去寫 async/await 的 try-catch 比較好<br>那這篇會注重在另一種在最外層不需要 try-catch 的寫法上  </p>
+<p>那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)<br>最後面會去比較這兩種寫法的優劣</p>
+<h2><span id="寫法一">寫法一</span></h2><p>先來複習之前提到過的寫法  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            rej(<span class="string">"test1 have error."</span>)</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            rej(<span class="string">"test2 have error."</span>)</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test3</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            rej(<span class="string">"test3 have error."</span>)</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result</span><br><span class="line">        result = <span class="keyword">await</span> test1();</span><br><span class="line">        <span class="built_in">console</span>.log(result);</span><br><span class="line">        result = <span class="keyword">await</span> test2();</span><br><span class="line">        <span class="built_in">console</span>.log(result);</span><br><span class="line">        result = <span class="keyword">await</span> test3();</span><br><span class="line">        <span class="built_in">console</span>.log(result);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"get error"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p>可以看到透過用 Promise 裡面 reject 的方法, 可以客製每一個回傳的錯誤訊息<br>但 … 如果我不想讓程式執行到 reject 的時候跳到 catch 的地方 (第 33 行), 該怎麼做?  </p>
+<h2><span id="寫法二">寫法二</span></h2><p>這邊程式邏輯是 test1 執行完, 就算有錯誤, 我還是依舊要執行<br>並且把 test1 的錯誤帶到 test2 去執行</p>
+<p>新的寫法透過解構 Array 的方式可以達成此目的  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">to</span>(<span class="params">promise</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> promise.then(<span class="function"><span class="params">result</span> =&gt;</span> [<span class="literal">null</span>, result]).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> [error, <span class="literal">null</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            rej(<span class="string">"test1 have error."</span>)</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"test2 handle data: "</span> + data);</span><br><span class="line">            rej(<span class="string">"test2 have error."</span>)</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleTest1ResultIsNull</span>(<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"handleTest1ResultIsNull's error message "</span> + error);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"someConditionalValue"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> error, result</span><br><span class="line">    [error, result] = <span class="keyword">await</span> to(test1());</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"result: "</span> + result);</span><br><span class="line">    <span class="keyword">if</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"get error-1"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(error);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!result) &#123;</span><br><span class="line">        result = handleTest1ResultIsNull(error);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [error, result] = <span class="keyword">await</span> to(test2(result));</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"result: "</span> + result);</span><br><span class="line">    <span class="keyword">if</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"get error-2"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(error);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p>注意到段程式碼<br>透過傳進去一個 promise 並使用 then 去取得回傳值<br>當 catch 發生得時候, 透過 return 的方法, 讓此 promise <span style="color: red">不會直接噴出錯誤, 而是正常回傳值</span><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">to</span>(<span class="params">promise</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> promise.then(<span class="function"><span class="params">result</span> =&gt;</span> [<span class="literal">null</span>, result]).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> [error, <span class="literal">null</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然後透過解構 Array 的方式可以取得回傳值<br>這樣即使 test1 的 promise 是丟出一個錯誤, 透過此 warpper function<br>就可以達成就算有錯誤, 程式還是依舊繼續執行下去  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [result, result] = <span class="keyword">await</span> to(test1());</span><br></pre></td></tr></table></figure>
+<p>但這裡帶來一個問題, 如果程式邏輯是 test1 正確的時候回傳 A 值, 錯誤的時候給一個 default 值<br>這樣其實不用特別寫一個 wrapper function, 只要稍微更改 test1 裡面的邏輯即可  </p>
+<h2><span id="寫法三">寫法三</span></h2><p>這裡可以看到 test1 裡面改成, 當某一個 error 出現時<br>特別去處理此 error, 然後在用 resolve 讓此 promise 正常回傳而不要丟出 error  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> error = <span class="string">"test1 have error"</span>;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (error) &#123;</span><br><span class="line">                res(handleTest1ResultIsNull(error))</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                res(<span class="string">"success"</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"test2 handle data: "</span> + data);</span><br><span class="line">            rej(<span class="string">"test2 have error."</span>)</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleTest1ResultIsNull</span>(<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"handleTest1ResultIsNull's error message"</span> + error);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"someConditionalValue"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result</span><br><span class="line">        result = <span class="keyword">await</span> test1();</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"result: "</span> + result);</span><br><span class="line">        result = <span class="keyword">await</span> test2(result);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"result: "</span> + result);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"get error"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(error);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<h2><span id="比較">比較</span></h2><p>開始來比較一下兩種寫法的優劣  </p>
+<h3><span id="wrapper-function">Wrapper function</span></h3><p>透過此 wrapper function 是可以方便程式撰寫的時候判斷方法<br>可以清楚地去判斷此 error 要 log 什麼, 要不要停止執行, 或是要繼續往下都是非常彈性的<br>但缺點就是, 你會寫一堆 <code>if (error)</code> 判斷<br>這在這種寫法上是無可避免的  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">to</span>(<span class="params">promise</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> promise.then(<span class="function"><span class="params">result</span> =&gt;</span> [<span class="literal">null</span>, result]).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> [error, <span class="literal">null</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外有另一種寫法也可以有一樣的效果<br>就是把 wrapper function 直接寫在 await 後面一樣可以達到效果<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [error, result] = <span class="keyword">await</span> test1().then(<span class="function"><span class="params">result</span> =&gt;</span> [<span class="literal">null</span>, result]).catch(<span class="function"><span class="params">error</span> =&gt;</span> [error, <span class="literal">null</span>]);</span><br></pre></td></tr></table></figure></p>
+<h3><span id="try-catch-block">try-catch block</span></h3><p>透過 try-catch block 可以輕鬆直接在 catch 的時候去統一處理 error<br>但前提是你每一個 promise 裡面的 error 要事先處理好, 而不是交由最外層的 try-catch 去處理<br>只是使用者這種方法, 如果 promise 裡面有 error, 但還想要繼續執行<br>就必須透過 resolve 的方式去更改程式邏輯, 這點在這也是無可避免的  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> test1()</span><br><span class="line">&#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="總結">總結</span></h3><p>兩種寫法應用場景其實不太一樣<br>如果邏輯之間是第一個成功, 第二個才能繼續這種, 就很適合使用 try-catch block<br>因為你前面錯誤發生, 就直接讓跳出去, 也不需要繼續執行了  </p>
+<p>但如果是不管第一個是否成功, 第二個都要繼續執行 (根據第一個執行的結果去處理)<br>就適合用此文提到的 wrapper function  </p>
+<p>不過要注意一下商業邏輯的部分, 以剛剛的<a href="#寫法三">寫法三</a>的例子<br>是因為 function 回傳值就只有兩種, 所以才可以透過<a href="#寫法三">寫法三</a>去修改, 就又變成 try-catch 的形式<br>只是這種改底層的方式, 如果此 function 在其他地方邏輯是, 此 function 成功後才能繼續往下跑其他 function<br>這樣有可能會讓其他地方邏輯爆掉, 請特別注意這件事  </p>
+<p>但如果商業邏輯是不管第一個是否成功, 第二個都要執行這種 (不根據第一個執行的結果去處理)<br>其實在寫程式設計上, 這兩種邏輯理論上是可以被拆開的<br>因為這兩個是毫無相關性的, 就不用硬寫在同一個地方  </p>
+<h2><span id="references">References</span></h2><ol>
+<li><a href="https://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/?fbclid=IwAR3UoAUJ6kAQV0_5s0FbVfLDnKRXoC6I7db40vJV-l9sUU7sL9YuVpXYOLI">How to write async await without try-catch blocks in Javascript</a></li>
+</ol>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/JavaScript/" rel="tag">JavaScript</a>, <a class="has-link-grey -link" href="/tags/async/" rel="tag">async</a>, <a class="has-link-grey -link" href="/tags/await/" rel="tag">await</a>, <a class="has-link-grey -link" href="/tags/nodejs/" rel="tag">nodejs</a>, <a class="has-link-grey -link" href="/tags/promise/" rel="tag">promise</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/04/27/oauth-implement/">
+                <span class="level-item">OAuth 2.0 介紹以及實作</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="liker">
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/05/04/async-error-handle/';
+        this.page.identifier = '2020/05/04/async-error-handle/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#寫法一">
+        <span class="has-mr-6">2</span>
+        <span>寫法一</span>
+        </a></li><li>
+        <a class="is-flex" href="#寫法二">
+        <span class="has-mr-6">3</span>
+        <span>寫法二</span>
+        </a></li><li>
+        <a class="is-flex" href="#寫法三">
+        <span class="has-mr-6">4</span>
+        <span>寫法三</span>
+        </a></li><li>
+        <a class="is-flex" href="#比較">
+        <span class="has-mr-6">5</span>
+        <span>比較</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#wrapper-function">
+        <span class="has-mr-6">5.1</span>
+        <span>Wrapper function</span>
+        </a></li><li>
+        <a class="is-flex" href="#try-catch-block">
+        <span class="has-mr-6">5.2</span>
+        <span>try-catch block</span>
+        </a></li><li>
+        <a class="is-flex" href="#總結">
+        <span class="has-mr-6">5.3</span>
+        <span>總結</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#references">
+        <span class="has-mr-6">6</span>
+        <span>References</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

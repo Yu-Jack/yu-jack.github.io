@@ -70,13 +70,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
-        <lastmod>2020-03-16T02:20:37.917Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/AWS/</loc>
         <lastmod>2020-04-01T09:58:14.126Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -91,13 +84,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
-        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Security/</loc>
         <lastmod>2020-04-27T02:31:34.052Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -107,6 +93,20 @@
     <url>
         <loc>https://yu-jack.github.io/categories/%25E8%25AE%2580%25E6%259B%25B8%25E5%25BF%2583%25E5%25BE%2597/</loc>
         <lastmod>2020-04-27T02:37:07.857Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
+        <lastmod>2020-04-28T02:06:02.925Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
+        <lastmod>2020-05-04T14:15:20.649Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

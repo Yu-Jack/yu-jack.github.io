@@ -7,6 +7,22 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2020/05/04/async-error-handle/</loc>
+        <lastmod>2020-05-04T14:15:20.649Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/2020/02/17/ci-cd-jenkins/</loc>
+        <lastmod>2020-04-28T02:06:02.925Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2020/03/23/%E5%88%A5%E4%BA%BA%E6%80%8E%E9%BA%BC%E5%B0%8D%E4%BD%A0,%E9%83%BD%E6%98%AF%E4%BD%A0%E6%95%99%E7%9A%84-part1/</loc>
         <lastmod>2020-04-27T02:37:07.857Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -25,14 +41,6 @@
     <url>
         <loc>https://yu-jack.github.io/2020/04/13/sso-vs-oauth/</loc>
         <lastmod>2020-04-23T15:58:02.622Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2020/02/17/ci-cd-jenkins/</loc>
-        <lastmod>2020-04-20T12:43:35.136Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
