@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/2020/03/09/nodejs-zero-downtime/</loc>
+        <lastmod>2020-05-07T14:58:09.139Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/2020/05/04/async-error-handle/</loc>
         <lastmod>2020-05-04T14:15:20.649Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -81,14 +89,6 @@
     <url>
         <loc>https://yu-jack.github.io/2020/03/02/ssl-pinning/</loc>
         <lastmod>2020-04-01T06:55:34.143Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/2020/03/09/nodejs-zero-downtime/</loc>
-        <lastmod>2020-03-21T04:40:43.260Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
