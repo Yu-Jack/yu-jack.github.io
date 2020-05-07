@@ -58,7 +58,7 @@ pm2 是一個管理 Node.js process 的工具，很多 production 環境也有�
 
 要繼續往以下的 case 之前，要介紹在 http module 中有一個 close 的 function  
 當呼叫 `server.close(() => {console.log("server is closed")})`  
-express 會等到請求處理完事件後才會關閉  
+node.js server 會等到請求處理完事件後才會關閉  
 
 ### 中場補充 case 01
 
