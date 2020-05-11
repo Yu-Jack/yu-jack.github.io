@@ -29,6 +29,12 @@ mongoose 使用版本為 5.9.13, mongodb 使用版本為 3.6.2
 但在 mongoose v5.9.13 的文件裡面, 針對 `useUnifiedTopology` 的參數, 是希望改成 true  
 原因是他們重寫了如何處理監控伺服器的程式碼還有機制  
 所以才會導致設定之後會失敗, 詳細可以看看看這邊 [Server Discovery And Monitoring](https://github.com/mongodb/specifications/blob/master/source/server-discovery-and-monitoring/server-discovery-and-monitoring.rst)  
+
+> [原文](https://mongoosejs.com/docs/deprecations.html#useunifiedtopology)  
+> Mongoose 5.7 uses MongoDB driver 3.3.x, which introduced a significant refactor  
+> of how it handles monitoring all the servers in a replica set or sharded cluster.  
+> In MongoDB parlance, this is known as server discovery and monitoring.  
+
 除此之外, 設定為 true 之後, `autoReconnect` `reconnectTries` `reconnectInterval` 這幾個選項也不會支援  
 詳細可以看 [mongoose connection options](https://mongoosejs.com/docs/connections.html#options)  
 在下面就有針對 `useUnifiedTopology: true` 的去解釋可以用哪些參數  
