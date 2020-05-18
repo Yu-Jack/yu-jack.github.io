@@ -74,6 +74,8 @@ None 代表的就是沒有網路, 也就是外部使無法訪問此 container �
 此種網路配置是希望在不同 host 之間的 docker dameon 能夠互相連線  
 並且讓 host 裡面的 container 都連到同一個網路, 進而讓 container 互相溝通  
 
+> docker dameon 可以想像成運行 docker container 的程序  
+
 ![overlay network](/images/docker/overlay.png)
 
 在 docker overlay 的網路概念就一定會提到 docker swarm  
@@ -82,3 +84,8 @@ None 代表的就是沒有網路, 也就是外部使無法訪問此 container �
 
 詳細的 docker swarm 下篇會講到架構  
 以及在 docker swarm 的架構下網路是如何流動的  
+
+## References
+
+1. [Docker Network Overvie](https://docs.docker.com/network/)
+2. [給新手的 Docker 網絡入門](https://cowsay.blog/post/j0773pki/)
