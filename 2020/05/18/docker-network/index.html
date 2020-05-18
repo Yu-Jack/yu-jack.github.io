@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Docker 網路介紹 - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="在使用 docker 的時候最常出現網路連線的問題要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些而這些設置方法各自有可以達成什麼樣的功效   NoneNone 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務此 container 也無法訪問到外部的網路服務   H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 網路介紹">
+<meta property="og:url" content="https://yu-jack.github.io/2020/05/18/docker-network/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="在使用 docker 的時候最常出現網路連線的問題要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些而這些設置方法各自有可以達成什麼樣的功效   NoneNone 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務此 container 也無法訪問到外部的網路服務   H">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-05-18T13:50:13.000Z">
+<meta property="article:modified_time" content="2020-05-18T14:20:52.172Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="w3HexSchool">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="network">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Docker 網路介紹" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-18T13:50:13.000Z">2020-05-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分鐘 閱讀文 (大約 974 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Docker 網路介紹
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <p>在使用 docker 的時候最常出現網路連線的問題<br>要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等<br>要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些<br>而這些設置方法各自有可以達成什麼樣的功效  </p>
+<h2><span id="none">None</span></h2><p>None 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務<br>此 container 也無法訪問到外部的網路服務  </p>
+<h2><span id="host">Host</span></h2><p>在 A 電腦上面運行 container B<br>然後透過 <code>docker run --network=&quot;host&quot; image</code> 運行時<br>在電腦 A 上面是可以直接讀取到 localhost:8080<br>並不需要設置什麼 <code>-p 8080:8080</code> 的 port forwarding 的方式即可使用<br>透過 host 設置方法, 就是直接使用 host 的網路介面, 甚至可以進行修改<br>但此這是方法並不建議使用在正式環境上  </p>
+<p>只是這邊要特別注意, 只有在 linue 的環境下才能使用 host 的指令<br>詳細可以看 <a href="https://docs.docker.com/network/host/">docker 官網</a>的解釋</p>
+<blockquote>
+<p>The host networking driver only works on Linux hosts<br>and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server.  </p>
+</blockquote>
+<h2><span id="bridge-預設網路介面">Bridge (預設網路介面)</span></h2><p><img src="/images/docker/bridge.png" alt="bridge network"></p>
+<p>如上圖所示, bridge 就是在各個 container 之間架起一個橋樑<br>可以想像成在這個橋樑之間的城市, 都擁有自己的街道名, 在這裡就是都有各自的 IP<br>城市之間都可以各自溝通, 也就是 container 可以使用各自擁有的 IP 進行溝通<br>而 host 算是獨立在這整個系統之外的地方, 要與這個 container 進行連線溝通必須先經過登記<br>這個登記就是在運行 container 的時候設置 <code>docker run -p targetPort:hostPort</code> 這個屬性<br>透過把 targetPort 轉換到 hostPort, 例如說 8080:3000<br>這樣在 container 裡面的 3000 port 就可以在 host 的 8080 port 讀取到服務了  </p>
+<p><br></p>
+<p>而這個 bridge 還有一種方式, 是可以自訂字 bridge 的名稱, 這也是官方最推薦的一種方式<br>可以想像原本預設 bridge 是官方自定義的一種名稱, 但我們是可以透過以下指令客製化這個 bridge 的名字<br><code>docker network create -d bridge custom-bridge</code><br>當我們客製化 bridge 的名字後, 當 container A &amp; B 透過以下方式使用這個 custom-bridge 的時候<br><code>docker run --network=&quot;custom-bridge&quot; imageA</code><br><code>docker run --network=&quot;custom-bridge&quot; imageB</code><br>就代表也只有他們彼此在使用這個網路介面, 在這個狀況下 container A &amp; B 之間溝通的方式<br>就可以透過 container ID 去進行溝通, 例: <code>http://containera-id:port</code><br>但在這使用預設的 bridge 是無法達成的, 必須要用自訂義的才可以  </p>
+<p><br></p>
+<p>除此之外, container A 和 B 之間也是能透過自定義的名字去進行溝通<br><code>docker run --network=&quot;custom-bridge&quot; --name=&quot;container-a&quot; imageA</code><br><code>docker run --network=&quot;custom-bridge&quot; --name=&quot;container-b&quot; imageB</code><br>當我在啟用 container 的時候自定義名字時<br>他們之間就可以用 <code>http://container-a:port</code> 以及 <code>http://container-b:port</code> 進行溝通了</p>
+<p>快速總結</p>
+<ol>
+<li>使用預設 bridge 以及預設 name -&gt; 只能使用 container ip 互相連線</li>
+<li>使用自定義 bridge 以及預設 name -&gt; 可以透過 container ip &amp; id 互相連線</li>
+<li>使用自定義 bridge 以及自定義 name -&gt; 可以透過 container ip &amp; id &amp; name 互相連線</li>
+</ol>
+<h2><span id="overlay">Overlay</span></h2><p>此種網路配置是希望在不同 host 之間的 docker dameon 能夠互相連線<br>並且讓 host 裡面的 container 都連到同一個網路, 進而讓 container 互相溝通  </p>
+<p><img src="/images/docker/overlay.png" alt="overlay network"></p>
+<p>在 docker overlay 的網路概念就一定會提到 docker swarm<br>而 docker swarm 也是 docker container cluster 的管理工具<br>那因為 docker 官網針對 overlay network 的概念是綁定在 docker swarm 上介紹  </p>
+<p>詳細的 docker swarm 下篇會講到架構<br>以及在 docker swarm 的架構下網路是如何流動的</p>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/DevOps/" rel="tag">DevOps</a>, <a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>, <a class="has-link-grey -link" href="/tags/network/" rel="tag">network</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/11/nodejs-zero-downtime-next/">
+                <span class="level-item">續篇 - Node.js &amp; Mongodb zero downtime 更新</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="liker">
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/05/18/docker-network/';
+        this.page.identifier = '2020/05/18/docker-network/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#none">
+        <span class="has-mr-6">1</span>
+        <span>None</span>
+        </a></li><li>
+        <a class="is-flex" href="#host">
+        <span class="has-mr-6">2</span>
+        <span>Host</span>
+        </a></li><li>
+        <a class="is-flex" href="#bridge-預設網路介面">
+        <span class="has-mr-6">3</span>
+        <span>Bridge (預設網路介面)</span>
+        </a></li><li>
+        <a class="is-flex" href="#overlay">
+        <span class="has-mr-6">4</span>
+        <span>Overlay</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
