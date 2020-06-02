@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>標籤: Security - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+<title>技術雜記 Technology Notes - Jack Yu | 傑克</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -21,7 +21,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:url" content="https://yu-jack.github.io/tags/Security/index.html">
+<meta property="og:url" content="https://yu-jack.github.io/page/6/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
@@ -122,17 +122,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
-    <div class="card-content">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="/tags">標籤</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Security</a></li>
-        </ul>
-        </nav>
-    </div>
-</div>
-
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
     
 <div class="card">
     
@@ -140,10 +130,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-04-27T02:05:21.000Z">2020-04-27</time>
+                <time class="level-item has-text-grey" datetime="2017-09-23T03:43:00.000Z">2017-09-23</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                <a class="has-link-grey -link" href="/categories/Payment-Gateway/">Payment Gateway</a>
                 </div>
                 
                 
@@ -160,14 +150,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/04/27/oauth-implement/">OAuth 2.0 介紹以及實作</a>
+                <a class="has-link-black-ter" href="/2017/09/23/tappay-payment/">如何串接上 TapPay 並完成第一筆交易!</a>
             
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言這篇文章會注重在 OAuth 2.0 的介紹OAuth 1.0 和 2.0 的差別其實蠻大的, 對角色的定義也有所不同OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a 和 2.0 的之间的区别有哪些？  
+                這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com
+最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以 Web 服務為主去做範例，完整程式碼，請參考最下面
 
-基本上 2.0 就是對 1.0 的角色重新定義簡化 1.0 的複雜流程, 以及強化 1.0 面臨到的安全問題但本質上的目的都是一樣,...
+環境設置
+TapPay Portal 申請
+ 要拿到以下的值才...
             </div>
         
         
@@ -175,7 +168,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/04/27/oauth-implement/#more">繼續閱讀</a>
+                <a class="button is-size-7 is-light" href="/2017/09/23/tappay-payment/#more">繼續閱讀</a>
                 </div>
             </div>
         </div>
@@ -191,236 +184,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
+
     
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-04-20T02:05:21.000Z">2020-04-20</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    13 分鐘 閱讀文 (大約 1900 個字)
-                </span>
-                
-                
-                
-            </div>
+<div class="card card-transparent">
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <div class="pagination-previous">
+            <a class="is-flex-grow has-text-black-ter" href="/page/5/">上一頁</a>
         </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/04/20/sso-2/">Single Sign On 實作方式介紹 (CAS)</a>
-            
-        </h1>
-         
-            <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言CAS 全名是 Central Authentication Service一個獨立的認證服務, 概念是在使用服務之前如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入登入成功之後就會被導回去原本使用服務的頁面  
-題外話, 這裡的英文 Authentication 是有含義所在的代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行認證而認證成功後, ...
-            </div>
-        
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/04/20/sso-2/#more">繼續閱讀</a>
-                </div>
-            </div>
+        <div class="pagination-next is-invisible is-hidden-mobile">
+            <a class="is-flex-grow has-text-black-ter" href="/page/7/">下一頁</a>
         </div>
-        
-        
-    </div>
+        <ul class="pagination-list is-hidden-mobile">
+            
+            <li><a class="pagination-link has-text-black-ter" href="/">1</a></li>
+            
+            <li><span class="pagination-ellipsis has-text-black-ter">&hellip;</span></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/page/5/">5</a></li>
+            
+            <li><a class="pagination-link is-current" href="/page/6/">6</a></li>
+            
+        </ul>
+    </nav>
 </div>
-
-
-
-
-
-
-
-
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-04-13T02:05:21.000Z">2020-04-13</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    11 分鐘 閱讀文 (大約 1673 個字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/04/13/sso-vs-oauth/">OAuth 是什麼? 跟 SSO 有什麼關係或差別?</a>
-            
-        </h1>
-         
-            <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋  
-正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)  
-OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的...
-            </div>
-        
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/04/13/sso-vs-oauth/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-04-06T02:05:21.000Z">2020-04-06</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    12 分鐘 閱讀文 (大約 1846 個字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/04/06/sso-1/">Single Sign On 實作方式介紹 (iframe &amp; cookie)</a>
-            
-        </h1>
-         
-            <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存而是其他地方的系統都是透過 A 去做到帳密認證, 也就...
-            </div>
-        
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/04/06/sso-1/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-01T16:02:54.000Z">2020-03-02</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    28 分鐘 閱讀文 (大約 4125 個字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/03/02/ssl-pinning/">從 SSL 到 SSL Pinning 看完你就懂！</a>
-            
-        </h1>
-         
-            <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言看不懂跟我說，我想辦法補充 XD  
-正文開始 …某天有人問我  
-某: SSL Pinning 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋  
-為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又是要 pin 什麼東西然後中間人又是哪個小三...
-            </div>
-        
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/03/02/ssl-pinning/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 </div>
                 
     
@@ -1023,189 +809,6 @@ OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角
         <article class="media">
             
             <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-11T02:33:54.000Z">2020-05-11</time></div>
-                    <a href="/2020/05/11/nodejs-zero-downtime-next/" class="title has-link-black-ter is-size-6 has-text-weight-normal">續篇 - Node.js &amp; Mongodb zero downtime 更新</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/NodeJs/">NodeJs</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-04T14:13:27.000Z">2020-05-04</time></div>
-                    <a href="/2020/05/04/async-error-handle/" class="title has-link-black-ter is-size-6 has-text-weight-normal">如何不用 try-catch 去寫 async/await</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-        
-        
-    </div>
-    
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="is-size-7">
-                &copy; 2020 Jack Yu&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-            </div>
-        </div>
-    </div>
-</footer>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-TW");</script>
-
-
-<script>
-var IcarusThemeSettings = {
-    site: {
-        url: 'https://yu-jack.github.io',
-        external_link: {"enable":true,"exclude":[]}
-    },
-    article: {
-        highlight: {
-            clipboard: true,
-            fold: 'unfolded'
-        }
-    }
-};
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-
-
-
-
-
-<script src="/js/animation.js"></script>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-<script src="/js/gallery.js" defer></script>
-
-
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
-
-
-<a id="back-to-top" title="回到頁首" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '頁面',
-                CATEGORIES: '分類',
-                TAGS: '標籤',
-                UNTITLED: '(無標題)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</body>
-</html>>
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-11T02:33:54.000Z">2020-05-11</time></div>
                     <a href="/2020/05/11/nodejs-zero-downtime-next/" class="title has-link-black-ter is-size-6 has-text-weight-normal">續篇 - Node.js &amp; Mongodb zero downtime 更新</a>

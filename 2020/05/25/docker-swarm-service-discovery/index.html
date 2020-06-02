@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>JavaScript 真的是直譯式語言嗎？ - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+<title>Docker Swarm 網路架構介紹 - Service Discovery - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,19 +19,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言   這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋下面文章統一都會用直譯去做解釋   編譯語言被稱為編譯語言有一個特性此語言會透過編譯器編譯成另一個語言而編譯器是什麼呢?   先來說說">
+    <meta name="description" content="前言在上一篇 Docker Swarm 網路架構介紹 - load balancing traffic path 介紹過當流量進來的時候流程接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線   Container IP還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6在我們透過 DNS 之前, 我們">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript 真的是直譯式語言嗎？">
-<meta property="og:url" content="https://yu-jack.github.io/2020/03/16/javascript-is-compiler-or-interpreter-language/index.html">
+<meta property="og:title" content="Docker Swarm 網路架構介紹 - Service Discovery">
+<meta property="og:url" content="https://yu-jack.github.io/2020/05/25/docker-swarm-service-discovery/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言   這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋下面文章統一都會用直譯去做解釋   編譯語言被稱為編譯語言有一個特性此語言會透過編譯器編譯成另一個語言而編譯器是什麼呢?   先來說說">
+<meta property="og:description" content="前言在上一篇 Docker Swarm 網路架構介紹 - load balancing traffic path 介紹過當流量進來的時候流程接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線   Container IP還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6在我們透過 DNS 之前, 我們">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-03-16T02:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-16T02:20:37.917Z">
+<meta property="article:published_time" content="2020-05-25T13:50:13.000Z">
+<meta property="article:modified_time" content="2020-06-02T13:40:33.300Z">
 <meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="network">
+<meta property="article:tag" content="docker">
 <meta property="article:tag" content="w3HexSchool">
-<meta property="article:tag" content="JavaScript">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
 
@@ -90,7 +92,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="JavaScript 真的是直譯式語言嗎？" height="28">
+                <img src="/images/logo.svg" alt="Docker Swarm 網路架構介紹 - Service Discovery" height="28">
             
             </a>
         </div> -->
@@ -139,17 +141,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-16T02:00:00.000Z">2020-03-16</time>
+                <time class="level-item has-text-grey" datetime="2020-05-25T13:50:13.000Z">2020-05-25</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
+                <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    11 分鐘 閱讀文 (大約 1713 個字)
+                    9 分鐘 閱讀文 (大約 1330 個字)
                 </span>
                 
                 
@@ -163,73 +165,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                JavaScript 真的是直譯式語言嗎？
+                Docker Swarm 網路架構介紹 - Service Discovery
             
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言<br>這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言  </p>
-<p>這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋<br>下面文章統一都會用直譯去做解釋  </p>
-<h2><span id="編譯語言">編譯語言</span></h2><p>被稱為編譯語言有一個特性<br>此語言會透過編譯器編譯成另一個語言<br>而編譯器是什麼呢?  </p>
-<p>先來說說一個情境<br>在這個世界中我在 A 國家扮演著一種角色<br>這個角色是一個專門的手抄者，做的事情就是專門把英文的書翻成中文書<br>讓 A 國的人也能夠讀懂英文的書<br>這裡的手抄者，可以想像成就是編譯器的存在  </p>
-<p>透過手抄者生產出來的書，還沒有人去讀是不會產生任何效果的<br>編譯器也是如此，編譯器把 C++ 等等語言轉變成 byte code<br>這個 byte codes 還沒被電腦執行之前，是沒有任何作用的  </p>
-<p>所以編譯語言做的事情就是，把 A 語言的程式碼轉換成 B 語言的程式碼  </p>
-<h2><span id="直譯語言">直譯語言</span></h2><p>被稱為直譯語言有一個特性<br>此語言會透過直譯器直接去執行，並輸出結果<br>這個直譯器又是什麼呢?  </p>
-<p>再來換另一個情境<br>在這個世界中我是 A 國家的一個角色<br>這個角色是一個專門的口譯者，做的事情就是專門把英文的語言翻成中文的語言給 A 國的人聽<br>讓 A 國的人能夠聽懂英文  </p>
-<p>這裡的口譯者總共做了兩件事情  </p>
+                <h2><span id="前言">前言</span></h2><p>在上一篇 <a href="/2020/05/25/docker-swarm-load-balancing/">Docker Swarm 網路架構介紹 - load balancing traffic path</a> 介紹過當流量進來的時候流程<br>接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線  </p>
+<h2><span id="container-ip">Container IP</span></h2><p>還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6<br>在我們透過 DNS 之前, 我們能不能先用 container IP 去互相連線呢?<br><img src="/images/docker-swarm/12.png" alt="host-a-container"><br><img src="/images/docker-swarm/13.png" alt="host-b-container">  </p>
+<blockquote>
+<p>因為筆者機器重開的原因, 接下來的 ip 可能都會有些變動<br>原本是 10.0.0.5 10.0.0.6<br>會換成 10.0.0.7 10.0.0.8<br>又或是 10.0.0.9 10.0.0.10<br>主要去注意我在講哪一個 container 以及後面括號的 ip 即可  </p>
+</blockquote>
+<p>我們在 container-a (10.0.0.7) curl container-b (10.0.0.8) 那一台會發現無法連線  </p>
+<p><img src="/images/docker-swarm/15.png" alt="host-b-container">  </p>
+<p>這非常詭異, 理論上 container 之間應該要可以連線<br>不然上一篇的隱藏的 ingress_sbox 怎麼可以連到其他台 container 呢?  </p>
+<p>但神奇的事就來了, Docker 官方有說明可以透過 Custom Overlay Network 的方式讓 container 互相連線<br>我們先來實作 custom overlay network 讓 container 之間互相連線<br>再來頗析為何只有 Default Overlay Network 的 ingress_sbox 可以連線到其他 container, 但其他 container 之間卻無法連線  </p>
+<h2><span id="custom-overlay-network">Custom Overlay Network</span></h2><p>透過 <code>docker network create -d overlay my-overlay</code> 建立自訂義的 overlay network<br>接著再啟動 service 的時候把這個 overlay network 附加上去<br><code>docker service create -p 5000:3000 --network=&quot;my-overlay&quot; --name=&quot;hello-a&quot;  --replicas 2 node-test</code><br>建立完成之後, 我們先進去看一下 container 的網路介面<br>會發現, 每個 container 裡面又多了一個 10.0.1.x 的網路介面<br>這個就是我們自定義的 overlay network, 所以 container 之間溝通就會透過此組 IP 去溝通<br>此時會發現上面 10.0.0.x 的 IP 還是會保留, 原因是那是給 ingress_sbox 去做 load balancing 使用的<br>接著我們試著在 container-a (10.0.1.4) curl container-b (10.0.1.3)<br>會發現有正常回傳一個 HI, 就代表連線成功了！<br><img src="/images/docker-swarm/17.png" alt="host-a-container"><br><img src="/images/docker-swarm/16.png" alt="host-b-container">  </p>
+<p>那麼一個疑問就來了, 他是怎麼找到另一個 container-b 的呢?<br>為何在原本的 overlay 環境下無法連線, 但在這個 overlay 下卻可以連線<br>試著在 container-a 裡面找是否有 iptables 等等的相關設定<br>後來是透過 <code>ip neigh</code> 找到區網內把 IP 解析成 MAC 地址的一個地方<br>透過 ARP 的方式可以找到 container-b 正確的位置<br>另外從下面圖的結果看來, 可以發現 10.0.0.x 並沒有在這裡面<br>這也符合在 default overlay network 狀況下, container 之間是無法連線的<br><img src="/images/docker-swarm/18.png" alt="container ARP">  </p>
+<p>按照上面邏輯 default overlay network 下的 ingress_sbox 的 ARP 解析中<br>應該會出現 10.0.0.x 10.0.0.y 兩個 container IP<br>因為在上一篇 ingress_sbox 充當 load balancing 的角色<br>ingress_sbox 必須知道 10.0.0.x 以及 10.0.0.y 的 MAC 地址在哪裡<br>從下圖中就可以看到確實在 ingress_sbox 裡面是有針對 10.0.0.x/y 去做 ARP 解析的<br><img src="/images/docker-swarm/19.png" alt="ingress_sbox ARP">  </p>
+<p>接著最後就是來到 custom DNS 的部分, 在 container-a 和 container-b 裡面<br>是可以輸入 <a href="http://hello-a:3000">http://hello-a:3000</a> 去使用的 API 服務<br>在 container-a/b 中應該有一個地方會把 hello-a 這個 domain 解析成特定的 IP<br>這樣才能讀取到服務, 但是這個設定在哪裡?  </p>
+<p>這個設定其實是藏在 Docker Engine 裡面的 DNS Server<br>根據 <a href="https://success.docker.com/article/networking#swarmnativeservicediscovery">Docker 官網 - Swarm Native Service Discovery</a><br>在 container query hello-a 的時候<br>會先到 Docker 裡面的 DNS Server 去解析這個域名<br>解析成功後才會返為此域名的 IP  </p>
+<p>以官方提供的流程圖來說, Query myservice 這個域名<br>透過 Docker DNS Server 會回傳此域名的 IP 為 10.0.0.3  </p>
+<p><img src="/images/docker-swarm/20.png" alt="ingress_sbox ARP">  </p>
+<p>至於詳細設定的部分我翻了老半天都找不到, 這可能要直接去讀 docker 源碼了…  </p>
+<h2><span id="後記">後記</span></h2><p>這樣一來就稍微搞懂 docker 以及 docker swarm 裡面的網路架構流程<br>大致上都是透過以下幾個技術去處理掉整個流程  </p>
 <ol>
-<li>分析英文語句以及文法  </li>
-<li>把分析完的結果轉成中文說出來  </li>
+<li>iptables<br> 防火牆管控, 可以導轉流量到應該要去的位置, 或是過濾不要的流量  </li>
+<li>IPVS (IP Virtual Server, tool: ipvsadm)<br> Linux 核心擁有的 Load Balancing<br> 在上一篇的範例中, 運用在 ingress_sbox —load balancing—&gt; service  </li>
+<li>ARP (Address Resolution Protocol)<br> 解析 IP 後取得真正的 MAC Address 用<br> 在本篇的範例中, 運用在 container 之間互相溝通</li>
+<li>NAT (Network Address Translation, tool: iptables)<br> 運用在 iptables 裡面的機制, 可以改變封包傳送端與接收端的 IP 地址<br> 在上一篇的範例中, 運用在 localhost:5000 -&gt; ingress_sbox  </li>
+<li>Embedded DNS Server<br> 在 container 之中, 自定義的網域會來到這邊做解析, 並取得到自定義網域下的真實 IP<br> 在本篇的範例中, 運用在 query hello-a 域名時  </li>
 </ol>
-<p>這裡的口譯者，可以想像成就是直譯器的存在<br>其實這也跟上述手抄者在做的事情很類似，兩者一樣都是在翻譯一種語言，只是結果不盡相同  </p>
-<h2><span id="簡單總整比較一下">簡單總整比較一下</span></h2><p>兩者之間的行為差別  </p>
-<ul>
-<li>編譯器<br>  把 A 語言轉換成其他可以讓機器執行的 B 語言，但不會去執行，<span style="color: red">產生的結果是語言</span>  </li>
-<li>直譯器<br>  讀取 A 語言，並且執行它，不會輸出額外的語言，<span style="color: red">產生的結果是運行結果</span>  </li>
-</ul>
-<p>兩者之間的效能</p>
-<ul>
-<li>編譯器<br>  會把大多數的時間花在編譯上，而且編譯出來的另一種語言很接近電腦能讀的語言，所以實際上執行的時候效率是很高的</li>
-<li>直譯器<br>  會讀取原始碼之後，立刻進行分析，分析完又馬上執行。牽扯到語法分析、編譯成機器能讀的語言、交給電腦執行。要如何把這整個流程進料減少分析以及編譯的次數是效能的一大考量  </li>
-</ul>
-<blockquote>
-<p>不管是編譯器或是直譯器，都是會需要詞法以及語法分析</p>
-</blockquote>
-<p>用一張圖來表示編譯以及直譯語言的差別<br><img src="/images/compiler_interpreter/compiler_interpreter-01.jpg" alt>  </p>
-<blockquote>
-<p>圖片出自<a href="http://huang-jerryc.com/2016/11/20/do-you-konw-the-different-between-compiler-and-interpreter/">你知道「编译」与「解释」的区别吗？</a>  </p>
-</blockquote>
-<h2><span id="js-是哪一種">js 是哪一種 ?</span></h2><p>常常有人說 js 直譯 (interpreter) 語言，因為不需要編譯 (compiler)，而且是直接跑在瀏覽器上<br>不像 C++ 那樣需要編譯後才可以執行，所以 js 都是一行一行執行的！  </p>
-<p>且慢 ……</p>
-<p>你知道 js 裡面有一個 hoisting 的概念嗎?  </p>
-<blockquote>
-<p>關於 js hoisting 的文章<br>建議可以看看<a href="https://blog.techbridge.cc/2018/11/10/javascript-hoisting/">我知道你懂 hoisting，可是你了解到多深？</a><br>裡面講得非常詳細</p>
-</blockquote>
-<p>當你執行以下程式是得到 <code>Uncaught ReferenceError: test is not defined</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(test); <span class="comment">// Uncaught ReferenceError: test is not defined</span></span><br></pre></td></tr></table></figure></p>
-<p>但當你執行以下程式卻得到 <code>undefined</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(test); <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> test = <span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
-<p>如果是一行一行執行，那為什麼上面兩者的結果是不同的呢?<br>在讀過編譯器和直譯器後，我想各位讀者應該有些答案了  </p>
-<p>在主流瀏覽器的實現下，js 『看起來』像是直譯語言<br>但在這個黑箱子背後，也是有編譯的步驟存在<br>這樣 js 是不是直譯語言呢?<br>我們來看看其他地方針對直譯式語言或是 JavaScript 是如何介紹的  </p>
-<p><a href="https://www.iteye.com/blog/rednaxelafx-492667">虚拟机随谈（一）：解释器，树遍历解释器，基于栈与基于寄存器，大杂烩</a>提到以下這一段話</p>
-<blockquote>
-<p>一般在網路上都會看到 Python、Ruby、JavaScript 都是直譯語言，是通過直譯器來實現<br>這其實很容易造成誤解，語言一般只會定義抽象語義，而不會強制性要求採用某種實現方式  </p>
-</blockquote>
-<p>且在<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/About_JavaScript"> MDN Web Docs </a>上面是這樣對 JavaScript 進行介紹的</p>
-<blockquote>
-<p>JavaScript (JS) is a lightweight, interpreted, or just-in-time <span style="color:red">compiled</span> programming language with first-class functions.  </p>
-</blockquote>
-<p>在<a href="https://en.wikipedia.org/wiki/Interpreted_language">維基百科</a>上則是這樣對直譯式語言進行解釋的</p>
-<blockquote>
-<p>Many languages have been implemented using both compilers and interpreters,<br>including BASIC, C, Lisp, and Pascal. Java and C# are compiled into bytecode, the virtual-machine-friendly interpreted language.<br>Lisp implementations can freely mix interpreted and compiled code.  </p>
-</blockquote>
-<p>所以以使用的案例來說，在瀏覽器上的 js 是直譯語言<br>不過是哪一種，需要看用哪一種方式實現這種語言的執行方式<br>因為說到底語言只是定義抽象語義，並無強制要用哪一種類型實現  </p>
-<p>前面有提到效率，那是不是 js 效率就很低?<br>且慢！看看我們 Chrome V8 大大就完美呈現什麼叫做媲美編譯語言的效能了<br>有興趣的可以去看看各種 V8 比較效能的文章  </p>
-<h2><span id="後記">後記</span></h2><p>希望這篇有幫助到正在了解 js 是編譯或是直譯語言的小夥伴們  </p>
+<p>這邊就記錄下來, 方便以後有個思路可以循著走</p>
 <h2><span id="references">References</span></h2><ol>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/About_JavaScript">MDN</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Interpreted_language">Wiki</a></li>
-<li><a href="https://www.iteye.com/blog/rednaxelafx-492667">虚拟机随谈（一）：解释器，树遍历解释器，基于栈与基于寄存器，大杂烩</a></li>
-<li><a href="https://blog.techbridge.cc/2018/11/10/javascript-hoisting/">我知道你懂 hoisting，可是你了解到多深？</a></li>
-<li><a href="http://huang-jerryc.com/2016/11/20/do-you-konw-the-different-between-compiler-and-interpreter/">你知道「编译」与「解释」的区别吗？</a></li>
+<li><a href="https://ops.tips/blog/blocking-ingress-traffic-to-docker-swarm-worker-machines/">Blocking ingress traffic to Docker swarm worker machines</a></li>
+<li><a href="http://wiki.weithenn.org/cgi-bin/wiki.pl?IPTables-Linux_Firewall">iptables</a></li>
+<li><a href="https://neuvector.com/network-security/docker-swarm-container-networking/">How Docker Swarm Container Networking Works – Under the Hood</a></li>
+<li><a href="https://staight.github.io/2019/09/23/nsenter%E5%91%BD%E4%BB%A4%E7%AE%80%E4%BB%8B/">nsenter 命令簡介</a></li>
+<li><a href="https://success.docker.com/article/networking">Docker Swarm Reference Architecture: Exploring Scalable, Portable Docker Container Networks</a></li>
 </ol>
 
             </div>
@@ -239,7 +211,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/JavaScript/" rel="tag">JavaScript</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                    <a class="has-link-grey -link" href="/tags/DevOps/" rel="tag">DevOps</a>, <a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>, <a class="has-link-grey -link" href="/tags/network/" rel="tag">network</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
                 </div>
             </div>
         </div>
@@ -256,17 +228,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/23/%E5%88%A5%E4%BA%BA%E6%80%8E%E9%BA%BC%E5%B0%8D%E4%BD%A0,%E9%83%BD%E6%98%AF%E4%BD%A0%E6%95%99%E7%9A%84-part1/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">別人怎麼對你，都是你教的 - part 1</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/09/nodejs-zero-downtime/">
-                <span class="level-item">Node.js 如何實現 zero downtime 更新呢?</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/25/docker-swarm-load-balancing/">
+                <span class="level-item">Docker Swarm 網路架構介紹 - load balancing traffic path</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -284,8 +249,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
 <script>
     var disqus_config = function () {
-        this.page.url = 'https://yu-jack.github.io/2020/03/16/javascript-is-compiler-or-interpreter-language/';
-        this.page.identifier = '2020/03/16/javascript-is-compiler-or-interpreter-language/';
+        this.page.url = 'https://yu-jack.github.io/2020/05/25/docker-swarm-service-discovery/';
+        this.page.identifier = '2020/05/25/docker-swarm-service-discovery/';
     };
     (function() {
         var d = document, s = d.createElement('script');  
@@ -332,28 +297,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <span class="has-mr-6">1</span>
         <span>前言</span>
         </a></li><li>
-        <a class="is-flex" href="#編譯語言">
+        <a class="is-flex" href="#container-ip">
         <span class="has-mr-6">2</span>
-        <span>編譯語言</span>
+        <span>Container IP</span>
         </a></li><li>
-        <a class="is-flex" href="#直譯語言">
+        <a class="is-flex" href="#custom-overlay-network">
         <span class="has-mr-6">3</span>
-        <span>直譯語言</span>
-        </a></li><li>
-        <a class="is-flex" href="#簡單總整比較一下">
-        <span class="has-mr-6">4</span>
-        <span>簡單總整比較一下</span>
-        </a></li><li>
-        <a class="is-flex" href="#js-是哪一種">
-        <span class="has-mr-6">5</span>
-        <span>js 是哪一種 ?</span>
+        <span>Custom Overlay Network</span>
         </a></li><li>
         <a class="is-flex" href="#後記">
-        <span class="has-mr-6">6</span>
+        <span class="has-mr-6">4</span>
         <span>後記</span>
         </a></li><li>
         <a class="is-flex" href="#references">
-        <span class="has-mr-6">7</span>
+        <span class="has-mr-6">5</span>
         <span>References</span>
         </a></li></ul>
             </div>
