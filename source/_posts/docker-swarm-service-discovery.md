@@ -1,7 +1,7 @@
 ---
 title: Docker Swarm 網路架構介紹 - Service Discovery
 categories: DevOps
-date: 2020-05-25 21:50:13
+date: 2020-06-02 21:50:13
 tags: [DevOps, network, docker, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
