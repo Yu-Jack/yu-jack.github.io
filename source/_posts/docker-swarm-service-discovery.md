@@ -71,3 +71,45 @@ ingress_sbox 必須知道 10.0.0.x 以及 10.0.0.y 的 MAC 地址在哪裡
 在 container-a/b 中應該有一個地方會把 hello-a 這個 domain 解析成特定的 IP  
 這樣才能讀取到服務, 但是這個設定在哪裡?  
 
+這個設定其實是藏在 Docker Engine 裡面的 DNS Server  
+根據 [Docker 官網 - Swarm Native Service Discovery](https://success.docker.com/article/networking#swarmnativeservicediscovery)  
+在 container query hello-a 的時候  
+會先到 Docker 裡面的 DNS Server 去解析這個域名  
+解析成功後才會返為此域名的 IP  
+
+以官方提供的流程圖來說, Query myservice 這個域名  
+透過 Docker DNS Server 會回傳此域名的 IP 為 10.0.0.3  
+
+![ingress_sbox ARP](/images/docker-swarm/20.png)  
+
+至於詳細設定的部分我翻了老半天都找不到, 這可能要直接去讀 docker 源碼了...  
+
+## 後記  
+
+這樣一來就稍微搞懂 docker 以及 docker swarm 裡面的網路架構流程  
+大致上都是透過以下幾個技術去處理掉整個流程  
+
+1. iptables
+    防火牆管控, 可以導轉流量到應該要去的位置, 或是過濾不要的流量  
+2. IPVS (IP Virtual Server, tool: ipvsadm)
+    Linux 核心擁有的 Load Balancing
+    在上一篇的範例中, 運用在 ingress_sbox ---load balancing---> service  
+3. ARP (Address Resolution Protocol)
+    解析 IP 後取得真正的 MAC Address 用
+    在本篇的範例中, 運用在 container 之間互相溝通
+4. NAT (Network Address Translation, tool: iptables)
+    運用在 iptables 裡面的機制, 可以改變封包傳送端與接收端的 IP 地址  
+    在上一篇的範例中, 運用在 localhost:5000 -> ingress_sbox  
+5. Embedded DNS Server
+    在 container 之中, 自定義的網域會來到這邊做解析, 並取得到自定義網域下的真實 IP  
+    在本篇的範例中, 運用在 query hello-a 域名時  
+
+這邊就記錄下來, 方便以後有個思路可以循著走
+
+## References
+
+1. [Blocking ingress traffic to Docker swarm worker machines](https://ops.tips/blog/blocking-ingress-traffic-to-docker-swarm-worker-machines/)
+2. [iptables](http://wiki.weithenn.org/cgi-bin/wiki.pl?IPTables-Linux_Firewall)
+3. [How Docker Swarm Container Networking Works – Under the Hood](https://neuvector.com/network-security/docker-swarm-container-networking/)
+4. [nsenter 命令簡介](https://staight.github.io/2019/09/23/nsenter%E5%91%BD%E4%BB%A4%E7%AE%80%E4%BB%8B/)
+5. [Docker Swarm Reference Architecture: Exploring Scalable, Portable Docker Container Networks](https://success.docker.com/article/networking)
