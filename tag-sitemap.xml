@@ -478,41 +478,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
-        <lastmod>2020-05-04T14:15:20.649Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/promise/</loc>
-        <lastmod>2020-05-04T14:15:20.649Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/async/</loc>
-        <lastmod>2020-05-04T14:15:20.649Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/await/</loc>
-        <lastmod>2020-05-04T14:15:20.649Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
-        <lastmod>2020-05-10T15:50:50.143Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/DevOps/</loc>
         <lastmod>2020-06-02T13:42:22.621Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -534,8 +499,43 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/JavaScript/</loc>
+        <lastmod>2020-06-05T07:53:33.048Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/promise/</loc>
+        <lastmod>2020-06-05T07:53:33.048Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/async/</loc>
+        <lastmod>2020-06-05T07:53:33.048Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/await/</loc>
+        <lastmod>2020-06-05T07:53:33.048Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/nodejs/</loc>
+        <lastmod>2020-06-05T07:53:33.048Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-06-02T13:42:22.621Z</lastmod>
+        <lastmod>2020-06-05T07:53:33.048Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
