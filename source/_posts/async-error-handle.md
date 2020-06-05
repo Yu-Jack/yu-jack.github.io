@@ -2,7 +2,7 @@
 title: 如何不用 try-catch 去寫 async/await
 categories: JavaScript
 date: 2020-05-04 22:13:27
-tags: [JavaScript, promise, async, await, nodejs]
+tags: [JavaScript, promise, async, await, nodejs, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
 ---
