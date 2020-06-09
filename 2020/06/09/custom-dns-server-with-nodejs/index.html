@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>自建 DNS Server (Node.js) - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言因工作上需要幫忙協助建立一個 DNS Server 去測試以下一個情境當發 request 的時候解析 Domain 成 IP 這一段如果 timeout 或是時間太久的話, 相關發 request 的套件會如何處理 exception   安裝教學在安裝之前, 請先確認是否已經有安裝 Node.js, 有的話可以繼續往下看    mkdir nodejs-dns-server   cd no">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自建 DNS Server (Node.js)">
+<meta property="og:url" content="https://yu-jack.github.io/2020/06/09/custom-dns-server-with-nodejs/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言因工作上需要幫忙協助建立一個 DNS Server 去測試以下一個情境當發 request 的時候解析 Domain 成 IP 這一段如果 timeout 或是時間太久的話, 相關發 request 的套件會如何處理 exception   安裝教學在安裝之前, 請先確認是否已經有安裝 Node.js, 有的話可以繼續往下看    mkdir nodejs-dns-server   cd no">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-06-09T06:36:34.000Z">
+<meta property="article:modified_time" content="2020-06-09T06:55:30.144Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="nodejs">
+<meta property="article:tag" content="w3HexSchool">
+<meta property="article:tag" content="dns">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="自建 DNS Server (Node.js)" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-06-09T06:36:34.000Z">2020-06-09</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    5 分鐘 閱讀文 (大約 708 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                自建 DNS Server (Node.js)
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>因工作上需要幫忙協助建立一個 DNS Server 去測試以下一個情境<br>當發 request 的時候解析 Domain 成 IP 這一段<br>如果 timeout 或是時間太久的話, 相關發 request 的套件會如何處理 exception  </p>
+<h2><span id="安裝教學">安裝教學</span></h2><p>在安裝之前, 請先確認是否已經有安裝 Node.js, 有的話可以繼續往下看  </p>
+<ol>
+<li><code>mkdir nodejs-dns-server</code>  </li>
+<li><code>cd nodejs-dns-server</code>  </li>
+<li><code>npm install native-dns</code>  </li>
+<li>建立檔案, dns.js   <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dns = <span class="built_in">require</span>(<span class="string">'native-dns'</span>);</span><br><span class="line"><span class="keyword">const</span> server = dns.createServer();</span><br><span class="line"></span><br><span class="line">server.on(<span class="string">'request'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request, response</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// console.log(request)</span></span><br><span class="line">    response.answer.push(dns.A(&#123;</span><br><span class="line">        name: request.question[<span class="number">0</span>].name,</span><br><span class="line">        address: <span class="string">'你想要解析後的 IP'</span>,</span><br><span class="line">        ttl: <span class="number">600</span>,</span><br><span class="line">    &#125;));</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        response.send();</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, buff, req, res</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err.stack);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.serve(<span class="number">53</span>);</span><br></pre></td></tr></table></figure></li>
+<li><code>node dns.js</code></li>
+</ol>
+<p>這樣就建立出一個 DNS Server<br>另外要注意的是, DNS Server 預設是 UDP 53 port 哦！  </p>
+<h2><span id="測試">測試</span></h2><p>測試有分成兩種方式, 擇一即可  </p>
+<ol>
+<li>更改發 request 套件時用的 dns server</li>
+<li>更改網路的 dns 設定</li>
+</ol>
+<h3><span id="更改發-request-套件時用的-dns-server">更改發 request 套件時用的 dns server</span></h3><p>這邊測試用 Node.js 的 Axios 去進行測試<br>這裡是透過 interceptors 去攔截 Request 然後透過自建 DNS 去解析出 IP<br>相關程式如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dns = <span class="built_in">require</span>(<span class="string">"native-dns"</span>);</span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"><span class="keyword">const</span> https = <span class="built_in">require</span>(<span class="string">"https"</span>)</span><br><span class="line"><span class="keyword">const</span> net = <span class="built_in">require</span>(<span class="string">"net"</span>);</span><br><span class="line"><span class="keyword">const</span> URL = <span class="built_in">require</span> (<span class="string">"url"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolveARecord</span>(<span class="params">hostname, dnsServer</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> question = dns.Question(&#123;</span><br><span class="line">            name: hostname,</span><br><span class="line">            type: <span class="string">"A"</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">var</span> request = dns.Request(&#123;</span><br><span class="line">            question: question,</span><br><span class="line">            server: &#123; <span class="attr">address</span>: dnsServer, <span class="attr">port</span>: <span class="number">53</span>, <span class="attr">type</span>: <span class="string">"udp"</span> &#125;,</span><br><span class="line">            timeout: <span class="number">2000</span></span><br><span class="line">        &#125;);</span><br><span class="line">        request.on(<span class="string">"timeout"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Timeout in making request"</span>));</span><br><span class="line">        &#125;);</span><br><span class="line">        request.on(<span class="string">"message"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, response</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// Resolve using the first populated A record</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> response.answer) &#123;</span><br><span class="line">                <span class="keyword">if</span> (response.answer[i].address) &#123;</span><br><span class="line">                    resolve(response.answer[i]);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        request.on(<span class="string">"end"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Unable to resolve hostname"</span>));</span><br><span class="line">        &#125;);</span><br><span class="line">        request.send();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">axios.interceptors.request.use(<span class="function"><span class="keyword">function</span> (<span class="params">config</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> url = URL.parse(config.url);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!config.dnsServer || net.isIP(url.hostname)) &#123;</span><br><span class="line">        <span class="comment">// Skip</span></span><br><span class="line">        <span class="keyword">return</span> config;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> resolveARecord(url.hostname, config.dnsServer).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">            config.headers = config.headers || &#123;&#125;;</span><br><span class="line">            config.headers.Host = url.hostname; <span class="comment">// put original hostname in Host header</span></span><br><span class="line"></span><br><span class="line">            url.hostname = response.address;</span><br><span class="line">            <span class="keyword">delete</span> url.host; <span class="comment">// clear hostname cache</span></span><br><span class="line">            config.url = URL.format(url);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> config;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">axios.get(<span class="string">`https://hostA.examplewqeeqweqweqwe.org`</span>, &#123; <span class="attr">httpsAgent</span>: agent, <span class="attr">dnsServer</span>: <span class="string">'127.0.0.1'</span> &#125;).then(<span class="function">(<span class="params">&#123;data&#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(error)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>這樣一來, 當對此 domain <code>hostA.examplewqeeqweqweqwe.org</code> 發 request 的時候<br>就會被導入到你在上面 <code>dns.js</code> 程式輸入的任何 IP 了  </p>
+<h3><span id="更改網路的-dns-設定">更改網路的 dns 設定</span></h3><p>此設定要注意, 因為是改 wifi 設定<br>所以所有的 domain 都會透過自建的 dns server 去解析<br>所以假設你 dns server 給的 ip 是 1.1.1.1<br>那麼你用瀏覽器開的 youtube.com 也會被解析成 1.1.1.1<br>然後就連到 1.1.1.1 而不會連線到真正 youtube.com 的 IP 了  </p>
+<p>設定方式, 這邊只介紹 Mac 的設定方法  </p>
+<ol>
+<li>點擊 System Preferences &gt; Network 會到連線設定的地方  </li>
+<li>並點選 Advanced (進階), 會看到上面有一排 Wi-Fi TCP/IP DNS 等等的 Tab  </li>
+<li>點入 DNS 這個 Tab  </li>
+<li>點選 <code>+</code> 後輸入 127.0.0.1 後按下 OK 以及套用即可完成<br> <img src="/images/custom-dns/01.png" alt="Wi-Fi DNS Setting"></li>
+<li>回復設定時, 先點選 127.0.0.1 在按下 <code>-</code> 就可以, 系統會自己填入預設用的 dns server IP</li>
+</ol>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/dns/" rel="tag">dns</a>, <a class="has-link-grey -link" href="/tags/nodejs/" rel="tag">nodejs</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/06/02/docker-swarm-service-discovery/">
+                <span class="level-item">Docker Swarm 網路架構介紹 - Service Discovery</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="liker">
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/06/09/custom-dns-server-with-nodejs/';
+        this.page.identifier = '2020/06/09/custom-dns-server-with-nodejs/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#安裝教學">
+        <span class="has-mr-6">2</span>
+        <span>安裝教學</span>
+        </a></li><li>
+        <a class="is-flex" href="#測試">
+        <span class="has-mr-6">3</span>
+        <span>測試</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#更改發-request-套件時用的-dns-server">
+        <span class="has-mr-6">3.1</span>
+        <span>更改發 request 套件時用的 dns server</span>
+        </a></li><li>
+        <a class="is-flex" href="#更改網路的-dns-設定">
+        <span class="has-mr-6">3.2</span>
+        <span>更改網路的 dns 設定</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
