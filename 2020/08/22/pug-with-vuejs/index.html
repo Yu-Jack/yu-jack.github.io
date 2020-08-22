@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>前後端尚未分離前導致的效能問題 (nodejs + pug + vue) - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言在 vue 剛出來那時候, 還不盛行前後端分離的架構在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構   在 node.js render 的時候, 給予一個 template然後在此 template 去寫 vue 的元件來達成這個混合架構但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題   如何重現通常在使用 nodejs +">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前後端尚未分離前導致的效能問題 (nodejs + pug + vue)">
+<meta property="og:url" content="https://yu-jack.github.io/2020/08/22/pug-with-vuejs/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言在 vue 剛出來那時候, 還不盛行前後端分離的架構在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構   在 node.js render 的時候, 給予一個 template然後在此 template 去寫 vue 的元件來達成這個混合架構但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題   如何重現通常在使用 nodejs +">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-08-22T02:33:54.000Z">
+<meta property="article:modified_time" content="2020-08-22T07:03:34.978Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="w3HexSchool">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="pug">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="前後端尚未分離前導致的效能問題 (nodejs + pug + vue)" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-08-22T02:33:54.000Z">2020-08-22</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Vue/">Vue</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分鐘 閱讀文 (大約 836 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                前後端尚未分離前導致的效能問題 (nodejs + pug + vue)
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>在 vue 剛出來那時候, 還不盛行前後端分離的架構<br>在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構  </p>
+<p>在 node.js render 的時候, 給予一個 template<br>然後在此 template 去寫 vue 的元件來達成這個混合架構<br>但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題  </p>
+<h2><span id="如何重現">如何重現</span></h2><p>通常在使用 nodejs + pug render 的情況下, template 內容大致如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    div.content</span><br><span class="line">        p this is message</span><br></pre></td></tr></table></figure>
+<p>加了 vue 之後大致上會變成這樣  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    content-component(message&#x3D;&quot;&quot;)</span><br></pre></td></tr></table></figure>
+<p>這裡隱藏了一個會影響效能的 Bug<br>但我們先來說說, 加上了 pug 的情況下, 是如何運行<br>首先, 透過 nodejs + pug 會先去渲染成 html<br>這個 html 就是在進入頁面的時候, 伺服器給予的<br>所以上面的內容會變成如下  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content-component</span> <span class="attr">message</span>=<span class="string">"this is message"</span>&gt;</span><span class="tag">&lt;/<span class="name">content-component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>你的瀏覽器就會接收到以上的內容<br>接著 vue 就會開始去 parse content-component<br>但是當 message 的內容過大的時候, 就會導致 vue parse html 時間過長  </p>
+<h2><span id="實際案例">實際案例</span></h2><p>這裡用一個例子舉例, 在後端我建構一個這樣的物件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let obj &#x3D; &#123;&#125;</span><br><span class="line">for (let i &#x3D; 0; i &lt; 200000; i++) &#123;</span><br><span class="line">    obj[i] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;www&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;sss&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;aaa&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;ssssqwe&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwwww&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwsss&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwaaa&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwssssqwe&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 並在此 express route 去 render 出 pug</span><br><span class="line">app.get(&#39;test&#39;, (req, res) &#x3D;&gt; &#123;</span><br><span class="line">    res.render(&quot;index&quot;, &#123;messge: JSON.stringify(obj)&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>這裡可以看到當這個 props 給太大, 導致 html 的大小達到  89.6 MB<br><img src="/images/pug-vue/version_01-01.png" alt></p>
+<p>因為這裡太大無法顯示, 這裡用小一點的看一下從 Server 回傳的 HTML 如下<br>所以當資料太大放在 props 的時候, 就會導致 html 大小越來越大<br><img src="/images/pug-vue/version_01-01-a.png" alt></p>
+<p>接著用 chrome 的 performance 去分析效能會看到 Scripting 就高達 14s<br><img src="/images/pug-vue/version_01-02.png" alt></p>
+<p>接著再往下看是哪些 Scripting 影響到要執行那麼久<br>這裡就看到是 vue parse html 需要花上 14s, 才能 parse 完成<br>也就是你要等超過 14s, 你才看得到 component 的內容<br><img src="/images/pug-vue/version_01-03.png" alt></p>
+<h2><span id="改善方法">改善方法</span></h2><p>要改善這個效能問題, 可以透過不要在 pug 裡面直接用 props 的方式給予值<br>改成在 mounted 或是其他 life cycle 情況下去取得值還會更快<br>在 vue template 裡面就會變成這樣  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">import axios from &quot;axios&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">    data () &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            message: &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        axios.get(&quot;&#x2F;test-get-data&quot;).then(response &#x3D;&gt; &#123;</span><br><span class="line">            this.message &#x3D; response.data</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>在 pug 中就可以把 props 拿掉<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    content-component</span><br></pre></td></tr></table></figure></p>
+<p>這樣解析成 html 就變成下面這樣, 就可以讓 HTML 大小變小<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content-component</span>&gt;</span><span class="tag">&lt;/<span class="name">content-component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>從這裡可以看到大小縮小, 後來用 mounted 取得資料是 53MB<br>等於說我們讓 vue 少去 parse 這 53MB 的字串了<br><img src="/images/pug-vue/version_02-01.png" alt></p>
+<p>然後 Scripting 的時間直接變成剩下 873 ms<br><img src="/images/pug-vue/version_02-02.png" alt></p>
+<p>往後繼續看 parse html 只剩 2ms<br><img src="/images/pug-vue/version_02-03.png" alt></p>
+<h2><span id="後記">後記</span></h2><p>以前 vue 1.0 剛出來的時候, 先暫時套用在某個專案上<br>後來資料量大了才發現不能透過這樣 render 會導致 html 太大<br>但現在大多都是前後端分離的架構, 所以會比較少遇到這個問題<br>剛好最近在舊的專案上面遇到這個 Bug, 順帶紀錄一下</p>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/pug/" rel="tag">pug</a>, <a class="has-link-grey -link" href="/tags/vue/" rel="tag">vue</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/06/26/ssh-broken-how-to-fix/">
+                <span class="level-item">伺服器的 ssh 設定被弄壞了, 無法登入怎麼辦?</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="liker">
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/08/22/pug-with-vuejs/';
+        this.page.identifier = '2020/08/22/pug-with-vuejs/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#如何重現">
+        <span class="has-mr-6">2</span>
+        <span>如何重現</span>
+        </a></li><li>
+        <a class="is-flex" href="#實際案例">
+        <span class="has-mr-6">3</span>
+        <span>實際案例</span>
+        </a></li><li>
+        <a class="is-flex" href="#改善方法">
+        <span class="has-mr-6">4</span>
+        <span>改善方法</span>
+        </a></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">5</span>
+        <span>後記</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
