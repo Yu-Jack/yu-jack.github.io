@@ -2,7 +2,7 @@
 title: unit test 該怎麼用? 又該如何在 express 開發上實作 unit test?
 categories: Test
 date: 2019-12-10 23:02:14
-tags: [Test, unit test, sinon]
+tags: [Test, unit test, sinon, test double]
 header-img: /images/banner.jpg
 catalog: true
 ---
