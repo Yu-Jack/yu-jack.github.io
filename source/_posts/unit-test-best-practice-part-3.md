@@ -12,7 +12,6 @@ catalog: true
 上一篇我們會討論了 [如何從什麼層面去思考一個好的 Unit Test?](/2020/09/21/unit-test-best-practice-part-2/)
 接著我們討論到寫好 unit test 前需要先看看重構  
 
-那其實有一件事情非常重要, 也就是『重構』  
 書中提到 Unit Test 和 Code Base 是彼此非常糾纏的  
 原文是這樣寫道  
 > Unit tests and the underlying code are highly intertwined,  
@@ -39,6 +38,8 @@ business logic 並不存在於 Controller 之中
 根據這兩種維度, 可以分辨出哪一段程式碼是最重要的  
 就可以針對這部份進行 Unit Test 或是重構  
 像下圖中左下角沒有太大作用會影響 Business Logic 的話, 可以不用在測試的優先序前面幾位  
+譬如說是 getter 或是 setter 的程式  
+
 而右上是過度複雜的部分  
 當一段程式碼把流程和商業邏輯全部砸在一塊的時候  
 想必非常難懂, 所以要往兩邊的維度去拆分, 如下圖  
@@ -50,7 +51,8 @@ business logic 並不存在於 Controller 之中
 
 ![圖三 - hexagonal architecture](/images/unit-test/unit-test-best-practice-05.png)
 
-舉例來說, 以上面『使用者輸入正確帳號密碼, 登入成功』的例子來說  
+舉例來說明一下 hexagonal architecture 是什麼概念  
+以上面『使用者輸入正確帳號密碼, 登入成功』的例子來說  
 我們再多加一小段行為變成『使用者輸入正確帳號密碼, 登入成功, 並寄信給使用者通知登入成功』  
 我們把流程拆成如下  
 1. 撈取資料庫資料
@@ -127,13 +129,11 @@ describe("when user type correct password, user should be allow to login", () =>
 那因為這個只是示意一下在這種情況下該如何寫測試  
 所以實際上跑 express 並不會這樣測試  
 但這樣測試的話, 其實某方面來說就會變成 Integration test 了  
-詳細的 Integration test部分下一篇會介紹到  
+詳細的 Integration test 部分下一篇會介紹到  
 
 那麼 ...... 如果我們要寫好一個 unit test, 那我們就勢必得先重構上面的程式碼  
 這邊先以簡單拆法為主, 所以可能不是非常完美, 但用例子解釋就足夠了  
 透過這樣拆成模組化, 到時候再使用類似 sinon 的 mock 工具時會更輕易能夠做 mock  
-如果只是單純 `module.exports = function() {}` 這樣的話  
-其實會需要額外套件和處理才有辦法成功 mock, 所以這邊是建議都弄成 Object 的形式  
 
 ```js
 // loginController.js
@@ -174,8 +174,11 @@ module.exports = {
 從上面例子可以看到 hash 已經不會出現在 loginController 的流程控制中了  
 而是會出現在管控 business logic 的程式碼裡面  
 這樣也看得出來我們最重要的 business logic 是位在 userService 裡面了  
+用六角形圖來看會變這樣  
 
-根據上一篇, 好的 Unit test 要『專注在最重要的程式』  
+<img src="/images/unit-test/unit-test-best-practice-13.png" width=450/>
+
+接著根據上一篇, 好的 Unit test 要『專注在最重要的程式』  
 我們應該要測試的地方就是在這塊 business logic  
 這樣拆分就有達到上圖四的切割了  
 

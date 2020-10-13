@@ -14,7 +14,7 @@ catalog: true
 
 ## 如何寫出一個好的 Unit Test
 
-我們拿上一篇重構完成之後的程式碼來寫寫看 Unit Test  
+我們拿上一篇重構完成之後的程式碼來看看 Unit Test 的結構  
 
 ```js
 describe("when user type correct password, user should be allow to login", () => {
@@ -33,26 +33,18 @@ describe("when user type correct password, user should be allow to login", () =>
 ```
 
 在此範例中看到了 arrange, act 以及 assert, 這是著名的 3A pattern  
-然後透過上一個重構的步驟, 把重要的 business logic 抽出來了  
-接著要針對此 business logic 進行測試  
 下面來解釋各個步驟代表什麼意思  
 
 ### Arrange
 
 這是準備階段, 準備一些關於待測程式的資料以及結果  
 通常這個階段會有很大量的程式碼存在  
-包含設置 Test Double 去 Mock/Stub 一些外部資源, 像是資料庫或第三方 API 之類  
-Mock/Stub 就像是前面提到過的範例, 可以更改程式回傳的邏輯  
-詳細可以參考之前寫過一篇有介紹 [Test Double](https://yu-jack.github.io/2019/12/10/unit-test-express/#test-double-測試替身)  
+包含設置 Test Double 在資料庫或第三方 API 之類  
+詳細 Test Double 用途可以參考之前寫過一篇有介紹 [Test Double](https://yu-jack.github.io/2019/12/10/unit-test-express/#test-double-測試替身)  
 
 ### Act
 
 在這個階段, 通常只會有一行程式碼  
-這一行程式碼, 就是代表外部使用的行為  
-像是範例中, 使用者是做『輸入帳號密碼』這個行為, 所以我們只會呼叫 `login` 而已  
-而如果是 Unit of Code 的情況下, 通常也只會有一行程式碼  
-像是測試 `hash` function 的行為, 我們也只會呼叫 `hash`  
-
 這階段出現多行程式是不建議的做法, 會帶來以下幾項缺點  
 1. 當 Unit Test 失敗, 很難分辨到底是呼叫哪一個行為導致失敗
 2. Code Base 可能設計不夠良好, 沒有足夠的封裝

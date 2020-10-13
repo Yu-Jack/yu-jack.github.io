@@ -58,7 +58,7 @@ catalog: true
 但當把所有程式加上 Unit Test, 哪天要重構功能時, 大部分的 Unit Test 都不能跑了』
 
 這裡定義一下重構為『在不改變程式外在行為的前提之下，改變程式內部結構以提升設計品質』  
-Teddy 的投影片裡也有提到[重構的定義](https://www.slideshare.net/teddysoft/ss-238494517?fbclid=IwAR3zNqIevurDkP0pz3FbidPNgYG1wsO7YcatIIUoKf6KRtXsp_xDTYZzFp4)  
+可以看看在 Teddy 的投影片裡提到的[重構的定義](https://www.slideshare.net/teddysoft/ss-238494517?fbclid=IwAR3zNqIevurDkP0pz3FbidPNgYG1wsO7YcatIIUoKf6KRtXsp_xDTYZzFp4)  
 
 假設 Unit Test 測試的粒度, 以上篇提到的 unit of code 中的例子, 測試『hash 使用者密碼』
 原本程式碼如下
@@ -94,7 +94,7 @@ module.exports = {
 }
 ```
 
-測試程式碼調整如下  
+測試程式碼就需要進行調整  
 ```js
 const hash = require("hash.js")
 it("when give the string to hash 256 should return sha256 string", () => {

@@ -9,8 +9,12 @@ catalog: true
 
 ## 前言
 
+<span style="color: green">[2020-10-13 Update]</span> Unit Test 定義可以參考筆者新寫的一篇  
+[Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?](/2020/09/14/unit-test-best-practice-part-1/)  
+以下文章內容提到的 unit test 在上述文章的定義上比較偏向於 Integration Test  
+
 <span style="color:green">[2019-12-22 Update]</span>
-在[express unit test 一些技巧教學以及困難點](https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/)裡面有針對一些技巧做說明  
+在[ express unit test 一些技巧教學以及困難點](https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/)裡面有針對一些技巧做說明  
 以及增加測試涵蓋率的使用方式
 
 在很久很久之前有提到過 [unit test](https://yu-jack.github.io/2017/11/01/how-to-test/)  

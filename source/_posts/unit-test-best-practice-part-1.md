@@ -16,12 +16,12 @@ catalog: true
 看完這本書對於 Unit Test 的認知有很大的幫助  
 接下來的文章會成以下幾篇大致介紹書中內容  
 
-1. 第一篇我們會討論到 [Unit Test 定義是什麼, 涵蓋的範圍又是哪些?](/2020/09/14/unit-test-best-practice-part-1/)
-2. 第二篇我們會討論到 [如何從什麼層面去思考一個好的 Unit Test?](/2020/09/21/unit-test-best-practice-part-2/)
-3. 第三篇我們會討論到 [為何 Unit Test 前需要先重構原始碼? ](/2020/09/28/unit-test-best-practice-part-3/)
-4. 第四篇我們會討論到 [如何寫出一個好的 Unit Test?](/2020/10/05/unit-test-best-practice-part-4/)
-5. 第五篇我們會討論到 [如何有效使用 Test Double](/2020/10/12/unit-test-best-practice-part-5/)
-    這篇會開始討論到 Integration Test 定義
+1. 第一篇會討論到 [Unit Test 定義是什麼, 涵蓋的範圍又是哪些?](/2020/09/14/unit-test-best-practice-part-1/)
+2. 第二篇會討論到 [如何從什麼層面去思考一個好的 Unit Test?](/2020/09/21/unit-test-best-practice-part-2/)
+3. 第三篇會討論到 [為何 Unit Test 前需要先重構原始碼? ](/2020/09/28/unit-test-best-practice-part-3/)
+4. 第四篇會討論到 [如何寫出一個好的 Unit Test?](/2020/10/05/unit-test-best-practice-part-4/)
+5. 第五篇會討論到 [如何有效使用 Test Double](/2020/10/12/unit-test-best-practice-part-5/)
+    這篇會開始談到 Integration Test 定義
 
 文章內有任何問題或是不清楚的, 歡迎一起來討論！  
 不過因為本書內容量實在太多, 沒辦法一一介紹, 所以只介紹筆者覺得很精華的點  
@@ -42,7 +42,7 @@ catalog: true
 當新增一個功能的時候可能會因為舊有架構導致新功能難以實作, 增加測試難度以及開發時間  
 其實這些可以透過測試去把專案維持著品質  
 而常用的測試包含 Unit Test, Integration Test 以及 E2E Test  
-但這邊我們就專注在 Unit Test 去討論吧！後面有文章談到 Integration Test  
+但這邊就專注在 Unit Test 去討論吧！後面有文章談到 Integration Test  
 
 ## 什麼是 Unit Test?
 
@@ -68,14 +68,14 @@ catalog: true
 但要怎麼組成 behavior ? 是透過很多 unit of code 組合而成的
 
 以此情境來說  
-我們把『輸入正確帳號密碼，登入成功』拆成程式碼去解讀  
+把『輸入正確帳號密碼，登入成功』拆成程式碼去解讀  
 會有以下程式碼的部分, 假設每一個部分都有相對應得程式碼    
 1. 撈取資料庫資料
 2. hash 使用者密碼
 3. 比對 hash 過後的使用者密碼和資料庫的密碼是否一致
 
-如果我們測試的粒度是測試『hash 使用者密碼』, 那就是 unit of code  
-因為我們測試的東西, 並不是使用者會專注的結果, 而是我們開發者會專注的結果  
+如果測試的粒度是測試『hash 使用者密碼』, 那就是 unit of code  
+因為測試的東西, 並不是使用者會專注的結果, 而是開發者會專注的結果  
 使用者只關注輸入帳號密碼能不能成功, 可能也不管你是不是用 hash, 這就是不同面向的差異  
 而除了測試的粒度不同之外  
 unit of code 和 unit of behavior 所定義的獨立性也有所不同  
@@ -120,7 +120,7 @@ a.test(15) // hihihi
 可以參考[探討單元測試和整合測試的涵蓋範圍](https://ithelp.ithome.com.tw/articles/10229734)
 
 其實 unit of code 和 unit of behavior 各有好壞  
-並不是說哪個好, 就一定要用哪個, 我們來看看各個優缺點是什麼  
+並不是說哪個好, 就一定要用哪個, 來看看各個優缺點是什麼  
 
 以下說的 mock 是 Test Double 的一種  
 
@@ -164,6 +164,6 @@ a.test(15) // hihihi
 
 不過依照本書的立場, 大多數的專案是建議走 unit of behavior 的方式進行  
 
-從這篇我們知道了 Unit Test 是什麼以及測試的範圍  
-但我們要怎麼知道『一個好的 Unit Test』是什麼樣子?  
+從這篇知道了 Unit Test 是什麼以及測試的範圍  
+但要怎麼知道『一個好的 Unit Test』是什麼樣子?  
 來看看下一篇[什麼樣是一個好的 Unit Test? 該從怎麼層面思考?](/2020/09/21/unit-test-best-practice-part-2/)
