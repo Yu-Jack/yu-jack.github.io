@@ -14,7 +14,7 @@ catalog: true
 正文開始 ...
 某天有人問我  
 
-某: SSL Pinning 是什麼東西啊?  
+某: SSL Pinning (Certificate Pinning) 是什麼東西啊?  
 我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制  
 某: ...... 你這樣說最好是有人聽得懂  
 我: 我錯了 ... 給點機會讓我重新解釋解釋  
@@ -115,7 +115,8 @@ A 就透過這種加密方法把 HI 這個詞，往後位移 2 個位子，就�
 
 ## 什麼是 SSL Pinning ?
 
-前面有提到一個概念，公私鑰是一對一配對的  
+SSL Pinning 也可以稱為 Certificate Pinning  
+而前面有提到一個概念，公私鑰是一對一配對的  
 所以同一組公私鑰出來的憑證，這個憑證裡面的公鑰絕對是不會變的  
 而 SSL Pinning 就是要把 SSL 固定起來  
 這個固定就是利用公鑰的特性達到的  
