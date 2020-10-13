@@ -19,21 +19,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言[2019-12-22 Update]在express unit test 一些技巧教學以及困難點裡面有針對一些技巧做說明以及增加測試涵蓋率的使用方式 在很久很久之前有提到過 unit test但那時候只有針對簡單到不能在簡單的 function 進行 unit test想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面">
+    <meta name="description" content="前言[2020-10-13 Update] Unit Test 定義可以參考筆者新寫的一篇Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?以下文章內容提到的 unit test 在上述文章的定義上比較偏向於 Integration Test   [2019-12-22 Update]在 express unit test 一些技巧教學以及困難點裡面有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="unit test 該怎麼用? 又該如何在 express 開發上實作 unit test?">
 <meta property="og:url" content="https://yu-jack.github.io/2019/12/10/unit-test-express/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言[2019-12-22 Update]在express unit test 一些技巧教學以及困難點裡面有針對一些技巧做說明以及增加測試涵蓋率的使用方式 在很久很久之前有提到過 unit test但那時候只有針對簡單到不能在簡單的 function 進行 unit test想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面">
+<meta property="og:description" content="前言[2020-10-13 Update] Unit Test 定義可以參考筆者新寫的一篇Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?以下文章內容提到的 unit test 在上述文章的定義上比較偏向於 Integration Test   [2019-12-22 Update]在 express unit test 一些技巧教學以及困難點裡面有">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-12-10T15:02:14.000Z">
-<meta property="article:modified_time" content="2020-10-12T16:26:00.999Z">
+<meta property="article:modified_time" content="2020-10-13T12:01:47.617Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="Test">
 <meta property="article:tag" content="unit test">
-<meta property="article:tag" content="sinon">
 <meta property="article:tag" content="test double">
+<meta property="article:tag" content="sinon">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
 
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    26 分鐘 閱讀文 (大約 3937 個字)
+                    27 分鐘 閱讀文 (大約 4008 個字)
                 </span>
                 
                 
@@ -176,7 +176,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p><span style="color:green">[2019-12-22 Update]</span><br>在<a href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/">express unit test 一些技巧教學以及困難點</a>裡面有針對一些技巧做說明<br>以及增加測試涵蓋率的使用方式</p>
+                <h2><span id="前言">前言</span></h2><p><span style="color: green">[2020-10-13 Update]</span> Unit Test 定義可以參考筆者新寫的一篇<br><a href="/2020/09/14/unit-test-best-practice-part-1/">Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?</a><br>以下文章內容提到的 unit test 在上述文章的定義上比較偏向於 Integration Test  </p>
+<p><span style="color:green">[2019-12-22 Update]</span><br>在<a href="https://yu-jack.github.io/2019/12/22/unit-test-express-implement-troubleshooting/"> express unit test 一些技巧教學以及困難點</a>裡面有針對一些技巧做說明<br>以及增加測試涵蓋率的使用方式</p>
 <p>在很久很久之前有提到過 <a href="https://yu-jack.github.io/2017/11/01/how-to-test/">unit test</a><br>但那時候只有針對簡單到不能在簡單的 function 進行 unit test<br>想必大家一定也不太了解 unit test 究竟要怎麼用在真正開發上面  </p>
 <a id="more"></a>
 <p>在真正開發上面要用到 unit test<br>一定會牽扯到讀取資料庫、讀取檔案、呼叫 API 等等複雜邏輯<br>難道在做測試的時候，我還要確保我的 API 可以呼叫<br>資料庫可以進行連線等等後，我才能確認我的程式是否正確嗎?<br>在這種情況下要做 unit test 真的是一件不簡單的事情<br>更別說 test cases 跑到一半<br>有人把你測試環境的 database 亂改動，或是 API  Server 的分支改掉這種鳥事了…  </p>

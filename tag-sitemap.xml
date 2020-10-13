@@ -58,27 +58,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/disk/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/certificate/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/acm/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -101,6 +80,27 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/header/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/disk/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/certificate/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/acm/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -268,20 +268,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/TapPay/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/Payment-Gateway/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/vuex/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -297,6 +283,20 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/todo-list/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/TapPay/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/Payment-Gateway/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -499,14 +499,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
+        <loc>https://yu-jack.github.io/tags/jenkins/</loc>
         <lastmod>2020-07-18T09:07:34.031Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/jenkins/</loc>
+        <loc>https://yu-jack.github.io/tags/DevOps/</loc>
         <lastmod>2020-07-18T09:07:34.031Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -515,13 +515,6 @@
     <url>
         <loc>https://yu-jack.github.io/tags/CI-CD/</loc>
         <lastmod>2020-07-18T09:07:34.031Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-08-22T07:03:34.978Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -542,28 +535,49 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/Test/</loc>
-        <lastmod>2020-10-12T16:26:05.042Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/unit-test/</loc>
-        <lastmod>2020-10-12T16:26:05.042Z</lastmod>
+        <lastmod>2020-10-13T12:01:47.617Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/sinon/</loc>
-        <lastmod>2020-10-12T16:26:05.042Z</lastmod>
+        <lastmod>2020-10-13T12:01:47.617Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/test-double/</loc>
-        <lastmod>2020-10-12T16:26:05.042Z</lastmod>
+        <lastmod>2020-10-13T12:24:47.226Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
+        <lastmod>2020-10-13T12:31:10.361Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/test/</loc>
+        <lastmod>2020-10-13T12:31:10.361Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/unit-test/</loc>
+        <lastmod>2020-10-13T12:31:10.361Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/refactor/</loc>
+        <lastmod>2020-10-13T12:31:10.361Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

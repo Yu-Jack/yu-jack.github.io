@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Unit Test 實踐守則 (四) - 如何寫出一個好的 Unit Test? - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言上一篇我們會討論了 為何 Unit Test 前需要先重構原始碼? 接著我們就要進入正題了   如何寫出一個好的 Unit Test我們拿上一篇重構完成之後的程式碼來看看 Unit Test 的結構   12345678910111213describe(&quot;when user type correct password, user should be allow to login&quot;, () &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unit Test 實踐守則 (四) - 如何寫出一個好的 Unit Test?">
+<meta property="og:url" content="https://yu-jack.github.io/2020/10/05/unit-test-best-practice-part-4/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言上一篇我們會討論了 為何 Unit Test 前需要先重構原始碼? 接著我們就要進入正題了   如何寫出一個好的 Unit Test我們拿上一篇重構完成之後的程式碼來看看 Unit Test 的結構   12345678910111213describe(&quot;when user type correct password, user should be allow to login&quot;, () &#x3D;">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-10-05T02:22:57.000Z">
+<meta property="article:modified_time" content="2020-10-13T12:09:20.896Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="w3HexSchool">
+<meta property="article:tag" content="test">
+<meta property="article:tag" content="unit test">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+    <style>
+        .content img {
+            display: block;   
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Unit Test 實踐守則 (四) - 如何寫出一個好的 Unit Test?" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-10-05T02:22:57.000Z">2020-10-05</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Test/">Test</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    11 分鐘 閱讀文 (大約 1627 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Unit Test 實踐守則 (四) - 如何寫出一個好的 Unit Test?
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>上一篇我們會討論了 <a href="/2020/09/28/unit-test-best-practice-part-3/">為何 Unit Test 前需要先重構原始碼? </a><br>接著我們就要進入正題了  </p>
+<h2><span id="如何寫出一個好的-unit-test">如何寫出一個好的 Unit Test</span></h2><p>我們拿上一篇重構完成之後的程式碼來看看 Unit Test 的結構  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">"when user type correct password, user should be allow to login"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">const</span> userInputPassword = <span class="string">"123"</span></span><br><span class="line">    <span class="keyword">const</span> hashPassword = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    <span class="keyword">const</span> userService = <span class="built_in">require</span>(<span class="string">"./userService.js"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = userService.isPasswordMatch(userInputPassword, hashPassword)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>在此範例中看到了 arrange, act 以及 assert, 這是著名的 3A pattern<br>下面來解釋各個步驟代表什麼意思  </p>
+<h3><span id="arrange">Arrange</span></h3><p>這是準備階段, 準備一些關於待測程式的資料以及結果<br>通常這個階段會有很大量的程式碼存在<br>包含設置 Test Double 在資料庫或第三方 API 之類<br>詳細 Test Double 用途可以參考之前寫過一篇有介紹 <a href="https://yu-jack.github.io/2019/12/10/unit-test-express/#test-double-測試替身">Test Double</a>  </p>
+<h3><span id="act">Act</span></h3><p>在這個階段, 通常只會有一行程式碼<br>這階段出現多行程式是不建議的做法, 會帶來以下幾項缺點  </p>
+<ol>
+<li>當 Unit Test 失敗, 很難分辨到底是呼叫哪一個行為導致失敗</li>
+<li>Code Base 可能設計不夠良好, 沒有足夠的封裝</li>
+</ol>
+<h3><span id="assert">Assert</span></h3><p>在 Unit of Code 的結果中, 通常只會有一個單一結果要驗證<br>但在 Unit of Behavior 的結果中, 是會有多種結果需要驗證<br>所以在這個階段, 程式碼不一定只會有一行, 是會有多行的可能性<br>取決於你怎麼定義你的 Unit Test 的結果  </p>
+<p>除了以上 3A Pattern 之外, 其實還有最重要的部分<br>也就是 unit test 的名字內容寫法  </p>
+<p>因為這個結果是給人在看的, 萬一寫的不清不楚<br>接手的人也不知道這個 unit test 到底在測試什麼東西<br>就會間接導致, 接手的人不知道這個 unit test 測試什麼, 於是寫了一個新的 unit test<br>結果這兩個 unit tes 在測試一模一樣的東西, 這就有點尷尬了<br>那我們來說說怎麼寫比較適合  </p>
+<h3><span id="unit-test-的名字內容寫法">Unit Test 的名字內容寫法</span></h3><p>這邊特別申明一下<br>因為書中是使用 C#, 所以 unit test 名稱就是 function 名稱, 這跟 java 也很相似<br>這邊會以書中的範例為主, 至於 js 的會在最後面用另一篇個觀點來描述<br>所以我們先看看書中 C# 的寫法吧！  </p>
+<p>書中針對 unit test 名字有以下三個 guidelines  </p>
+<ol>
+<li>不要遵守死板的命名規則</li>
+<li>在命名測試的時候, 當成要描述一個情境給一個不懂程式, 但卻懂這個 domain knowhow 的人聽</li>
+<li>把每一個文字用下底線(_)去區分開來</li>
+</ol>
+<p>讓我們先看看第一個 unit test 的名字<br>這個範例是名稱是 <code>IsDeliveryValid_InvalidDate_ReturnsFalse</code><br>這個代表是說, 當帶入了一不合法的日期時, 這個驗證日期要回傳 false<br><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">IsDeliveryValid_InvalidDate_ReturnsFalse</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    DeliveryService sut = <span class="keyword">new</span> DeliveryService();</span><br><span class="line">    DateTime pastDate = DateTime.Now.AddDays(<span class="number">-1</span>); </span><br><span class="line">    Delivery delivery = <span class="keyword">new</span> Delivery(pastDate);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">bool</span> isValid = sut.IsDeliveryValid(delivery);</span><br><span class="line"></span><br><span class="line">    Assert.False(isValid); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我們試著以上述第二點重新去轉換變成如下<br><code>Delivery_with_invalid_date_should_be_considered_invalid</code>  </p>
+<p>看起來好多了, 對吧?<br>不過 … 什麼是 invalid date?<br>所以在近一步更新這個 unit test 名字變成如下<br><code>Delivery_with_past_date_should_be_considered_invalid</code>  </p>
+<p>不過還有一些贅字要調整<br>像在不合法就直接說不合法就好, 不用強調 <code>be considered invalid</code><br>所以會變成如下<br><code>Delivery_with_past_date_should_be_invalid</code>  </p>
+<p>這樣看起來就完美多了<br>不過最後在書中, 有提到因爲測試是「敘述一件事實』<br>所以不應該有 should 存在, 最後會變成如下<br><code>Delivery_with_a_past_date_is_invalid</code></p>
+<p>最後這段就見仁見智了<br>個人覺得可以不必遵守到最後一段<br>就像上面第一點 guidelines 提到的, 不要遵守死板的命名規則<br>因為有時特意遵守死板規則, 可能會導致別人看不懂  </p>
+<p>但其實在修改敘述過程中, 就很像在校稿一樣<br>你要把內容調整成有明確意思, 且容易讓別人看懂的方式  </p>
+<p>寫 js 的人看到這邊一定很問號, 那 describe-it 的話要怎麼寫！？<br>其實別慌張, 做法其實跟他的 guidelines 一樣<br>試著在寫 describe-it 的內容時, 當成是在跟不懂程式, 但懂 domain knowhow 的人說明情況<br>以上面例子就會變成<br><code>descrit(&quot;When delivery is given a past date, it should be invalid&quot;)</code></p>
+<p>那因為 describe-it 可以進行分層, 所以分層可以根據 <a href="https://github.com/goldbergyoni/javascript-testing-best-practices#-%EF%B8%8F-112-categorize-tests-under-at-least-2-levels">javascript-testing-best-practices</a><br>這種概念來進行分層, 執行下來會有以下兩張圖的差距<br>是不是右邊讀起來比較易讀? 但要注意的是, 分層的名字記得也要分得有意義  </p>
+<p><img src="/images/unit-test/unit-test-best-practice-07.png" alt>  </p>
+<h3><span id="額外注意事項">額外注意事項</span></h3><p>除了以上介紹部分, 書中還提到一些額外要注意的事項  </p>
+<ol>
+<li><p>避免 if-else 出現在 Unit Test 之間<br> 出現 if-else 就代表了, 把實作邏輯帶來到 Unit Test 這也會帶來相對應的缺點<br> 例如說這個 Unit Test 在重構的時候, 很有可能就非常容易壞掉</p>
+</li>
+<li><p>提到了實作邏輯, 在 Unit Test 中盡量不要出現實作邏輯<br> 這些實作邏輯應該是要包在 Code Base 裡面的才對<br> 以下面程式為例子, <code>exceptedResult</code> 不應該用 1+1 的邏輯去賦予, 而是應該直接給予 2<br> 類似這種算是實作邏輯, 書中是不建議這種邏輯出現在 Unit Test 中<br> 像是遇到重構的時候, 就連同 Unit Test 邏輯都要調整</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不適合的做法, 因為暴露出實作邏輯</span></span><br><span class="line">describe(<span class="string">"when 1+1, result should return 2"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="number">1</span> + <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = add(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2><span id="後記">後記</span></h2><p>看到這邊可能會產生兩個疑惑  </p>
+<ol>
+<li>那除了 business logic 以外都不用寫 unit test 嗎?<br> 如果測試切入點從 controller 開始, 然後對 mock/stub 資料庫去做 unit test 不也是可以?  </li>
+<li>文章中有提到 Test Double, 但好像沒有說用在哪或是怎麼使用比較好?  </li>
+</ol>
+<p>以上這兩點會在下一篇<a href="/2020/10/12/unit-test-best-practice-part-5/">如何有效使用 Test Double </a>解答</p>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/test/" rel="tag">test</a>, <a class="has-link-grey -link" href="/tags/unit-test/" rel="tag">unit test</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/10/12/unit-test-best-practice-part-5/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Unit Test 實踐守則 (五) - 如何有效使用 Test Double</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/09/28/unit-test-best-practice-part-3/">
+                <span class="level-item">Unit Test 實踐守則 (三) - 為何 Unit Test 前需要先重構原始碼?</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="liker">
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/10/05/unit-test-best-practice-part-4/';
+        this.page.identifier = '2020/10/05/unit-test-best-practice-part-4/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#如何寫出一個好的-unit-test">
+        <span class="has-mr-6">2</span>
+        <span>如何寫出一個好的 Unit Test</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#arrange">
+        <span class="has-mr-6">2.1</span>
+        <span>Arrange</span>
+        </a></li><li>
+        <a class="is-flex" href="#act">
+        <span class="has-mr-6">2.2</span>
+        <span>Act</span>
+        </a></li><li>
+        <a class="is-flex" href="#assert">
+        <span class="has-mr-6">2.3</span>
+        <span>Assert</span>
+        </a></li><li>
+        <a class="is-flex" href="#unit-test-的名字內容寫法">
+        <span class="has-mr-6">2.4</span>
+        <span>Unit Test 的名字內容寫法</span>
+        </a></li><li>
+        <a class="is-flex" href="#額外注意事項">
+        <span class="has-mr-6">2.5</span>
+        <span>額外注意事項</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">3</span>
+        <span>後記</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

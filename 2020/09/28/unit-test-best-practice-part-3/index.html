@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Unit Test 實踐守則 (三) - 為何 Unit Test 前需要先重構原始碼? - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言上一篇我們會討論了 如何從什麼層面去思考一個好的 Unit Test?接著我們討論到寫好 unit test 前需要先看看重構   書中提到 Unit Test 和 Code Base 是彼此非常糾纏的原文是這樣寫道    Unit tests and the underlying code are highly intertwined,and it’s impossible to creat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unit Test 實踐守則 (三) - 為何 Unit Test 前需要先重構原始碼?">
+<meta property="og:url" content="https://yu-jack.github.io/2020/09/28/unit-test-best-practice-part-3/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言上一篇我們會討論了 如何從什麼層面去思考一個好的 Unit Test?接著我們討論到寫好 unit test 前需要先看看重構   書中提到 Unit Test 和 Code Base 是彼此非常糾纏的原文是這樣寫道    Unit tests and the underlying code are highly intertwined,and it’s impossible to creat">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-09-28T02:22:57.000Z">
+<meta property="article:modified_time" content="2020-10-13T12:31:10.361Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="w3HexSchool">
+<meta property="article:tag" content="test">
+<meta property="article:tag" content="unit test">
+<meta property="article:tag" content="refactor">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+    <style>
+        .content img {
+            display: block;   
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Unit Test 實踐守則 (三) - 為何 Unit Test 前需要先重構原始碼?" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-09-28T02:22:57.000Z">2020-09-28</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Test/">Test</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    10 分鐘 閱讀文 (大約 1533 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Unit Test 實踐守則 (三) - 為何 Unit Test 前需要先重構原始碼?
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>上一篇我們會討論了 <a href="/2020/09/21/unit-test-best-practice-part-2/">如何從什麼層面去思考一個好的 Unit Test?</a><br>接著我們討論到寫好 unit test 前需要先看看重構  </p>
+<p>書中提到 Unit Test 和 Code Base 是彼此非常糾纏的<br>原文是這樣寫道  </p>
+<blockquote>
+<p>Unit tests and the underlying code are highly intertwined,<br>and it’s impossible to create valuable tests without putting effort into the code base they cover.</p>
+</blockquote>
+<p>所以在寫好一個 Unit Test 之前, 是需要先把程式碼進行重構<br>這樣才有辦法寫出一個好的 Unit Test<br>在這裡會簡單介紹一些重構的方式和架構  </p>
+<h2><span id="重構">重構</span></h2><p>書中提供兩種維度, 把我們的 Code Base 分成了四個種類  </p>
+<p><img src="/images/unit-test/unit-test-best-practice-03.png" alt="圖一"></p>
+<p>縱向的是邏輯和 domain knowhow 的重要性<br>橫向的是與其他程式碼之間有沒有很大的關聯度  </p>
+<p>以上圖中例子來說<br>在 MVC 架構中, Controller 往往代表控制流程的角色<br>business logic 並不存在於 Controller 之中<br>所以 business logic 相關的基本上會在左上的位置</p>
+<p>根據這兩種維度, 可以分辨出哪一段程式碼是最重要的<br>就可以針對這部份進行 Unit Test 或是重構<br>像下圖中左下角沒有太大作用會影響 Business Logic 的話, 可以不用在測試的優先序前面幾位<br>譬如說是 getter 或是 setter 的程式  </p>
+<p>而右上是過度複雜的部分<br>當一段程式碼把流程和商業邏輯全部砸在一塊的時候<br>想必非常難懂, 所以要往兩邊的維度去拆分, 如下圖  </p>
+<p><img src="/images/unit-test/unit-test-best-practice-04.png" alt="圖二"></p>
+<p>除了程式碼的拆分之外, 每個模組之間的相依性也很重要<br>書中也建議用 hexagonal architecture 的方式去連接每一個模組, 示意圖如下  </p>
+<p><img src="/images/unit-test/unit-test-best-practice-05.png" alt="圖三 - hexagonal architecture"></p>
+<p>舉例來說明一下 hexagonal architecture 是什麼概念<br>以上面『使用者輸入正確帳號密碼, 登入成功』的例子來說<br>我們再多加一小段行為變成『使用者輸入正確帳號密碼, 登入成功, 並寄信給使用者通知登入成功』<br>我們把流程拆成如下  </p>
+<ol>
+<li>撈取資料庫資料</li>
+<li>hash 使用者密碼</li>
+<li>比對 hash 過後的使用者密碼和資料庫的密碼是否一致</li>
+<li>一致的時候, 使用 SMTP service 寄信給使用者</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Database --- Login service ---- SMTP</span><br><span class="line"></span><br><span class="line">Login service 包含項目如下 (六角形白色區塊)</span><br><span class="line"><span class="number">1.</span> Read user data</span><br><span class="line"><span class="number">2.</span> Trigger business logic</span><br><span class="line"><span class="number">3.</span> Send email</span><br><span class="line"></span><br><span class="line">Login service 裡的 business logic 包含項目如下 (灰色圈圈)</span><br><span class="line"><span class="number">1.</span> hash input password</span><br><span class="line"><span class="number">2.</span> compare user password and input password</span><br></pre></td></tr></table></figure>
+<p>我們再把上面描述的用較平面化來的表示<br>可以看到操作 database 相關的, 絕對不會是 business logic 那部份的程式去存取<br>一定是交由從的 application service 去存取  </p>
+<p><img src="/images/unit-test/unit-test-best-practice-06.png" alt="圖四"></p>
+<p>我們來舉上面的情境換做成程式來看一下範例<br>假設真的有一段程式是都塞在同一隻程式裡面大概會長這樣<br>(以下程式為示意, 並不能正確執行)<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// loginController.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span>(<span class="params">request</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;account, password&#125; = request</span><br><span class="line">    <span class="keyword">const</span> user = userDb.find(account)</span><br><span class="line">    <span class="keyword">const</span> hashPassword = <span class="built_in">require</span>(<span class="string">"crypto"</span>).createHash(<span class="string">"sha256"</span>).update(password).digest(<span class="string">"hex"</span>)</span><br><span class="line">    <span class="keyword">if</span> (user.password !== hashPassword) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Mismatch"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line">    axios.post(mailServiceUrl, &#123;</span><br><span class="line">        mail: user.email,</span><br><span class="line">        title: <span class="string">"You have logined successfully"</span></span><br><span class="line">    &#125;))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>這個要做 unit test 是非常難做到的, 因為太過混雜<br>而且也嚴重打破 hexagonal architecture 的結構  </p>
+<p>如果真的要進行測試的話, 大致上會寫成以下這樣<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loginController = <span class="built_in">require</span>(<span class="string">"./loginController.js"</span>)</span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"><span class="keyword">const</span> userDb = <span class="built_in">require</span>(<span class="string">"userDb.js"</span>)</span><br><span class="line">describe(<span class="string">"when user type correct password, user should be allow to login"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> request = &#123;<span class="attr">account</span>: <span class="string">"account"</span>, <span class="attr">password</span>: <span class="string">"123"</span>&#125;</span><br><span class="line">    sinon.stub(userDb, <span class="string">"find"</span>).withArgs(request.account).return(&#123;</span><br><span class="line">        password: <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span>,</span><br><span class="line">        email: <span class="string">"123@gmail.com"</span></span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">const</span> mock = sinon.mock(axios)</span><br><span class="line">    mock.expects(<span class="string">"post"</span>).once()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="comment">// 如果沒有成功呼叫, 就會噴出 Error</span></span><br><span class="line">    loginController.login(request)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    <span class="comment">// 驗證是否有呼叫寄信程式</span></span><br><span class="line">    mock.verify()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>那因為這個只是示意一下在這種情況下該如何寫測試<br>所以實際上跑 express 並不會這樣測試<br>但這樣測試的話, 其實某方面來說就會變成 Integration test 了<br>詳細的 Integration test 部分下一篇會介紹到  </p>
+<p>那麼 …… 如果我們要寫好一個 unit test, 那我們就勢必得先重構上面的程式碼<br>這邊先以簡單拆法為主, 所以可能不是非常完美, 但用例子解釋就足夠了<br>透過這樣拆成模組化, 到時候再使用類似 sinon 的 mock 工具時會更輕易能夠做 mock  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// loginController.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> user = userDb.find(<span class="string">"account"</span>)</span><br><span class="line">    <span class="keyword">if</span> (userService.isPasswordMatch(user.password, inputPassword) === <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Mismatch"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    mail.send(user.email);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// hash.js</span></span><br><span class="line"><span class="keyword">const</span> crypto = <span class="built_in">require</span>(<span class="string">"crypto"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    sha256: <span class="function">(<span class="params">password</span>) =&gt;</span> crypto.createHash(<span class="string">"sha256"</span>).update(password).digest(<span class="string">"hex"</span>) </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// userService.js</span></span><br><span class="line"><span class="keyword">const</span> hash = <span class="built_in">require</span>(<span class="string">"hash.js"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    isPasswordMatch: <span class="function">(<span class="params">userPassword, inputPassword</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.userPassword === hash.sha256(inputPassword)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// mail.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    send: <span class="function">(<span class="params">email</span>) =&gt;</span> &#123;</span><br><span class="line">        axios.post(mailServiceUrl, &#123;</span><br><span class="line">            mail: user.email,</span><br><span class="line">            title: <span class="string">"You have logined successfully"</span></span><br><span class="line">        &#125;))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>從上面例子可以看到 hash 已經不會出現在 loginController 的流程控制中了<br>而是會出現在管控 business logic 的程式碼裡面<br>這樣也看得出來我們最重要的 business logic 是位在 userService 裡面了<br>用六角形圖來看會變這樣  </p>
+<p><img src="/images/unit-test/unit-test-best-practice-13.png" width="450/"></p>
+<p>接著根據上一篇, 好的 Unit test 要『專注在最重要的程式』<br>我們應該要測試的地方就是在這塊 business logic<br>這樣拆分就有達到上圖四的切割了  </p>
+<p>所以在進行 unit test 的時候會如下<br>這時候可以看到我們根本不需要去使用 Test Double 就可以完成對 business logic 的測試了  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">"when user type correct password, user should be allow to login"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">const</span> userInputPassword = <span class="string">"123"</span></span><br><span class="line">    <span class="keyword">const</span> hashPassword = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    <span class="keyword">const</span> userService = <span class="built_in">require</span>(<span class="string">"./userService.js"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = userService.isPasswordMatch(userInputPassword, hashPassword)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2><span id="後記">後記</span></h2><p>以上就是重構的一些方法<br>簡單介紹完重構之後, 那我們就根據此篇最後的 unit test 去看看<br><a href="/2020/10/05/unit-test-best-practice-part-4/">如何寫出一個好的 Unit Test? </a></p>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/refactor/" rel="tag">refactor</a>, <a class="has-link-grey -link" href="/tags/test/" rel="tag">test</a>, <a class="has-link-grey -link" href="/tags/unit-test/" rel="tag">unit test</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/10/05/unit-test-best-practice-part-4/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Unit Test 實踐守則 (四) - 如何寫出一個好的 Unit Test?</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/09/21/unit-test-best-practice-part-2/">
+                <span class="level-item">Unit Test 實踐守則 (二) - 如何從什麼層面去思考一個好的 Unit Test?</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="liker">
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/09/28/unit-test-best-practice-part-3/';
+        this.page.identifier = '2020/09/28/unit-test-best-practice-part-3/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#重構">
+        <span class="has-mr-6">2</span>
+        <span>重構</span>
+        </a></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">3</span>
+        <span>後記</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些? - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言接下來這幾篇會需要先對 Unit Test 有一點認知再繼續閱讀下去會比較適合若有寫過 Unit Test 的話閱讀起來會比較順   這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄看完這本書對於 Unit Test 的認知有很大的幫助接下來的文章會成以下幾篇大致介紹書中內容    第一篇會討論到 Unit Test 定義是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?">
+<meta property="og:url" content="https://yu-jack.github.io/2020/09/14/unit-test-best-practice-part-1/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言接下來這幾篇會需要先對 Unit Test 有一點認知再繼續閱讀下去會比較適合若有寫過 Unit Test 的話閱讀起來會比較順   這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄看完這本書對於 Unit Test 的認知有很大的幫助接下來的文章會成以下幾篇大致介紹書中內容    第一篇會討論到 Unit Test 定義是">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-09-14T02:22:57.000Z">
+<meta property="article:modified_time" content="2020-10-13T11:54:03.670Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="w3HexSchool">
+<meta property="article:tag" content="test">
+<meta property="article:tag" content="unit test">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+    <style>
+        .content img {
+            display: block;   
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-09-14T02:22:57.000Z">2020-09-14</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Test/">Test</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    15 分鐘 閱讀文 (大約 2228 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>接下來這幾篇會需要先對 Unit Test 有一點認知再繼續閱讀下去會比較適合<br>若有寫過 Unit Test 的話閱讀起來會比較順  </p>
+<p>這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄<br>看完這本書對於 Unit Test 的認知有很大的幫助<br>接下來的文章會成以下幾篇大致介紹書中內容  </p>
+<ol>
+<li>第一篇會討論到 <a href="/2020/09/14/unit-test-best-practice-part-1/">Unit Test 定義是什麼, 涵蓋的範圍又是哪些?</a></li>
+<li>第二篇會討論到 <a href="/2020/09/21/unit-test-best-practice-part-2/">如何從什麼層面去思考一個好的 Unit Test?</a></li>
+<li>第三篇會討論到 <a href="/2020/09/28/unit-test-best-practice-part-3/">為何 Unit Test 前需要先重構原始碼? </a></li>
+<li>第四篇會討論到 <a href="/2020/10/05/unit-test-best-practice-part-4/">如何寫出一個好的 Unit Test?</a></li>
+<li>第五篇會討論到 <a href="/2020/10/12/unit-test-best-practice-part-5/">如何有效使用 Test Double</a><br> 這篇會開始談到 Integration Test 定義</li>
+</ol>
+<p>文章內有任何問題或是不清楚的, 歡迎一起來討論！<br>不過因為本書內容量實在太多, 沒辦法一一介紹, 所以只介紹筆者覺得很精華的點<br>書中範例程式皆是用 C# 寫的, 不過這邊範例是我用 Node.js 加上新的範例寫出來的<br>概念都是相同的不必太過擔心語言不同問題  </p>
+<h2><span id="介紹">介紹</span></h2><p>書中針對 Unit Test 的認知是『The goal is to enable sustainable growth of the software project.』<br>並不太像筆者的認知, 認為 Unit Test 是為了拿來防止 Bug 出現  </p>
+<p>書中此認知的原因是程式很快就從 draft 變成小中型專案, 但要如何讓專案變成可持續成長是難事<br>寫 Unit Test 就可以讓專案變成可持續成長的一個關鍵  </p>
+<p>而何謂可持續成長?<br>當專案越來越大的時候, 相對應的維護成本也越來越高<br>當重構一個功能的時候可能會不小心改動其他功能, 而導致問題出現<br>當新增一個功能的時候可能會因為舊有架構導致新功能難以實作, 增加測試難度以及開發時間<br>其實這些可以透過測試去把專案維持著品質<br>而常用的測試包含 Unit Test, Integration Test 以及 E2E Test<br>但這邊就專注在 Unit Test 去討論吧！後面有文章談到 Integration Test  </p>
+<h2><span id="什麼是-unit-test">什麼是 Unit Test?</span></h2><p>書中給了以下三個答案  </p>
+<ol>
+<li>驗證一小段的程式碼, 並以驗證單一行為為主, 就是 unit of behavior</li>
+<li>執行快速</li>
+<li>獨立性 (isolated) 不受其他 unit test 影響</li>
+</ol>
+<p>針對 2, 3 點, 大部分的資料是比較沒有爭議的<br>像是比較有名的 <a href="https://dotblogs.com.tw/hatelove/2012/11/05/learning-tdd-in-30-days-day2-unit-testing-introduction">F.I.R.S.T.</a> 也有提到這幾點<br>但較有爭議的是第 1 點, 也就是 unit 的定義  </p>
+<p>書中有提到兩種不同定義<br>一個是 unit of code<br>一個是 unit of behavior<br>不同的定義涵蓋的測試範圍也不太一樣  </p>
+<h3><span id="unit-of-code-vs-unit-of-behavior">Unit of code v.s Unit of behavior</span></h3><p>先來說說什麼是 unit of code, 什麼是 unit of behavior<br>『輸入正確帳號密碼，登入成功』此情境說明的就是一個 behavior 造成的結果<br>但要怎麼組成 behavior ? 是透過很多 unit of code 組合而成的</p>
+<p>以此情境來說<br>把『輸入正確帳號密碼，登入成功』拆成程式碼去解讀<br>會有以下程式碼的部分, 假設每一個部分都有相對應得程式碼    </p>
+<ol>
+<li>撈取資料庫資料</li>
+<li>hash 使用者密碼</li>
+<li>比對 hash 過後的使用者密碼和資料庫的密碼是否一致</li>
+</ol>
+<p>如果測試的粒度是測試『hash 使用者密碼』, 那就是 unit of code<br>因為測試的東西, 並不是使用者會專注的結果, 而是開發者會專注的結果<br>使用者只關注輸入帳號密碼能不能成功, 可能也不管你是不是用 hash, 這就是不同面向的差異<br>而除了測試的粒度不同之外<br>unit of code 和 unit of behavior 所定義的獨立性也有所不同  </p>
+<p>先以一個 Node.js module 來說好了, 這個 A module 用到 B module 和資料庫這兩個相依性<br>在 unit of code 之中, 是會使用 Test Double 在 B module 和資料庫上並進行測試<br>在 unit of behavior 之中, 只會在資料庫使用 Test Double, 但會保留對 B module 的相依性, 並進行測試  </p>
+<p>這裡快速介紹一下使用 Test Double 是怎麼回事<br>Test Dobule 簡單來說可以去更改或是紀錄原始碼的行為以及驗證的一種方法<br>下面範例是用 <a href="https://sinonjs.org/">sinon</a> 的 stub 去示範 (stub 是屬於 Test Double 的一種)<br>在更詳細的介紹可以參考之前我寫的<a href="/2019/12/10/unit-test-express/#test-double-測試替身">Test Double - 測試替身</a><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面是一個 function, 帶入什麼就會回傳什麼</span></span><br><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    test: <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;<span class="keyword">return</span> param&#125;</span><br><span class="line">&#125;</span><br><span class="line">a.test(<span class="number">10</span>) <span class="comment">// return 10</span></span><br><span class="line">a.test(<span class="number">15</span>) <span class="comment">// return 15</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 但透過 stub, 可以做到更改的回傳值, 也就是更改程式邏輯</span></span><br><span class="line"><span class="keyword">const</span> sinon = <span class="built_in">require</span>(<span class="string">"sinon"</span>)</span><br><span class="line">sinon.stub(a, <span class="string">"test"</span>).returns(<span class="string">"hihihi"</span>)</span><br><span class="line">a.test(<span class="number">10</span>) <span class="comment">// hihihi</span></span><br><span class="line">a.test(<span class="number">15</span>) <span class="comment">// hihihi</span></span><br></pre></td></tr></table></figure></p>
+<p>以下圖來表達的話就是 unit of behavior 的測試方式<br>可以看到 database 和 file system 是用取代掉的方式<br>但在被測試的程式之中, 如果有引用到其他 modules, 則會保留相依性<br>(System under test, 就是指待測程式)  </p>
+<p><img src="/images/unit-test/unit-test-best-practice-01.png" alt="unit of behavior"></p>
+<p>但如果以 behavior 為基準, 有人會認為這樣就是 Integration Test 了, 而不是 Unit Test<br>其實兩者差異差書中有說到<br>其中有一個特徵是有沒有實際對外部資源進行存取, 也就是有沒有使用資料庫或呼叫第三方資源是關鍵<br>如果沒有, 那就是 Unit Test<br>如果有, 那就是 Integration Test  </p>
+<p>但有文章指出這種 behavior 測試的方式, 其實是社交型 Unit Test<br>可以參考<a href="https://ithelp.ithome.com.tw/articles/10229734">探討單元測試和整合測試的涵蓋範圍</a></p>
+<p>其實 unit of code 和 unit of behavior 各有好壞<br>並不是說哪個好, 就一定要用哪個, 來看看各個優缺點是什麼  </p>
+<p>以下說的 mock 是 Test Double 的一種  </p>
+<h3><span id="unit-of-code-優劣點">Unit of code 優劣點</span></h3><ul>
+<li>優點<ul>
+<li>當測試失敗時, 你會很清楚就是你測試的程式邏輯出了問題<br>  因為你都把其他內部 dependency 都 mock 掉<br>  所以會知道就是測試的程式有問題</li>
+<li>撰寫測試時, 只需要根據 Code Base 去寫相對應的 Unit Test<br>  例如說 A Class 用到 B Class 和 C Class 這兩個內部 dependency<br>  Unit Test 就是寫出 A Test, B Test, C Test 這三個相對應得測試程式</li>
+</ul>
+</li>
+<li>缺點<ul>
+<li>會過度使用 mock 機制, mock 大量內部 dependency 的程式<br>  可能會導致最終程式跑 Integration Test 時直接炸裂</li>
+<li>每個 Unit Test 跟 Code Base 基本上是 1:1, 這會導致重構時大部分的 Unit Test 也需要被翻新</li>
+<li>測試時可能會跟文件定義的測試案例過度不符合<br>  因為專注在 unit of code, 所以程式中會大量測試使用者不在意的測試結果<br>  這會導致過度去測試實作邏輯</li>
+</ul>
+</li>
+</ul>
+<h3><span id="unit-of-behavior-優劣點">Unit of behavior 優劣點</span></h3><ul>
+<li>優點<ul>
+<li>從使用的人角度去注重程式產生的行爲, 能夠有效驗證結果<br>  加上因為不會 mock 內部 dependency 的程式, 只會 mock 外部 dependency<br>  內部再程式的 Business Logic 可以較完整被執行</li>
+<li>寫 Unit Test 時不需關注其他內部 dependency 程式的實作邏輯<br>  就像上面提到的 hash function, 寫 unit test 時不需針對 hash function 去撰寫<br>  就可以避免重構 hash function 時導致 unit test 也要跟著重寫</li>
+</ul>
+</li>
+<li>缺點<ul>
+<li>因為不會 mock 內部 denpendency, 所以執行 Unit Test 錯誤時<br>  可能會較難判別錯誤是出現在哪裡<br>  但如果是所有測試案例都失敗的話, 很有可能就是共用的內部 dependency 出錯<br>  這樣反而是優點, 因為就代表此 dependency 影響範圍是全體程式碼</li>
+</ul>
+</li>
+</ul>
+<h2><span id="後記">後記</span></h2><p>當然這不是誰優點多就選誰<br>這兩個也只是一個名字去代表不同 Unit Test Style<br>當你今天寫了一個 SDK 裡面有一個 <code>add(a,b)</code>function 給別人使用<br>試問, 你測試這個 add  function 是 unit of code 還是 unit of behavior ?  </p>
+<p>不過依照本書的立場, 大多數的專案是建議走 unit of behavior 的方式進行  </p>
+<p>從這篇知道了 Unit Test 是什麼以及測試的範圍<br>但要怎麼知道『一個好的 Unit Test』是什麼樣子?<br>來看看下一篇<a href="/2020/09/21/unit-test-best-practice-part-2/">什麼樣是一個好的 Unit Test? 該從怎麼層面思考?</a></p>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/test/" rel="tag">test</a>, <a class="has-link-grey -link" href="/tags/unit-test/" rel="tag">unit test</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/09/21/unit-test-best-practice-part-2/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Unit Test 實踐守則 (二) - 如何從什麼層面去思考一個好的 Unit Test?</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/08/22/pug-with-vuejs/">
+                <span class="level-item">前後端尚未分離前導致的效能問題 (nodejs + pug + vue)</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="liker">
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2020/09/14/unit-test-best-practice-part-1/';
+        this.page.identifier = '2020/09/14/unit-test-best-practice-part-1/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("liker").innerHTML = 
+        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
+        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
+    </script>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#介紹">
+        <span class="has-mr-6">2</span>
+        <span>介紹</span>
+        </a></li><li>
+        <a class="is-flex" href="#什麼是-unit-test">
+        <span class="has-mr-6">3</span>
+        <span>什麼是 Unit Test?</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#unit-of-code-vs-unit-of-behavior">
+        <span class="has-mr-6">3.1</span>
+        <span>Unit of code v.s Unit of behavior</span>
+        </a></li><li>
+        <a class="is-flex" href="#unit-of-code-優劣點">
+        <span class="has-mr-6">3.2</span>
+        <span>Unit of code 優劣點</span>
+        </a></li><li>
+        <a class="is-flex" href="#unit-of-behavior-優劣點">
+        <span class="has-mr-6">3.3</span>
+        <span>Unit of behavior 優劣點</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">4</span>
+        <span>後記</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2020 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
