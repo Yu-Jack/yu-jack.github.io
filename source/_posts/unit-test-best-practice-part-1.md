@@ -9,9 +9,6 @@ catalog: true
 
 ## 前言
 
-接下來這幾篇會需要先對 Unit Test 有一點認知再繼續閱讀下去會比較適合  
-若有寫過 Unit Test 的話閱讀起來會比較順  
-
 這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄  
 看完這本書對於 Unit Test 的認知有很大的幫助  
 接下來的文章會成以下幾篇大致介紹書中內容  
@@ -62,6 +59,11 @@ catalog: true
 一個是 unit of code  
 一個是 unit of behavior  
 不同的定義涵蓋的測試範圍也不太一樣  
+
+> 書中定義上, 會使用以下兩個 School 去介紹    
+> London School = unit of code  
+> Classical School = unit of behavior  
+> 但為了文章好記, 這邊我就以後者的寫法去介紹  
 
 ### Unit of code v.s Unit of behavior
 
