@@ -142,20 +142,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/CTF/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/security/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/google-hacking/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -164,6 +150,20 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/search/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/CTF/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/security/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -563,21 +563,21 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/w3HexSchool/</loc>
-        <lastmod>2020-10-15T03:51:05.650Z</lastmod>
+        <lastmod>2020-10-15T05:21:29.311Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/test/</loc>
-        <lastmod>2020-10-15T03:51:05.650Z</lastmod>
+        <lastmod>2020-10-15T05:21:29.311Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/unit-test/</loc>
-        <lastmod>2020-10-15T03:51:05.650Z</lastmod>
+        <lastmod>2020-10-15T05:21:29.311Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
