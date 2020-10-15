@@ -107,12 +107,21 @@ a.test(10) // hihihi
 a.test(15) // hihihi
 ```
 
-以下圖來表達的話就是 unit of behavior 的測試方式  
-可以看到 database 和 file system 是用取代掉的方式  
-但在被測試的程式之中, 如果有引用到其他 modules, 則會保留相依性  
-(System under test, 就是指待測程式)  
+下圖表示的方式就是 unit of code  
+每一個 production code 的 class/module 就會對應到一個 unit test  
+這裡關注的點就會是所謂實作邏輯, 也就是上面提到類似 hash 的底層實作邏輯  
 
-![unit of behavior](/images/unit-test/unit-test-best-practice-01.png)
+![unit of code](/images/unit-test/unit-test-best-practice-01-01.png)
+
+而在 unit of code 中  
+如果 module/class 之間有相依性的話, 會透過 Test Double 把相依性改取代掉  
+ 
+![unit of code](/images/unit-test/unit-test-best-practice-01-03.png)
+
+而在 unit of behavior 中  
+如果 module/class 之間有相依性的話, 則是會保留原本邏輯, 不去使用 Test Double  
+
+![unit of behavior](/images/unit-test/unit-test-best-practice-01-02.png)
 
 但如果以 behavior 為基準, 有人會認為這樣就是 Integration Test 了, 而不是 Unit Test  
 其實兩者差異差書中有說到  
@@ -149,7 +158,7 @@ a.test(15) // hihihi
 - 優點
     - 從使用的人角度去注重程式產生的行爲, 能夠有效驗證結果
         加上因為不會 mock 內部 dependency 的程式, 只會 mock 外部 dependency
-        內部再程式的 Business Logic 可以較完整被執行
+        內部程式的 Business Logic 可以較完整被執行
     - 寫 Unit Test 時不需關注其他內部 dependency 程式的實作邏輯
         就像上面提到的 hash function, 寫 unit test 時不需針對 hash function 去撰寫  
         就可以避免重構 hash function 時導致 unit test 也要跟著重寫

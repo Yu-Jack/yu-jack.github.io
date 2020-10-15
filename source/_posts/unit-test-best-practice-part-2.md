@@ -157,7 +157,6 @@ it("when user type correct password, user should login successfully", () => {
 那剩下就是 Resistance to refactoring 和 Fast feedback 去選擇  
 這很難拿到三項都是完美的一百分，所以會有一個折衷點存在  
 
-
 > 題外話: 這也很類似分散式系統裡面的 [CAP 理論](https://zh.wikipedia.org/zh-hant/CAP%E5%AE%9A%E7%90%86)
 
 ## 後記

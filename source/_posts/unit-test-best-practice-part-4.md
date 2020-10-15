@@ -42,6 +42,39 @@ describe("when user type correct password, user should be allow to login", () =>
 包含設置 Test Double 在資料庫或第三方 API 之類  
 詳細 Test Double 用途可以參考之前寫過一篇有介紹 [Test Double](https://yu-jack.github.io/2019/12/10/unit-test-express/#test-double-測試替身)  
 
+而這階段要注意的是  
+不能暴露程式的實作邏輯在這裡  
+這些實作邏輯應該是要包在 Code Base 裡面的才對  
+
+以下面程式為例子, `exceptedResult` 不應該用 1+1 的邏輯去賦予, 而是應該直接給予 2  
+類似這種算是實作邏輯, 是不建議這種邏輯出現在 Unit Test 中  
+像是遇到重構的時候, 就連同 Unit Test 邏輯都要調整  
+
+```js
+// 不適合的做法, 因為暴露出實作邏輯
+describe("when 1+1, result should return 2", () => {
+    // arrange
+    const exceptedResult = 1 + 1
+    
+    // act
+    const actualResult = add(1, 1)
+
+    // assert
+    expect.equal(actualResult, exceptedResult)
+})
+```
+
+還有一種實作邏輯要避免  
+那就是 if-else 不該出現在 Unit Test 之間  
+出現 if-else 就代表了, 把實作邏輯帶來到 Unit Test 這也會帶來相對應的缺點  
+變成一次維護兩套邏輯, 分別在 Test Code 和 Production Code 上面  
+
+這樣不管是新加功能或是重構, 都是有可能更改到 Unit Test  
+而更危險的是 ...... 如果因為每次更改功能  
+導致要修改大量 Unit Test, 那麼 Unit Test 很容易就走不下去了  
+
+![](/images/unit-test/modify-unit-test.gif)
+
 ### Act
 
 在這個階段, 通常只會有一行程式碼  
@@ -55,6 +88,15 @@ describe("when user type correct password, user should be allow to login", () =>
 但在 Unit of Behavior 的結果中, 是會有多種結果需要驗證  
 所以在這個階段, 程式碼不一定只會有一行, 是會有多行的可能性  
 取決於你怎麼定義你的 Unit Test 的結果  
+
+而這個階段也不該去驗證程式的實作邏輯的結果  
+就上前幾篇提到的 hash function  
+以使用者角度可能覺得我密碼打對就讓我登入成功就好  
+我也不管你是用 hash crypto 什麼方式去處理  
+所以要驗證的是密碼是否比對成功這個結果, 而不是用 hash 這個細節  
+
+> 可以參考[測試該驗證結果還是該驗證細節](https://jaceju.net/to-test-the-detail-or-to-test-the-result/?fbclid=IwAR0obiVEWUP2A7vccTaseAEtrDYmPDhvpczpBwFO1gldCZUxAYEjqQuaXFY)  
+> 裡面其實也提到跟書中一樣的概念  
 
 除了以上 3A Pattern 之外, 其實還有最重要的部分  
 也就是 unit test 的名字內容寫法  
@@ -131,34 +173,6 @@ public void IsDeliveryValid_InvalidDate_ReturnsFalse()
 是不是右邊讀起來比較易讀? 但要注意的是, 分層的名字記得也要分得有意義  
 
 ![](/images/unit-test/unit-test-best-practice-07.png)  
-
-
-### 額外注意事項
-
-除了以上介紹部分, 書中還提到一些額外要注意的事項  
-
-1. 避免 if-else 出現在 Unit Test 之間
-    出現 if-else 就代表了, 把實作邏輯帶來到 Unit Test 這也會帶來相對應的缺點
-    例如說這個 Unit Test 在重構的時候, 很有可能就非常容易壞掉
-
-2. 提到了實作邏輯, 在 Unit Test 中盡量不要出現實作邏輯
-    這些實作邏輯應該是要包在 Code Base 裡面的才對
-    以下面程式為例子, `exceptedResult` 不應該用 1+1 的邏輯去賦予, 而是應該直接給予 2
-    類似這種算是實作邏輯, 書中是不建議這種邏輯出現在 Unit Test 中
-    像是遇到重構的時候, 就連同 Unit Test 邏輯都要調整
-    ```js
-    // 不適合的做法, 因為暴露出實作邏輯
-    describe("when 1+1, result should return 2", () => {
-        // arrange
-        const exceptedResult = 1 + 1
-        
-        // act
-        const actualResult = add(1, 1)
-
-        // assert
-        expect.equal(actualResult, exceptedResult)
-    })
-    ```
 
 ## 後記
 
