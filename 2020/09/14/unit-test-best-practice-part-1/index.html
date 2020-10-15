@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言接下來這幾篇會需要先對 Unit Test 有一點認知再繼續閱讀下去會比較適合若有寫過 Unit Test 的話閱讀起來會比較順   這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄看完這本書對於 Unit Test 的認知有很大的幫助接下來的文章會成以下幾篇大致介紹書中內容    第一篇會討論到 Unit Test 定義是">
+    <meta name="description" content="前言這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄看完這本書對於 Unit Test 的認知有很大的幫助接下來的文章會成以下幾篇大致介紹書中內容    第一篇會討論到 Unit Test 定義是什麼, 涵蓋的範圍又是哪些? 第二篇會討論到 如何從什麼層面去思考一個好的 Unit Test? 第三篇會討論到 為何 Unit Te">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?">
 <meta property="og:url" content="https://yu-jack.github.io/2020/09/14/unit-test-best-practice-part-1/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言接下來這幾篇會需要先對 Unit Test 有一點認知再繼續閱讀下去會比較適合若有寫過 Unit Test 的話閱讀起來會比較順   這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄看完這本書對於 Unit Test 的認知有很大的幫助接下來的文章會成以下幾篇大致介紹書中內容    第一篇會討論到 Unit Test 定義是">
+<meta property="og:description" content="前言這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄看完這本書對於 Unit Test 的認知有很大的幫助接下來的文章會成以下幾篇大致介紹書中內容    第一篇會討論到 Unit Test 定義是什麼, 涵蓋的範圍又是哪些? 第二篇會討論到 如何從什麼層面去思考一個好的 Unit Test? 第三篇會討論到 為何 Unit Te">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-09-14T02:22:57.000Z">
-<meta property="article:modified_time" content="2020-10-13T13:51:02.666Z">
+<meta property="article:modified_time" content="2020-10-15T03:51:05.650Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="test">
@@ -175,8 +175,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>接下來這幾篇會需要先對 Unit Test 有一點認知再繼續閱讀下去會比較適合<br>若有寫過 Unit Test 的話閱讀起來會比較順  </p>
-<p>這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄<br>看完這本書對於 Unit Test 的認知有很大的幫助<br>接下來的文章會成以下幾篇大致介紹書中內容  </p>
+                <h2><span id="前言">前言</span></h2><p>這篇是看完『Unit Testing Principles, Practices, and Patterns』後所記錄<br>看完這本書對於 Unit Test 的認知有很大的幫助<br>接下來的文章會成以下幾篇大致介紹書中內容  </p>
 <ol>
 <li>第一篇會討論到 <a href="/2020/09/14/unit-test-best-practice-part-1/">Unit Test 定義是什麼, 涵蓋的範圍又是哪些?</a></li>
 <li>第二篇會討論到 <a href="/2020/09/21/unit-test-best-practice-part-2/">如何從什麼層面去思考一個好的 Unit Test?</a></li>
@@ -197,6 +196,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ol>
 <p>針對 2, 3 點, 大部分的資料是比較沒有爭議的<br>像是比較有名的 <a href="https://dotblogs.com.tw/hatelove/2012/11/05/learning-tdd-in-30-days-day2-unit-testing-introduction">F.I.R.S.T.</a> 也有提到這幾點<br>但較有爭議的是第 1 點, 也就是 unit 的定義  </p>
 <p>書中有提到兩種不同定義<br>一個是 unit of code<br>一個是 unit of behavior<br>不同的定義涵蓋的測試範圍也不太一樣  </p>
+<blockquote>
+<p>書中定義上, 會使用以下兩個 School 去介紹<br>London School = unit of code<br>Classical School = unit of behavior<br>但為了文章好記, 這邊我就以後者的寫法去介紹  </p>
+</blockquote>
 <h3><span id="unit-of-code-vs-unit-of-behavior">Unit of code v.s Unit of behavior</span></h3><p>先來說說什麼是 unit of code, 什麼是 unit of behavior<br>『輸入正確帳號密碼，登入成功』此情境說明的就是一個 behavior 造成的結果<br>但要怎麼組成 behavior ? 是透過很多 unit of code 組合而成的</p>
 <p>以此情境來說<br>把『輸入正確帳號密碼，登入成功』拆成程式碼去解讀<br>會有以下程式碼的部分, 假設每一個部分都有相對應得程式碼    </p>
 <ol>
