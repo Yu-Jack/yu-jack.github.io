@@ -77,13 +77,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
-        <lastmod>2020-07-18T09:07:34.031Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2020-08-22T07:03:34.978Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -107,6 +100,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Development/</loc>
         <lastmod>2020-10-28T14:19:55.831Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
+        <lastmod>2020-10-28T14:23:21.956Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

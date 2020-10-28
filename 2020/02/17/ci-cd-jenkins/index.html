@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-02-16T21:07:54.000Z">
-<meta property="article:modified_time" content="2020-07-18T09:07:34.031Z">
+<meta property="article:modified_time" content="2020-10-28T14:23:21.956Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="jenkins">
@@ -196,7 +196,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>jenkins 可以使用 docker 安裝的，這樣就不會污染到本機環境了  </li>
 <li>專案是需要用到 npm，所以必須進到 jenkins 裡面安裝 node.js  </li>
 <li>專案則是使用 bibucket，所以需要自己準備好 bitbucket repository  </li>
-<li>此篇是使用『Slack App』去做發布訊息，所以需要一個 Slack App 的 Oath Token 去做認證<br>可以參考筆者之前的<a href="/2017/10/14/Slack-Bot/">文章</a>去建立 Slack App</li>
+<li>此篇是使用『Slack App』去做發布訊息，所以需要一個 Slack App 的 Oauth Token 去做認證<br>可以參考筆者之前的<a href="/2017/10/14/Slack-Bot/">文章</a>去建立 Slack App</li>
 </ol>
 <h3><span id="jenkins-安裝">jenkins 安裝</span></h3><p>透過此指令 <code>docker run -it -p 8080:8080 -u root jenkins/jenkins:lts</code><br>安裝 jenkins 最新版，並以 root 的角色登到 container 裡面<br>接下來用 root 的使用者安裝 node.js<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://deb.nodesource.com/setup_12.x | bash -</span><br><span class="line">apt-get install -y nodejs</span><br></pre></td></tr></table></figure></p>
 <p>接下來用瀏覽器開啟 <a href="http://localhost:8080">http://localhost:8080</a> 去把 jenkins 給初始化<br>進到頁面首先會要求你輸入初始密碼<br>使用以下指令把密碼取得，並複製上去即可完成<br><code>cat /var/jenkins_home/secrets/initialAdminPassword</code><br>後面就是新增一個 admin 帳號和密碼就不截圖說明了  </p>
