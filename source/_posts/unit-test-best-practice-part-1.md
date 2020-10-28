@@ -92,6 +92,7 @@ unit of code 和 unit of behavior 所定義的獨立性也有所不同
 Test Dobule 簡單來說可以去更改或是紀錄原始碼的行為以及驗證的一種方法  
 下面範例是用 [sinon](https://sinonjs.org/) 的 stub 去示範 (stub 是屬於 Test Double 的一種)  
 在更詳細的介紹可以參考之前我寫的[Test Double - 測試替身](/2019/12/10/unit-test-express/#test-double-測試替身)
+
 ```js
 // 下面是一個 function, 帶入什麼就會回傳什麼
 const a = {
@@ -119,7 +120,7 @@ a.test(15) // hihihi
 ![unit of code](/images/unit-test/unit-test-best-practice-01-03.png)
 
 而在 unit of behavior 中  
-如果 module/class 之間有相依性的話, 則是會保留原本邏輯, 不去使用 Test Double  
+如果 module/class 之間有相依性的話, 則是會使用原本邏輯, 不去使用 Test Double  
 
 ![unit of behavior](/images/unit-test/unit-test-best-practice-01-02.png)
 

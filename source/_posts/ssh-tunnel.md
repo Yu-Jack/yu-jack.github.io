@@ -41,9 +41,12 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
 這邊主要會是用 Linux 原生指令 ssh 去完成 SSH Tunnel
 在這之前我們先回想一下 ssh 連線的方式！
 
-當已經有一台 server 上面跑著一個網頁的服務
-而你可以透過以下指令 ssh 連線到那一台 server 上
-`ssh root@127.0.0.1`
+當已經有一台 server 上面跑著一個網頁的服務  
+而你可以透過以下指令 ssh 連線到那一台 server 上  
+這邊我們假設遠端 server 的 IP 為 127.0.0.1  
+這裡 IP 只是示意使用, 實際 IP 還是要以要連線的 server IP 為主  
+
+透過 `ssh root@127.0.0.1`
 ssh 連線上去之後，上面有跑一個 Nginx 的服務在 80 port
 這時候在 server 上執行 `curl localhost` 會發現有成功回傳 Nginx 的 Hello 頁面
 
