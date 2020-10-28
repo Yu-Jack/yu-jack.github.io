@@ -51,7 +51,7 @@ CI/CD 工具只是輔助，重點是整套流程要出來才對
 1. jenkins 可以使用 docker 安裝的，這樣就不會污染到本機環境了  
 2. 專案是需要用到 npm，所以必須進到 jenkins 裡面安裝 node.js  
 3. 專案則是使用 bibucket，所以需要自己準備好 bitbucket repository  
-4. 此篇是使用『Slack App』去做發布訊息，所以需要一個 Slack App 的 Oath Token 去做認證  
+4. 此篇是使用『Slack App』去做發布訊息，所以需要一個 Slack App 的 Oauth Token 去做認證  
 可以參考筆者之前的[文章](/2017/10/14/Slack-Bot/)去建立 Slack App
 
 ### jenkins 安裝
