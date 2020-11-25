@@ -152,7 +152,7 @@ function main() {
         // 不會被執行, 因為狀態是成功
     })
     test(2).then((result) => {
-        // 不會被執行, 因為狀態是成功
+        // 不會被執行, 因為狀態是失敗
         console.log(result)
     }).catch((error) => {
         // error === "Failed"
