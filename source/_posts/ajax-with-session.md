@@ -42,7 +42,7 @@ Access-Control-Allow-Methods: POST
 雖然解法上還可以使用 JWT 去解決這個問題，但這篇文章主要會鎖定在用 sessino 的方式去解決
 
 題外話，有一種方式也可以繞過 CORS，就是以 Proxy Server 的方式去實作
-以下用著名的 Vue cli 為圖解
+以下用 Vue cli 裡面有一個 proxy 機制去說明  
 ![](/images/vue-cli-proxy.png)
 
 ## XHR Credential  
