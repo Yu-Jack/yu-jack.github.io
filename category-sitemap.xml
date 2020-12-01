@@ -42,55 +42,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Java/</loc>
-        <lastmod>2020-03-12T16:16:22.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/AWS/</loc>
-        <lastmod>2020-04-01T09:58:14.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/%25E8%25AE%2580%25E6%259B%25B8%25E5%25BF%2583%25E5%25BE%2597/</loc>
-        <lastmod>2020-04-27T02:37:07.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
-        <lastmod>2020-05-10T15:50:50.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Vue/</loc>
-        <lastmod>2020-08-22T07:03:34.978Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Security/</loc>
-        <lastmod>2020-10-13T13:40:26.106Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/categories/Test/</loc>
-        <lastmod>2020-10-15T13:37:12.446Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Development/</loc>
         <lastmod>2020-10-28T14:19:55.831Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -98,15 +49,71 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
-        <lastmod>2020-10-28T14:23:21.956Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/AWS/</loc>
+        <lastmod>2020-11-29T06:04:24.383Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Java/</loc>
+        <lastmod>2020-11-29T06:04:24.384Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
-        <lastmod>2020-11-25T14:05:19.662Z</lastmod>
+        <lastmod>2020-11-29T06:04:24.385Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
+        <lastmod>2020-11-29T06:04:24.390Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Vue/</loc>
+        <lastmod>2020-11-29T06:04:24.390Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Security/</loc>
+        <lastmod>2020-11-29T06:04:24.395Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Test/</loc>
+        <lastmod>2020-11-29T06:04:24.401Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/%25E8%25AE%2580%25E6%259B%25B8%25E5%25BF%2583%25E5%25BE%2597/</loc>
+        <lastmod>2020-11-29T06:04:24.402Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
+        <lastmod>2020-11-29T10:34:18.392Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Experience/</loc>
+        <lastmod>2020-12-01T14:04:31.164Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

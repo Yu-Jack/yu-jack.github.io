@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-06-02T04:13:07.000Z">
-<meta property="article:modified_time" content="2020-04-16T12:43:25.000Z">
+<meta property="article:modified_time" content="2020-11-29T10:34:18.392Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="nodejs">
 <meta property="article:tag" content="session">
@@ -158,7 +158,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    9 分鐘 閱讀文 (大約 1400 個字)
+                    9 分鐘 閱讀文 (大約 1405 個字)
                 </span>
                 
                 
@@ -190,7 +190,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ol>
 <p>透過設置這三個 header 的參數，就可以讓前端合法的使用 API Server 了<br>所以按照剛剛的邏輯去加上 Header 會這樣加<br>Access-Control-Allow-Headers: *<br>Access-Control-Allow-Origin: <a href="https://www.example.com">https://www.example.com</a><br>Access-Control-Allow-Methods: POST  </p>
 <p>然而在使用前後端分離的架構下，身份驗證以及授權就相對上就變得比較難一點<br>雖然解法上還可以使用 JWT 去解決這個問題，但這篇文章主要會鎖定在用 sessino 的方式去解決</p>
-<p>題外話，有一種方式也可以繞過 CORS，就是以 Proxy Server 的方式去實作<br>以下用著名的 Vue cli 為圖解<br><img src="/images/vue-cli-proxy.png" alt></p>
+<p>題外話，有一種方式也可以繞過 CORS，就是以 Proxy Server 的方式去實作<br>以下用 Vue cli 裡面有一個 proxy 機制去說明<br><img src="/images/vue-cli-proxy.png" alt></p>
 <h2><span id="xhr-credential">XHR Credential</span></h2><p>當加上以上三個 CORS 的規範後<br>會發現在發出 request 的時候，是不會帶入 cookie 去給 server 做驗證<br><img src="/images/ajax-session/ajax-01.png" alt></p>
 <p>這時候就可以透過 xhr 裡面的 credential 去設定<br>當把這個欄位設定成 true 的時候，request 就會夾帶 cookie 到 server 去<br><img src="/images/ajax-session/ajax-02.png" alt></p>
 <h2><span id="詳細操作說明">詳細操作說明</span></h2><p>提到前後端完全分離的話，那我們就要準備兩個 server<br>一台 server 專門是讀取靜態 html 的 server<br>一台 server 專門是處理 API 的 server  </p>
