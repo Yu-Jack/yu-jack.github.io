@@ -29,11 +29,13 @@ Reputation 的增加, 是透過回答問題, 問問題以及修改別人的問�
 
 ### 分數計算  
 
-最基本的問問題可以獲得 5 分  
-如果回答問題, 並且被其他人 Upvote 的話可以得到 10 分  
+最基本的問問題是無法獲得分數的  
+而回答或是問題, 並且被其他人 Upvote 的話可以得到 10 分  
+Downvote 則是會 -2 分  
 若被發問者選為最佳解答, 則是額外再加 15 分  
 所以單純回答問題是不會有任何分數的  
 另外 comment 也是完全不會算分數的唷  
+其他詳細可以看官網寫的機制 [What is reputation? How do I earn (and lose) it?](https://stackoverflow.com/help/whats-reputation)  
 
 ### Privilege
 
