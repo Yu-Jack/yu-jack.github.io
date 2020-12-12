@@ -43,7 +43,7 @@ catalog: true
 但要注意的是, 裡面屬性和方法皆是由定義檔產生出來的
 並不是根據 SDK 本身擁有的屬性和方法出現的
 定義檔萬一定義 `methodA`, 但實際 SDK 是叫做 `methoda`
-結果寫程式的時候, 因為提示跳了 `methodA`, 於是寫的 `methodA`
+結果寫程式的時候, 因為提示跳了 `methodA`, 於是寫了 `methodA`
 這樣等到實際執行的時候就會爆出錯誤說找不到 `methodA`
 因為實際 SDK 擁有的方法是 `methoda`
 
