@@ -6,6 +6,9 @@ tags: [TapPay, Payment Gateway, nodejs]
 header-img: /images/banner.jpg
 catalog: true
 ---
+
+<span style="color: green">[Update 2020-12-12]</span>[ TapPay Web SDK 串接 - @types/tpdirect 介紹](/2020/12/12/tappay-payment-2/)
+
 這篇文章主要是說明如何使用 TapPay 這個服務
 TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說
 有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com
