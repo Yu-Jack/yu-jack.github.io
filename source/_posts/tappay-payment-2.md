@@ -40,6 +40,13 @@ catalog: true
 但環境的話, 目前是只有在 vscode 進行測試過  
 不太確定其他 IDE 也能不能吃  
 
+那 vscode 有一個快捷鍵式 command + i (mac command / windows control)  
+假設在針對 function 要帶入的參數時, 只要先寫好 `{}` 並把鼠標停留在裡面  
+接著按下 command + i 就可以跳出提示現在還剩幾個參數要帶入, 效果如下圖  
+
+![輸入完 {}](/images/tappay/tappay-05.png)
+![按下 command + i](/images/tappay/tappay-06.png)
+
 但要注意的是, 裡面屬性和方法皆是由定義檔產生出來的
 並不是根據 SDK 本身擁有的屬性和方法出現的
 定義檔萬一定義 `methodA`, 但實際 SDK 是叫做 `methoda`
