@@ -63,13 +63,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
-        <lastmod>2020-11-29T06:04:24.390Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2020-11-29T06:04:24.390Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -114,6 +107,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
         <lastmod>2020-12-13T02:02:12.547Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/DevOps/</loc>
+        <lastmod>2021-01-17T15:12:42.305Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
