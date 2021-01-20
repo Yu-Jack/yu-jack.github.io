@@ -232,6 +232,8 @@ jenkins 和 sonarqube 的帳號密碼皆為 admin:root
     docker stop demo_backup
     docker rm demo_backup
     ```
+6. Jenkin 網頁在 http://localhost:8080
+    Sonarqube 網頁在 http://localhost:9000
 
 以下紀錄 jenkins 和 sonarqube 有調整的部分
 
