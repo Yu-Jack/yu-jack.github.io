@@ -136,6 +136,12 @@ it("when user type correct password, user should login successfully", () => {
 所以在重構 hash function 的時候, 就不會需要重新調整 unit test 了  
 而且重構 hash function 之後, 跑完 unit test 如果是通過也就代表結果正確  
 
+另外上述這種測試方式, 是針對『實作細節』去進行的  
+而『實作細節』是有可能跟著重構變更, 但程式的最終結果除非需求改變否則不會變更  
+如下圖所示, 書中是不推崇過度測試『實作細節』
+
+![](/images/unit-test/unit-test-best-practice-14.png)
+
 過度使用 unit of code 的方式除了會降低 Resistance to refactoring 這個指標外  
 也會降低 Fast Feedback 這個指標  
 因為過多的 Unit Test 會讓整體跑 Unit Test 拉得過長  

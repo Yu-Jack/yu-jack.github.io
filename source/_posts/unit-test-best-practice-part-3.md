@@ -155,7 +155,7 @@ module.exports = {
 const hash = require("hash.js")
 module.exports = {
     isPasswordMatch: (userPassword, inputPassword) => {
-        return this.userPassword === hash.sha256(inputPassword)
+        return userPassword === hash.sha256(inputPassword)
     }
 }
 
