@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-09-21T02:22:57.000Z">
-<meta property="article:modified_time" content="2020-11-29T06:04:24.398Z">
+<meta property="article:modified_time" content="2021-02-17T09:45:54.194Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="test">
@@ -156,7 +156,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    11 分鐘 閱讀文 (大約 1686 個字)
+                    12 分鐘 閱讀文 (大約 1775 個字)
                 </span>
                 
                 
@@ -208,6 +208,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>眼尖的讀者應該有發現到<br>筆者在 Unit Test 裡面有寫註解關於 arrange, act, assert<br>這其實是很著名的 3A Pattern 寫法<br>後面在提到如何寫好的 Unit Test 時會講到  </p>
 </blockquote>
 <p>因為 unit of behavior 關注的點是輸入密碼這個行為造成的結果, 並不用關注裡面怎麼去實作 hash 這件事情<br>所以在重構 hash function 的時候, 就不會需要重新調整 unit test 了<br>而且重構 hash function 之後, 跑完 unit test 如果是通過也就代表結果正確  </p>
+<p>另外上述這種測試方式, 是針對『實作細節』去進行的<br>而『實作細節』是有可能跟著重構變更, 但程式的最終結果除非需求改變否則不會變更<br>如下圖所示, 書中是不推崇過度測試『實作細節』</p>
+<p><img src="/images/unit-test/unit-test-best-practice-14.png" alt></p>
 <p>過度使用 unit of code 的方式除了會降低 Resistance to refactoring 這個指標外<br>也會降低 Fast Feedback 這個指標<br>因為過多的 Unit Test 會讓整體跑 Unit Test 拉得過長  </p>
 <p>以這三個指標來說, 會出現以下這張結果  </p>
 <p><img src="/images/unit-test/unit-test-best-practice-02.png" alt></p>

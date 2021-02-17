@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-01-17T08:14:40.000Z">
-<meta property="article:modified_time" content="2021-01-17T15:12:42.305Z">
+<meta property="article:modified_time" content="2021-02-17T09:46:47.296Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="jenkins">
 <meta property="article:tag" content="DevOps">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    17 分鐘 閱讀文 (大約 2489 個字)
+                    17 分鐘 閱讀文 (大約 2501 個字)
                 </span>
                 
                 
@@ -259,8 +259,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><code>docker cp demo_backup:/var/jenkins_home_backup/jenkins_home ~/Downloads/jenkins-sonarqube-test</code><br> 把我的備份的 jenkins_home 先複製出來</li>
 <li>把 docker-compose 的 <code>{Your_downloaded_jenkins_home}</code> 改成  <code>/Users/name/Downloads/jenkins-sonarqube-test</code><br> 記得 name 這裡要填你自己的</li>
 <li>執行 docker-compose up,  docker-compose.yml 如下 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3.7"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">sonarqube:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jk82421/sonarqube_server:v2</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">9000</span><span class="string">:9000</span></span><br><span class="line"><span class="attr">jenkins_server:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins:lts</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#123;Your_downloaded_jenkins_home&#125;:/var/jenkins_home</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">8080</span><span class="string">:8080</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span></span><br></pre></td></tr></table></figure></li>
-<li>最後記得停止和刪除一開始備份的東西 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop demo_backup</span><br><span class="line">docker rm demo_backup</span><br></pre></td></tr></table></figure>
-</li>
+<li>最後記得停止和刪除一開始備份的東西 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop demo_backup</span><br><span class="line">docker rm demo_backup</span><br></pre></td></tr></table></figure></li>
+<li>Jenkin 網頁在 <a href="http://localhost:8080">http://localhost:8080</a><br> Sonarqube 網頁在 <a href="http://localhost:9000">http://localhost:9000</a></li>
 </ol>
 <p>以下紀錄 jenkins 和 sonarqube 有調整的部分</p>
 <h3><span id="sonarqube-部分">sonarqube 部分</span></h3><ol>
