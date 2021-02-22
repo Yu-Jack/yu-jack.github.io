@@ -1,5 +1,5 @@
 ---
-title: Unit Test 實踐守則 (三) - 為何 Unit Test 前需要先重構原始碼? 
+title: Unit Test 實踐守則 (三) - 為何寫好 Unit Test 前需要先了解重構? 
 categories: Test
 date: 2020-09-28 10:22:57
 tags: [test, unit test, refactor, w3HexSchool]
@@ -10,7 +10,7 @@ catalog: true
 ## 前言
 
 上一篇我們會討論了 [如何從什麼層面去思考一個好的 Unit Test?](/2020/09/21/unit-test-best-practice-part-2/)
-接著我們討論到寫好 unit test 前需要先看看重構  
+接著我們討論到寫好 Unit Test 前需要先看看重構  
 
 書中提到 Unit Test 和 Code Base 是彼此非常糾纏的  
 原文是這樣寫道  
@@ -19,7 +19,25 @@ catalog: true
 
 所以在寫好一個 Unit Test 之前, 是需要先把程式碼進行重構  
 這樣才有辦法寫出一個好的 Unit Test  
-在這裡會簡單介紹一些重構的方式和架構  
+
+但有趣的就來了, 如果先進行重構才去寫 Unit Test 又要怎麼確認重構後的邏輯是正確的?  
+在 91 大的 2012 年[這篇文章](https://ithelp.ithome.com.tw/articles/10104643)也提到了這蛇咬尾巴的矛盾點  
+
+所以比較好的方式, 是額外先寫更高層一點的測試, 先確保邏輯上是沒有問題再來進行重構  
+而這個更高層一點的測試, 是有可能只用一次用完就丟, 這很正常  
+因為當程式碼開始進行重構的時候, 原本這個更高層的測試可能 mock 一堆內部方法  
+但隨著內部方法被重構之後, 呼叫的進入點可能改變, 這個測試就無用了  
+但帶來的效益, 卻是程式碼更乾淨也更好維護, 而且更好寫測試  
+
+> 筆者經驗談: 
+> 除非, 你能保證 100% 掌握住這段邏輯的運作流程  
+> 那也許你就可以先不用寫更高層級的測試了, 就可以直接重構了 (若你真的有信心的話)  
+> 
+> 雖然我真的幹過直接重構然後才寫 Unit Test, 還好結果是沒問題的 (擦汗  
+> 但這前提真的是很清楚邏輯且邏輯簡單才敢這樣做  
+> 當系統中遺留舊有程式的邏輯太過複雜, 我還是會先建立一個到多個測試確保等等不會改壞  
+
+在這裡會簡單介紹書中提到的一些重構的方式和架構  
 
 ## 重構
 
@@ -101,7 +119,8 @@ function login(request) {
 這個要做 unit test 是非常難做到的, 因為太過混雜  
 而且也嚴重打破 hexagonal architecture 的結構  
 
-如果真的要進行測試的話, 大致上會寫成以下這樣  
+如果真的要在重構前先寫一個測試確保等等不會改壞的話, 大致上會寫成以下這樣  
+
 ```js
 const loginController = require("./loginController.js")
 const axios = require("axios")
@@ -134,6 +153,10 @@ describe("when user type correct password, user should be allow to login", () =>
 那麼 ...... 如果我們要寫好一個 unit test, 那我們就勢必得先重構上面的程式碼  
 這邊先以簡單拆法為主, 所以可能不是非常完美, 但用例子解釋就足夠了  
 透過這樣拆成模組化, 到時候再使用類似 sinon 的 mock 工具時會更輕易能夠做 mock  
+
+> 如果邏輯比這個更複雜的情況下  
+> 還是建議先向上面一樣, 先寫一個更高級別的 Test 去確保  
+> 但這邊邏輯很單純, 於是我就直接進行重構了  
 
 ```js
 // loginController.js

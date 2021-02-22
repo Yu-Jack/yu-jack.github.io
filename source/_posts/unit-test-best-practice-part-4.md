@@ -9,7 +9,7 @@ catalog: true
 
 ## 前言
 
-上一篇我們會討論了 [為何 Unit Test 前需要先重構原始碼? ](/2020/09/28/unit-test-best-practice-part-3/)  
+上一篇我們會討論了 [為何寫好 Unit Test 前需要先了解重構?](/2020/09/28/unit-test-best-practice-part-3/)  
 接著我們就要進入正題了  
 
 ## 如何寫出一個好的 Unit Test

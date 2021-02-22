@@ -189,4 +189,4 @@ it("when user type correct password, user should login successfully", () => {
 .
 <img src="/images/wait.png" style="margin: 0" width=300 />
 我們得先來看看重構！  
-來看看下一篇[為何 Unit Test 前需要先重構原始碼? ](/2020/09/28/unit-test-best-practice-part-3/)  
+來看看下一篇[為何寫好 Unit Test 前需要先了解重構?](/2020/09/28/unit-test-best-practice-part-3/)  

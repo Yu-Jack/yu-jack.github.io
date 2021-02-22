@@ -15,7 +15,7 @@ catalog: true
 
 1. 第一篇會討論到 [Unit Test 定義是什麼, 涵蓋的範圍又是哪些?](/2020/09/14/unit-test-best-practice-part-1/)
 2. 第二篇會討論到 [如何從什麼層面去思考一個好的 Unit Test?](/2020/09/21/unit-test-best-practice-part-2/)
-3. 第三篇會討論到 [為何 Unit Test 前需要先重構原始碼? ](/2020/09/28/unit-test-best-practice-part-3/)
+3. 第三篇會討論到 [為何寫好 Unit Test 前需要先了解重構?](/2020/09/28/unit-test-best-practice-part-3/)
 4. 第四篇會討論到 [如何寫出一個好的 Unit Test?](/2020/10/05/unit-test-best-practice-part-4/)
 5. 第五篇會討論到 [如何有效使用 Test Double](/2020/10/12/unit-test-best-practice-part-5/)
     這篇會開始談到 Integration Test 定義
