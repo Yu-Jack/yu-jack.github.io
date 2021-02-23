@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-09-28T02:22:57.000Z">
-<meta property="article:modified_time" content="2021-02-22T13:29:09.585Z">
+<meta property="article:modified_time" content="2021-02-23T13:35:32.766Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="test">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    13 分鐘 閱讀文 (大約 1978 個字)
+                    14 分鐘 閱讀文 (大約 2032 個字)
                 </span>
                 
                 
@@ -185,7 +185,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>但有趣的就來了, 如果先進行重構才去寫 Unit Test 又要怎麼確認重構後的邏輯是正確的?<br>在 91 大的 2012 年<a href="https://ithelp.ithome.com.tw/articles/10104933">這篇文章</a>最後面的補充也提到了這蛇咬尾巴的矛盾點  </p>
 <p>所以比較好的方式, 是額外先寫更高層一點的測試, 先確保邏輯上是沒有問題再來進行重構<br>而這個更高層一點的測試, 是有可能只用一次用完就丟, 這很正常<br>因為當程式碼開始進行重構的時候, 原本這個更高層的測試可能 mock 一堆內部方法<br>但隨著內部方法被重構之後, 呼叫的進入點可能改變, 這個測試就無用了<br>但帶來的效益, 卻是程式碼更乾淨也更好維護, 而且更好寫測試  </p>
 <blockquote>
-<p>筆者經驗談:<br>除非, 你能保證 100% 掌握住這段邏輯的運作流程<br>那也許你就可以先不用寫更高層級的測試了, 就可以直接重構了 (若你真的有信心的話)  </p>
+<p>筆者經驗談:<br>除非, 你能保證 100% 掌握住這段你想重構的『邏輯運作流程』<br>那也許你就可以先不用寫更高層級的測試了, 就可以直接重構了 (若你真的有信心的話)<br>不過有的時候, 是把部分程式碼變成 function 拉出來的這種重構就相對單純<br>但就算簡單, 依舊很難確保拉出來就沒有問題  </p>
 <p>雖然我真的幹過直接重構然後才寫 Unit Test, 還好結果是沒問題的 (擦汗<br>但這前提真的是很清楚邏輯且邏輯簡單才敢這樣做<br>當系統中遺留舊有程式的邏輯太過複雜, 我還是會先建立一個到多個測試確保等等不會改壞  </p>
 </blockquote>
 <p>在這裡會簡單介紹書中提到的一些重構的方式和架構  </p>
