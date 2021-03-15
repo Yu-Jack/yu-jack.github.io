@@ -6,6 +6,13 @@ tags: [event loop, JavaScript, browser, w3HexSchool]
 header-img: /images/banner.jpg
 catalog: true
 ---
+## Event Loop (2021-03-14 Updated)
+
+關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本
+透過以下兩篇可以更加清楚了解兩者之間的差異
+
+Event Loop 運行機制解析 - 瀏覽器篇 (本篇)
+[Event Loop 運行機制解析 - Node.js 篇](/2021/03/14/node-event-loop/)
 
 ## 前言  
 網路上有許多文章在討論瀏覽器內 event loop 的機制  
