@@ -56,13 +56,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
-        <lastmod>2020-11-29T06:04:24.385Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2020-11-29T06:04:24.390Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -114,6 +107,20 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Test/</loc>
         <lastmod>2021-02-23T13:35:32.766Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
+        <lastmod>2021-03-15T13:10:12.645Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Node-js/</loc>
+        <lastmod>2021-03-15T13:30:19.844Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
