@@ -1,6 +1,6 @@
 ---
 title: Event Loop 運行機制解析 - Node.js 篇
-categories: Node.js
+categories: NodeJs
 date: 2021-03-14 15:01:11
 tags: [event loop, JavaScript, node.js]
 header-img: /images/banner.jpg
