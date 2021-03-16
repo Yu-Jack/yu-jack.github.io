@@ -67,6 +67,11 @@ Node.js v10 以前會印出, 但 v11 以後就會跟 browser 一樣
 // promise2
 ```
 
+> 有些人用 v8, v10 "有時候"也會執行出跟 v11 一樣的結果
+> 這其實有關於 setTimeout 底層的機制和機器效能有關
+> 這個會放在最後補充做說明, 但我們先完整了解 Event Loop 後
+> 再來解析為何 "有時候" 執行結果會跟 v11 一樣
+
 但為什麼以前會不一樣, 以後卻會一樣?
 這其實牽涉到 Event Loop 實作的原理
 我們就透過這個例子, 往下慢慢介紹 Event Loop in Node.js
@@ -784,6 +789,79 @@ setTimeout(function timer2 () {
 
 還蠻有趣的對吧 XD
 
+## 補充 - v10 執行結果有時跟 v11 一樣
+
+還記得一開始有提到 v8, v10 執行文章一開始範例的結果
+有時候會跟 v11 一樣嘛? 看完 Event Loop 後我們來解析這個情況
+
+我們先從『符合邏輯』的方式下去猜想為何有時候會一樣
+在執行整個程式之後, 把 timer1, timer2 放到 timer phase queue 之後
+準備要去觸發 timer1, timer2 callback
+
+因為是 timer, 所以他執行的條件就是『你設定的時間已經過期』
+這個 timer callback 才會被觸發
+
+所以有可能是因為 timer1 已經到達『過期的時間』
+但 timer2 卻還沒到達『過期的時間』
+才導致這樣順序 timer1 -> promise2 -> timer2 -> promise2?
+
+更詳細的說明的話
+第一輪 Event Loop 到了 timer phase 之後
+發現了只有 timer1 過期可以執行, 於是只執行 timer1 的 callback
+但此時 timer2 還沒到可以執行的階段, 於是就先跳過
+
+準備進到 pending task phase 之前
+因為有一個 JS Callback, 這時就先把 promise1 給印出來
+
+接著到了 poll 階段時, 因為 poll phase queue 為空
+但因為有設置 timer, 且已經到達過期時間
+於是 Event Loop 就繞回去 timer 階段
+
+此時 timer 階段有一個 timer2
+就按照 timer phase 執行 timer2 callback
+然後進入到 pending task 之前的 JS callback
+又執行了 promise2
+
+這才導致了順序不一樣的問題
+
+但 ... 兩個 timer 都設置為 0, 這種可能性是會發生的嗎?
+我們先來看看 [node.js 針對 setTimeout 使用的說明](https://nodejs.org/api/timers.html#timers_settimeout_callback_delay_args)
+
+> When delay is larger than 2147483647 or less than 1, the delay will be set to 1.
+> Non-integer delays are truncated to an integer.
+
+有沒有發現一個神奇的點, 也就是說 0 根本不存在
+你設置 0 的話, 他會直接把你的 0 改成 1
+
+所以實際上程式運行是長這樣
+```javascript
+setTimeout(()=>{
+    console.log('timer1')
+
+    Promise.resolve().then(function() {
+        console.log('promise1')
+    })
+}, 1)
+
+setTimeout(()=>{
+    console.log('timer2')
+
+    Promise.resolve().then(function() {
+        console.log('promise2')
+    })
+}, 1)
+```
+
+而這裡的 1ms 都是所謂相對時間
+也就是程式執行當下的相對時間
+這樣的時間差 + 機器執行的效能花式組合後(?
+就會達成以下狀況發生, 這時可以再回去看看我們猜想的流程其實是正確的
+
+* timer1 就可能先過期且可以執行
+* timer2 就還沒過期, 所以還不能執行
+
+所以其實 v11 版本也是非常有可能造成以上時間差的問題
+但因為 v11 機制整體改掉的關係, 所以不會偶爾有執行順序的差別
 ## 後記
 這次 Event Loop - Node.js 篇就介紹到這邊了
 如果內容有誤或是不清楚的, 非常歡迎大家來找我討論!
