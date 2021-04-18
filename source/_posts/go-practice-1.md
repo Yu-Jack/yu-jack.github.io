@@ -166,3 +166,8 @@ func (school *School) changeName() {
 
 接著下一篇會提到 interface & struct 的交互應用  
 因為這個交互應用可以對應到 unit test 中如何去做 mock 有關係  
+
+## References
+
+1. https://openhome.cc/Gossip/Go/  
+2. https://dave.cheney.net/2017/04/29/there-is-no-pass-by-reference-in-go
