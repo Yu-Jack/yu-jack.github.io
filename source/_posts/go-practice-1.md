@@ -1,6 +1,6 @@
 ---
-title: 學習 GoLang 的心得 - Receiver
-categories: GoLang
+title: 學習 Golang 的心得 - Receiver
+categories: Golang
 date: 2021-04-18 20:29:49
 tags: [golang]
 header-img: /images/banner.jpg
