@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-03-14T07:01:11.000Z">
-<meta property="article:modified_time" content="2021-03-15T13:34:46.265Z">
+<meta property="article:modified_time" content="2021-04-18T13:47:07.993Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="JavaScript">
 <meta property="article:tag" content="event loop">
@@ -156,7 +156,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    37 分鐘 閱讀文 (大約 5531 個字)
+                    42 分鐘 閱讀文 (大約 6270 個字)
                 </span>
                 
                 
@@ -183,6 +183,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>答案是: 只有在 node v10 以前不一樣 (包含 v10)</p>
 <p>瀏覽器會印出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; timer1</span><br><span class="line">&#x2F;&#x2F; promise1</span><br><span class="line">&#x2F;&#x2F; timer2</span><br><span class="line">&#x2F;&#x2F; promise2</span><br></pre></td></tr></table></figure></p>
 <p>Node.js v10 以前會印出, 但 v11 以後就會跟 browser 一樣<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; timer1</span><br><span class="line">&#x2F;&#x2F; timer2</span><br><span class="line">&#x2F;&#x2F; promise1</span><br><span class="line">&#x2F;&#x2F; promise2</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>有些人用 v8, v10 “有時候”也會執行出跟 v11 一樣的結果<br>這其實有關於 setTimeout 底層的機制和機器效能有關<br>這個會放在最後補充做說明, 但我們先完整了解 Event Loop 後<br>再來解析為何 “有時候” 執行結果會跟 v11 一樣</p>
+</blockquote>
 <p>但為什麼以前會不一樣, 以後卻會一樣?<br>這其實牽涉到 Event Loop 實作的原理<br>我們就透過這個例子, 往下慢慢介紹 Event Loop in Node.js</p>
 <blockquote>
 <p>現在蠻多文章還是停留在 v10 版本之前的 Event Loop<br>這邊就直接以 v10 以前, 以及 v11 以後去做介紹和區別</p>
@@ -316,6 +319,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>從瀏覽器的開發者工具中的 performance 去檢測也會得到一樣的結果<br>前面的 task 包含 timer1 + promise1<br>後面的 task 包含 timer2 + promise2<br><img src="/images/node-event-loop/browser.png" alt></p>
 <p>雖然在瀏覽器和 Node.js 兩者執行結果一樣, 但概念是不一樣的<br>以瀏覽器來說, 執行 Event Loop 兩輪才把程式跑完<br>以 Node.js 來說, 都還沒進到 Event Loop 一半, 程式碼就都已經跑完了等著要跳出 Event Loop</p>
 <p>還蠻有趣的對吧 XD</p>
+<h2><span id="補充-v10-執行結果有時跟-v11-一樣">補充 - v10 執行結果有時跟 v11 一樣</span></h2><p>還記得一開始有提到 v8, v10 執行文章一開始範例的結果<br>有時候會跟 v11 一樣嘛? 看完 Event Loop 後我們來解析這個情況</p>
+<p>我們先從『符合邏輯』的方式下去猜想為何有時候會一樣<br>在執行整個程式之後, 把 timer1, timer2 放到 timer phase queue 之後<br>準備要去觸發 timer1, timer2 callback</p>
+<p>因為是 timer, 所以他執行的條件就是『你設定的時間已經過期』<br>這個 timer callback 才會被觸發</p>
+<p>所以有可能是因為 timer1 已經到達『過期的時間』<br>但 timer2 卻還沒到達『過期的時間』<br>才導致這樣順序 timer1 -&gt; promise2 -&gt; timer2 -&gt; promise2?</p>
+<p>更詳細的說明的話<br>第一輪 Event Loop 到了 timer phase 之後<br>發現了只有 timer1 過期可以執行, 於是只執行 timer1 的 callback<br>但此時 timer2 還沒到可以執行的階段, 於是就先跳過</p>
+<p>準備進到 pending task phase 之前<br>因為有一個 JS Callback, 這時就先把 promise1 給印出來</p>
+<p>接著到了 poll 階段時, 因為 poll phase queue 為空<br>但因為有設置 timer, 且已經到達過期時間<br>於是 Event Loop 就繞回去 timer 階段</p>
+<p>此時 timer 階段有一個 timer2<br>就按照 timer phase 執行 timer2 callback<br>然後進入到 pending task 之前的 JS callback<br>又執行了 promise2</p>
+<p>這才導致了順序不一樣的問題</p>
+<p>但 … 兩個 timer 都設置為 0, 這種可能性是會發生的嗎?<br>我們先來看看 <a href="https://nodejs.org/api/timers.html#timers_settimeout_callback_delay_args">node.js 針對 setTimeout 使用的說明</a></p>
+<blockquote>
+<p>When delay is larger than 2147483647 or less than 1, the delay will be set to 1.<br>Non-integer delays are truncated to an integer.</p>
+</blockquote>
+<p>有沒有發現一個神奇的點, 也就是說 0 根本不存在<br>你設置 0 的話, 他會直接把你的 0 改成 1</p>
+<p>所以實際上程式運行是長這樣<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timer1'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'promise1'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timer2'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'promise2'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>而這裡的 1ms 都是所謂相對時間<br>也就是程式執行當下的相對時間<br>這樣的時間差 + 機器執行的效能花式組合後(?<br>就會達成以下狀況發生, 這時可以再回去看看我們猜想的流程其實是正確的</p>
+<ul>
+<li>timer1 就可能先過期且可以執行</li>
+<li>timer2 就還沒過期, 所以還不能執行</li>
+</ul>
+<p>所以其實 v11 版本也是非常有可能造成以上時間差的問題<br>但因為 v11 機制整體改掉的關係, 所以不會偶爾有執行順序的差別</p>
 <h2><span id="後記">後記</span></h2><p>這次 Event Loop - Node.js 篇就介紹到這邊了<br>如果內容有誤或是不清楚的, 非常歡迎大家來找我討論!<br>之後如果有想到什麼其他更好例子, 可能會再慢慢補上來, 讓整體概念更加清楚</p>
 <p>因為這篇是以概念為主去針對 Event Loop 介紹<br>下一篇的話, 就會稍微硬一點, 可能會實際來看看 libuv 源碼是怎麼寫 XD </p>
 <p>另外若文章有描述不對或怪怪的地方, 請各位大大不要手軟直接指認 XD</p>
@@ -349,6 +373,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2021/04/18/go-practice-1/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">學習 GoLang 的心得 - Receiver</span>
+            </a>
+        </div>
         
         
         <div class="level-end">
@@ -463,12 +494,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <span class="has-mr-6">5</span>
         <span>瀏覽器和 Node.js 執行邏輯差異</span>
         </a></li><li>
-        <a class="is-flex" href="#後記">
+        <a class="is-flex" href="#補充-v10-執行結果有時跟-v11-一樣">
         <span class="has-mr-6">6</span>
+        <span>補充 - v10 執行結果有時跟 v11 一樣</span>
+        </a></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">7</span>
         <span>後記</span>
         </a></li><li>
         <a class="is-flex" href="#references">
-        <span class="has-mr-6">7</span>
+        <span class="has-mr-6">8</span>
         <span>References</span>
         </a></li></ul>
             </div>
