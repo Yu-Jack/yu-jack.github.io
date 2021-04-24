@@ -148,6 +148,11 @@ changeName(user) // 對應到上面第二個 changeName
 以下面例子來說, User 有自己的 changeName function, School 有自己的 changeName function  
 在 go 裡面會根據資料結構的定義去找到相對應的 function 去執行  
 
+不過以下兩種定義又有不一樣的意思  
+User 的是 Pointer Type 的實作, School 的是 Value Type 的實作  
+簡單來說 Pointer Type 在呼叫方法時, 若在方法內有改值則會修改到原始傳進來的值  
+Value Type 則是複製一份, 所以在使用的時候不會改到傳進來的值  
+
 ```go
 func (user *User) changeName() {
 	user.Name = "hi"
