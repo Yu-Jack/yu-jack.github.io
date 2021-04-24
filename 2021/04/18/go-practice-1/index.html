@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-04-18T12:29:49.000Z">
-<meta property="article:modified_time" content="2021-04-18T13:51:58.609Z">
+<meta property="article:modified_time" content="2021-04-24T13:50:18.783Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -154,7 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    8 分鐘 閱讀文 (大約 1149 個字)
+                    8 分鐘 閱讀文 (大約 1238 個字)
                 </span>
                 
                 
@@ -194,6 +194,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>但這確有很大不同的意義<br>其中是一個是使用的方式大有不同, 這就是 receiver 中的一個特色<br>當你把 function 參數搬到前面時, 他就變成 receiver 的一種<br>也就是，當你的資料結構為 <code>User</code> 時, <code>changeName</code> 就是你所屬的一個 function</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user.changeName() <span class="comment">// 對應到上面第一個 changeName</span></span><br><span class="line">changeName(user) <span class="comment">// 對應到上面第二個 changeName</span></span><br></pre></td></tr></table></figure>
 <p>但這個 receiver 可以根據你資料的結構去進行變化<br>也就是說, 你可以再定義一個新的資料結構, 但 method name 也取一樣<br>以下面例子來說, User 有自己的 changeName function, School 有自己的 changeName function<br>在 go 裡面會根據資料結構的定義去找到相對應的 function 去執行  </p>
+<p>不過以下兩種定義又有不一樣的意思<br>User 的是 Pointer Type 的實作, School 的是 Value Type 的實作<br>簡單來說 Pointer Type 在呼叫方法時, 若在方法內有改值則會修改到原始傳進來的值<br>Value Type 則是複製一份, 所以在使用的時候不會改到傳進來的值  </p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(user *User)</span> <span class="title">changeName</span><span class="params">()</span></span> &#123;</span><br><span class="line">	user.Name = <span class="string">"hi"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(school *School)</span> <span class="title">changeName</span><span class="params">()</span></span> &#123;</span><br><span class="line">	school.Name = <span class="string">"hi"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2><span id="後記">後記</span></h2><p>以上就是 go receiver 的介紹, 這在 go 中非常常見<br>也是我寫過的語言中最為特別的一種應用方式, 畢竟 go 並沒有 class 的觀念存在<br>『硬要』用 java 去解釋的話, 就會變成 User 是一個 class, 而 changeName 是我 instance 實例化後的一個 method<br>但還是要強調, 用其他語言去解釋只是比較容易解釋, 但本質上是不一樣的  </p>
 <p>接著下一篇會提到 interface &amp; struct 的交互應用<br>因為這個交互應用可以對應到 unit test 中如何去做 mock 有關係  </p>
