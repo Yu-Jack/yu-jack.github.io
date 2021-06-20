@@ -30,6 +30,27 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/certificate/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/acm/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/apple-pay/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -52,27 +73,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/safari/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/certificate/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/acm/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -555,14 +555,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/CI-CD/</loc>
+        <loc>https://yu-jack.github.io/tags/Sonarqube/</loc>
         <lastmod>2021-02-17T09:46:47.296Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/Sonarqube/</loc>
+        <loc>https://yu-jack.github.io/tags/CI-CD/</loc>
         <lastmod>2021-02-17T09:46:47.296Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -633,7 +633,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/ruby/</loc>
-        <lastmod>2021-06-20T05:38:31.257Z</lastmod>
+        <lastmod>2021-06-20T15:26:53.526Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

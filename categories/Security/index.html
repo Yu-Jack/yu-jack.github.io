@@ -172,14 +172,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-這篇文章會注重在 OAuth 2.0 的介紹
-OAuth 1.0 和 2.0 的差別其實蠻大的, 對角色的定義也有所不同
-OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a 和 2.0 的之间的区别有哪些？
+                前言這篇文章會注重在 OAuth 2.0 的介紹OAuth 1.0 和 2.0 的差別其實蠻大的, 對角色的定義也有所不同OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a 和 2.0 的之间的区别有哪些？  
 
-基本上 2.0 就是對 1.0 的角色重新定義
-簡化 1.0 的複雜流程, 以及強化 1.0 面臨到的安全問題
-但本質上的目的都是...
+基本上 2.0 就是對 1.0 的角色重新定義簡化 1.0 的複雜流程, 以及強化 1.0 面臨到的安全問題但本質上的目的都是一樣,...
             </div>
         
         
@@ -235,13 +230,8 @@ OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a �
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-CAS 全名是 Central Authentication Service
-一個獨立的認證服務, 概念是在使用服務之前
-如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入
-登入成功之後就會被導回去原本使用服務的頁面
-題外話, 這裡的英文 Authentication 是有含義所在的
-代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行&lt;spa...
+                前言CAS 全名是 Central Authentication Service一個獨立的認證服務, 概念是在使用服務之前如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入登入成功之後就會被導回去原本使用服務的頁面  
+題外話, 這裡的英文 Authentication 是有含義所在的代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行認證而認證成功後, ...
             </div>
         
         
@@ -297,15 +287,9 @@ CAS 全名是 Central Authentication Service
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別
-這篇會針對它們之間的差別進行解釋
-正文
-我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)
-OAuth
-OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的
-但在對角色和細節流程上面的定義不大一樣
-這會到 OAuth 2.0 實...
+                前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋  
+正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)  
+OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的...
             </div>
         
         
@@ -361,12 +345,7 @@ OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-SSO 是 Sinsgle Sign On, 也就是單點登入
-簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』
-然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用
-但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存
-而是其他地方的系統都是透過 A 去做到帳密認...
+                前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存而是其他地方的系統都是透過 A 去做到帳密認證, 也就...
             </div>
         
         
@@ -422,17 +401,10 @@ SSO 是 Sinsgle Sign On, 也就是單點登入
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-看不懂跟我說，我想辦法補充 XD
-正文開始 ...
-某天有人問我
-某: SSL Pinning (Certificate Pinning) 是什麼東西啊?
-我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制
-某: ...... 你這樣說最好是有人聽得懂
-我: 我錯了 ... 給點機會讓我重新解釋解釋
-為了要了解這個的意思
-我們要先來說說 SSL 是什麼
-而 SSL ...
+                前言看不懂跟我說，我想辦法補充 XD  
+正文開始 …某天有人問我  
+某: SSL Pinning (Certificate Pinning) 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋  
+為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又...
             </div>
         
         
@@ -488,13 +460,7 @@ SSO 是 Sinsgle Sign On, 也就是單點登入
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-我們有時候要取得使用者 IP
-往往都會用最簡單的方式取得 IP
-以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP
-但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候
-取得到的 IP 會是 Load Balancer 的嗎?
-而真正的 IP 會被 Load Balancer 放在 X-Fo...
+                前言我們有時候要取得使用者 IP往往都會用最簡單的方式取得 IP以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候取得到的 IP 會是 Load Balancer 的嗎?而真正的 IP 會被 Load Balancer 放在 X-Forwarde...
             </div>
         
         
@@ -550,22 +516,13 @@ SSO 是 Sinsgle Sign On, 也就是單點登入
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Encrypted Pastebin
-這題總共有四個 flag
-&lt;!-- more --&gt;
-0x00
-一開始畫面長這樣
+                Encrypted Pastebin這題總共有四個 flag
 
+0x00一開始畫面長這樣
 試著輸入值之後，發現上面有一段 ?post= 資料
-
 嘗試更改之後，發現 flag
-
-0x01
-根據上一個 error message 得知有用到 base64
-所以可以知道 ?post= 的是 base64
-接下來再輸入一些奇怪的值試試看
-
-發現程式使用的是...
+0x01根據上一個 error message 得知有用到 base64所以可以知道 ?post= 的是 base64接下來再輸入一些奇怪的值試試看
+發現程式使用的是 aes-128-cbc 去把資料作加密且根據錯誤訊息表...
             </div>
         
         
@@ -621,12 +578,9 @@ SSO 是 Sinsgle Sign On, 也就是單點登入
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                什麼是 HTTP Request Smuggling ?
-今日常見的網頁應用程式往往會有多一層 server 的存在
-請求 --&gt; front-end server --&gt; back-end server
-front-end server 接收到請求的時候，會轉發到 back-end server 去處理
-&lt;!-- more --&gt;
-http request smug...
+                什麼是 HTTP Request Smuggling ?今日常見的網頁應用程式往往會有多一層 server 的存在請求 –&gt; front-end server –&gt; back-end serverfront-end server 接收到請求的時候，會轉發到 back-end server 去處理  
+
+http request smuglling 的漏洞就是出現在『轉發』到 ba...
             </div>
         
         
@@ -682,19 +636,14 @@ http request smug...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Cody's First Blog
-這題總共有 3 個 flag
-&lt;!-- more --&gt;
-0x00
-一開始畫面長這樣
+                Cody’s First Blog這題總共有 3 個 flag
+0x00一開始畫面長這樣
+裡面有提到好像是用 php 建立的試著提交看看 &lt;?php echo phpinfo(); ?&gt;就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
+0x01接下來看一下 source code 發現一個特別的地方  
 
-裡面有提到好像是用 php 建立的
-試著提交看看 &lt;?php echo phpinfo(); ?&gt;
-就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
+被註解掉的 admin path
 
-
-0x01
-接下來看一下 source code 發現一個特別的地方...
+Path: ...
             </div>
         
         
@@ -751,16 +700,11 @@ http request smug...
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 Photo Gallery
-&lt;!-- more --&gt;
-0x00
-一開始畫面長這樣
-
+0x00一開始畫面長這樣
 發現原始碼有一個 fetch?id=1
-
 點進去網址發現回傳一個 jpg 的 text 檔案
-
-從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的
-加個 ' 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error...
+從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的加個 ‘ 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error可能程式有哪邊出錯了，繼續往下測試
+不過當改下 f...
             </div>
         
         
@@ -816,15 +760,12 @@ http request smug...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                系列篇第三篇，目前題目寫下來都蠻有趣的
-&lt;!-- more --&gt;
-Ticketastic: Live Instance
-根據題目總共有 2 個 Flag
-0x00
-一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看
+                系列篇第三篇，目前題目寫下來都蠻有趣的  
 
-大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』
-不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/a...
+Ticketastic: Live Instance根據題目總共有 2 個 Flag
+0x00一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看
+大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/admin 可以先登入
+登入後可以看到有一個...
             </div>
         
         
@@ -880,21 +821,14 @@ Ticketastic: Live Instance
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ
-&lt;!-- more --&gt;
-Micro-CMS v1
-根據題目總共有 4 個 Flag
-0x00
-打開頁面後頁面是
+                系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  
 
+Micro-CMS v1根據題目總共有 4 個 Flag
+0x00打開頁面後頁面是
 試著建立 post 試試看
-
 發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
-
 按了 Go Home 會去上一頁就跳出 FLAG 了
-
-0x01
-因為跳出 xss 的時候注...
+0x01因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8覺得很疑...
             </div>
         
         
@@ -950,19 +884,13 @@ Micro-CMS v1
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                近期想到 HackerOne 找找 Bug Bounty
-卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄
-&lt;!-- more --&gt;
-Micro-CMS v2
-根據題目總共有 3 個 Flag
-0x00
-一進來頁面長這樣
+                近期想到 HackerOne 找找 Bug Bounty卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄
 
+Micro-CMS v2根據題目總共有 3 個 Flag
+0x00一進來頁面長這樣
 試著建立一個新的 Page, 發現要登入帳號密碼
-
 看到帳號密碼就是要先下個單引號，結果就噴出 exception 了
-
-根據 error 的 ...
+根據 error 的 sqlcur.execute(&#39;SELEC...
             </div>
         
         
@@ -1018,13 +946,9 @@ Micro-CMS v2
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近遇到需要增進網站安全性的問題
-於是 survey 了幾個常見的 header 設置方式
-接下來會開始介紹每一個 header 的功能以及設置方式
-以及可以到這個網站進行檢測 https://securityheaders.io/
-個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
-&lt;!--more--&gt;
-Set-Cookie 設置方...
+                最近遇到需要增進網站安全性的問題於是 survey 了幾個常見的 header 設置方式接下來會開始介紹每一個 header 的功能以及設置方式以及可以到這個網站進行檢測 https://securityheaders.io/個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
+Set-Cookie 設置方式防禦面向為: XSS
+Set-Cookie...
             </div>
         
         
