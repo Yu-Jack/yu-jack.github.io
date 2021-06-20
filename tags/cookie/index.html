@@ -171,10 +171,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下要如何達到使用 session 的方法
+                這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下
+要如何達到使用 session 的方法
 知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到重點筆記
-
-前言以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人但當我們在前後端完全分離的...
+&lt;!-- more --&gt;
+前言
+以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面
+而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別...
             </div>
         
         
@@ -230,11 +233,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
-
-但由於 CF 上面的設定寫的不是很清楚於是發現以下這篇 AWS 官方文章這裡直接做一個總結
-
-None: 使用 CloudF...
+                最近在使用 CloudFront Header forward 的設定
+CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
+於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
+&lt;!-- more --&gt;
+但由於 CF 上面的設定寫的不是很清楚
+於是發現以下這篇 AWS 官方文章
+這裡直...
             </div>
         
         
@@ -305,7 +310,7 @@ None: 使用 CloudF...
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            64
+                            65
                         </p>
                     </a>
                 </div>
@@ -317,7 +322,7 @@ None: 使用 CloudF...
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            17
+                            18
                         </p>
                     </a>
                 </div>
@@ -329,7 +334,7 @@ None: 使用 CloudF...
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            90
+                            91
                         </p>
                     </a>
                 </div>
@@ -464,6 +469,14 @@ None: 使用 CloudF...
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
+        <a class="level is-marginless" href="/categories/Ruby/">
+            <span class="level-start">
+                <span class="level-item">Ruby</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/debug/">
             <span class="level-start">
                 <span class="level-item">debug</span>
@@ -500,6 +513,17 @@ None: 使用 CloudF...
             彙整
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2021/04/">
@@ -838,6 +862,19 @@ None: 使用 CloudF...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-06-20T04:40:00.000Z">2021-06-20</time></div>
+                    <a href="/2021/06/20/new-to-learn-ruby/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初學 Ruby 應該要知道的幾件事</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Ruby/">Ruby</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-04-18T12:29:49.000Z">2021-04-18</time></div>
                     <a href="/2021/04/18/go-practice-1/" class="title has-link-black-ter is-size-6 has-text-weight-normal">學習 Golang 的心得 - Receiver</a>
                     <p class="is-size-7 is-uppercase">
@@ -881,19 +918,6 @@ None: 使用 CloudF...
                     <a href="/2020/12/12/tappay-payment-2/" class="title has-link-black-ter is-size-6 has-text-weight-normal">TapPay Web SDK 串接 - @types/tpdirect 介紹</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Payment-Gateway/">Payment Gateway</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-12-01T14:02:44.000Z">2020-12-01</time></div>
-                    <a href="/2020/12/01/stackoverflow-experience/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Stack Overflow 回答體驗心得以及如何問好問題</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Experience/">Experience</a>
                     </p>
                 </div>
             </div>
@@ -926,6 +950,19 @@ None: 使用 CloudF...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-06-20T04:40:00.000Z">2021-06-20</time></div>
+                    <a href="/2021/06/20/new-to-learn-ruby/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初學 Ruby 應該要知道的幾件事</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Ruby/">Ruby</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-04-18T12:29:49.000Z">2021-04-18</time></div>
                     <a href="/2021/04/18/go-practice-1/" class="title has-link-black-ter is-size-6 has-text-weight-normal">學習 Golang 的心得 - Receiver</a>
                     <p class="is-size-7 is-uppercase">
@@ -969,19 +1006,6 @@ None: 使用 CloudF...
                     <a href="/2020/12/12/tappay-payment-2/" class="title has-link-black-ter is-size-6 has-text-weight-normal">TapPay Web SDK 串接 - @types/tpdirect 介紹</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Payment-Gateway/">Payment Gateway</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-12-01T14:02:44.000Z">2020-12-01</time></div>
-                    <a href="/2020/12/01/stackoverflow-experience/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Stack Overflow 回答體驗心得以及如何問好問題</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Experience/">Experience</a>
                     </p>
                 </div>
             </div>
