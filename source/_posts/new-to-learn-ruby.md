@@ -56,7 +56,7 @@ doSomething "work1", "work2"
 
 接著除了一般參數, 接著另一個疑問就來了  
 在寫 JS 有時候參數會想帶 JSON 的結構進去, 那在 Ruby 又怎麼做到?  
-實際上使用會是這樣, 而在 Ruby 中會把 thing 稱之為 [Hash]([https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Literals#Hashes](https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Literals#Hashes))  
+實際上使用會是這樣, 而在 Ruby 中會把 thing 稱之為 [Hash](https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Literals#Hashes)  
 ```ruby
 def doSomething(thing)
     puts "I'm doing #{thing[:thing1]} and #{thing[:thing2]}"
@@ -84,6 +84,25 @@ end
 doSomething("Jack", {thing1: "work1", thing2: "work2"}, "today")
 doSomething "Jack", {thing1: "work1", thing2: "work2"}, "today"
 doSomething "Jack", {:thing1 => "work1", :thing2 => "work2"}, "today"
+```
+
+接著另一個有趣的事, 在 ruby function 定義中   
+你不寫 return 的話, 預設是會回傳最後一行產出的結果  
+```ruby
+def testgogo
+    100000
+end
+num = testgogo
+puts num.class
+
+## 同等於下面
+
+def testgogo
+    return 100000
+end
+num = testgogo
+puts num
+puts num.class
 ```
 
 ## Block
@@ -244,7 +263,7 @@ a << 2
 p a
 ```
 
-想看更多其他應用的部分, 可以直接參考 [StackOverflow 這篇文章]([https://stackoverflow.com/questions/6852072/what-does-mean-in-ruby](https://stackoverflow.com/questions/6852072/what-does-mean-in-ruby))
+想看更多其他應用的部分, 可以直接參考 [What does << mean in Ruby?](https://stackoverflow.com/questions/6852072/what-does-mean-in-ruby)
 
 ## Class Inherit & Namespace
 
@@ -322,9 +341,9 @@ cat.fly
 
 透過以上巢狀包起來去使用, 其實就是達到 Namespace 的一種使用方式  
 看到這裡有人會問 module & class 之間的差異  
-建議可以直接看看 5xRuby 裡面的一篇文章[要用繼承還是要用模組？]([https://railsbook.tw/chapters/08-ruby-basic-4.html#要用繼承還是要用模組？](https://railsbook.tw/chapters/08-ruby-basic-4.html#%E8%A6%81%E7%94%A8%E7%B9%BC%E6%89%BF%E9%82%84%E6%98%AF%E8%A6%81%E7%94%A8%E6%A8%A1%E7%B5%84%EF%BC%9F))
+建議可以直接看看 5xRuby 裡面的一篇文章[要用繼承還是要用模組？](https://railsbook.tw/chapters/08-ruby-basic-4.html#%E8%A6%81%E7%94%A8%E7%B9%BC%E6%89%BF%E9%82%84%E6%98%AF%E8%A6%81%E7%94%A8%E6%A8%A1%E7%B5%84%EF%BC%9F)
 
-## Lambda & →
+## Lambda & ->
 
 Lambda 是一種 anonymous functions, 在 Ruby 裡面是這樣使用
 ```ruby
@@ -343,6 +362,54 @@ run = -> {
 
 run.call
 ```
+
+## & operator in Proc
+
+在 Ruby 時常會看到一些這樣的用法
+
+```ruby
+names = User.all.map(&:name)
+# 同等於
+names = User.all.map { |user| user[:name] }
+
+p = Proc.new { |x| puts x * 2 }
+[1, 2, 3].each(&p)
+# 同等於 
+[1, 2, 3].each{ |x| puts x * 2 }
+```
+
+此時會看到一個很特別的 & 的符號  
+但在這並不是像某些語言是 pass-by-reference 的意思  
+& 在這是指傳遞 Lambda or Proc 來使用, 所以可以延伸出一些簡短的縮寫方式  
+而使用 & 的時候, 會把 Block 轉成 Proc 去使用  
+也就代表這中間, 會去呼叫 `to_proc` 這個 method  
+我們透過自定義的 method 來實驗一下
+
+```ruby
+class GGG
+    def to_proc
+        puts "gggg"
+        Proc.new {
+            puts "cool"
+        }
+    end
+end
+
+
+def gogo(&blockd)
+    blockd.call
+end
+
+ggg = GGG.new
+gogo(&ggg)
+```
+
+在上面的範例中我自己定義的 `to_proc` 的 method, 並回傳了 Proc 的實體回去  
+而我們一開始上面看到的 `(&:name)`, 其實是在 Symbol 裡面有定義 `to_proc` 的實作方式  
+透過 `:test.methods` 去看看印出來的 method 就會知道  
+可以參考 [What does map(&:name) mean in Ruby?](https://stackoverflow.com/questions/1217088/what-does-mapname-mean-in-ruby)
+
+更多詳細關於 Proc Lambda Block & 用法, 可以看 [Ruby 中的 Block、Proc、Lambda 是什麼？](https://riverye.com/2019/11/15/Ruby-%E4%B8%AD%E7%9A%84-Block%E3%80%81Proc%E3%80%81Lambda-%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F/)
 
 ## attr_accessor, private, public, protected
 
@@ -379,11 +446,11 @@ Cat.new.run
 這跟寫 JS 和 Java 有很大的不同, 為何在定義 class 的時候就可以執行程式呢?  
 其實在 class 這個定義中, 跟其他區塊一樣可以直接執行程式的區塊, 差別在 self 指向這個 class 而已  
 而定義在這區塊中, 當 class 被 loaded 之後, 只會執行一次, 更多詳細內容可以參考以下文章
-1. [Ruby Method calls declared in class body]([https://stackoverflow.com/questions/1344797/ruby-method-calls-declared-in-class-body](https://stackoverflow.com/questions/1344797/ruby-method-calls-declared-in-class-body))
-2. [point 4: Class Bodies Aren't Special.](https://yehudakatz.com/2009/08/24/my-10-favorite-things-about-the-ruby-language/4.%20class%20bodies%20aren't%20special)
-3. [Method Calls in Ruby Class Definitions]([https://joefallon.net/2013/10/method-calls-in-ruby-class-definitions/](https://joefallon.net/2013/10/method-calls-in-ruby-class-definitions/))  
+1. [Ruby Method calls declared in class body](https://stackoverflow.com/questions/1344797/ruby-method-calls-declared-in-class-body)
+2. [point 4: Class Bodies Aren't Special.](https://yehudakatz.com/2009/08/24/my-10-favorite-things-about-the-ruby-language)
+3. [Method Calls in Ruby Class Definitions](https://joefallon.net/2013/10/method-calls-in-ruby-class-definitions/)
 
-## rescue Exception ⇒ e
+## rescue Exception => e
 
 雖然這只是語法差別, 從原本的 `try-catch` 變成 `begin-rescue`  
 但比較特別的地方是, 可以透過 `=>` 把 Exception assign 到一個 local variable 裡面
@@ -408,3 +475,14 @@ rescue 的 `=>` 跟 hash 的 `=>` 意義不太一樣
 若有其他文章沒提到的, 歡迎各位底下留言告訴我, 謝謝！
 
 接著理解一些特出語法之後, 可以開始搜尋 ruby best practice 了解哪一些寫法是更好的
+
+## References
+
+* [What does << mean in Ruby?](https://stackoverflow.com/questions/6852072/what-does-mean-in-ruby)
+* [要用繼承還是要用模組？](https://railsbook.tw/chapters/08-ruby-basic-4.html#%E8%A6%81%E7%94%A8%E7%B9%BC%E6%89%BF%E9%82%84%E6%98%AF%E8%A6%81%E7%94%A8%E6%A8%A1%E7%B5%84%EF%BC%9F)
+* [What does map(&:name) mean in Ruby?](https://stackoverflow.com/questions/1217088/what-does-mapname-mean-in-ruby)
+* [Ruby 中的 Block、Proc、Lambda 是什麼？](https://riverye.com/2019/11/15/Ruby-%E4%B8%AD%E7%9A%84-Block%E3%80%81Proc%E3%80%81Lambda-%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F/)
+* [keywords](https://docs.ruby-lang.org/en/3.0.0/doc/keywords_rdoc.html)
+* [Ruby Method calls declared in class body](https://stackoverflow.com/questions/1344797/ruby-method-calls-declared-in-class-body)
+* [point 4: Class Bodies Aren't Special.](https://yehudakatz.com/2009/08/24/my-10-favorite-things-about-the-ruby-language)
+* [Method Calls in Ruby Class Definitions](https://joefallon.net/2013/10/method-calls-in-ruby-class-definitions/)  
