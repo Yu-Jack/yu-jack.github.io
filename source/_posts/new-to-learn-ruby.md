@@ -1,5 +1,5 @@
 ---
-title: 初學 Ruby 應該要知道的幾件事
+title: Ruby 初學者應該要知道的幾件事
 categories: Ruby
 date: 2021-06-20 12:40:00
 tags: [ruby]
