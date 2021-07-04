@@ -36,6 +36,9 @@ Ruby 這個語言很有趣
 
 等等很多, 這篇就不一一列出來  
 根據不同實作方式, Ruby 的行為就完全會不一樣  
+
+> 題外話: Python 也有 GIL  
+
 以這個 example code 來看的話  
 
 ```ruby
@@ -67,11 +70,71 @@ JRuby 執行結果的時間是開 Thread 比較快
 也就是說掌握 Lock 的 Thread 就掌握了執行的權利  
 而剛剛提到切換的行為我們稱之為 Context Switching  
 
+再來讓我們看一個例子
+```ruby
+require 'benchmark'
+
+Benchmark.bm do |x|
+  x.report('w/o') do
+    items = []
+    10_000_000.times{ items << 1 }
+    puts "\n item length: #{items.length}"
+  end
+
+  x.report('with') do
+    items = []
+    a = Thread.new{ 5_000_000.times{ items << 1 } }
+    b = Thread.new{ 5_000_000.times{ items << 1 } }
+    a.join
+    b.join
+    puts "\n item length: #{items.length}"
+  end
+end
+```
+
+這個用 Ruby 和 Jruby 得到的結果也會不一樣  
+Ruby (MRI): 兩者都會拿到 10000000  
+Jruby: 沒開 Thread 會是拿到 10000000, 有開 Thread 每一次都拿不一樣  
+
+原因也是因為 Ruby 有 GIL 的機制存在, 所以不會導致 race condition 出現  
+但因為 Jruby 是真正以 mutil-thread 去執行, 所以就會出現 race condition 出現, 進而導致結果不一樣  
+而如果想再 Jruby 裡面解決這件事情, 必須加上 Mutex 的機制去保證一次只會有一個 Thread 在處理共同資料  
+類似以下方式就可以正常運作, 但如果你的 rails 是跑在多台機制上面, 就又會需要其他機制去處理共同資料問題  
+
+```ruby
+require 'benchmark'
+
+mutex = Mutex.new
+
+Benchmark.bm do |x|
+  x.report('w/o') do
+    items = []
+    10_000_000.times{ items << 1 }
+    puts "\n item length: #{items.length}"
+  end
+
+  x.report('with') do
+    items = []
+    a = Thread.new{ 
+        mutex.synchronize {
+            5_000_000.times{ items << 1 } 
+        }
+    }
+    b = Thread.new{ 
+        mutex.synchronize {
+            5_000_000.times{ items << 1 } 
+        }
+    }
+    a.join
+    b.join
+    puts "\n item length: #{items.length}"
+  end
+end
+```
+
 但是這個 Thread 如果是在操作 I/O (network, sql) 等等情況時  
 Lock 會被釋放並讓其他 Thread 可以有執行的權利  
 就可以達成很像平行化執行的感覺, 可以看看這個範例  
-
-> 題外話: Python 也有 GIL  
 
 ```ruby
 require 'benchmark'
