@@ -7,14 +7,14 @@
     </url>
     
     <url>
-        <loc>https://yu-jack.github.io/tags/</loc>
+        <loc>https://yu-jack.github.io/archive/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://yu-jack.github.io/archive/</loc>
+        <loc>https://yu-jack.github.io/tags/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>

@@ -283,7 +283,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
-    <div class="card-content" id="liker">
+    <div class="card-content" style="padding-bottom: 0px;">
+        <div style="text-align: center;">
+            <p>若喜歡文章內容, 可以請我喝杯咖啡, 讓我在半夜不會寫到睡著！</p>
+        </div>
+        <div class="custom-flex-container">
+            <div id="jko" style="text-align: center;">
+                <p>JKOPAY 帳戶</p>
+                <img src="/images/jko.png" style="width: 160px;height: auto;border: none;box-shadow: none;">
+            </div>
+            <div id="liker"></div>
+            <div id="line" style="text-align: center;">
+                <p>LINE Pay 帳戶</p>
+                <img src="/images/line.jpeg" style="width: 163px;height: auto;border: none;box-shadow: none;">
+            </div>
+        </div>
     </div>
     <div class="card-content">
         <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
@@ -311,6 +325,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
         encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
     </script>
+    <style>
+        .custom-flex-container {
+            display: flex; 
+            justify-content: center; 
+            margin-top: 30px;
+        }
+        @media screen and (max-width:1000px) {
+            .custom-flex-container {
+                flex-direction: column;
+            }
+        }
+    </style>
 </div>
 </div>
                 
