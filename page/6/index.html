@@ -162,13 +162,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用
-&lt;!-- more --&gt;
-使用情境介紹
-一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
-這裡有兩台機器，分別為 A B
-B 為重要的服務或是資料
-A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
-這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到...
+
+使用情境介紹一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
+這裡有兩台機器，分別為 A BB 為重要的服務或是資料A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
+這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑這件事實在是太麻煩了（汗所以可...
             </div>
         
         
@@ -224,13 +221,11 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近在使用 CloudFront Header forward 的設定
-CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
-於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
-&lt;!-- more --&gt;
-但由於 CF 上面的設定寫的不是很清楚
-於是發現以下這篇 AWS 官方文章
-這裡直...
+                最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
+
+但由於 CF 上面的設定寫的不是很清楚於是發現以下這篇 AWS 官方文章這裡直接做一個總結
+
+None: 使用 CloudF...
             </div>
         
         
@@ -286,9 +281,8 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                &lt;span style=&quot;color: green&quot;&gt;[Update 2019-05-02]&lt;/span&gt; 關於 Error Handing 可以看下一篇文章
-這篇主要紀錄 callback, promise, async/await 的使用方式
-以及如何從到 callback 和 promise 的 hell world 進入到 async/aw...
+                [Update 2019-05-02] 關於 Error Handing 可以看下一篇文章
+這篇主要紀錄 callback, promise, async/await 的使用方式以及如何從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, ev...
             </div>
         
         
@@ -344,14 +338,9 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                有時候在使用類似 Apple Pay 的東西
-並不知道該如何去看手機中 Safari 的偵錯
-然後就會愣在那裡，並不知道該怎麼 Debug
-今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
-&lt;!--more--&gt;
-前提
-首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！
-沒有打開的話是不能使...
+                有時候在使用類似 Apple Pay 的東西並不知道該如何去看手機中 Safari 的偵錯然後就會愣在那裡，並不知道該怎麼 Debug今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
+
+前提首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！沒有打開的話是不能使用 Develop Debug mode  ...
             </div>
         
         
@@ -407,14 +396,9 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
-加上小弟常用 nodejs + express 去寫前後端
-於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
-&lt;!-- more --&gt;
-介紹
-在 express 裡面有一個 function 叫做 express.static()
-這個是一個 middleware...
+                前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
+
+介紹在 express 裡面有一個 function 叫做 express.static()這個是一個 middleware，最常被用在要讀取一些靜態檔案上面以這個寫法來說...
             </div>
         
         
@@ -470,12 +454,7 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
-上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
-所以必須在 API Gateway 必須要做 body mapping 的調整
-e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
-那這次的紀錄是讓 AWS ...
+                前言這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON所以必須在 API Gateway 必須要做 body mapping 的調整e.g 透過 Binary Support 或是 Base64Enconde 的方式處理那這次的紀錄是讓 AWS 的 API...
             </div>
         
         
@@ -531,15 +510,12 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost
-這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到
-&lt;!-- more --&gt;
+                今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到
+
 工具連結在此: Ngrok
-使用方式簡單介紹
-下載下來後，unzip 之後就可以做使用了
-如果在 localhost 開了一個 8080 想讓大家連
-可以在下這以下這行指令
-1.&#x2F;ngrok ...
+使用方式簡單介紹下載下來後，unzip 之後就可以做使用了如果在 localhost 開了一個 8080 想讓大家連可以在下這以下這行指令
+1.&#x2F;ngrok http 8080
+結果會長這樣，然後在網址列...
             </div>
         
         
@@ -595,11 +571,8 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
-在 API Gateway 中要做幾項設定才有辦法達成
-加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
-這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-&lt;!-- mo...
+                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
+API Gateway主要...
             </div>
         
         
@@ -655,17 +628,11 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                為什麼要測試?
-確保你程式的結果跟你預期所想的一樣
-那這樣有什麼好處?
-這樣大概會讓你少加班好幾小時吧 ....
-下面我會介紹如何用 mocha 去做測試
-小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~
-&lt;!-- more --&gt;
-介紹
-測試是為了確保你的程式結果跟你預期所想的一樣
-那我們又該如何去測試？那又該測試什麼東西？
-在這邊我把該測試的東西分成三個...
+                為什麼要測試?確保你程式的結果跟你預期所想的一樣那這樣有什麼好處?這樣大概會讓你少加班好幾小時吧 ….
+下面我會介紹如何用 mocha 去做測試小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~
+
+介紹測試是為了確保你的程式結果跟你預期所想的一樣那我們又該如何去測試？那又該測試什麼東西？
+在這邊我把該測試的東西分成三個方向，由小到大這篇文章重點會放在 Unit Test ...
             </div>
         
         
@@ -722,11 +689,9 @@ e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 [Update] 2017-11-08 原本文章的 mapping 方式再依些特別狀況會出錯，在文章最下面加入了最新的 mapping 方式
-最近需要在 API Gateway 上面作 request 和 response 的參數調整
-這裡紀錄一下一些基本的使用語法
-官方網站也有提供使用方式還有一些例子
-或是可以直接到 Apache Velocity Template Language
-&l...
+最近需要在 API Gateway 上面作 request 和 response 的參數調整這裡紀錄一下一些基本的使用語法官方網站也有提供使用方式還有一些例子或是可以直接到 Apache Velocity Template Language
+
+if e...
             </div>
         
         
