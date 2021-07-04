@@ -2,7 +2,7 @@
 title: Ruby & Rails 運行機制和 single or multi-thread 淺談
 categories: Ruby
 date: 2021-07-04 12:40:00
-tags: [ruby, rails, puma, GIL]
+tags: [ruby, rails, Puma, GIL]
 header-img: /images/banner.jpg
 catalog: true
 ---
@@ -62,16 +62,18 @@ JRuby 執行結果的時間是開 Thread 比較快
 這個原因牽扯到 MRI 裡面有一個 Global Interpreter Lock (GIL)  
 簡單來說在 MRI 下, 每一次只會有一個 Thread 在運行  
 所以你開兩個 Thread 的話, 並不是同時執行, 而是切換 Thead
-也就是很像是輪流去執行這兩個 Thread  
-這個行為我們稱之為 Context Switching  
+很像是輪流去執行這兩個 Thread  
 
-但是這個 Thread 如果是在操作 I/O (network, sql) 等等情況  
-這個 Lock 會被釋放, 也就可以達成很像平行化執行的感覺, 可以看看這個範例  
+也就是說掌握 Lock 的 Thread 就掌握了執行的權利  
+而剛剛提到切換的行為我們稱之為 Context Switching  
 
-> 題外話: Python 也有 GIL
+但是這個 Thread 如果是在操作 I/O (network, sql) 等等情況時  
+Lock 會被釋放並讓其他 Thread 可以有執行的權利  
+就可以達成很像平行化執行的感覺, 可以看看這個範例  
+
+> 題外話: Python 也有 GIL  
 
 ```ruby
-
 require 'benchmark'
 require 'uri'
 require 'net/http'
@@ -152,14 +154,13 @@ Nginx (Web Server) -> Puma (Appliaction Server) -> Rack -> Rails Appliaction
 
 1. [A Web Server vs. an App Server](https://www.justinweiss.com/articles/a-web-server-vs-an-app-server/)
 2. [Rails Server options](https://stackoverflow.com/questions/4113299/ruby-on-rails-server-options)
-3. [Why do I need Nginx with Puma](https://stackoverflow.com/questions/50516699/why-do-i-need-nginx-with-puma)
-4. [Why Do We Need Application Servers in Ruby? (Like Puma)](https://www.rubyguides.com/2019/08/puma-app-server/)
+3. [Why do I need Nginx with Puma](https://stackoverflow.com/questions/50516699/why-do-i-need-nginx-with-Puma)
+4. [Why Do We Need Application Servers in Ruby? (Like Puma)](https://www.rubyguides.com/2019/08/Puma-app-server/)
 5. [Rack Explained For Ruby Developers](https://www.rubyguides.com/2018/09/rack-middleware/)
 6. [Custom (400 / 500) Error Pages in Ruby on Rails -> Exception Handler (文章中間有提到 Rails 架構)](https://medium.com/ruby-on-rails-web-application-development/custom-400-500-error-pages-in-ruby-on-rails-exception-handler-3a04975e4677)
 
 
 ## Rails 機制
-
 
 接著我們會說明 Rails 和 Puma 有哪些比較特別的機制
 
@@ -185,7 +186,7 @@ Rails 針對每一個請求都會重新去 new 出一個 instance
 至於 Ruby (MRI) 的話, 只要是處理關於 blocking I/O (例如 Network 相關的)    
 Puma 則是會盡可能讓他們以平行化的方式完成  
 
-不過這邊我們來看看一個高 CPU 運算的 rails 案例 (puma min & max thread: 5)    
+不過這邊我們來看看一個高 CPU 運算的 rails 案例 (Puma min & max thread: 5)    
 我定義一個 function, 並在 rails controller 去呼叫, `fib(37)` 大約花費 2 秒內
 
 ```ruby
@@ -198,12 +199,12 @@ end
 當我透過 Ruby (MRI) 去執行的時候, 同時開兩個網頁呼叫 URL  
 得到的結果是, 兩個頁面都花了將近 4 秒以後才回傳回來  
 其實這就是 GIL Context Switching 而造成的影響  
-這裡也符合一開始我們用的 example code   
+這裡也符合一開始我們 example code 的結果  
 
-但如果 puma 的 min & max thread 改成 1 的話  
+但如果 Puma 的 min & max thread 改成 1 的話  
 第一個 request 會是 2 秒  
 第二個 request 會是 4 秒  
-因為 puma 最多同時只能處理一個請求, 另一個請求就只好等前一個處理完畢  
+因為 Puma 最多同時只能處理一個請求, 另一個請求就只好等前一個處理完畢  
 
 如果要更詳細說明 Puma 機制的話  
 每當有一個 TCP 請求近來, Puma 每一個 Worker 會有一條專門接收請求的 Thread  
@@ -215,8 +216,7 @@ end
 上面的流程是在 `queue_requests: true` 這個情況 (預設行為)  
 若是為 false, 就會變成請求一進來直接被放入到 todo, 接著由 Thread Pool 去讀取請求  
 
-> 更詳細的說明可以直接看 Puma Github  
-> https://github.com/puma/puma/blob/master/docs/architecture.md
+> 更詳細的說明可以直接看 [Puma Architecture](https://github.com/Puma/Puma/blob/master/docs/architecture.md)  
 
 
 ## 後記
