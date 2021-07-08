@@ -6,7 +6,6 @@ tags: [ruby, rails, Puma, GIL]
 header-img: /images/banner.jpg
 catalog: true
 ---
-
 ## 介紹
 
 筆者在學習新的語言時  
@@ -162,6 +161,14 @@ end
 但這並不是因為他同時開兩個 Thread 去執行  
 而是執行第一個 Thread 時, 發現是 I/O operation 所以把 Lock 釋放  
 讓第二個 Thread 可以接著去運行  
+
+> 這邊先多提到一點  
+> 在 Ruby 2.7 下, Thread Model 是 1-1 (one-to-one) 的形式  
+> 而這牽扯到作業系統的 User-Space Thread 和 Kernal-Space Thread  
+> 這邊就先想成, 當 Ruby 開了一個 Thread 它就是到作業系統開了 Thread 去執行  
+> 只是 Ruby 在有 GIL 的狀況下, 一次只會有一個 Thread 被執行  
+> 而關於 User-Space / Kernal-Space Thread 則會另外說明, 目前並不會影響後續的閱讀  
+> 但假如這篇是在講 Go 的話, 這一點就必須先說明, 否則會不好理解 Go 實作的原理  
 
 那目前對 Ruby 的認知大概是這樣 (依舊在研究中 XD)  
 這邊提供幾篇關於 GIL 的文章可以閱讀  
