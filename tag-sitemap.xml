@@ -142,20 +142,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/CTF/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/security/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/google-hacking/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -164,6 +150,20 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/search/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/CTF/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/security/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -633,28 +633,28 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/ruby/</loc>
-        <lastmod>2021-07-04T08:53:31.060Z</lastmod>
+        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/rails/</loc>
-        <lastmod>2021-07-04T08:53:31.060Z</lastmod>
+        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/Puma/</loc>
-        <lastmod>2021-07-04T08:53:31.060Z</lastmod>
+        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/GIL/</loc>
-        <lastmod>2021-07-04T08:53:31.060Z</lastmod>
+        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
