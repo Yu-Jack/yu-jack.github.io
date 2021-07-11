@@ -23,13 +23,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/apple-pay/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -58,7 +51,7 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
+        <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -80,6 +73,13 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/disk/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -633,28 +633,28 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/ruby/</loc>
-        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
+        <lastmod>2021-07-11T04:37:21.626Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/rails/</loc>
-        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
+        <lastmod>2021-07-11T04:37:21.626Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/Puma/</loc>
-        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
+        <lastmod>2021-07-11T04:37:21.626Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/GIL/</loc>
-        <lastmod>2021-07-08T14:59:20.668Z</lastmod>
+        <lastmod>2021-07-11T04:37:21.626Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

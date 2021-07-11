@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-04T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-07-08T14:59:20.668Z">
+<meta property="article:modified_time" content="2021-07-11T04:37:21.626Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="ruby">
 <meta property="article:tag" content="rails">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    17 分鐘 閱讀文 (大約 2599 個字)
+                    17 分鐘 閱讀文 (大約 2602 個字)
                 </span>
                 
                 
@@ -244,7 +244,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <blockquote>
 <p>Puma serves the request using a thread pool.<br>Each request is served in a separate thread,<br>so truly concurrent Ruby implementations (JRuby, Rubinius) will use all available CPU cores.<br>Originally designed as a server for Rubinius, Puma also works well with Ruby (MRI) and JRuby.</p>
 </blockquote>
-<p>依照官網說明, Puma 原本是被設計給 Rubinius 去使用的<br>而這裡的 Rubinius 也就是我們提到, 透過實作機器可以讓 Ruby 變成一個可以真正執行 multi-threads 的機制<br>透過 Puma &amp; Rubinius 組合, 就可以完全處理運用所有 CPU 資源  </p>
+<p>依照官網說明, Puma 原本是被設計給 Rubinius 去使用的<br>而這裡的 Rubinius 也就是我們提到, 透過不同的實作機制可以讓 Ruby 變成一個可以真正執行 multi-threads 的機制<br>透過 Puma &amp; Rubinius 組合, 就可以完全處理運用所有 CPU 資源  </p>
 <p>至於 Ruby (MRI) 的話, 只要是處理關於 blocking I/O (例如 Network 相關的)<br>Puma 則是會盡可能讓他們以平行化的方式完成  </p>
 <p>不過這邊我們來看看一個高 CPU 運算的 rails 案例 (Puma min &amp; max thread: 5)<br>我定義一個 function, 並在 rails controller 去呼叫, <code>fib(37)</code> 大約花費 2 秒內</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span></span></span><br><span class="line">    <span class="keyword">return</span> n <span class="keyword">if</span> n &lt; <span class="number">2</span></span><br><span class="line">    fib(n-<span class="number">2</span>) + fib(n-<span class="number">1</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
