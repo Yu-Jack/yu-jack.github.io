@@ -250,7 +250,7 @@ Rails 針對每一個請求都會重新去 new 出一個 instance
 > Originally designed as a server for Rubinius, Puma also works well with Ruby (MRI) and JRuby.
 
 依照官網說明, Puma 原本是被設計給 Rubinius 去使用的  
-而這裡的 Rubinius 也就是我們提到, 透過實作機器可以讓 Ruby 變成一個可以真正執行 multi-threads 的機制  
+而這裡的 Rubinius 也就是我們提到, 透過不同的實作機制可以讓 Ruby 變成一個可以真正執行 multi-threads 的機制  
 透過 Puma & Rubinius 組合, 就可以完全處理運用所有 CPU 資源  
 
 至於 Ruby (MRI) 的話, 只要是處理關於 blocking I/O (例如 Network 相關的)    
