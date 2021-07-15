@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-15T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-07-15T03:54:42.367Z">
+<meta property="article:modified_time" content="2021-07-15T05:41:07.576Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="thread">
 <meta property="article:tag" content="thread model">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    10 分鐘 閱讀文 (大約 1447 個字)
+                    10 分鐘 閱讀文 (大約 1459 個字)
                 </span>
                 
                 
@@ -193,7 +193,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>這概念也是待會講 Thread Model 時會提到</p>
 <h2><span id="thread-model">Thread Model</span></h2><p>依照上面定義的兩種 space, Thread 也會被切成兩種形式</p>
 <ul>
-<li><p>User-Space Thread<br>  在應用程式中創建 Thread, 而這個創建並不是透過 system call 去建立的<br>  所以這裡的 Thread 並不是指 OS 實際執行的 Thread<br>  而是透過操作 stack pointer 讓 OS 實際執行的 Thread 去執行指定的 User-Space Thread<br>  通常 OS 是不知道 User-Space Thread 的存在<br>  換句話說, User-Space Thread 是交由應用程式去管理, 並不是交給 OS 管理  </p>
+<li><p>User-Space Thread<br>  在應用程式中創建 Thread, 而這個創建並不是透過 system call 去建立的<br>  所以這裡的 Thread 並不是指 OS 實際執行的 Thread<br>  而是透過操作 stack pointer 讓 OS 實際執行的 Thread 去執行指定的 User-Space Thread<br>  通常 OS 是不知道 User-Space Thread 的存在, 所以透過 <code>ps</code> 指令是看不到的<br>  換句話說, User-Space Thread 是交由應用程式去管理, 並不是交給 OS 管理  </p>
 </li>
 <li><p>Kernal-Space Thread<br>  一個執行中的程式就被稱為 Process<br>  而每一個 Process 都有一個實際的執行者, 也就是 Kernal Thread<br>  Kernal Thread 則是 CPU 執行的最小單位, 這些 Thread 都會交由 OS 去管理  </p>
 </li>
