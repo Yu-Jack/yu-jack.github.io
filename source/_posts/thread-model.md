@@ -61,7 +61,7 @@ Go   1.1  M:N, 確切說 M:P:N 比較好, 但這邊先讓我用 M:N
     在應用程式中創建 Thread, 而這個創建並不是透過 system call 去建立的  
     所以這裡的 Thread 並不是指 OS 實際執行的 Thread  
     而是透過操作 stack pointer 讓 OS 實際執行的 Thread 去執行指定的 User-Space Thread  
-    通常 OS 是不知道 User-Space Thread 的存在  
+    通常 OS 是不知道 User-Space Thread 的存在, 所以透過 `ps` 指令是看不到的  
     換句話說, User-Space Thread 是交由應用程式去管理, 並不是交給 OS 管理  
 
 * Kernal-Space Thread
