@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>標籤: architecture - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+<title>分類: Operating System - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -21,7 +21,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:url" content="https://yu-jack.github.io/tags/architecture/index.html">
+<meta property="og:url" content="https://yu-jack.github.io/categories/Operating-System/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
@@ -132,8 +132,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="card-content">
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-            <li><a href="/tags">標籤</a></li>
-            <li class="is-active"><a href="#" aria-current="page">architecture</a></li>
+            <li><a href="/categories">分類</a></li>
+            
+            <li class="is-active"><a href="#" aria-current="page">Operating System</a></li>
         </ul>
         </nav>
     </div>
@@ -146,17 +147,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-08T16:30:25.000Z">2020-01-09</time>
+                <time class="level-item has-text-grey" datetime="2021-07-15T04:40:00.000Z">2021-07-15</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                <a class="has-link-grey -link" href="/categories/Operating-System/">Operating System</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    5 分鐘 閱讀文 (大約 732 個字)
+                    10 分鐘 閱讀文 (大約 1447 個字)
                 </span>
                 
                 
@@ -166,18 +167,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/01/09/express-get-client-ip-from-load-balancer/">如何從多層 Load Balancer / Nginx 取得使用者正確的 IP?</a>
+                <a class="has-link-black-ter" href="/2021/07/15/thread-model/">Thead Model 介紹</a>
             
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-我們有時候要取得使用者 IP
-往往都會用最簡單的方式取得 IP
-以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP
-但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候
-取得到的 IP 會是 Load Balancer 的嗎?
-而真正的 IP 會被 Load Balancer 放在 X-Fo...
+                介紹
+在學習各個語言底層如何去操作 Thread 時
+都會看到一個名詞 Thread Model
+也就是不同語言開 Thread 的方式都不太一樣
+舉例來說, 會看到某些文章寫出以下類似的結果
+1234Ruby 1.8  1:N, aka Green threadsJava 8    1:1, 但某個版本之前都是使用 1:NRuby 1.9  1:1, 但使用 GILGo   1.1  M:...
             </div>
         
         
@@ -185,7 +185,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/01/09/express-get-client-ip-from-load-balancer/#more">繼續閱讀</a>
+                <a class="button is-size-7 is-light" href="/2021/07/15/thread-model/#more">繼續閱讀</a>
                 </div>
             </div>
         </div>
