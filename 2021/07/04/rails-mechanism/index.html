@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-04T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-07-11T04:37:21.626Z">
+<meta property="article:modified_time" content="2021-07-13T08:27:31.005Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="ruby">
 <meta property="article:tag" content="rails">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    17 分鐘 閱讀文 (大約 2602 個字)
+                    17 分鐘 閱讀文 (大約 2617 個字)
                 </span>
                 
                 
@@ -203,7 +203,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'uri'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'net/http'</span></span><br><span class="line"></span><br><span class="line">uri = URI(<span class="string">'https://google.com.tw'</span>)</span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|b|</span></span><br><span class="line">    b.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">        res1 = Net::HTTP.get_response(uri)</span><br><span class="line">        res2 = Net::HTTP.get_response(uri)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  </span><br><span class="line">    b.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">        a = Thread.new&#123; Net::HTTP.get_response(uri) &#125;</span><br><span class="line">        b = Thread.new&#123; Net::HTTP.get_response(uri) &#125;</span><br><span class="line">        a.join</span><br><span class="line">        b.join</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>執行會發現有開 Thread 的那個明顯快上一倍的時間<br>但這並不是因為他同時開兩個 Thread 去執行<br>而是執行第一個 Thread 時, 發現是 I/O operation 所以把 Lock 釋放<br>讓第二個 Thread 可以接著去運行  </p>
 <blockquote>
-<p>這邊先多提到一點<br>在 Ruby 2.7 下, Thread Model 是 1-1 (one-to-one) 的形式<br>而這牽扯到作業系統的 User-Space Thread 和 Kernal-Space Thread<br>這邊就先想成, 當 Ruby 開了一個 Thread 它就是到作業系統開了 Thread 去執行<br>只是 Ruby 在有 GIL 的狀況下, 一次只會有一個 Thread 被執行<br>而關於 User-Space / Kernal-Space Thread 則會另外說明, 目前並不會影響後續的閱讀<br>但假如這篇是在講 Go 的話, 這一點就必須先說明, 否則會不好理解 Go 實作的原理  </p>
+<p>這邊先多提到一點<br>在 Ruby 2.7 下, Thread Model 是 1-1 (one-to-one) 的形式<br>而這牽扯到作業系統的 User-Space Thread 和 Kernal-Space Thread<br>這邊就先想成, 當 Ruby 開了一個 Thread 它就是到作業系統開了 Thread 去執行<br>只是 Ruby 在有 GIL 的狀況下, 一次只會有一個 Thread 被執行<br>而關於 User-Space / Kernal-Space Thread 則會另外說明, 目前並不會影響後續的閱讀<br>但假如這篇是在講 Go 的話, 這一點就必須先說明, 否則會不好理解 Go 實作的原理<br>有興趣可以看看筆者這篇 <a href="/2021/07/14/thread-model">Thread Model</a></p>
 </blockquote>
 <p>那目前對 Ruby 的認知大概是這樣 (依舊在研究中 XD)<br>這邊提供幾篇關於 GIL 的文章可以閱讀  </p>
 <ol>
@@ -281,6 +281,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2021/07/15/thread-model/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Thead Model 介紹</span>
+            </a>
+        </div>
         
         
         <div class="level-end">
