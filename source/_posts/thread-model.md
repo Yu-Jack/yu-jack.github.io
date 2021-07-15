@@ -21,7 +21,7 @@ Go   1.1  M:N, 確切說 M:P:N 比較好, 但這邊先讓我用 M:N
 ```
 
 而這 1:1 1:N M:N 代表什麼意思呢?  
-而 Go 裡面提到的 M:P:N 又是什麼鬼呢?
+而 Go 裡面提到的 M:P:N 又是什麼鬼呢?  
 
 ## User space & Kernal space
 
@@ -116,8 +116,7 @@ Go   1.1  M:N, 確切說 M:P:N 比較好, 但這邊先讓我用 M:N
 顏色同樣的代表是被 Kernal Thread Schedule 安排下的 Thread 去處理  
 但這圖上的 M:N 也只是簡易版本的安排方式, 還是會有一些問題存在  
 所以會有一些變形像是 Golang 中 goroutine 的實作方式, 就優化成 M:P:N 的方式處理  
-詳細可以參考[ Java’s Thread model and Golang Goroutine](https://medium.com/cymetrics/javas-thread-model-and-golang-goroutine-46f8475600ae)  
-或是 [The Go scheduler](https://morsmachine.dk/go-scheduler)
+詳細可以參考 [Java’s Thread model and Golang Goroutine](https://medium.com/cymetrics/javas-thread-model-and-golang-goroutine-46f8475600ae) 或是 [The Go scheduler](https://morsmachine.dk/go-scheduler)
 
 ## 後記
 
