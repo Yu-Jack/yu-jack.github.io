@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言非常非常久以前寫過一篇 TapPay 串接的文章但可惜的是 TapPay 沒有前端 npm 套件可以下載使用所以在串接前端的其實都不會有智能提示跳出來, 其實有點不方便於是就弄了一個 @types&#x2F;tpdirect   在還沒使用 @types 之前就像下圖在寫 code 的時候是不會跳出任何提示這在撰寫程式起來其實是非常不方便的    但由於 sdk 沒有 npm 可以下載, 但是定義檔這東">
+    <meta name="description" content="前言 非常非常久以前寫過一篇 TapPay 串接的文章 但可惜的是 TapPay 沒有前端 npm 套件可以下載使用 所以在串接前端的其實都不會有智能提示跳出來, 其實有點不方便 於是就弄了一個 @types&#x2F;tpdirect 在還沒使用 @types 之前 就像下圖在寫 code 的時候是不會跳出任何提示 這在撰寫程式起來其實是非常不方便的   但由於 sdk 沒有 npm 可以下載, 但是定義">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TapPay Web SDK 串接 - @types&#x2F;tpdirect 介紹">
 <meta property="og:url" content="https://yu-jack.github.io/2020/12/12/tappay-payment-2/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言非常非常久以前寫過一篇 TapPay 串接的文章但可惜的是 TapPay 沒有前端 npm 套件可以下載使用所以在串接前端的其實都不會有智能提示跳出來, 其實有點不方便於是就弄了一個 @types&#x2F;tpdirect   在還沒使用 @types 之前就像下圖在寫 code 的時候是不會跳出任何提示這在撰寫程式起來其實是非常不方便的    但由於 sdk 沒有 npm 可以下載, 但是定義檔這東">
+<meta property="og:description" content="前言 非常非常久以前寫過一篇 TapPay 串接的文章 但可惜的是 TapPay 沒有前端 npm 套件可以下載使用 所以在串接前端的其實都不會有智能提示跳出來, 其實有點不方便 於是就弄了一個 @types&#x2F;tpdirect 在還沒使用 @types 之前 就像下圖在寫 code 的時候是不會跳出任何提示 這在撰寫程式起來其實是非常不方便的   但由於 sdk 沒有 npm 可以下載, 但是定義">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-12-12T05:27:29.000Z">
@@ -176,17 +176,45 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>非常非常久以前寫過一篇 TapPay 串接的文章<br>但可惜的是 TapPay 沒有前端 npm 套件可以下載使用<br>所以在串接前端的其實都不會有智能提示跳出來, 其實有點不方便<br>於是就弄了一個 <a href="https://www.npmjs.com/package/@types/tpdirect">@types/tpdirect</a>  </p>
-<h2><span id="在還沒使用-types-之前">在還沒使用 @types 之前</span></h2><p>就像下圖在寫 code 的時候是不會跳出任何提示<br>這在撰寫程式起來其實是非常不方便的  </p>
-<p><img src="/images/tappay/tappay-01.png" alt><br><img src="/images/tappay/tappay-02.png" alt></p>
-<p>但由於 sdk 沒有 npm 可以下載, 但是定義檔這東西是可以自己做的<br>於是筆者就做了一個定義檔發到 <a href="https://www.npmjs.com/package/@types/tpdirect">@types/tpdirect</a></p>
-<h2><span id="用法">用法</span></h2><p>先透過 <code>npm install @types/tpdirect --save-dev</code> 下載定義檔<br>那這個 @types 帶來的好處是什麼?<br>我們就直接上圖先來看結果吧！<br>(此兩圖皆為在 vue script tag 下寫的)</p>
-<p><img src="/images/tappay/tappay-03.png" alt><br><img src="/images/tappay/tappay-04.png" alt></p>
-<p>沒錯, 透過定義檔在寫 JS 的時候, 就會有提示可以跳出來<br>目前筆者在 vue, react, ts 以及純 js 裡面都是可以用的<br>但環境的話, 目前是只有在 vscode 進行測試過<br>不太確定其他 IDE 也能不能吃  </p>
-<p>那 vscode 有一個快捷鍵式 command + i (mac command / windows control)<br>假設在針對 function 要帶入的參數時, 只要先寫好 <code>{}</code> 並把鼠標停留在裡面<br>接著按下 command + i 就可以跳出提示現在還剩幾個參數要帶入, 效果如下圖  </p>
-<p><img src="/images/tappay/tappay-05.png" alt="輸入完 {}"><br><img src="/images/tappay/tappay-06.png" alt="按下 command + i"></p>
-<p>但要注意的是, 裡面屬性和方法皆是由定義檔產生出來的<br>並不是根據 SDK 本身擁有的屬性和方法出現的<br>定義檔萬一定義 <code>methodA</code>, 但實際 SDK 是叫做 <code>methoda</code><br>結果寫程式的時候, 因為提示跳了 <code>methodA</code>, 於是寫了 <code>methodA</code><br>這樣等到實際執行的時候就會爆出錯誤說找不到 <code>methodA</code><br>因為實際 SDK 擁有的方法是 <code>methoda</code></p>
-<h2><span id="後記">後記</span></h2><p>透過這種方式寫扣, 就可以很快地寫完<br>但這種定義檔不是官方提供的, 還是得看有沒有其他人持續在維護<br>那因為受惠 @types 蠻多的, 於是就起頭先建立一個<br>希望這能幫到其他人</p>
+                <h2><span id="前言">前言</span></h2>
+<p>非常非常久以前寫過一篇 TapPay 串接的文章<br>
+但可惜的是 TapPay 沒有前端 npm 套件可以下載使用<br>
+所以在串接前端的其實都不會有智能提示跳出來, 其實有點不方便<br>
+於是就弄了一個 <a href="https://www.npmjs.com/package/@types/tpdirect">@types/tpdirect</a></p>
+<h2><span id="在還沒使用-types-之前">在還沒使用 @types 之前</span></h2>
+<p>就像下圖在寫 code 的時候是不會跳出任何提示<br>
+這在撰寫程式起來其實是非常不方便的</p>
+<p><img src="/images/tappay/tappay-01.png" alt>
+<img src="/images/tappay/tappay-02.png" alt></p>
+<p>但由於 sdk 沒有 npm 可以下載, 但是定義檔這東西是可以自己做的<br>
+於是筆者就做了一個定義檔發到 <a href="https://www.npmjs.com/package/@types/tpdirect">@types/tpdirect</a></p>
+<h2><span id="用法">用法</span></h2>
+<p>先透過 <code>npm install @types/tpdirect --save-dev</code> 下載定義檔<br>
+那這個 @types 帶來的好處是什麼?<br>
+我們就直接上圖先來看結果吧！<br>
+(此兩圖皆為在 vue script tag 下寫的)</p>
+<p><img src="/images/tappay/tappay-03.png" alt>
+<img src="/images/tappay/tappay-04.png" alt></p>
+<p>沒錯, 透過定義檔在寫 JS 的時候, 就會有提示可以跳出來<br>
+目前筆者在 vue, react, ts 以及純 js 裡面都是可以用的<br>
+但環境的話, 目前是只有在 vscode 進行測試過<br>
+不太確定其他 IDE 也能不能吃</p>
+<p>那 vscode 有一個快捷鍵式 command + i (mac command / windows control)<br>
+假設在針對 function 要帶入的參數時, 只要先寫好 <code>{}</code> 並把鼠標停留在裡面<br>
+接著按下 command + i 就可以跳出提示現在還剩幾個參數要帶入, 效果如下圖</p>
+<p><img src="/images/tappay/tappay-05.png" alt="輸入完 {}">
+<img src="/images/tappay/tappay-06.png" alt="按下 command + i"></p>
+<p>但要注意的是, 裡面屬性和方法皆是由定義檔產生出來的
+並不是根據 SDK 本身擁有的屬性和方法出現的
+定義檔萬一定義 <code>methodA</code>, 但實際 SDK 是叫做 <code>methoda</code>
+結果寫程式的時候, 因為提示跳了 <code>methodA</code>, 於是寫了 <code>methodA</code>
+這樣等到實際執行的時候就會爆出錯誤說找不到 <code>methodA</code>
+因為實際 SDK 擁有的方法是 <code>methoda</code></p>
+<h2><span id="後記">後記</span></h2>
+<p>透過這種方式寫扣, 就可以很快地寫完<br>
+但這種定義檔不是官方提供的, 還是得看有沒有其他人持續在維護<br>
+那因為受惠 @types 蠻多的, 於是就起頭先建立一個<br>
+希望這能幫到其他人</p>
 
             </div>
         
@@ -304,7 +332,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
 
     <div class="card widget" id="toc">
-        <div class="card-content">
+        <div class="card-content" style="max-height: 85vh; overflow-y: auto;">
             <div class="menu">
                 <h3 class="menu-label">
                     文章目錄
