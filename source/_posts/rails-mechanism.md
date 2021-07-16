@@ -169,7 +169,7 @@ end
 > 只是 Ruby 在有 GIL 的狀況下, 一次只會有一個 Thread 被執行  
 > 而關於 User-Space / Kernal-Space Thread 則會另外說明, 目前並不會影響後續的閱讀  
 > 但假如這篇是在講 Go 的話, 這一點就必須先說明, 否則會不好理解 Go 實作的原理  
-> 有興趣可以看看筆者這篇 [Thread Model](/2021/07/14/thread-model)
+> 有興趣可以看看筆者這篇 [Thread Model](/2021/07/15/thread-model/)
 
 那目前對 Ruby 的認知大概是這樣 (依舊在研究中 XD)  
 這邊提供幾篇關於 GIL 的文章可以閱讀  
