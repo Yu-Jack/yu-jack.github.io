@@ -171,14 +171,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Event Loop
-關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本
-透過以下兩篇可以更加清楚了解兩者之間的差異
-Event Loop 運行機制解析 - 瀏覽器篇
-Event Loop 運行機制解析 - Node.js 篇 (本篇)
-前言
-去年說好要寫的 Event Loop - Node.js 篇終於完成了
-話不多說, 直接來看一個範例, 這個範例在 瀏覽器 ...
+                Event Loop關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本透過以下兩篇可以更加清楚了解兩者之間的差異
+Event Loop 運行機制解析 - 瀏覽器篇Event Loop 運行機制解析 - Node.js 篇 (本篇)
+前言去年說好要寫的 Event Loop - Node.js 篇終於完成了話不多說, 直接來看一個範例, 這個範例在 瀏覽器 和 Nod...
             </div>
         
         
@@ -234,13 +229,9 @@ Event Loop 運行機制解析 - Node.js 篇 (本篇)
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-在上一篇有討論到如何去寫 async/await 的 try-catch 比較好
-那這篇會注重在另一種在最外層不需要 try-catch 的寫法上
-那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)
-最後面會去比較這兩種寫法的優劣
-寫法一
-先來複習之前提到過的寫法
+                前言在上一篇有討論到如何去寫 async/await 的 try-catch 比較好那這篇會注重在另一種在最外層不需要 try-catch 的寫法上  
+那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)最後面會去比較這兩種寫法的優劣
+寫法一先來複習之前提到過的寫法  
 1234567891011121314151617181920212223242526...
             </div>
         
@@ -297,15 +288,9 @@ Event Loop 運行機制解析 - Node.js 篇 (本篇)
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言
-這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言
-這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋
-下面文章統一都會用直譯去做解釋
-編譯語言
-被稱為編譯語言有一個特性
-此語言會透過編譯器編譯成另一個語言
-而編譯器是什麼呢?
+                前言網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言  
+這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋下面文章統一都會用直譯去做解釋  
+編譯語言被稱為編譯語言有一個特性此語言會透過編譯器編譯成另一個語言而編譯器是什麼呢?  
 先...
             </div>
         
@@ -362,11 +347,9 @@ Event Loop 運行機制解析 - Node.js 篇 (本篇)
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-最近在 js 群組上面看到一個題目，覺得蠻有趣就順手記錄下來，題目如下
-1234sum(2)(3).sumOf() // 5sum(2, 3).sumOf() // 5sum(1, 2)(3).sumOf() // 6sum(1)(2)(3)(4)(5, 6, 7, 8)(9, 10).sumOf() // 55
+                前言最近在 js 群組上面看到一個題目，覺得蠻有趣就順手記錄下來，題目如下1234sum(2)(3).sumOf() // 5sum(2, 3).sumOf() // 5sum(1, 2)(3).sumOf() // 6sum(1)(2)(3)(4)(5, 6, 7, 8)(9, 10).sumOf() // 55
 其實這就是 curry 化的一種變形寫法
-實作 - 基本 functio...
+實作 - 基本 function先...
             </div>
         
         
@@ -422,14 +405,9 @@ Event Loop 運行機制解析 - Node.js 篇 (本篇)
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Event Loop (2021-03-14 Updated)
-關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本
-透過以下兩篇可以更加清楚了解兩者之間的差異
-Event Loop 運行機制解析 - 瀏覽器篇 (本篇)
-Event Loop 運行機制解析 - Node.js 篇
-前言
-網路上有許多文章在討論瀏覽器內 event loop 的機制
-不少文章都有探討到所...
+                Event Loop (2021-03-14 Updated)關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本透過以下兩篇可以更加清楚了解兩者之間的差異
+Event Loop 運行機制解析 - 瀏覽器篇 (本篇)Event Loop 運行機制解析 - Node.js 篇
+前言網路上有許多文章在討論瀏覽器內 event loop 的機制不少文章都有探討到所謂宏任務 ...
             </div>
         
         
@@ -485,14 +463,9 @@ Event Loop 運行機制解析 - Node.js 篇
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                上一篇主要是介紹如何使用
-這篇會介紹該如何去在每一種使用方式之中去做 Error Handling
-&lt;!-- more --&gt;
-callback
-相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情
-那就是 callback 第一個參數都會是 error
-雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的
-假設當...
+                上一篇主要是介紹如何使用這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  
+
+callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情那就是 callback 第一個參數都會是 error雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的假設當 callback 參數回傳越來越多的時候，...
             </div>
         
         
@@ -548,15 +521,9 @@ callback
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-相信寫過 js 的人對於 this 都有一定的認識
-但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純
-所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事
-以及最後面教學如何一步一步判定 this 會是指向什麼
-&lt;!-- more --&gt;
-this 是什麼 ？
-this 單純看英文解釋的話，是代表『自身』
-聽起來好像...
+                前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼
+
+this 是什麼 ？this 單純看英文解釋的話，是代表『自身』聽起來好像有這麼一回事，但實際上使用起來根本不是這樣實際上 ...
             </div>
         
         
@@ -612,9 +579,8 @@ this 單純看英文解釋的話，是代表『自身』
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                &lt;span style=&quot;color: green&quot;&gt;[Update 2019-05-02]&lt;/span&gt; 關於 Error Handing 可以看下一篇文章
-這篇主要紀錄 callback, promise, async/await 的使用方式
-以及如何從到 callback 和 promise 的 hell world 進入到 async/aw...
+                [Update 2019-05-02] 關於 Error Handing 可以看下一篇文章
+這篇主要紀錄 callback, promise, async/await 的使用方式以及如何從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, ev...
             </div>
         
         
@@ -717,6 +683,24 @@ this 單純看英文解釋的話，是代表『自身』
         </nav>
         
         
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="github" href="https://github.com/Yu-Jack">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="linkedin" href="https://www.linkedin.com/in/yu-jack/">
+                
+                <i class="fab fa-linkedin"></i>
+                
+            </a>
+            
+        </div>
         
     </div>
 </div>
