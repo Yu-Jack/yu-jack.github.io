@@ -33,6 +33,7 @@ LeetCode 大概寫個 90 題附近就去找
 * Glasnostic - hunter 投遞, 作業關後被拒
 * OneDegree - 個人投遞, 因決定 offer 所以拒絕 online coding test  
 
+那因為 Dcard 沒進面試, 所以就沒寫太詳細了  
 ## Linker Network
 
 這間面試都是同一天面試, 並沒有分成好幾天  
