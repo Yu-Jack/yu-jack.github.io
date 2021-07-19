@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-15T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-07-15T05:41:07.576Z">
+<meta property="article:modified_time" content="2021-07-19T07:18:59.010Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="thread">
 <meta property="article:tag" content="thread model">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    10 分鐘 閱讀文 (大約 1459 個字)
+                    10 分鐘 閱讀文 (大約 1490 個字)
                 </span>
                 
                 
@@ -208,7 +208,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>一樣會發生當有條 Thread 被 blocked 的話, 那條 Thread 會卡住<br>但程式依舊可以運行, 因為 Thread 之間是不會互相影影響的</p>
 <p>以 Java 來說就是經典的 1:1 的模式<br>配合 spring + tomcat 的話, 就是一個請求進來一個 Thread<br>看似不錯, 但當 Thread 開太多的時候也是會造成系統處理效能降低  </p>
 <h3><span id="mn-many-to-many">M:N (many to many)</span></h3><p><img src="/images/thread-model/M-N.png" alt></p>
-<p>顏色同樣的代表是被 Kernal Thread Schedule 安排下的 Thread 去處理<br>但這圖上的 M:N 也只是簡易版本的安排方式, 還是會有一些問題存在<br>所以會有一些變形像是 Golang 中 goroutine 的實作方式, 就優化成 M:P:N 的方式處理<br>詳細可以參考 <a href="https://medium.com/cymetrics/javas-thread-model-and-golang-goroutine-46f8475600ae">Java’s Thread model and Golang Goroutine</a> 或是 <a href="https://morsmachine.dk/go-scheduler">The Go scheduler</a></p>
+<p>而顏色同樣的代表是被 Kernal Thread Schedule 安排下的 Thread 去處理<br>可以看到實際上 Kernal Thread 會有三條<br>其中有一條 Thread 1 處理完 C 之後再去處理 D  </p>
+<p>但這圖上的 M:N 也只是簡易版本的安排方式, 還是會有一些問題存在<br>所以會有一些變形像是 Golang 中 goroutine 的實作方式, 就優化成 M:P:N 的方式處理<br>詳細可以參考 <a href="https://medium.com/cymetrics/javas-thread-model-and-golang-goroutine-46f8475600ae">Java’s Thread model and Golang Goroutine</a> 或是 <a href="https://morsmachine.dk/go-scheduler">The Go scheduler</a></p>
 <h2><span id="後記">後記</span></h2><p>關於 Thread / Process 相關的文章其實已經很多了<br>這邊就是以個人特別關注的角度把它寫成一篇文章<br>另外對於 User-Space Thread 實作還蠻感興趣的<br>之後有機會再來試著實作看看  </p>
 <h2><span id="references">References</span></h2><ul>
 <li><a href="https://en.wikipedia.org/wiki/User_space">Wiki - User Space</a></li>
