@@ -113,7 +113,10 @@ Go   1.1  M:N, 確切說 M:P:N 比較好, 但這邊先讓我用 M:N
 
 ![](/images/thread-model/M-N.png)
 
-顏色同樣的代表是被 Kernal Thread Schedule 安排下的 Thread 去處理  
+而顏色同樣的代表是被 Kernal Thread Schedule 安排下的 Thread 去處理  
+可以看到實際上 Kernal Thread 會有三條  
+其中有一條 Thread 1 處理完 C 之後再去處理 D  
+
 但這圖上的 M:N 也只是簡易版本的安排方式, 還是會有一些問題存在  
 所以會有一些變形像是 Golang 中 goroutine 的實作方式, 就優化成 M:P:N 的方式處理  
 詳細可以參考 [Java’s Thread model and Golang Goroutine](https://medium.com/cymetrics/javas-thread-model-and-golang-goroutine-46f8475600ae) 或是 [The Go scheduler](https://morsmachine.dk/go-scheduler)
