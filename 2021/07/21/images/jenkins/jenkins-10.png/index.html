@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>CloudFront 設定 Header Forward - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+<title>images/jenkins/jenkins-10.png - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,22 +19,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去">
-<meta property="og:type" content="article">
-<meta property="og:title" content="CloudFront 設定 Header Forward">
-<meta property="og:url" content="https://yu-jack.github.io/2018/09/05/cloudfont-setting/index.html">
+    <meta property="og:type" content="article">
+<meta property="og:title" content="images&#x2F;jenkins&#x2F;jenkins-10.png">
+<meta property="og:url" content="https://yu-jack.github.io/2021/07/21/images/jenkins/jenkins-10.png/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
-<meta property="article:published_time" content="2018-09-05T06:26:10.000Z">
-<meta property="article:modified_time" content="2020-01-29T08:25:29.000Z">
+<meta property="article:published_time" content="2021-07-21T07:45:13.831Z">
+<meta property="article:modified_time" content="2021-07-21T07:45:13.831Z">
 <meta property="article:author" content="Jack Yu">
-<meta property="article:tag" content="cookie">
-<meta property="article:tag" content="aws">
-<meta property="article:tag" content="CloudFront">
-<meta property="article:tag" content="query string">
-<meta property="article:tag" content="header">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
 
@@ -99,7 +92,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="CloudFront 設定 Header Forward" height="28">
+                <img src="/images/logo.svg" alt="images/jenkins/jenkins-10.png" height="28">
             
             </a>
         </div> -->
@@ -148,17 +141,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-09-05T06:26:10.000Z">2018-09-05</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/AWS/">AWS</a>
-                </div>
+                <time class="level-item has-text-grey" datetime="2021-07-21T07:45:13.831Z">2021-07-21</time>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    2 分鐘 閱讀文 (大約 255 個字)
+                    幾秒 閱讀文 (大約 0 個字)
                 </span>
                 
                 
@@ -172,35 +161,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                CloudFront 設定 Header Forward
+                images/jenkins/jenkins-10.png
             
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <p>最近在使用 CloudFront Header forward 的設定<br>CloudFront 預設會把 <code>User-Agent</code> 這個 header 替換成 <code>Amazon CloudFront</code><br>於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去</p>
-<a id="more"></a>
-<p>但由於 CF 上面的設定寫的不是很清楚<br>於是發現以下這篇 <a href="https://aws.amazon.com/blogs/aws/enhanced-cloudfront-customization/">AWS 官方文章</a><br>這裡直接做一個總結</p>
-<ol>
-<li>None: 使用 CloudFront 原生的行為 (例如替換 <code>User-Agent</code>)</li>
-<li>Whitelists: 把 whitelists 裡面的參數，<strong>完整不動</strong> 的 Forward 到 Orign 去使用</li>
-<li>ALL: 把所有參數都 forward 到 Origin 去</li>
-</ol>
-<p>下面是一個 whitelist 的簡單範例</p>
-<p><img src="https://i.imgur.com/Dy57usH.png" alt></p>
-<p>以這張圖的設定的來說，代表 <code>User-Agent</code> 不會被 CloudFront 給自動替換掉<br>而是會拿原生<code>User-Agent</code>直接 forward 到 Origin 去</p>
-<p>另外這邊要提醒，Cloudfront 預設是不會 Forward Headers, Cookies 和 Query String 的<br>這邊要特別注意，要特別設定才可以<br>那至於 Cookie 以及 Query String 的設定看上面就明瞭了</p>
-
+                
             </div>
         
-        
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/CloudFront/" rel="tag">CloudFront</a>, <a class="has-link-grey -link" href="/tags/aws/" rel="tag">aws</a>, <a class="has-link-grey -link" href="/tags/cookie/" rel="tag">cookie</a>, <a class="has-link-grey -link" href="/tags/header/" rel="tag">header</a>, <a class="has-link-grey -link" href="/tags/query-string/" rel="tag">query string</a>
-                </div>
-            </div>
-        </div>
         
         
         
@@ -214,17 +182,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/01/08/ssh-tunnel/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">關於 SSH Tunnel 連線 (SSH Proxy, SSH Port Forwarding)</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2018/07/22/promise/">
-                <span class="level-item">callback, promise, async/await 使用方式教學以及介紹 Part I</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2021/07/19/interview/">
+                <span class="level-item">2021 年後端工程師面試心得</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -256,8 +217,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
 <script>
     var disqus_config = function () {
-        this.page.url = 'https://yu-jack.github.io/2018/09/05/cloudfont-setting/';
-        this.page.identifier = '2018/09/05/cloudfont-setting/';
+        this.page.url = 'https://yu-jack.github.io/2021/07/21/images/jenkins/jenkins-10.png/';
+        this.page.identifier = '2021/07/21/images/jenkins/jenkins-10.png/';
     };
     (function() {
         var d = document, s = d.createElement('script');  
