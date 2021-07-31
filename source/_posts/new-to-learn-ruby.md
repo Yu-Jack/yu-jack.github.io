@@ -253,6 +253,31 @@ puts "================"
 Work.new.test
 ```
 
+所以這裡可以延伸成另一種東西，有發現 `new` method 也是屬於 class scope 嗎？  
+也就代表程式中其實可以這樣去寫，還蠻酷 XD    
+
+```ruby
+class Work
+    def test
+        puts self
+        gogo # 雖然這裡和『下面』都叫 gogo，但對到的地方是不同的
+    end
+    def self.test
+        puts self
+        gogo # 雖然這裡和『上面』都叫 gogo，但對到的地方是不同的
+        instance = new
+        instance.test
+    end
+    def gogo
+        puts "this is instance gogo"
+    end
+    def self.gogo
+        puts "this is class gogo"
+    end
+end
+Work.test
+```
+
 另外比較特別的是, 上面可以用 `<<` 去改寫變成  
 ```ruby
 class Work
