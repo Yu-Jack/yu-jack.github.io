@@ -213,7 +213,47 @@ w = Work.new
 w.instanceMethod
 ```
 
-但比較特別的是, 上面可以用 `<<` 去改寫變成
+這邊就是用 self 去表示 class method  
+但 self 根據不同上下文會出現不一樣的值，可以看下方的例子  
+
+```ruby
+class Work
+    def test
+        puts self
+    end
+    def self.gogo
+        puts self
+    end
+end
+Work.new.test # 這裡會是 instance 本身
+Work.gogo # 這裡會是 class 本身
+```
+
+那因為有分成 class & instance scope  
+所以執行上要注意一下不同 scope 的情況，例如以下情況  
+```ruby
+class Work
+    def test
+        puts self
+        gogo # 雖然這裡和『下面』都叫 gogo，但對到的地方是不同的
+    end
+    def self.test
+        puts self
+        gogo # 雖然這裡和『上面』都叫 gogo，但對到的地方是不同的
+    end
+    def gogo
+        puts "this is instance gogo"
+    end
+    def self.gogo
+        puts "this is class gogo"
+    end
+end
+Work.test
+puts "================"
+Work.new.test
+```
+
+另外比較特別的是, 上面可以用 `<<` 去改寫變成  
 ```ruby
 class Work
     def instanceMethod
@@ -486,3 +526,4 @@ rescue 的 `=>` 跟 hash 的 `=>` 意義不太一樣
 * [Ruby Method calls declared in class body](https://stackoverflow.com/questions/1344797/ruby-method-calls-declared-in-class-body)
 * [point 4: Class Bodies Aren't Special.](https://yehudakatz.com/2009/08/24/my-10-favorite-things-about-the-ruby-language)
 * [Method Calls in Ruby Class Definitions](https://joefallon.net/2013/10/method-calls-in-ruby-class-definitions/)  
+* [Self in Ruby: A Comprehensive Overview](https://airbrake.io/blog/ruby/self-ruby-overview)
