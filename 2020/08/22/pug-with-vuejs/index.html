@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言在 vue 剛出來那時候, 還不盛行前後端分離的架構在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構   在 node.js render 的時候, 給予一個 template然後在此 template 去寫 vue 的元件來達成這個混合架構但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題   如何重現通常在使用 nodejs +">
+    <meta name="description" content="前言 在 vue 剛出來那時候, 還不盛行前後端分離的架構 在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構 在 node.js render 的時候, 給予一個 template 然後在此 template 去寫 vue 的元件來達成這個混合架構 但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題 如何重現 通常在使用 nodejs +">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前後端尚未分離前導致的效能問題 (nodejs + pug + vue)">
 <meta property="og:url" content="https://yu-jack.github.io/2020/08/22/pug-with-vuejs/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言在 vue 剛出來那時候, 還不盛行前後端分離的架構在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構   在 node.js render 的時候, 給予一個 template然後在此 template 去寫 vue 的元件來達成這個混合架構但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題   如何重現通常在使用 nodejs +">
+<meta property="og:description" content="前言 在 vue 剛出來那時候, 還不盛行前後端分離的架構 在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構 在 node.js render 的時候, 給予一個 template 然後在此 template 去寫 vue 的元件來達成這個混合架構 但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題 如何重現 通常在使用 nodejs +">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-08-22T02:33:54.000Z">
@@ -175,28 +175,61 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>在 vue 剛出來那時候, 還不盛行前後端分離的架構<br>在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構  </p>
-<p>在 node.js render 的時候, 給予一個 template<br>然後在此 template 去寫 vue 的元件來達成這個混合架構<br>但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題  </p>
-<h2><span id="如何重現">如何重現</span></h2><p>通常在使用 nodejs + pug render 的情況下, template 內容大致如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    div.content</span><br><span class="line">        p this is message</span><br></pre></td></tr></table></figure>
-<p>加了 vue 之後大致上會變成這樣  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    content-component(message&#x3D;&quot;&quot;)</span><br></pre></td></tr></table></figure>
-<p>這裡隱藏了一個會影響效能的 Bug<br>但我們先來說說, 加上了 pug 的情況下, 是如何運行<br>首先, 透過 nodejs + pug 會先去渲染成 html<br>這個 html 就是在進入頁面的時候, 伺服器給予的<br>所以上面的內容會變成如下  </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content-component</span> <span class="attr">message</span>=<span class="string">"this is message"</span>&gt;</span><span class="tag">&lt;/<span class="name">content-component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>你的瀏覽器就會接收到以上的內容<br>接著 vue 就會開始去 parse content-component<br>但是當 message 的內容過大的時候, 就會導致 vue parse html 時間過長  </p>
-<h2><span id="實際案例">實際案例</span></h2><p>這裡用一個例子舉例, 在後端我建構一個這樣的物件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let obj &#x3D; &#123;&#125;</span><br><span class="line">for (let i &#x3D; 0; i &lt; 200000; i++) &#123;</span><br><span class="line">    obj[i] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;www&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;sss&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;aaa&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;ssssqwe&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwwww&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwsss&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwaaa&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwssssqwe&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 並在此 express route 去 render 出 pug</span><br><span class="line">app.get(&#39;test&#39;, (req, res) &#x3D;&gt; &#123;</span><br><span class="line">    res.render(&quot;index&quot;, &#123;messge: JSON.stringify(obj)&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>這裡可以看到當這個 props 給太大, 導致 html 的大小達到  89.6 MB<br><img src="/images/pug-vue/version_01-01.png" alt></p>
-<p>因為這裡太大無法顯示, 這裡用小一點的看一下從 Server 回傳的 HTML 如下<br>所以當資料太大放在 props 的時候, 就會導致 html 大小越來越大<br><img src="/images/pug-vue/version_01-01-a.png" alt></p>
-<p>接著用 chrome 的 performance 去分析效能會看到 Scripting 就高達 14s<br><img src="/images/pug-vue/version_01-02.png" alt></p>
-<p>接著再往下看是哪些 Scripting 影響到要執行那麼久<br>這裡就看到是 vue parse html 需要花上 14s, 才能 parse 完成<br>也就是你要等超過 14s, 你才看得到 component 的內容<br><img src="/images/pug-vue/version_01-03.png" alt></p>
-<h2><span id="改善方法">改善方法</span></h2><p>要改善這個效能問題, 可以透過不要在 pug 裡面直接用 props 的方式給予值<br>改成在 mounted 或是其他 life cycle 情況下去取得值還會更快<br>在 vue template 裡面就會變成這樣  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">import axios from &quot;axios&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">    data () &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            message: &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        axios.get(&quot;&#x2F;test-get-data&quot;).then(response &#x3D;&gt; &#123;</span><br><span class="line">            this.message &#x3D; response.data</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-<p>在 pug 中就可以把 props 拿掉<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    content-component</span><br></pre></td></tr></table></figure></p>
-<p>這樣解析成 html 就變成下面這樣, 就可以讓 HTML 大小變小<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content-component</span>&gt;</span><span class="tag">&lt;/<span class="name">content-component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>從這裡可以看到大小縮小, 後來用 mounted 取得資料是 53MB<br>等於說我們讓 vue 少去 parse 這 53MB 的字串了<br><img src="/images/pug-vue/version_02-01.png" alt></p>
-<p>然後 Scripting 的時間直接變成剩下 873 ms<br><img src="/images/pug-vue/version_02-02.png" alt></p>
-<p>往後繼續看 parse html 只剩 2ms<br><img src="/images/pug-vue/version_02-03.png" alt></p>
-<h2><span id="後記">後記</span></h2><p>以前 vue 1.0 剛出來的時候, 先暫時套用在某個專案上<br>後來資料量大了才發現不能透過這樣 render 會導致 html 太大<br>但現在大多都是前後端分離的架構, 所以會比較少遇到這個問題<br>剛好最近在舊的專案上面遇到這個 Bug, 順帶紀錄一下</p>
+                <h2><span id="前言">前言</span></h2>
+<p>在 vue 剛出來那時候, 還不盛行前後端分離的架構<br>
+在那時某些專案選擇了用 nodejs + pug + vue 混合式的架構</p>
+<p>在 node.js render 的時候, 給予一個 template<br>
+然後在此 template 去寫 vue 的元件來達成這個混合架構<br>
+但這種混合架構在使用 vue 的 props 去賦值時, 可能會出現很嚴重的效能問題</p>
+<h2><span id="如何重現">如何重現</span></h2>
+<p>通常在使用 nodejs + pug render 的情況下, template 內容大致如下</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    div.content</span><br><span class="line">        p this is message</span><br></pre></td></tr></table></figure></p>
+<p>加了 vue 之後大致上會變成這樣</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    content-component(message&#x3D;&quot;&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>這裡隱藏了一個會影響效能的 Bug<br>
+但我們先來說說, 加上了 pug 的情況下, 是如何運行<br>
+首先, 透過 nodejs + pug 會先去渲染成 html<br>
+這個 html 就是在進入頁面的時候, 伺服器給予的
+所以上面的內容會變成如下</p>
+<p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content-component</span> <span class="attr">message</span>=<span class="string">"this is message"</span>&gt;</span><span class="tag">&lt;/<span class="name">content-component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>你的瀏覽器就會接收到以上的內容<br>
+接著 vue 就會開始去 parse content-component<br>
+但是當 message 的內容過大的時候, 就會導致 vue parse html 時間過長</p>
+<h2><span id="實際案例">實際案例</span></h2>
+<p>這裡用一個例子舉例, 在後端我建構一個這樣的物件<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let obj &#x3D; &#123;&#125;</span><br><span class="line">for (let i &#x3D; 0; i &lt; 200000; i++) &#123;</span><br><span class="line">    obj[i] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;www&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;sss&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;aaa&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;ssssqwe&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwwww&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwsss&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwaaa&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">    obj[i+&quot;qwrwssssqwe&quot;] &#x3D; &quot;qowiejqowiejr&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 並在此 express route 去 render 出 pug</span><br><span class="line">app.get(&#39;test&#39;, (req, res) &#x3D;&gt; &#123;</span><br><span class="line">    res.render(&quot;index&quot;, &#123;messge: JSON.stringify(obj)&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>這裡可以看到當這個 props 給太大, 導致 html 的大小達到  89.6 MB<br>
+<img src="/images/pug-vue/version_01-01.png" alt></p>
+<p>因為這裡太大無法顯示, 這裡用小一點的看一下從 Server 回傳的 HTML 如下<br>
+所以當資料太大放在 props 的時候, 就會導致 html 大小越來越大<br>
+<img src="/images/pug-vue/version_01-01-a.png" alt></p>
+<p>接著用 chrome 的 performance 去分析效能會看到 Scripting 就高達 14s<br>
+<img src="/images/pug-vue/version_01-02.png" alt></p>
+<p>接著再往下看是哪些 Scripting 影響到要執行那麼久<br>
+這裡就看到是 vue parse html 需要花上 14s, 才能 parse 完成<br>
+也就是你要等超過 14s, 你才看得到 component 的內容<br>
+<img src="/images/pug-vue/version_01-03.png" alt></p>
+<h2><span id="改善方法">改善方法</span></h2>
+<p>要改善這個效能問題, 可以透過不要在 pug 裡面直接用 props 的方式給予值<br>
+改成在 mounted 或是其他 life cycle 情況下去取得值還會更快<br>
+在 vue template 裡面就會變成這樣</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">import axios from &quot;axios&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">    data () &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            message: &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        axios.get(&quot;&#x2F;test-get-data&quot;).then(response &#x3D;&gt; &#123;</span><br><span class="line">            this.message &#x3D; response.data</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在 pug 中就可以把 props 拿掉<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.container</span><br><span class="line">    content-component</span><br></pre></td></tr></table></figure></p>
+<p>這樣解析成 html 就變成下面這樣, 就可以讓 HTML 大小變小<br>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content-component</span>&gt;</span><span class="tag">&lt;/<span class="name">content-component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>從這裡可以看到大小縮小, 後來用 mounted 取得資料是 53MB<br>
+等於說我們讓 vue 少去 parse 這 53MB 的字串了<br>
+<img src="/images/pug-vue/version_02-01.png" alt></p>
+<p>然後 Scripting 的時間直接變成剩下 873 ms<br>
+<img src="/images/pug-vue/version_02-02.png" alt></p>
+<p>往後繼續看 parse html 只剩 2ms<br>
+<img src="/images/pug-vue/version_02-03.png" alt></p>
+<h2><span id="後記">後記</span></h2>
+<p>以前 vue 1.0 剛出來的時候, 先暫時套用在某個專案上<br>
+後來資料量大了才發現不能透過這樣 render 會導致 html 太大<br>
+但現在大多都是前後端分離的架構, 所以會比較少遇到這個問題<br>
+剛好最近在舊的專案上面遇到這個 Bug, 順帶紀錄一下</p>
 
             </div>
         
