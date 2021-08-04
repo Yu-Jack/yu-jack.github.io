@@ -23,7 +23,8 @@ LeetCode 大概寫個 90 題附近就去找了
 
 ## 投遞大綱
 
-職位都是資深後端工程師, 只有 Pickupp 比較特別是全端工程師
+職位都是資深後端工程師, 只有 Pickupp 比較特別是全端工程師  
+除了 Linker Network 是疫情前(三月)在辦公室面試之外, 其他都是遠端面試  
 
 * Linker Network - 經朋友介紹, offer get
 * Knowtions Research - COO Linkedin 私訊問是否要面試, offer get
