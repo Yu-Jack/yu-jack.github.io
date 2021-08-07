@@ -278,7 +278,7 @@ end
 Work.test
 ```
 
-另外比較特別的是, 上面可以用 `<<` 去改寫變成  
+另外比較特別的是, 上面的 `self` 寫法，可以用 `<<` 去改寫變成  
 ```ruby
 class Work
     def instanceMethod
@@ -330,6 +330,43 @@ p a
 
 想看更多其他應用的部分, 可以直接參考 [What does << mean in Ruby?](https://stackoverflow.com/questions/6852072/what-does-mean-in-ruby)
 
+## send
+
+在 ruby 中還有一種特別的方法去呼叫 instance method，就是透過 `send` 的方式
+```ruby
+class Work
+    def test
+        send(:gogo)
+    end
+    def gogo
+        puts "this is instance gogo"
+    end
+end
+Work.new.test
+```
+
+所以可以把上面其中一個例子的寫法改成這樣  
+```ruby
+class Work
+    def test
+        puts self
+        gogo # 雖然這裡和『下面』都叫 gogo，但對到的地方是不同的
+    end
+    def self.test
+        puts self
+        gogo # 雖然這裡和『上面』都叫 gogo，但對到的地方是不同的
+        instance = new
+        instance.send(:test)
+    end
+    def gogo
+        puts "this is instance gogo"
+    end
+    def self.gogo
+        puts "this is class gogo"
+    end
+end
+Work.test
+```
 ## Class Inherit & Namespace
 
 接著談到 Class Inherit & Namespace, 最常看到兩種符號  `<` & `::`   
