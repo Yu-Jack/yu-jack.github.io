@@ -1,11 +1,14 @@
 ---
 title: Ruby 初學者應該要知道的幾件事
-categories: Ruby
 date: 2021-06-20 12:40:00
+categories: Ruby
 tags: [ruby]
 header-img: /images/banner.jpg
 catalog: true
 ---
+
+<span style="color: green">[Update 2020-09-06]</span> 新增 [Interface](#interface) & [method_missing](#method_missing)
+<span style="color: green">[Update 2020-07-31]</span> 新增 [send](#send) & [self](#class-amp-instance-method)  
 
 ## 介紹
 
@@ -446,6 +449,69 @@ cat.fly
 看到這裡有人會問 module & class 之間的差異  
 建議可以直接看看 5xRuby 裡面的一篇文章[要用繼承還是要用模組？](https://railsbook.tw/chapters/08-ruby-basic-4.html#%E8%A6%81%E7%94%A8%E7%B9%BC%E6%89%BF%E9%82%84%E6%98%AF%E8%A6%81%E7%94%A8%E6%A8%A1%E7%B5%84%EF%BC%9F)
 
+## Interface  
+
+通常在寫 Java Go Typescript 都可以有 interface 可以用  
+但在 ruby 中並沒有 interface 的概念  
+但可以透過 class 繼承去辦到實作 interface 這件事  
+
+```ruby
+# Interface
+class Money
+    def currency
+        raise NotImplementedError
+    end
+    def run
+        raise NotImplementedError
+    end
+end
+
+# Implement Interface
+class Usd < Money
+    def currency
+        "USD"
+    end
+    def run 
+        puts currency
+    end
+end
+```
+
+若如果你沒有實作 function 就會得到以下結果  
+```ruby
+class Usd < Money
+    def run 
+        puts currency
+    end
+end
+# `currency': NotImplementedError (NotImplementedError)
+```
+
+## method_missing
+
+在 ruby 中有一個機制，當你呼叫這個 method 不存在的時候  
+可以透過呼叫 `method_missing` (method from BasicObject) 去攔截這個不存在的 method  
+
+```ruby
+class Money
+    def method_missing(method_name, *args)
+        pp method_name
+        pp args
+    end
+end
+Money.new.hi(123)
+```
+
+而這個有什麼用呢？除了可以自定義方式去保護當程式被奇怪的 method name 呼叫之外  
+在 rails Active Record 裡面有個 find_by_AttributeName method  
+如果使用 find_by_id 就會到資料庫去比對是否有 id 欄位可以搜尋  
+如果使用 find_by_name 就會到資料庫去比對是否有 name 欄位可以搜尋  
+
+也就是這個 method 是根據資料庫實際 schema 動態去改變的  
+而實際實現方式就是透過 `method_missing`  
+這種用程式去寫出出更多程式 (不同的 find_by_a1, find_by_a2)，也是 Metaprogramming 的一種方式  
+
+[DynamicMatchers](https://api.rubyonrails.org/classes/ActiveRecord/DynamicMatchers/FindBy.html)
 ## Lambda & ->
 
 Lambda 是一種 anonymous functions, 在 Ruby 裡面是這樣使用
