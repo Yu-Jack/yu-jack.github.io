@@ -98,13 +98,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
-        <lastmod>2021-03-15T13:10:12.645Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
         <lastmod>2021-04-18T13:47:07.993Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -126,15 +119,22 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Ruby/</loc>
-        <lastmod>2021-08-08T14:16:59.279Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/Experience/</loc>
+        <lastmod>2021-08-10T02:04:02.131Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Experience/</loc>
-        <lastmod>2021-08-09T07:58:12.771Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
+        <lastmod>2021-09-05T06:18:28.481Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Ruby/</loc>
+        <lastmod>2021-09-05T08:26:28.504Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

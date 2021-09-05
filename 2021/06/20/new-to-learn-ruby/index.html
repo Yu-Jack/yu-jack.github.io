@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號因為這篇是以個人角度去看的所以內容比較適合學過一種 Java or JavaScript 的讀者   Function 執行以個人經驗來說, 學習 Ruby 第一件讓我很困惑的地方就是關於 function 執行的方式在寫過的 JavaScrip">
+    <meta name="description" content="[Update 2020-09-06] 新增 Interface &amp; method_missing[Update 2020-07-31] 新增 send &amp; self   介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號因為這篇是以個人角度去看的所以內容比較適合學過一種 Jav">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ruby 初學者應該要知道的幾件事">
 <meta property="og:url" content="https://yu-jack.github.io/2021/06/20/new-to-learn-ruby/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號因為這篇是以個人角度去看的所以內容比較適合學過一種 Java or JavaScript 的讀者   Function 執行以個人經驗來說, 學習 Ruby 第一件讓我很困惑的地方就是關於 function 執行的方式在寫過的 JavaScrip">
+<meta property="og:description" content="[Update 2020-09-06] 新增 Interface &amp; method_missing[Update 2020-07-31] 新增 send &amp; self   介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號因為這篇是以個人角度去看的所以內容比較適合學過一種 Jav">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-06-20T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-08-08T14:16:59.279Z">
+<meta property="article:modified_time" content="2021-09-05T08:26:28.504Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="ruby">
 <meta name="twitter:card" content="summary">
@@ -154,7 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    21 分鐘 閱讀文 (大約 3174 個字)
+                    24 分鐘 閱讀文 (大約 3534 個字)
                 </span>
                 
                 
@@ -173,7 +173,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="介紹">介紹</span></h2><p>因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言<br>這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號<br>因為這篇是以個人角度去看的<br>所以內容比較適合學過一種 Java or JavaScript 的讀者  </p>
+                <p><span style="color: green">[Update 2020-09-06]</span> 新增 <a href="#interface">Interface</a> &amp; <a href="#method_missing">method_missing</a><br><span style="color: green">[Update 2020-07-31]</span> 新增 <a href="#send">send</a> &amp; <a href="#class-amp-instance-method">self</a>  </p>
+<h2><span id="介紹">介紹</span></h2><p>因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言<br>這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號<br>因為這篇是以個人角度去看的<br>所以內容比較適合學過一種 Java or JavaScript 的讀者  </p>
 <h2><span id="function-執行">Function 執行</span></h2><p>以個人經驗來說, 學習 Ruby 第一件讓我很困惑的地方就是關於 function 執行的方式<br>在寫過的 JavaScript, Java, Go 三個語言中, 這是差異最大的地方<br>在 JavaScript 定義 function 後去執行不外乎是這樣  </p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params">thing</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`I'm doing <span class="subst">$&#123;thing&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">doSomething(<span class="string">"work"</span>)</span><br></pre></td></tr></table></figure>
 <p>在 Ruby 中也只是差在語法定義不同而已<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">doSomething</span><span class="params">(thing)</span></span></span><br><span class="line">    puts <span class="string">"I'm doing <span class="subst">#&#123;thing&#125;</span>"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">doSomething(<span class="string">"work"</span>)</span><br></pre></td></tr></table></figure></p>
@@ -210,6 +211,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>除了 class 也可以用在 module<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Utility</span></span></span><br><span class="line">    <span class="class"><span class="keyword">module</span> <span class="title">Flyable</span></span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">fly</span></span></span><br><span class="line">            puts <span class="string">"fly"</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span></span></span><br><span class="line">    <span class="keyword">include</span> Utility::Flyable</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">cat = Cat.new</span><br><span class="line">cat.fly</span><br></pre></td></tr></table></figure></p>
 <p>當然也可以 module &amp; class 混著用<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Utility</span></span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Flyable</span></span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">fly</span></span></span><br><span class="line">            puts <span class="string">"fly"</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span> &lt; Utility::Flyable</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">cat = Cat.new</span><br><span class="line">cat.fly</span><br></pre></td></tr></table></figure></p>
 <p>透過以上巢狀包起來去使用, 其實就是達到 Namespace 的一種使用方式<br>看到這裡有人會問 module &amp; class 之間的差異<br>建議可以直接看看 5xRuby 裡面的一篇文章<a href="https://railsbook.tw/chapters/08-ruby-basic-4.html#%E8%A6%81%E7%94%A8%E7%B9%BC%E6%89%BF%E9%82%84%E6%98%AF%E8%A6%81%E7%94%A8%E6%A8%A1%E7%B5%84%EF%BC%9F">要用繼承還是要用模組？</a></p>
+<h2><span id="interface">Interface</span></h2><p>通常在寫 Java Go Typescript 都可以有 interface 可以用<br>但在 ruby 中並沒有 interface 的概念<br>但可以透過 class 繼承去辦到實作 interface 這件事  </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Interface</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Money</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">currency</span></span></span><br><span class="line">        raise NotImplementedError</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span></span></span><br><span class="line">        raise NotImplementedError</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Implement Interface</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Usd</span> &lt; Money</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">currency</span></span></span><br><span class="line">        <span class="string">"USD"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span> </span></span><br><span class="line">        puts currency</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>若如果你沒有實作 function 就會得到以下結果<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Usd</span> &lt; Money</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span> </span></span><br><span class="line">        puts currency</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># `currency': NotImplementedError (NotImplementedError)</span></span><br></pre></td></tr></table></figure></p>
+<h2><span id="method_missing">method_missing</span></h2><p>在 ruby 中有一個機制，當你呼叫這個 method 不存在的時候<br>可以透過呼叫 <code>method_missing</code> (method from BasicObject) 去攔截這個不存在的 method  </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Money</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method_missing</span><span class="params">(method_name, *args)</span></span></span><br><span class="line">        pp method_name</span><br><span class="line">        pp args</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">Money.new.hi(<span class="number">123</span>)</span><br></pre></td></tr></table></figure>
+<p>而這個有什麼用呢？除了可以自定義方式去保護當程式被奇怪的 method name 呼叫之外<br>在 rails Active Record 裡面有個 find_by_AttributeName method<br>如果使用 find_by_id 就會到資料庫去比對是否有 id 欄位可以搜尋<br>如果使用 find_by_name 就會到資料庫去比對是否有 name 欄位可以搜尋  </p>
+<p>也就是這個 method 是根據資料庫實際 schema 動態去改變的<br>而實際實現方式就是透過 <code>method_missing</code><br>這種用程式去寫出出更多程式 (不同的 find_by_a1, find_by_a2)，也是 Metaprogramming 的一種方式  </p>
+<p><a href="https://api.rubyonrails.org/classes/ActiveRecord/DynamicMatchers/FindBy.html">DynamicMatchers</a></p>
 <h2><span id="lambda-amp-gt">Lambda &amp; -&gt;</span></h2><p>Lambda 是一種 anonymous functions, 在 Ruby 裡面是這樣使用<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">run = lambda &#123;</span><br><span class="line">    puts <span class="string">"run"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">run.call</span><br></pre></td></tr></table></figure></p>
 <p>但在 Ruby 裡面可以用另一種寫法, 用 <code>-&gt;</code> 這個符號<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">run = -&gt; &#123;</span><br><span class="line">    puts <span class="string">"run"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">run.call</span><br></pre></td></tr></table></figure></p>
 <h2><span id="amp-operator-in-proc">&amp; operator in Proc</span></h2><p>在 Ruby 時常會看到一些這樣的用法</p>
@@ -391,28 +400,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <span class="has-mr-6">6</span>
         <span>Class Inherit &amp; Namespace</span>
         </a></li><li>
-        <a class="is-flex" href="#lambda-amp-gt">
+        <a class="is-flex" href="#interface">
         <span class="has-mr-6">7</span>
+        <span>Interface</span>
+        </a></li><li>
+        <a class="is-flex" href="#method_missing">
+        <span class="has-mr-6">8</span>
+        <span>method_missing</span>
+        </a></li><li>
+        <a class="is-flex" href="#lambda-amp-gt">
+        <span class="has-mr-6">9</span>
         <span>Lambda &amp; -&gt;</span>
         </a></li><li>
         <a class="is-flex" href="#amp-operator-in-proc">
-        <span class="has-mr-6">8</span>
+        <span class="has-mr-6">10</span>
         <span>&amp; operator in Proc</span>
         </a></li><li>
         <a class="is-flex" href="#attr_accessor-private-public-protected">
-        <span class="has-mr-6">9</span>
+        <span class="has-mr-6">11</span>
         <span>attr_accessor, private, public, protected</span>
         </a></li><li>
         <a class="is-flex" href="#rescue-exception-gt-e">
-        <span class="has-mr-6">10</span>
+        <span class="has-mr-6">12</span>
         <span>rescue Exception =&gt; e</span>
         </a></li><li>
         <a class="is-flex" href="#後記">
-        <span class="has-mr-6">11</span>
+        <span class="has-mr-6">13</span>
         <span>後記</span>
         </a></li><li>
         <a class="is-flex" href="#references">
-        <span class="has-mr-6">12</span>
+        <span class="has-mr-6">14</span>
         <span>References</span>
         </a></li></ul>
             </div>
