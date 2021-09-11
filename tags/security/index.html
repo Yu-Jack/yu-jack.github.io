@@ -171,14 +171,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-這篇文章會注重在 OAuth 2.0 的介紹
-OAuth 1.0 和 2.0 的差別其實蠻大的, 對角色的定義也有所不同
-OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a 和 2.0 的之间的区别有哪些？
+                前言這篇文章會注重在 OAuth 2.0 的介紹OAuth 1.0 和 2.0 的差別其實蠻大的, 對角色的定義也有所不同OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a 和 2.0 的之间的区别有哪些？  
 
-基本上 2.0 就是對 1.0 的角色重新定義
-簡化 1.0 的複雜流程, 以及強化 1.0 面臨到的安全問題
-但本質上的目的都是...
+基本上 2.0 就是對 1.0 的角色重新定義簡化 1.0 的複雜流程, 以及強化 1.0 面臨到的安全問題但本質上的目的都是一樣,...
             </div>
         
         
@@ -234,13 +229,8 @@ OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a �
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-CAS 全名是 Central Authentication Service
-一個獨立的認證服務, 概念是在使用服務之前
-如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入
-登入成功之後就會被導回去原本使用服務的頁面
-題外話, 這裡的英文 Authentication 是有含義所在的
-代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行&lt;spa...
+                前言CAS 全名是 Central Authentication Service一個獨立的認證服務, 概念是在使用服務之前如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入登入成功之後就會被導回去原本使用服務的頁面  
+題外話, 這裡的英文 Authentication 是有含義所在的代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行認證而認證成功後, ...
             </div>
         
         
@@ -296,15 +286,9 @@ CAS 全名是 Central Authentication Service
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別
-這篇會針對它們之間的差別進行解釋
-正文
-我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)
-OAuth
-OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的
-但在對角色和細節流程上面的定義不大一樣
-這會到 OAuth 2.0 實...
+                前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋  
+正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)  
+OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的...
             </div>
         
         
@@ -360,12 +344,7 @@ OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-SSO 是 Sinsgle Sign On, 也就是單點登入
-簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』
-然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用
-但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存
-而是其他地方的系統都是透過 A 去做到帳密認...
+                前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存而是其他地方的系統都是透過 A 去做到帳密認證, 也就...
             </div>
         
         
@@ -421,17 +400,10 @@ SSO 是 Sinsgle Sign On, 也就是單點登入
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-看不懂跟我說，我想辦法補充 XD
-正文開始 ...
-某天有人問我
-某: SSL Pinning (Certificate Pinning) 是什麼東西啊?
-我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制
-某: ...... 你這樣說最好是有人聽得懂
-我: 我錯了 ... 給點機會讓我重新解釋解釋
-為了要了解這個的意思
-我們要先來說說 SSL 是什麼
-而 SSL ...
+                前言看不懂跟我說，我想辦法補充 XD  
+正文開始 …某天有人問我  
+某: SSL Pinning (Certificate Pinning) 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋  
+為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又...
             </div>
         
         
@@ -1399,7 +1371,11 @@ document.addEventListener('DOMContentLoaded', function () {
     
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
-</html>me class="has-text-grey is-size-7 is-uppercase" datetime="2021-06-20T04:40:00.000Z">2021-06-20</time></div>
+</html> <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-06-20T04:40:00.000Z">2021-06-20</time></div>
                     <a href="/2021/06/20/new-to-learn-ruby/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Ruby 初學者應該要知道的幾件事</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Ruby/">Ruby</a>

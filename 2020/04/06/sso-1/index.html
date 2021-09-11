@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言 SSO 是 Sinsgle Sign On, 也就是單點登入 簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』 然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用 但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存 而是其他地方的系統都是透過 A 去做到帳密認證,">
+    <meta name="description" content="前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存而是其他地方的系統都是透過 A 去做到帳密認證, 也就是只有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Single Sign On 實作方式介紹 (iframe &amp; cookie)">
 <meta property="og:url" content="https://yu-jack.github.io/2020/04/06/sso-1/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言 SSO 是 Sinsgle Sign On, 也就是單點登入 簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』 然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用 但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存 而是其他地方的系統都是透過 A 去做到帳密認證,">
+<meta property="og:description" content="前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存而是其他地方的系統都是透過 A 去做到帳密認證, 也就是只有">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-04-06T02:05:21.000Z">
@@ -175,107 +175,49 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2>
-<p>SSO 是 Sinsgle Sign On, 也就是單點登入<br>
-簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』<br>
-然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用<br>
-但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存<br>
-而是其他地方的系統都是透過 A 去做到帳密認證, 也就是只有 A 會儲存我的帳號密碼</p>
-<p>透過實現 SSO 可以達到以下幾個好處</p>
+                <h2><span id="前言">前言</span></h2><p>SSO 是 Sinsgle Sign On, 也就是單點登入<br>簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』<br>然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用<br>但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存<br>而是其他地方的系統都是透過 A 去做到帳密認證, 也就是只有 A 會儲存我的帳號密碼  </p>
+<p>透過實現 SSO 可以達到以下幾個好處  </p>
 <ol>
-<li>使用者只需要紀錄一套帳號密碼就可以在其他地方登入</li>
-<li>開發新的系統時, 不需要重新實作登入系統, 直接用 SSO 機制就可以完成登入系統</li>
+<li>使用者只需要紀錄一套帳號密碼就可以在其他地方登入  </li>
+<li>開發新的系統時, 不需要重新實作登入系統, 直接用 SSO 機制就可以完成登入系統  </li>
 </ol>
-<p>談論到 SSO 就會有 OAuth 出現<br>
-但要注意的是, SSO 和 OAuth 是兩種不同的概念<br>
-最重要的差別在於有沒有<strong>第三方系統干涉</strong>以及<strong>認證</strong>和<strong>授權</strong>之間的差別</p>
-<p>使用場景看看以下的例子<br>
-SSO: 在公司內部系統上, 全部只要用一組帳號密碼就可以, 不用各個系統都要一組帳號密碼<br>
-OAuth: 在電商平台 A, B 上, 我不想要重新註冊, 於是我透過 Google 登入, 並授權 A, B 能夠讀取我在 Google 上面的信箱資料</p>
-<p>那麼要如何實現 SSO 呢?<br>
-實現 SSO 的概念有很多種做法, 相信有人會聽過用 CAS 去實作<br>
-但這篇暫時還不會探討到 CAS 的實作方式</p>
-<p>而是先以 domain 的切入點去做講解<br>
-我們先列舉不同情境, 而不同情境有不同實現方式</p>
-<h2><span id="同一個-second-level-domain">同一個 second level domain</span></h2>
-<p>可以利用 cookie 的機制<br>
-把 cookie 寫入到 second level domain 上<br>
-這樣其他 third level domain 都可以同時存取到這個 cookie</p>
-<p>舉個例子來說<br>
-在 test1.example.com 登入後, 把 cookie 寫入到 example.com<br>
-屆時再 http://test2.example.com 也可以存取 example.com 的 cookie<br>
-代表說 http://test2.example.com 也享有剛剛在 http://test1.example.com 登入後權利</p>
-<p>這種情況就很單純, 很適合用在應用都是在同一個網域下的狀況<br>
-但現實情況通常不會這麼單純, 所以就會有不同 domain 的情況出現</p>
-<h2><span id="不同個-second-or-top-level-domain">不同個 second or top level domain</span></h2>
-<p>這裡實作分成就有很多種方式了<br>
-像是可以把 cookie 寫入到各個 domain 去<br>
-又或是可以用 CAS 去實作</p>
-<h3><span id="把-cookie-寫入到多個-domain">把 Cookie 寫入到多個 domain</span></h3>
-<p>這個方法說來弔詭<br>
-我們先來說說 cookie 的機制, cookie 在 domain A 寫入的時候<br>
-domain A 是不能寫入到其他 domain B, C 之類的地方</p>
-<p>假設在 http://test.example1.com 登入, 此時我能把 cookie 寫入到 example1.com<br>
-但我卻不能把 cookie 寫入到 http://test1.example2.com<br>
-所以我們會需要利用其他方式去寫入 http://test1.example2.com 的 cookie</p>
+<p>談論到 SSO 就會有 OAuth 出現<br>但要注意的是, SSO 和 OAuth 是兩種不同的概念<br>最重要的差別在於有沒有<strong>第三方系統干涉</strong>以及<strong>認證</strong>和<strong>授權</strong>之間的差別  </p>
+<p>使用場景看看以下的例子<br>SSO: 在公司內部系統上, 全部只要用一組帳號密碼就可以, 不用各個系統都要一組帳號密碼<br>OAuth: 在電商平台 A, B 上, 我不想要重新註冊, 於是我透過 Google 登入, 並授權 A, B 能夠讀取我在 Google 上面的信箱資料  </p>
+<p>那麼要如何實現 SSO 呢?<br>實現 SSO 的概念有很多種做法, 相信有人會聽過用 CAS 去實作<br>但這篇暫時還不會探討到 CAS 的實作方式  </p>
+<p>而是先以 domain 的切入點去做講解<br>我們先列舉不同情境, 而不同情境有不同實現方式  </p>
+<h2><span id="同一個-second-level-domain">同一個 second level domain</span></h2><p>可以利用 cookie 的機制<br>把 cookie 寫入到 second level domain 上<br>這樣其他 third level domain 都可以同時存取到這個 cookie  </p>
+<p>舉個例子來說<br>在 test1.example.com 登入後, 把 cookie 寫入到 example.com<br>屆時再 <a href="http://test2.example.com">http://test2.example.com</a> 也可以存取 example.com 的 cookie<br>代表說 <a href="http://test2.example.com">http://test2.example.com</a> 也享有剛剛在 <a href="http://test1.example.com">http://test1.example.com</a> 登入後權利  </p>
+<p>這種情況就很單純, 很適合用在應用都是在同一個網域下的狀況<br>但現實情況通常不會這麼單純, 所以就會有不同 domain 的情況出現  </p>
+<h2><span id="不同個-second-or-top-level-domain">不同個 second or top level domain</span></h2><p>這裡實作分成就有很多種方式了<br>像是可以把 cookie 寫入到各個 domain 去<br>又或是可以用 CAS 去實作  </p>
+<h3><span id="把-cookie-寫入到多個-domain">把 Cookie 寫入到多個 domain</span></h3><p>這個方法說來弔詭<br>我們先來說說 cookie 的機制, cookie 在 domain A 寫入的時候<br>domain A 是不能寫入到其他 domain B, C 之類的地方  </p>
+<p>假設在 <a href="http://test.example1.com">http://test.example1.com</a> 登入, 此時我能把 cookie 寫入到 example1.com<br>但我卻不能把 cookie 寫入到 <a href="http://test1.example2.com">http://test1.example2.com</a><br>所以我們會需要利用其他方式去寫入 <a href="http://test1.example2.com">http://test1.example2.com</a> 的 cookie  </p>
 <p>以下方式在 Chrome 80 <strong>以後</strong>必須要 https 才可以, 但 firefox 74 版本是可以用 http 的</p>
-<p>第一種是利用 Get 的方式去發, 但設置 Cookie 時會需要 SameSite=None; Secure<br>
-原因是 Chrome 在 80 版本之後對第三方 Cookie 有做限制, 可參考此<a href="https://medium.com/@azure820529/chrome-80-%E5%BE%8C%E9%87%9D%E5%B0%8D%E7%AC%AC%E4%B8%89%E6%96%B9-cookie-%E7%9A%84%E8%A6%8F%E5%89%87%E8%AA%BF%E6%95%B4-default-samesite-lax-aaba0bc785a3">文章</a></p>
-<p>例如在 http://test.example.com 底下, 去發一個 get request 到 test.example1.com<br>
-request 可以用以下方式去發<br>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://test.example1.com?cookieValue=123"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-而在 http://test.example1.com 接收到 request 的時候, 就要把 cookie 給寫入<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; chrome + https</span><br><span class="line">&quot;Set-Header&quot;: &quot;cookieValue&#x3D;123; SameSite&#x3D;None; Secure&quot;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; firefox + http</span><br><span class="line">&quot;Set-Header&quot;: &quot;cookieValue&#x3D;123;&quot; &#x2F;&#x2F; SameSite 預設為 None, 但 firefox 可以不用 Secure</span><br></pre></td></tr></table></figure></p>
-<p>第二種方式可以利用 iframe<br>
-但 iframe 會需要允許被嵌入,  iframe src 是 https://test.example1.com/iframe<br>
-然後 iframe 裡面的內容為下, 發過去 request 之後, 由伺服器去 set-cookie</p>
-<p>set-cookie 的方式如同上面的設置方式
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://test.example1.com?cookieValue=123"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-從以上兩種方式可以發現, 如果要在&quot;很多個&quot;網域設置這種流程, 會是一件非常大的功<br>
-因為你如果在 N 個 domain 要設置 cookie, 你就必須設置 N 個 iframe / img  去觸發 Request<br>
-而刪除 cookie 的時候, 也需要一個 domain 慢慢刪除, 是一件非常麻煩的事情</p>
-<p>這裏 DEMO 一下 iframe 那種方式呈現的結果, 先介紹一下流程<br>
-總共有兩個網站, 一個是 http://test1.example.com:2000 另一個是 https://d698d280.ngrok.io/<br>
-目標就是要讓 http://test1.example.com:2000 的 cookie 也能夠註冊到 https://d698d280.ngrok.io/</p>
+<p>第一種是利用 Get 的方式去發, 但設置 Cookie 時會需要 SameSite=None; Secure<br>原因是 Chrome 在 80 版本之後對第三方 Cookie 有做限制, 可參考此<a href="https://medium.com/@azure820529/chrome-80-%E5%BE%8C%E9%87%9D%E5%B0%8D%E7%AC%AC%E4%B8%89%E6%96%B9-cookie-%E7%9A%84%E8%A6%8F%E5%89%87%E8%AA%BF%E6%95%B4-default-samesite-lax-aaba0bc785a3">文章</a></p>
+<p>例如在 <a href="http://test.example.com">http://test.example.com</a> 底下, 去發一個 get request 到 test.example1.com<br>request 可以用以下方式去發<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://test.example1.com?cookieValue=123"</span>/&gt;</span></span><br></pre></td></tr></table></figure><br>而在 <a href="http://test.example1.com">http://test.example1.com</a> 接收到 request 的時候, 就要把 cookie 給寫入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; chrome + https</span><br><span class="line">&quot;Set-Header&quot;: &quot;cookieValue&#x3D;123; SameSite&#x3D;None; Secure&quot;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; firefox + http</span><br><span class="line">&quot;Set-Header&quot;: &quot;cookieValue&#x3D;123;&quot; &#x2F;&#x2F; SameSite 預設為 None, 但 firefox 可以不用 Secure</span><br></pre></td></tr></table></figure></p>
+<p>第二種方式可以利用 iframe<br>但 iframe 會需要允許被嵌入,  iframe src 是 <a href="https://test.example1.com/iframe">https://test.example1.com/iframe</a><br>然後 iframe 裡面的內容為下, 發過去 request 之後, 由伺服器去 set-cookie  </p>
+<p>set-cookie 的方式如同上面的設置方式<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://test.example1.com?cookieValue=123"</span>/&gt;</span></span><br></pre></td></tr></table></figure><br>從以上兩種方式可以發現, 如果要在”很多個”網域設置這種流程, 會是一件非常大的功<br>因為你如果在 N 個 domain 要設置 cookie, 你就必須設置 N 個 iframe / img  去觸發 Request<br>而刪除 cookie 的時候, 也需要一個 domain 慢慢刪除, 是一件非常麻煩的事情  </p>
+<p>這裏 DEMO 一下 iframe 那種方式呈現的結果, 先介紹一下流程<br>總共有兩個網站, 一個是 <a href="http://test1.example.com:2000">http://test1.example.com:2000</a> 另一個是 <a href="https://d698d280.ngrok.io/">https://d698d280.ngrok.io/</a><br>目標就是要讓 <a href="http://test1.example.com:2000">http://test1.example.com:2000</a> 的 cookie 也能夠註冊到 <a href="https://d698d280.ngrok.io/">https://d698d280.ngrok.io/</a>  </p>
 <ol>
-<li>首先到 https://d698d280.ngrok.io/ 這裡面是沒有任何一個 cookie</li>
-<li>接著進入到 http://test1.example.com:2000 會給我一個 cookie
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">"a=this_is_test1.example.com;"</span>)</span><br></pre></td></tr></table></figure></li>
-<li>接著我在 http://test1.example.com:2000 用以下 script 開啟一個 iframe<br>
-iframe src 為 https://d698d280.ngrok.io/ iframe<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">"iframe"</span>)</span><br><span class="line">iframe.src = <span class="string">"https://d698d280.ngrok.io/iframe"</span></span><br><span class="line"><span class="built_in">document</span>.body.append(iframe)</span><br></pre></td></tr></table></figure></li>
-<li>iframe 裡面會有一個接收 postMessage 的 function
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"message"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> img = <span class="built_in">document</span>.createElement(<span class="string">"img"</span>)</span><br><span class="line">    img.src = <span class="string">"https://d698d280.ngrok.io?a="</span> + event.data.cookie</span><br><span class="line">    <span class="built_in">document</span>.body.append(img)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-<li>接著由 http://test1.example.com:2000 發送 postMessage
-並把 cookie this_is_test1.example.com 給 iframe
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iframe.contentWindow.postMessage(&#123;<span class="attr">cookie</span>: <span class="built_in">document</span>.cookie&#125;, <span class="string">"https://d698d280.ngrok.io/iframe"</span>)</span><br></pre></td></tr></table></figure></li>
-<li>當 iframe 裡面接收到 postMessage 之後 (第 4 步的 function), 會開啟一個圖片<br>
-帶著 query_string https://d698d280.ngrok.io/?a=this_is_test1.example.com<br>
-當 https://d698d280.ngrok.io/ 收到之後, 會把 a 取出來並且也設定 set-cookie<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = req.query.a.split(<span class="string">"="</span>)[<span class="number">1</span>];</span><br><span class="line">res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">`a=<span class="subst">$&#123;a&#125;</span>; SameSite=None; Secure`</span>)</span><br></pre></td></tr></table></figure></li>
-<li>此時在 https://d698d280.ngrok.io/ 的 cookie 裡面<br>
-會發現把從 http://test1.example1.com.com 來的 cookie 也寫到這裡面了</li>
+<li>首先到 <a href="https://d698d280.ngrok.io/">https://d698d280.ngrok.io/</a> 這裡面是沒有任何一個 cookie</li>
+<li>接著進入到 <a href="http://test1.example.com:2000">http://test1.example.com:2000</a> 會給我一個 cookie <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">"a=this_is_test1.example.com;"</span>)</span><br></pre></td></tr></table></figure></li>
+<li>接著我在 <a href="http://test1.example.com:2000">http://test1.example.com:2000</a> 用以下 script 開啟一個 iframe<br> iframe src 為 <a href="https://d698d280.ngrok.io/">https://d698d280.ngrok.io/</a> iframe   <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">"iframe"</span>)</span><br><span class="line">iframe.src = <span class="string">"https://d698d280.ngrok.io/iframe"</span></span><br><span class="line"><span class="built_in">document</span>.body.append(iframe)</span><br></pre></td></tr></table></figure></li>
+<li>iframe 裡面會有一個接收 postMessage 的 function <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"message"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> img = <span class="built_in">document</span>.createElement(<span class="string">"img"</span>)</span><br><span class="line">    img.src = <span class="string">"https://d698d280.ngrok.io?a="</span> + event.data.cookie</span><br><span class="line">    <span class="built_in">document</span>.body.append(img)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li>接著由 <a href="http://test1.example.com:2000">http://test1.example.com:2000</a> 發送 postMessage<br> 並把 cookie this_is_test1.example.com 給 iframe <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iframe.contentWindow.postMessage(&#123;<span class="attr">cookie</span>: <span class="built_in">document</span>.cookie&#125;, <span class="string">"https://d698d280.ngrok.io/iframe"</span>)</span><br></pre></td></tr></table></figure></li>
+<li>當 iframe 裡面接收到 postMessage 之後 (第 4 步的 function), 會開啟一個圖片<br> 帶著 query_string <a href="https://d698d280.ngrok.io/?a=this_is_test1.example.com">https://d698d280.ngrok.io/?a=this_is_test1.example.com</a><br> 當 <a href="https://d698d280.ngrok.io/">https://d698d280.ngrok.io/</a> 收到之後, 會把 a 取出來並且也設定 set-cookie   <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = req.query.a.split(<span class="string">"="</span>)[<span class="number">1</span>];</span><br><span class="line">res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">`a=<span class="subst">$&#123;a&#125;</span>; SameSite=None; Secure`</span>)</span><br></pre></td></tr></table></figure></li>
+<li>此時在 <a href="https://d698d280.ngrok.io/">https://d698d280.ngrok.io/</a> 的 cookie 裡面<br> 會發現把從 <a href="http://test1.example1.com.com">http://test1.example1.com.com</a> 來的 cookie 也寫到這裡面了</li>
 </ol>
-<p>整個流程可以看看此影片呈現<br>
-&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/sso/cookie-iframe-postmessage.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
-<p>所以透過這種方式, 就可以把登入資訊也寫入到另一台 server<br>
-這樣就能達到 SSO, 只是這方式好不好, 見仁見智<br>
-也許小型網站適合 (2,3 個), 但因為機制上面還有一些安全疑慮要解決<br>
-所以在使用的時候要想清楚流程去避免 cookie 被盜用還包含要如何進行驗證 (可以用 JWT)<br>
-而比較好的方式是透過 CAS 去實作<br>
-畢竟 CAS 已經算是有完整機制的實作方法, 安全性上還是相對安全</p>
+<p>整個流程可以看看此影片呈現  </p>
+<video width="100%" controls><source src="/images/sso/cookie-iframe-postmessage.mp4" type="video/mp4"></video>
+
+<p>所以透過這種方式, 就可以把登入資訊也寫入到另一台 server<br>這樣就能達到 SSO, 只是這方式好不好, 見仁見智<br>也許小型網站適合 (2,3 個), 但因為機制上面還有一些安全疑慮要解決<br>所以在使用的時候要想清楚流程去避免 cookie 被盜用還包含要如何進行驗證 (可以用 JWT)<br>而比較好的方式是透過 CAS 去實作<br>畢竟 CAS 已經算是有完整機制的實作方法, 安全性上還是相對安全  </p>
 <p>這邊附上程式碼可以測試</p>
 <blockquote>
-<p>如果要向筆者一樣, 可以更改 localhost 的 domain name<br>
-必須去修改 /etc/hosts 底下的設定喔！</p>
+<p>如果要向筆者一樣, 可以更改 localhost 的 domain name<br>必須去修改 /etc/hosts 底下的設定喔！</p>
 </blockquote>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server A</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">"a=this_is_test1.example.com;"</span>)</span><br><span class="line">    res.end(<span class="string">`</span></span><br><span class="line"><span class="string">        &lt;body&gt;</span></span><br><span class="line"><span class="string">        &lt;/body&gt;</span></span><br><span class="line"><span class="string">        &lt;script&gt;</span></span><br><span class="line"><span class="string">            var iframe = document.createElement("iframe")</span></span><br><span class="line"><span class="string">            iframe.src = "https://d698d280.ngrok.io/iframe"</span></span><br><span class="line"><span class="string">            document.body.append(iframe)</span></span><br><span class="line"><span class="string">        &lt;/script&gt;</span></span><br><span class="line"><span class="string">        &lt;script&gt;setTimeout(function()&#123;</span></span><br><span class="line"><span class="string">            iframe.contentWindow.postMessage(&#123;cookie: document.cookie&#125;, "https://d698d280.ngrok.io/iframe")</span></span><br><span class="line"><span class="string">        &#125;, 2000)&lt;/script&gt;</span></span><br><span class="line"><span class="string">    `</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server B</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> a = req.query.a.split(<span class="string">"="</span>)[<span class="number">1</span>];</span><br><span class="line">    res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">`a=<span class="subst">$&#123;a&#125;</span>; SameSite=None; Secure`</span>)</span><br><span class="line">    res.end(<span class="string">"testb"</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.get(<span class="string">'/test'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.end(<span class="string">"test"</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.get(<span class="string">'/iframe'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.setHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/html'</span>)</span><br><span class="line">    res.end(<span class="string">`</span></span><br><span class="line"><span class="string">        &lt;body&gt;&lt;/body&gt;</span></span><br><span class="line"><span class="string">        &lt;script&gt;window.addEventListener("message", function(event) &#123;</span></span><br><span class="line"><span class="string">            var img = document.createElement("img")</span></span><br><span class="line"><span class="string">            img.src = "https://d698d280.ngrok.io?a=" + event.data.cookie</span></span><br><span class="line"><span class="string">            document.body.append(img)</span></span><br><span class="line"><span class="string">        &#125;)&lt;/script&gt;</span></span><br><span class="line"><span class="string">    `</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">3000</span>)</span><br></pre></td></tr></table></figure></p>
-<h2><span id="後記">後記</span></h2>
-<p>先以不同 domain 的方式配合 cookie 讓大家知道 cookie 的受限程度<br>
-接下來第二篇著重的重點在於不同 domain 下利用 CAS 去實現 SSO</p>
-<h2><span id="reference">Reference</span></h2>
-<ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server A</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">"a=this_is_test1.example.com;"</span>)</span><br><span class="line">    res.end(<span class="string">`</span></span><br><span class="line"><span class="string">        &lt;body&gt;</span></span><br><span class="line"><span class="string">        &lt;/body&gt;</span></span><br><span class="line"><span class="string">        &lt;script&gt;</span></span><br><span class="line"><span class="string">            var iframe = document.createElement("iframe")</span></span><br><span class="line"><span class="string">            iframe.src = "https://d698d280.ngrok.io/iframe"</span></span><br><span class="line"><span class="string">            document.body.append(iframe)</span></span><br><span class="line"><span class="string">        &lt;/script&gt;</span></span><br><span class="line"><span class="string">        &lt;script&gt;setTimeout(function()&#123;</span></span><br><span class="line"><span class="string">            iframe.contentWindow.postMessage(&#123;cookie: document.cookie&#125;, "https://d698d280.ngrok.io/iframe")</span></span><br><span class="line"><span class="string">        &#125;, 2000)&lt;/script&gt;</span></span><br><span class="line"><span class="string">    `</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server B</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> a = req.query.a.split(<span class="string">"="</span>)[<span class="number">1</span>];</span><br><span class="line">    res.setHeader(<span class="string">"Set-Cookie"</span>, <span class="string">`a=<span class="subst">$&#123;a&#125;</span>; SameSite=None; Secure`</span>)</span><br><span class="line">    res.end(<span class="string">"testb"</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.get(<span class="string">'/test'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.end(<span class="string">"test"</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.get(<span class="string">'/iframe'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.setHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/html'</span>)</span><br><span class="line">    res.end(<span class="string">`</span></span><br><span class="line"><span class="string">        &lt;body&gt;&lt;/body&gt;</span></span><br><span class="line"><span class="string">        &lt;script&gt;window.addEventListener("message", function(event) &#123;</span></span><br><span class="line"><span class="string">            var img = document.createElement("img")</span></span><br><span class="line"><span class="string">            img.src = "https://d698d280.ngrok.io?a=" + event.data.cookie</span></span><br><span class="line"><span class="string">            document.body.append(img)</span></span><br><span class="line"><span class="string">        &#125;)&lt;/script&gt;</span></span><br><span class="line"><span class="string">    `</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">3000</span>)</span><br></pre></td></tr></table></figure>
+<h2><span id="後記">後記</span></h2><p>先以不同 domain 的方式配合 cookie 讓大家知道 cookie 的受限程度<br>接下來第二篇著重的重點在於不同 domain 下利用 CAS 去實現 SSO  </p>
+<h2><span id="reference">Reference</span></h2><ol>
 <li><a href="https://juejin.im/post/5de46d28e51d4532c21facb3">全面介绍SSO（单点登录</a></li>
 </ol>
 
@@ -325,22 +267,18 @@ iframe src 為 https://d698d280.ngrok.io/ iframe<br>
 
 <div class="card">
     <div class="card-content" style="padding-bottom: 0px;">
-        <div class="custom-flex-container">
-            <div>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
-                    crossorigin="anonymous"></script>
-                <!-- github -->
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-1515253208026743"
-                    data-ad-slot="3522587352"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
+            crossorigin="anonymous"></script>
+        <!-- github -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-1515253208026743"
+            data-ad-slot="3522587352"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
     <div class="card-content">
         <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->

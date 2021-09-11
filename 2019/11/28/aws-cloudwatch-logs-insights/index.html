@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言 AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務 其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能 這邊就先不多作介紹，之後會寫在其他篇幅做介紹 那 CloudWatch 主要包含以下兩個大項目 &lt;!-- more --&gt;  Metric 紀錄了 AWS 上面服務的狀態 包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟">
+    <meta name="description" content="前言AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能這邊就先不多作介紹，之後會寫在其他篇幅做介紹那 CloudWatch 主要包含以下兩個大項目">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS CloudWatch Logs Insights 介紹及教學">
 <meta property="og:url" content="https://yu-jack.github.io/2019/11/28/aws-cloudwatch-logs-insights/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言 AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務 其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能 這邊就先不多作介紹，之後會寫在其他篇幅做介紹 那 CloudWatch 主要包含以下兩個大項目 &lt;!-- more --&gt;  Metric 紀錄了 AWS 上面服務的狀態 包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟">
+<meta property="og:description" content="前言AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能這邊就先不多作介紹，之後會寫在其他篇幅做介紹那 CloudWatch 主要包含以下兩個大項目">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-11-28T15:02:14.000Z">
@@ -174,77 +174,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2>
-<p>AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務<br>
-其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能<br>
-這邊就先不多作介紹，之後會寫在其他篇幅做介紹<br>
-那 CloudWatch 主要包含以下兩個大項目</p>
-<p>&lt;!-- more --&gt;</p>
+                <h2><span id="前言">前言</span></h2><p>AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務<br>其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能<br>這邊就先不多作介紹，之後會寫在其他篇幅做介紹<br>那 CloudWatch 主要包含以下兩個大項目  </p>
+<a id="more"></a>
 <ol>
-<li>Metric
-紀錄了 AWS 上面服務的狀態
-包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟大小
-API Gateway API Call Count、RDS CPU 用量等等
-針對用量還可以去做 Alarm 發信，或是觸發 Lambda 等等的功能
-<blockquote>
-<p>記憶體和硬碟大小需要額外設定
-可以參考 https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/mon-scripts.html</p>
+<li>Metric<br> 紀錄了 AWS 上面服務的狀態<br> 包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟大小<br> API Gateway API Call Count、RDS CPU 用量等等<br> 針對用量還可以去做 Alarm 發信，或是觸發 Lambda 等等的功能<blockquote>
+<p>記憶體和硬碟大小需要額外設定<br>可以參考 <a href="https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/mon-scripts.html">https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/mon-scripts.html</a></p>
 </blockquote>
 </li>
-<li>Log
-存放 Log 的地方，伺服器的 access log 或是程式的 log
-又或是 audit log 等等，基本上想看的 log 可以推上來做分析以及整理
-除此之外，s3 其實也是一個放 log 的好地方
-但 s3 的缺點是不能夠很便利的去線上觀看 log</li>
+<li>Log<br> 存放 Log 的地方，伺服器的 access log 或是程式的 log<br> 又或是 audit log 等等，基本上想看的 log 可以推上來做分析以及整理<br> 除此之外，s3 其實也是一個放 log 的好地方<br> 但 s3 的缺點是不能夠很便利的去線上觀看 log</li>
 </ol>
-<p>今天主要介紹的是 CloudWatch Logs Insights 功能
-透過 Insights 可以有效地查詢 Log 裡面的資料
-甚至還可以做統計以及剖析 Log 裡面的字串進行字串統計</p>
-<h2><span id="使用方式">使用方式</span></h2>
-<h3><span id="範例一-like">範例一 - like</span></h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| filter @message like &quot;Your Wanted Message&quot;</span><br></pre></td></tr></table></figure>
-第一行 fileds 主要指定最後出現的欄位會有什麼<br>
-第二行 sort 是根據 timestamp 進行由大至小的排序<br>
-第三行 filter 是針對 @message 的內容去搜尋</p>
-<p>最後只會顯示跟 like 後面有關的字串的結果而已</p>
-<p>這邊要另外注意的事情是，每一個指令都是有&lt;span style=&quot;color: red&quot;&gt;順序性&lt;/span&gt;的<br>
-以上面第三行的結果來說<br>
-假設第四行再下了一個 <code>filter @message like &quot;blablabla</code><br>
-一個跟前面完全沒有關係的訊息是找不到的<br>
-因為在第三行就把所有訊息都過慮剩下只有 &quot;Your Wanted Message&quot;<br>
-所以在第四行針對 &quot;Your Wanted Message&quot; 去搜尋 &quot;blablabla&quot; 當然就不會出現任何結果</p>
-<h3><span id="範例二-logstream">範例二 - @logStream</span></h3>
-<p>在整個操作 UI 上<br>
-最上面會有一個可以選 logGroup 的地方<br>
-但卻沒有選 logStream 的地方</p>
+<p>今天主要介紹的是 CloudWatch Logs Insights 功能<br>透過 Insights 可以有效地查詢 Log 裡面的資料<br>甚至還可以做統計以及剖析 Log 裡面的字串進行字串統計</p>
+<h2><span id="使用方式">使用方式</span></h2><h3><span id="範例一-like">範例一 - like</span></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| filter @message like &quot;Your Wanted Message&quot;</span><br></pre></td></tr></table></figure>
+<p>第一行 fileds 主要指定最後出現的欄位會有什麼<br>第二行 sort 是根據 timestamp 進行由大至小的排序<br>第三行 filter 是針對 @message 的內容去搜尋  </p>
+<p>最後只會顯示跟 like 後面有關的字串的結果而已  </p>
+<p>這邊要另外注意的事情是，每一個指令都是有<span style="color: red">順序性</span>的<br>以上面第三行的結果來說<br>假設第四行再下了一個 <code>filter @message like &quot;blablabla</code><br>一個跟前面完全沒有關係的訊息是找不到的<br>因為在第三行就把所有訊息都過慮剩下只有 “Your Wanted Message”<br>所以在第四行針對 “Your Wanted Message” 去搜尋 “blablabla” 當然就不會出現任何結果  </p>
+<h3><span id="範例二-logstream">範例二 - @logStream</span></h3><p>在整個操作 UI 上<br>最上面會有一個可以選 logGroup 的地方<br>但卻沒有選 logStream 的地方  </p>
 <p><img src="/images/aws/aws-cloudwatch-logs-insights-01.png" alt></p>
-<p>此時會需要透過 filter 加上 @logStream 的方式才能找單獨的 stream<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="範例三-parse">範例三 - parse</span></h3>
-<p>假設今天要處理 access log 的 path 做統計的話<br>
-字串有一段內容是 &quot;GET /login HTTP/1.1&quot;<br>
-我想要 parse 出 /login 的話該怎麼做呢？<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * HTTP&#x2F;1.1&#39; as @path</span><br></pre></td></tr></table></figure>
-第三行 透過 parse 指令加上 * 可以把 * 的地方變成一個變數指定到 as 後面的變數去<br>
-這裡變數要不要加 @ 都可以，結果如下：<br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-02.png" alt></p>
-<p>那如果想要 parse 兩個變成變數呢?<br>
-很簡單，就是再多加一個 * 字號在後面即可<br>
-<code>| parse '&quot;GET * */1.1' as @path, @protocol</code><br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-03.png" alt></p>
-<h3><span id="範例四-stats-count">範例四 - stats count()</span></h3>
-<p>以前面的例子來說<br>
-我想知道在短時間內有幾個 login 的話<br>
-可以透過 stats 的指令去做統計<br>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * *&#x2F;1.1&#39; as @path, @protocol</span><br><span class="line">| stats count(*) as sum by @path</span><br></pre></td></tr></table></figure>
-第五行 透過 by 指令去 group by 用哪一個參數當作目標去做計算<br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-04.png" alt></p>
-<p>當然一樣可以多個 <code>| stats count(*) as sum by @path, @protocol</code><br>
-<img src="/images/aws/aws-cloudwatch-logs-insights-05.png" alt></p>
-<h2><span id="後記">後記</span></h2>
-<p>以上介紹一些個人比較常用的指令，官網還有很多非常好用的指令<br>
-詳細有興趣可以到官網上查查看<br>
-https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html</p>
+<p>此時會需要透過 filter 加上 @logStream 的方式才能找單獨的 stream<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br></pre></td></tr></table></figure></p>
+<h3><span id="範例三-parse">範例三 - parse</span></h3><p>假設今天要處理 access log 的 path 做統計的話<br>字串有一段內容是 “GET /login HTTP/1.1”<br>我想要 parse 出 /login 的話該怎麼做呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * HTTP&#x2F;1.1&#39; as @path</span><br></pre></td></tr></table></figure><br>第三行 透過 parse 指令加上 * 可以把 * 的地方變成一個變數指定到 as 後面的變數去<br>這裡變數要不要加 @ 都可以，結果如下：<br><img src="/images/aws/aws-cloudwatch-logs-insights-02.png" alt></p>
+<p>那如果想要 parse 兩個變成變數呢?<br>很簡單，就是再多加一個 * 字號在後面即可<br><code>| parse &#39;&quot;GET * */1.1&#39; as @path, @protocol</code><br><img src="/images/aws/aws-cloudwatch-logs-insights-03.png" alt></p>
+<h3><span id="範例四-stats-count">範例四 - stats count()</span></h3><p>以前面的例子來說<br>我想知道在短時間內有幾個 login 的話<br>可以透過 stats 的指令去做統計<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fields @timestamp, @message</span><br><span class="line">| filter @logStream &#x3D; &quot;Access Logs&quot;</span><br><span class="line">| sort @timestamp desc</span><br><span class="line">| parse &#39;&quot;GET * *&#x2F;1.1&#39; as @path, @protocol</span><br><span class="line">| stats count(*) as sum by @path</span><br></pre></td></tr></table></figure><br>第五行 透過 by 指令去 group by 用哪一個參數當作目標去做計算<br><img src="/images/aws/aws-cloudwatch-logs-insights-04.png" alt></p>
+<p>當然一樣可以多個 <code>| stats count(*) as sum by @path, @protocol</code><br><img src="/images/aws/aws-cloudwatch-logs-insights-05.png" alt></p>
+<h2><span id="後記">後記</span></h2><p>以上介紹一些個人比較常用的指令，官網還有很多非常好用的指令<br>詳細有興趣可以到官網上查查看<br><a href="https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html">https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html</a></p>
 
             </div>
         
@@ -292,22 +243,18 @@ https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.h
 
 <div class="card">
     <div class="card-content" style="padding-bottom: 0px;">
-        <div class="custom-flex-container">
-            <div>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
-                    crossorigin="anonymous"></script>
-                <!-- github -->
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-1515253208026743"
-                    data-ad-slot="3522587352"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
+            crossorigin="anonymous"></script>
+        <!-- github -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-1515253208026743"
+            data-ad-slot="3522587352"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
     <div class="card-content">
         <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
