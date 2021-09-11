@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事">
+    <meta name="description" content="前言 最近突然有一個想法開始研究起瀏覽器端的 Cache 方法 加上小弟常用 nodejs + express 去寫前後端 於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事 &lt;!-- more --&gt; 介紹 在 express 裡面有一個 function 叫做 express.static() 這個是一個 middleware，最常">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Express 對靜態檔案做了什麼? 為什麼會被 cache 住呢?">
 <meta property="og:url" content="https://yu-jack.github.io/2017/12/11/express-static/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事">
+<meta property="og:description" content="前言 最近突然有一個想法開始研究起瀏覽器端的 Cache 方法 加上小弟常用 nodejs + express 去寫前後端 於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事 &lt;!-- more --&gt; 介紹 在 express 裡面有一個 function 叫做 express.static() 這個是一個 middleware，最常">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2017-12-11T14:39:00.000Z">
@@ -174,10 +174,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>最近突然有一個想法開始研究起瀏覽器端的 Cache 方法<br>加上小弟常用 nodejs + express 去寫前後端<br>於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事</p>
-<a id="more"></a>
-<h2><span id="介紹">介紹</span></h2><p>在 express 裡面有一個 function 叫做 <code>express.static()</code><br>這個是一個 middleware，最常被用在要讀取一些靜態檔案上面<br>以這個寫法來說 <code>app.use(express.static(__dirname + &#39;./public&#39;))</code><br>是指向 <code>public</code> 這個資校夾裡面，假設裡面有一個檔案叫做 <code>index.html</code> 的話，並且伺服器的 port 是 8080<br>那麼在網址列輸入 <code>http://localhost:8080/index.html</code> 這樣就可以讀到這個檔案了</p>
-<h2><span id="追朔源頭">追朔源頭</span></h2><p>那我的疑問來了，我打開 Chrome Inspect 的 Network Tab 去看了一下他的 Response Headers<br>發現一件很奇怪的事情，我明明什麼都沒有設定，卻出現幾個有關 Cache 的 Headers</p>
+                <h2><span id="前言">前言</span></h2>
+<p>最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
+加上小弟常用 nodejs + express 去寫前後端
+於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事</p>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="介紹">介紹</span></h2>
+<p>在 express 裡面有一個 function 叫做 <code>express.static()</code>
+這個是一個 middleware，最常被用在要讀取一些靜態檔案上面
+以這個寫法來說 <code>app.use(express.static(__dirname + './public'))</code>
+是指向 <code>public</code> 這個資校夾裡面，假設裡面有一個檔案叫做 <code>index.html</code> 的話，並且伺服器的 port 是 8080
+那麼在網址列輸入 <code>http://localhost:8080/index.html</code> 這樣就可以讀到這個檔案了</p>
+<h2><span id="追朔源頭">追朔源頭</span></h2>
+<p>那我的疑問來了，我打開 Chrome Inspect 的 Network Tab 去看了一下他的 Response Headers
+發現一件很奇怪的事情，我明明什麼都沒有設定，卻出現幾個有關 Cache 的 Headers</p>
 <ol>
 <li>Accept-Ranges</li>
 <li>Cache-Control</li>
@@ -186,24 +196,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ol>
 <p><img src="https://i.imgur.com/3O0nBTh.png" alt></p>
 <blockquote>
-<p>有關 Cache 的一些機制和理論就不多作介紹<br>這裡單純就爬一下 Source Code，看看 express 對靜態檔案做了什麼</p>
+<p>有關 Cache 的一些機制和理論就不多作介紹
+這裡單純就爬一下 Source Code，看看 express 對靜態檔案做了什麼</p>
 </blockquote>
-<h3><span id="express">express</span></h3><p>在 express source code 中，發現他是用了另一個 library <code>server-static</code><br>於在就再來看看 <code>server-static</code> 做了什麼</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exports.static = <span class="built_in">require</span>(<span class="string">'serve-static'</span>);</span><br></pre></td></tr></table></figure>
-<h3><span id="serve-static">serve-static</span></h3><p>我只列出關鍵幾行，其他行主要都是設置參數用而已</p>
-<p>從第一行可以看出，把 <code>serverStatic</code> 這個 function 給 export 出來了<br>再往下看會發現有一個 <code>send</code> function 把 <code>path</code> 傳了進去<br>然後在最後面，<code>stream.pipe(res)</code> 對 response 做了一些更動</p>
+<h3><span id="express">express</span></h3>
+<p>在 express source code 中，發現他是用了另一個 library <code>server-static</code>
+於在就再來看看 <code>server-static</code> 做了什麼</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exports.static = <span class="built_in">require</span>(<span class="string">'serve-static'</span>);</span><br></pre></td></tr></table></figure></p>
+<h3><span id="serve-static">serve-static</span></h3>
+<p>我只列出關鍵幾行，其他行主要都是設置參數用而已</p>
+<p>從第一行可以看出，把 <code>serverStatic</code> 這個 function 給 export 出來了
+再往下看會發現有一個 <code>send</code> function 把 <code>path</code> 傳了進去
+然後在最後面，<code>stream.pipe(res)</code> 對 response 做了一些更動</p>
 <p>於是再往下找找看 <code>send()</code> 這個是什麼東西</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = serveStatic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> send = <span class="built_in">require</span>(<span class="string">'send'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">serveStatic</span> (<span class="params">root, options</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> stream = send(req, path, opts)</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// pipe</span></span><br><span class="line">    stream.pipe(res)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3><span id="send-send">send – send</span></h3><p>根據上一段程式最後一段 (12行)，他 call 了一個 <code>pipe</code> 的 function<br><code>pipe</code> function 裡面去 call <code>this.sendFile(path)</code><br><code>this.sendFile</code> 裡面又去 call <code>self.send(path, stat)</code><br>然後在 <code>send</code> 這個 fucntion 裡面出現關鍵的 <code>function</code> – <code>this.setHeader</code><br>看來 response headers 就是在這邊被更改了</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = send</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這邊回傳給到 server-static 去 call</span></span><br><span class="line"><span class="comment">// 也就是上一段程式碼的第 8 行，然後在第 </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">req, path, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> SendStream(req, path, options)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.pipe = <span class="function"><span class="keyword">function</span> <span class="title">pipe</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.sendFile(path)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.sendFile = <span class="function"><span class="keyword">function</span> <span class="title">sendFile</span> (<span class="params">path</span>) </span>&#123;</span><br><span class="line"><span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'stat "%s"'</span>, path)</span><br><span class="line">  self.send(path, stat)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SendStream.prototype.send = <span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'pipe "%s"'</span>, path)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// set header fields</span></span><br><span class="line">  <span class="keyword">this</span>.setHeader(path, stat)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3><span id="send-setheader">send – setHeader</span></h3><p>找到了對 header 做更動的地方後，以第 11 ~ 20 行中間這段 Code 來說<br>去設置了 Cache-Control 的內容，依照整個邏輯下如果沒有特別設置，那麼 header 會長以下這樣</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = serveStatic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> send = <span class="built_in">require</span>(<span class="string">'send'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">serveStatic</span> (<span class="params">root, options</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> stream = send(req, path, opts)</span><br><span class="line">    <span class="comment">// Some codes ....</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// pipe</span></span><br><span class="line">    stream.pipe(res)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3><span id="send-send">send -- send</span></h3>
+<p>根據上一段程式最後一段 (12行)，他 call 了一個 <code>pipe</code> 的 function
+<code>pipe</code> function 裡面去 call <code>this.sendFile(path)</code>
+<code>this.sendFile</code> 裡面又去 call <code>self.send(path, stat)</code>
+然後在 <code>send</code> 這個 fucntion 裡面出現關鍵的 <code>function</code> -- <code>this.setHeader</code>
+看來 response headers 就是在這邊被更改了</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = send</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這邊回傳給到 server-static 去 call</span></span><br><span class="line"><span class="comment">// 也就是上一段程式碼的第 8 行，然後在第 </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">req, path, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> SendStream(req, path, options)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.pipe = <span class="function"><span class="keyword">function</span> <span class="title">pipe</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.sendFile(path)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SendStream.prototype.sendFile = <span class="function"><span class="keyword">function</span> <span class="title">sendFile</span> (<span class="params">path</span>) </span>&#123;</span><br><span class="line"><span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'stat "%s"'</span>, path)</span><br><span class="line">  self.send(path, stat)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SendStream.prototype.send = <span class="function"><span class="keyword">function</span> <span class="title">send</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 這個等等 demo 截圖會看到，所以先留著</span></span><br><span class="line">  debug(<span class="string">'pipe "%s"'</span>, path)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// set header fields</span></span><br><span class="line">  <span class="keyword">this</span>.setHeader(path, stat)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3><span id="send-setheader">send -- setHeader</span></h3>
+<p>找到了對 header 做更動的地方後，以第 11 ~ 20 行中間這段 Code 來說
+去設置了 Cache-Control 的內容，依照整個邏輯下如果沒有特別設置，那麼 header 會長以下這樣</p>
 <p><code>Cache-Control: public, max-age=0</code></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">SendStream.prototype.setHeader = <span class="function"><span class="keyword">function</span> <span class="title">setHeader</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> res = <span class="keyword">this</span>.res</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.emit(<span class="string">'headers'</span>, res, path, stat)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._acceptRanges &amp;&amp; !res.getHeader(<span class="string">'Accept-Ranges'</span>)) &#123;</span><br><span class="line">    debug(<span class="string">'accept ranges'</span>)</span><br><span class="line">    res.setHeader(<span class="string">'Accept-Ranges'</span>, <span class="string">'bytes'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._cacheControl &amp;&amp; !res.getHeader(<span class="string">'Cache-Control'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> cacheControl = <span class="string">'public, max-age='</span> + <span class="built_in">Math</span>.floor(<span class="keyword">this</span>._maxage / <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>._immutable) &#123;</span><br><span class="line">      cacheControl += <span class="string">', immutable'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    debug(<span class="string">'cache-control %s'</span>, cacheControl)</span><br><span class="line">    res.setHeader(<span class="string">'Cache-Control'</span>, cacheControl)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._lastModified &amp;&amp; !res.getHeader(<span class="string">'Last-Modified'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> modified = stat.mtime.toUTCString()</span><br><span class="line">    debug(<span class="string">'modified %s'</span>, modified)</span><br><span class="line">    res.setHeader(<span class="string">'Last-Modified'</span>, modified)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._etag &amp;&amp; !res.getHeader(<span class="string">'ETag'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> val = etag(stat)</span><br><span class="line">    debug(<span class="string">'etag %s'</span>, val)</span><br><span class="line">    res.setHeader(<span class="string">'ETag'</span>, val)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2><span id="demo">DEMO</span></h2><p>另外提供另個方法可以追回去 (我是懶得寫程式直接看 source code XD)<br>安裝完環境之後要跑 server 的時候，可以這樣下</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">SendStream.prototype.setHeader = <span class="function"><span class="keyword">function</span> <span class="title">setHeader</span> (<span class="params">path, stat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> res = <span class="keyword">this</span>.res</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.emit(<span class="string">'headers'</span>, res, path, stat)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._acceptRanges &amp;&amp; !res.getHeader(<span class="string">'Accept-Ranges'</span>)) &#123;</span><br><span class="line">    debug(<span class="string">'accept ranges'</span>)</span><br><span class="line">    res.setHeader(<span class="string">'Accept-Ranges'</span>, <span class="string">'bytes'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._cacheControl &amp;&amp; !res.getHeader(<span class="string">'Cache-Control'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> cacheControl = <span class="string">'public, max-age='</span> + <span class="built_in">Math</span>.floor(<span class="keyword">this</span>._maxage / <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>._immutable) &#123;</span><br><span class="line">      cacheControl += <span class="string">', immutable'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    debug(<span class="string">'cache-control %s'</span>, cacheControl)</span><br><span class="line">    res.setHeader(<span class="string">'Cache-Control'</span>, cacheControl)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._lastModified &amp;&amp; !res.getHeader(<span class="string">'Last-Modified'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> modified = stat.mtime.toUTCString()</span><br><span class="line">    debug(<span class="string">'modified %s'</span>, modified)</span><br><span class="line">    res.setHeader(<span class="string">'Last-Modified'</span>, modified)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._etag &amp;&amp; !res.getHeader(<span class="string">'ETag'</span>)) &#123;</span><br><span class="line">    <span class="keyword">var</span> val = etag(stat)</span><br><span class="line">    debug(<span class="string">'etag %s'</span>, val)</span><br><span class="line">    res.setHeader(<span class="string">'ETag'</span>, val)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2><span id="demo">DEMO</span></h2>
+<p>另外提供另個方法可以追回去 (我是懶得寫程式直接看 source code XD)
+安裝完環境之後要跑 server 的時候，可以這樣下</p>
 <p><code>DEBUG=* node server.js</code></p>
-<p>從圖片中可以發現，那些 log message 是一樣的 </p>
+<p>從圖片中可以發現，那些 log message 是一樣的</p>
 <p><img src="https://i.imgur.com/mhj2YxB.png" alt></p>
-<h2><span id="後記">後記</span></h2><p>一直以來以為是 express 的做法讓檔案可以 cache 住<br>原來一直都是默默無名的 opensouce library 在幫助 express 啊<br>希望這篇有稍微幫助到對 express 處理 static files 有疑慮的人</p>
+<h2><span id="後記">後記</span></h2>
+<p>一直以來以為是 express 的做法讓檔案可以 cache 住
+原來一直都是默默無名的 opensouce library 在幫助 express 啊
+希望這篇有稍微幫助到對 express 處理 static files 有疑慮的人</p>
 
             </div>
         
@@ -251,18 +279,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <div class="card">
     <div class="card-content" style="padding-bottom: 0px;">
-        <div style="text-align: center;">
-            <p>若喜歡文章內容, 可以請我喝杯咖啡, 讓我在半夜不會寫到睡著！</p>
-        </div>
         <div class="custom-flex-container">
-            <div id="jko" style="text-align: center;">
-                <p>JKOPAY 帳戶</p>
-                <img src="/images/jko.png" style="width: 160px;height: auto;border: none;box-shadow: none;">
-            </div>
-            <div id="liker"></div>
-            <div id="line" style="text-align: center;">
-                <p>LINE Pay 帳戶</p>
-                <img src="/images/line.jpeg" style="width: 163px;height: auto;border: none;box-shadow: none;">
+            <div>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
+                    crossorigin="anonymous"></script>
+                <!-- github -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-1515253208026743"
+                    data-ad-slot="3522587352"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
         </div>
     </div>
@@ -287,21 +317,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
     </div>
-    <script type="text/javascript">
-        document.getElementById("liker").innerHTML = 
-        "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='display: block; margin: 0 auto;' src='https://button.like.co/in/embed/jk82421/button?referrer=" +
-        encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>";
-    </script>
     <style>
         .custom-flex-container {
             display: flex; 
             justify-content: center; 
             margin-top: 30px;
-        }
-        @media screen and (max-width:1000px) {
-            .custom-flex-container {
-                flex-direction: column;
-            }
         }
     </style>
 </div>
@@ -349,11 +369,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </a></li><li>
         <a class="is-flex" href="#send-send">
         <span class="has-mr-6">3.3</span>
-        <span>send – send</span>
+        <span>send -- send</span>
         </a></li><li>
         <a class="is-flex" href="#send-setheader">
         <span class="has-mr-6">3.4</span>
-        <span>send – setHeader</span>
+        <span>send -- setHeader</span>
         </a></li></ul></li><li>
         <a class="is-flex" href="#demo">
         <span class="has-mr-6">4</span>
