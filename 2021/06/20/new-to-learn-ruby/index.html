@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-06-20T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-09-05T08:55:23.145Z">
+<meta property="article:modified_time" content="2021-09-21T08:41:00.578Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="ruby">
 <meta name="twitter:card" content="summary">
@@ -154,7 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    24 分鐘 閱讀文 (大約 3534 個字)
+                    24 分鐘 閱讀文 (大約 3587 個字)
                 </span>
                 
                 
@@ -232,7 +232,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>其他版本可以參考 <a href="https://docs.ruby-lang.org/en/">https://docs.ruby-lang.org/en/</a></p>
 </blockquote>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span></span></span><br><span class="line">    puts <span class="string">"gogo"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span></span></span><br><span class="line">        puts <span class="string">"run"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">Cat.new.run</span><br><span class="line"></span><br><span class="line"><span class="comment"># 除了上面這樣執行, 也可以額外宣告 class method 直接去使用</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">gogo</span></span></span><br><span class="line">        puts <span class="string">"gogo"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span></span></span><br><span class="line">        puts <span class="string">"run"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    gogo</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">Cat.new.run</span><br></pre></td></tr></table></figure>
-<p>這跟寫 JS 和 Java 有很大的不同, 為何在定義 class 的時候就可以執行程式呢?<br>其實在 class 這個定義中, 跟其他區塊一樣可以直接執行程式的區塊, 差別在 self 指向這個 class 而已<br>而定義在這區塊中, 當 class 被 loaded 之後, 只會執行一次, 更多詳細內容可以參考以下文章</p>
+<p>這跟寫 JS 和 Java 有很大的不同, 為何在定義 class 的時候就可以執行程式呢?<br>其實在 class 這個定義中, 跟其他區塊一樣可以直接執行程式的區塊, 差別在 self 指向這個 class 而已<br>而定義在這區塊中, 當 class 被載入之後, 就會跟著執行<br>不過有趣的是 <code>require</code> &amp; <code>load</code> 兩種方式會有不同樣的結果<br>透過多次 <code>require</code> class 只會被執行一次<br>透過多次 <code>load</code> class 則會每次載入都會被執行一次  </p>
+<p>更多詳細內容可以參考以下文章</p>
 <ol>
 <li><a href="https://stackoverflow.com/questions/1344797/ruby-method-calls-declared-in-class-body">Ruby Method calls declared in class body</a></li>
 <li><a href="https://yehudakatz.com/2009/08/24/my-10-favorite-things-about-the-ruby-language">point 4: Class Bodies Aren’t Special.</a></li>
