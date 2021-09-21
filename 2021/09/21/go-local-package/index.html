@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-09-21T04:53:00.000Z">
-<meta property="article:modified_time" content="2021-09-21T08:32:34.056Z">
+<meta property="article:modified_time" content="2021-09-21T11:14:37.483Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="golang">
 <meta property="article:tag" content="package">
@@ -155,7 +155,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    4 分鐘 閱讀文 (大約 662 個字)
+                    5 分鐘 閱讀文 (大約 788 個字)
                 </span>
                 
                 
@@ -181,10 +181,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>如果出現 <code>410 Gone</code> 以及 <code>fatal: could not read Username for &#39;https://github.com&#39;: terminal prompts disabled</code> 的錯誤，有以下幾個可能原因  </p>
 <ul>
 <li>第一個因為 https 預設是禁止的，所以建議用 ssh，所以在 gitconfig 要下這個指令去改 <code>git config --global url.&quot;git@github.com:&quot;.insteadOf &quot;https://github.com/&quot;</code>，不過這個方式記得要把自己的 ssh key 上傳到 github 上    </li>
-<li>第二個是 GOPROXY &amp; GOSUMOB 設定，別透過 proxy 去拿就可以    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 原本</span><br><span class="line">GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;proxy.golang.org,direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;sum.golang.org&quot;</span><br><span class="line"></span><br><span class="line"># 改成，既得用 export 的方式，直接 go env -w 是無法改的 </span><br><span class="line">GOPROXY&#x3D;&quot;direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;off&quot;</span><br></pre></td></tr></table></figure>
+<li>第二個是 GOPROXY &amp; GOSUMOB 設定，別透過 proxy 去拿就可以 (如果是 public 專案可以看下面的備註的部分)    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 原本</span><br><span class="line">GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;proxy.golang.org,direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;sum.golang.org&quot;</span><br><span class="line"></span><br><span class="line"># 改成，既得用 export 的方式，直接 go env -w 是無法改的 </span><br><span class="line">GOPROXY&#x3D;&quot;direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;off&quot;</span><br></pre></td></tr></table></figure>
   <a href="https://github.com/golang/go/issues/35164#issuecomment-546503518">解法來源-issuecomment-546503518</a></li>
 <li>若不想用第二種方式，可以用第三種設定 <code>go env -w GOPRIVATE=&quot;github.com/Yu-Jack&quot;</code> 直接指定 repository 的位置即可，之後要移除可以透過 <code>go env -u GOPRIVATE</code></li>
 </ul>
+<blockquote>
+<p>### 備註<br>如果專案是 public 的話，可以考慮等 1~2 小時<br>接著就正常了，因為中間多一層 proxy 要一段時間才會生效<br>如果急著要用的話，就可以考慮用 2 or 3 的方法<br>以上面的 case 來說，會到 <a href="https://sum.golang.org/lookup/github.com/!yu-!jack/go-hello@v0.0.0-20210921041315-798ac1b7038c">https://sum.golang.org/lookup/github.com/!yu-!jack/go-hello@v0.0.0-20210921041315-798ac1b7038c</a> 這裡讀取資料<br>如果在還沒生效之前，就會都是拿到 410 Gone  </p>
+</blockquote>
 <p>目前這樣設置的方式就是去讀從 gihub clone 下來的程式，通常會被放在 GOPATH 的路徑 (pkg/github 裡面)<br>但通常會有權限問題，所以只能讀取，那如果想要隨意優改的話可以這樣做 (這裡不考慮改權限)  </p>
 <p>先把另一個專案 <code>github.com/Yu-Jack/go-hello</code> clone 到你想儲存的地方<br>這邊假設存在 <code>/Users/{usernme}/Downloads/go-hello</code> 底下<br>接著把剛剛的 <code>go.mod</code> 增加一行，去修改指向的位置，這邊就用絕對位置，但相對位置也是可以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace github.com&#x2F;Yu-Jack&#x2F;go-hello &#x3D;&gt; &#x2F;Users&#x2F;&#123;usernme&#125;&#x2F;Downloads&#x2F;go-hello</span><br></pre></td></tr></table></figure></p>
 <p>接著嘗試修改 clone 下來的專案，<a href="https://github.com/Yu-Jack/go-hello">Github 原始程式碼</a>如下<br>可以修改一些字串後並重新跑 <code>go run main.go</code> 就會發現有成功吃到修改的部分<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> hello</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Cool</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"hello"</span>) <span class="comment">// 可以改成 fmt.Println("hello yujack")</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
