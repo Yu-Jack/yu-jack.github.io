@@ -105,13 +105,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Golang/</loc>
-        <lastmod>2021-04-24T13:50:18.783Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Operating-System/</loc>
         <lastmod>2021-07-19T07:18:59.010Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -135,6 +128,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Ruby/</loc>
         <lastmod>2021-09-05T08:55:23.145Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Golang/</loc>
+        <lastmod>2021-09-21T05:13:40.851Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
