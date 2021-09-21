@@ -614,7 +614,12 @@ Cat.new.run
 
 這跟寫 JS 和 Java 有很大的不同, 為何在定義 class 的時候就可以執行程式呢?  
 其實在 class 這個定義中, 跟其他區塊一樣可以直接執行程式的區塊, 差別在 self 指向這個 class 而已  
-而定義在這區塊中, 當 class 被 loaded 之後, 只會執行一次, 更多詳細內容可以參考以下文章
+而定義在這區塊中, 當 class 被載入之後, 就會跟著執行  
+不過有趣的是 `require` & `load` 兩種方式會有不同樣的結果  
+透過多次 `require` class 只會被執行一次  
+透過多次 `load` class 則會每次載入都會被執行一次  
+
+更多詳細內容可以參考以下文章
 1. [Ruby Method calls declared in class body](https://stackoverflow.com/questions/1344797/ruby-method-calls-declared-in-class-body)
 2. [point 4: Class Bodies Aren't Special.](https://yehudakatz.com/2009/08/24/my-10-favorite-things-about-the-ruby-language)
 3. [Method Calls in Ruby Class Definitions](https://joefallon.net/2013/10/method-calls-in-ruby-class-definitions/)
