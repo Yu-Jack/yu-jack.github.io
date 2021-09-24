@@ -112,13 +112,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Experience/</loc>
-        <lastmod>2021-08-10T02:04:02.131Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
         <lastmod>2021-09-05T06:18:28.481Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -135,6 +128,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Golang/</loc>
         <lastmod>2021-09-21T11:14:37.483Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Experience/</loc>
+        <lastmod>2021-09-24T06:57:03.025Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
