@@ -183,5 +183,7 @@ rails 會幫你建置一個空的 Nice module 讓你去使用
 
 ## References
 
+以下都是官方的來源唷  
+
 1. [autoload_paths](https://rails.ruby.tw/constant_autoloading_and_reloading.html#autoload-paths)
 2. [Autoloading Algorithms](https://rails.ruby.tw/constant_autoloading_and_reloading.html#autoloading-algorithms)
