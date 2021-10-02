@@ -119,13 +119,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Ruby/</loc>
-        <lastmod>2021-09-21T08:41:00.578Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Golang/</loc>
         <lastmod>2021-09-21T11:14:37.483Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -135,6 +128,13 @@
     <url>
         <loc>https://yu-jack.github.io/categories/Experience/</loc>
         <lastmod>2021-09-24T06:57:03.025Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Ruby/</loc>
+        <lastmod>2021-10-02T11:19:36.745Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
