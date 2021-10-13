@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="介紹筆者在學習新的語言時在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制   以筆者最熟悉的 Node.js 來說一定會談論到 Node.js Event Loop像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理透過了解這些原理, 可以避免寫 code 的時候遇到一些問題舉例來說想在 Node.js 裡面 sleep 5">
+    <meta name="description" content="介紹 筆者在學習新的語言時 在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制 以筆者最熟悉的 Node.js 來說 一定會談論到 Node.js Event Loop 像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理 透過了解這些原理, 可以避免寫 code 的時候遇到一些問題 舉例來說想在 Node.js 裡面 slee">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ruby &amp; Rails 運行機制和 single or multi-thread 淺談">
 <meta property="og:url" content="https://yu-jack.github.io/2021/07/04/rails-mechanism/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="介紹筆者在學習新的語言時在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制   以筆者最熟悉的 Node.js 來說一定會談論到 Node.js Event Loop像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理透過了解這些原理, 可以避免寫 code 的時候遇到一些問題舉例來說想在 Node.js 裡面 sleep 5">
+<meta property="og:description" content="介紹 筆者在學習新的語言時 在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制 以筆者最熟悉的 Node.js 來說 一定會談論到 Node.js Event Loop 像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理 透過了解這些原理, 可以避免寫 code 的時候遇到一些問題 舉例來說想在 Node.js 裡面 slee">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-04T04:40:00.000Z">
@@ -176,56 +176,112 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="介紹">介紹</span></h2><p>筆者在學習新的語言時<br>在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制  </p>
-<p>以筆者最熟悉的 Node.js 來說<br>一定會談論到 Node.js Event Loop<br>像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理<br>透過了解這些原理, 可以避免寫 code 的時候遇到一些問題<br>舉例來說想在 Node.js 裡面 sleep 5 秒的話, 一定會搭配 Promise 的機制避免 Block Event Loop  </p>
-<p>那這篇主要是淺談, 畢竟對 Ruby 這個語言還不深入<br>也順便把這篇當作紀錄, 之後有更深的了解也會更新在這篇或挑主題深入說明  </p>
-<p>此篇用的 Ruby 版本為 2.7 的版本<br>尚未談論到 Ruby 3 引入的新機制, 這等筆者對 Ruby 有比較多的了解後再說了 XD  </p>
-<h2><span id="ruby-single-thread">Ruby Single Thread?</span></h2><p>Ruby 這個語言很有趣<br>它是不是 Single Thread 是由它的 Interpreter 去決定的<br>舉例來說 Ruby 有以下幾種 Interpreter  </p>
+                <h2><span id="介紹">介紹</span></h2>
+<p>筆者在學習新的語言時<br>
+在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制</p>
+<p>以筆者最熟悉的 Node.js 來說<br>
+一定會談論到 Node.js Event Loop<br>
+像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理<br>
+透過了解這些原理, 可以避免寫 code 的時候遇到一些問題<br>
+舉例來說想在 Node.js 裡面 sleep 5 秒的話, 一定會搭配 Promise 的機制避免 Block Event Loop</p>
+<p>那這篇主要是淺談, 畢竟對 Ruby 這個語言還不深入<br>
+也順便把這篇當作紀錄, 之後有更深的了解也會更新在這篇或挑主題深入說明</p>
+<p>此篇用的 Ruby 版本為 2.7 的版本<br>
+尚未談論到 Ruby 3 引入的新機制, 這等筆者對 Ruby 有比較多的了解後再說了 XD</p>
+<h2><span id="ruby-single-thread">Ruby Single Thread?</span></h2>
+<p>Ruby 這個語言很有趣<br>
+它是不是 Single Thread 是由它的 Interpreter 去決定的<br>
+舉例來說 Ruby 有以下幾種 Interpreter</p>
 <ol>
 <li>MRI (Ruby 安裝後 Default 使用這個)</li>
 <li>Jruby</li>
 <li>Rubinius</li>
 </ol>
-<p>等等很多, 這篇就不一一列出來<br>根據不同實作方式, Ruby 的行為就完全會不一樣  </p>
+<p>等等很多, 這篇就不一一列出來<br>
+根據不同實作方式, Ruby 的行為就完全會不一樣</p>
 <blockquote>
-<p>題外話: Python 也有 GIL  </p>
+<p>題外話: Python 也有 GIL</p>
 </blockquote>
-<p>以這個 example code 來看的話  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|x|</span></span><br><span class="line">  x.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">    <span class="number">10_000_000</span>.times&#123; <span class="number">2</span>+<span class="number">2</span> &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  x.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">    a = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; <span class="number">2</span>+<span class="number">2</span> &#125; &#125;</span><br><span class="line">    b = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; <span class="number">2</span>+<span class="number">2</span> &#125; &#125;</span><br><span class="line">    a.join</span><br><span class="line">    b.join</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>透過 Ruby 和 JRuby 去執行會得到兩個不一樣的結果<br>Ruby 執行結果的時間兩者是一樣的<br>JRuby 執行結果的時間是開 Thread 比較快  </p>
-<p>這個原因牽扯到 MRI 裡面有一個 Global Interpreter Lock (GIL)<br>簡單來說在 MRI 下, 每一次只會有一個 Thread 在運行<br>所以你開兩個 Thread 的話, 並不是同時執行, 而是切換 Thead<br>很像是輪流去執行這兩個 Thread  </p>
-<p>也就是說掌握 Lock 的 Thread 就掌握了執行的權利<br>而剛剛提到切換的行為我們稱之為 Context Switching  </p>
-<p>再來讓我們看一個例子<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|x|</span></span><br><span class="line">  x.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    <span class="number">10_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125;</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  x.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    a = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; &#125;</span><br><span class="line">    b = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; &#125;</span><br><span class="line">    a.join</span><br><span class="line">    b.join</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
-<p>這個用 Ruby 和 Jruby 得到的結果也會不一樣<br>Ruby (MRI): 兩者都會拿到 10000000<br>Jruby: 沒開 Thread 會是拿到 10000000, 有開 Thread 每一次都拿不一樣  </p>
-<p>原因也是因為 Ruby 有 GIL 的機制存在, 所以不會導致 race condition 出現<br>但因為 Jruby 是真正以 mutil-thread 去執行, 所以就會出現 race condition 出現, 進而導致結果不一樣<br>而如果想再 Jruby 裡面解決這件事情, 必須加上 Mutex 的機制去保證一次只會有一個 Thread 在處理共同資料<br>類似以下方式就可以正常運作, 但如果你的 rails 是跑在多台機制上面, 就又會需要其他機制去處理共同資料問題  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"></span><br><span class="line">mutex = Mutex.new</span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|x|</span></span><br><span class="line">  x.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    <span class="number">10_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125;</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  x.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    a = Thread.new&#123; </span><br><span class="line">        mutex.synchronize &#123;</span><br><span class="line">            <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    b = Thread.new&#123; </span><br><span class="line">        mutex.synchronize &#123;</span><br><span class="line">            <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    a.join</span><br><span class="line">    b.join</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>但是這個 Thread 如果是在操作 I/O (network, sql) 等等情況時<br>Lock 會被釋放並讓其他 Thread 可以有執行的權利<br>就可以達成很像平行化執行的感覺, 可以看看這個範例  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'uri'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'net/http'</span></span><br><span class="line"></span><br><span class="line">uri = URI(<span class="string">'https://google.com.tw'</span>)</span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|b|</span></span><br><span class="line">    b.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">        res1 = Net::HTTP.get_response(uri)</span><br><span class="line">        res2 = Net::HTTP.get_response(uri)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  </span><br><span class="line">    b.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">        a = Thread.new&#123; Net::HTTP.get_response(uri) &#125;</span><br><span class="line">        b = Thread.new&#123; Net::HTTP.get_response(uri) &#125;</span><br><span class="line">        a.join</span><br><span class="line">        b.join</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>執行會發現有開 Thread 的那個明顯快上一倍的時間<br>但這並不是因為他同時開兩個 Thread 去執行<br>而是執行第一個 Thread 時, 發現是 I/O operation 所以把 Lock 釋放<br>讓第二個 Thread 可以接著去運行  </p>
+<p>以這個 example code 來看的話</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|x|</span></span><br><span class="line">  x.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">    <span class="number">10_000_000</span>.times&#123; <span class="number">2</span>+<span class="number">2</span> &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  x.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">    a = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; <span class="number">2</span>+<span class="number">2</span> &#125; &#125;</span><br><span class="line">    b = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; <span class="number">2</span>+<span class="number">2</span> &#125; &#125;</span><br><span class="line">    a.join</span><br><span class="line">    b.join</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>透過 Ruby 和 JRuby 去執行會得到兩個不一樣的結果<br>
+Ruby 執行結果的時間兩者是一樣的<br>
+JRuby 執行結果的時間是開 Thread 比較快</p>
+<p>這個原因牽扯到 MRI 裡面有一個 Global Interpreter Lock (GIL)<br>
+簡單來說在 MRI 下, 每一次只會有一個 Thread 在運行<br>
+所以你開兩個 Thread 的話, 並不是同時執行, 而是切換 Thead
+很像是輪流去執行這兩個 Thread</p>
+<p>也就是說掌握 Lock 的 Thread 就掌握了執行的權利<br>
+而剛剛提到切換的行為我們稱之為 Context Switching</p>
+<p>再來讓我們看一個例子
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|x|</span></span><br><span class="line">  x.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    <span class="number">10_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125;</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  x.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    a = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; &#125;</span><br><span class="line">    b = Thread.new&#123; <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; &#125;</span><br><span class="line">    a.join</span><br><span class="line">    b.join</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>這個用 Ruby 和 Jruby 得到的結果也會不一樣<br>
+Ruby (MRI): 兩者都會拿到 10000000<br>
+Jruby: 沒開 Thread 會是拿到 10000000, 有開 Thread 每一次都拿不一樣</p>
+<p>原因也是因為 Ruby 有 GIL 的機制存在, 所以不會導致 race condition 出現<br>
+但因為 Jruby 是真正以 mutil-thread 去執行, 所以就會出現 race condition 出現, 進而導致結果不一樣<br>
+而如果想再 Jruby 裡面解決這件事情, 必須加上 Mutex 的機制去保證一次只會有一個 Thread 在處理共同資料<br>
+類似以下方式就可以正常運作, 但如果你的 rails 是跑在多台機制上面, 就又會需要其他機制去處理共同資料問題</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"></span><br><span class="line">mutex = Mutex.new</span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|x|</span></span><br><span class="line">  x.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    <span class="number">10_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125;</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  x.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">    items = []</span><br><span class="line">    a = Thread.new&#123; </span><br><span class="line">        mutex.synchronize &#123;</span><br><span class="line">            <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    b = Thread.new&#123; </span><br><span class="line">        mutex.synchronize &#123;</span><br><span class="line">            <span class="number">5_000_000</span>.times&#123; items &lt;&lt; <span class="number">1</span> &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    a.join</span><br><span class="line">    b.join</span><br><span class="line">    puts <span class="string">"\n item length: <span class="subst">#&#123;items.length&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>但是這個 Thread 如果是在操作 I/O (network, sql) 等等情況時<br>
+Lock 會被釋放並讓其他 Thread 可以有執行的權利<br>
+就可以達成很像平行化執行的感覺, 可以看看這個範例</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'uri'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'net/http'</span></span><br><span class="line"></span><br><span class="line">uri = URI(<span class="string">'https://google.com.tw'</span>)</span><br><span class="line"></span><br><span class="line">Benchmark.bm <span class="keyword">do</span> <span class="params">|b|</span></span><br><span class="line">    b.report(<span class="string">'w/o'</span>) <span class="keyword">do</span></span><br><span class="line">        res1 = Net::HTTP.get_response(uri)</span><br><span class="line">        res2 = Net::HTTP.get_response(uri)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  </span><br><span class="line">    b.report(<span class="string">'with'</span>) <span class="keyword">do</span></span><br><span class="line">        a = Thread.new&#123; Net::HTTP.get_response(uri) &#125;</span><br><span class="line">        b = Thread.new&#123; Net::HTTP.get_response(uri) &#125;</span><br><span class="line">        a.join</span><br><span class="line">        b.join</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>執行會發現有開 Thread 的那個明顯快上一倍的時間<br>
+但這並不是因為他同時開兩個 Thread 去執行<br>
+而是執行第一個 Thread 時, 發現是 I/O operation 所以把 Lock 釋放<br>
+讓第二個 Thread 可以接著去運行</p>
 <blockquote>
-<p>這邊先多提到一點<br>在 Ruby 2.7 下, Thread Model 是 1-1 (one-to-one) 的形式<br>而這牽扯到作業系統的 User-Space Thread 和 Kernal-Space Thread<br>這邊就先想成, 當 Ruby 開了一個 Thread 它就是到作業系統開了 Thread 去執行<br>只是 Ruby 在有 GIL 的狀況下, 一次只會有一個 Thread 被執行<br>而關於 User-Space / Kernal-Space Thread 則會另外說明, 目前並不會影響後續的閱讀<br>但假如這篇是在講 Go 的話, 這一點就必須先說明, 否則會不好理解 Go 實作的原理<br>有興趣可以看看筆者這篇 <a href="/2021/07/15/thread-model/">Thread Model</a></p>
+<p>這邊先多提到一點<br>
+在 Ruby 2.7 下, Thread Model 是 1-1 (one-to-one) 的形式<br>
+而這牽扯到作業系統的 User-Space Thread 和 Kernal-Space Thread<br>
+這邊就先想成, 當 Ruby 開了一個 Thread 它就是到作業系統開了 Thread 去執行<br>
+只是 Ruby 在有 GIL 的狀況下, 一次只會有一個 Thread 被執行<br>
+而關於 User-Space / Kernal-Space Thread 則會另外說明, 目前並不會影響後續的閱讀<br>
+但假如這篇是在講 Go 的話, 這一點就必須先說明, 否則會不好理解 Go 實作的原理<br>
+有興趣可以看看筆者這篇 <a href="/2021/07/15/thread-model/">Thread Model</a></p>
 </blockquote>
-<p>那目前對 Ruby 的認知大概是這樣 (依舊在研究中 XD)<br>這邊提供幾篇關於 GIL 的文章可以閱讀  </p>
+<p>那目前對 Ruby 的認知大概是這樣 (依舊在研究中 XD)<br>
+這邊提供幾篇關於 GIL 的文章可以閱讀</p>
 <ol>
 <li><a href="http://ablogaboutcode.com/2012/02/06/the-ruby-global-interpreter-lock">The Ruby Global Interpreter Lock</a></li>
 <li><a href="https://ruby-china.org/topics/28415">Ruby 无人知晓的 GIL</a></li>
-<li><a href="https://medium.com/@jinghua.shih/筆記-rubys-threads-e746038b71c8">[筆記] Threads in Ruby</a></li>
-<li><a href="https://medium.com/@jinghua.shih/筆記-threads-in-ruby-2-1ce404485a4e">[筆記] Threads in Ruby (2)</a></li>
+<li><a href="https://medium.com/@jinghua.shih/%E7%AD%86%E8%A8%98-rubys-threads-e746038b71c8">[筆記] Threads in Ruby</a></li>
+<li><a href="https://medium.com/@jinghua.shih/%E7%AD%86%E8%A8%98-threads-in-ruby-2-1ce404485a4e">[筆記] Threads in Ruby (2)</a></li>
 </ol>
-<p>接著講到 Ruby 就一定要談談 Rails 的部分  </p>
-<h2><span id="rails-包含哪些東西">Rails 包含哪些東西</span></h2><p>這裡用 Rails 6 的預設去說明<br>雖然我們都只講 Rails, 但其實它裡面還包含了很多不同層面的東西<br>往下之前我們必須先定義好幾項名詞  </p>
-<p>Rails 是一種 Web Framework, 並不是一個 Appliction Server<br>而運行我們 Rails 程式的 Server, 我們會把它稱為 Application Server  </p>
-<p>那 Application Server 是什麼呢?<br>可以運行程式的商業邏輯並處理 HTTP 請求, 我們就可以稱之為是 Appliaction Server  </p>
+<p>接著講到 Ruby 就一定要談談 Rails 的部分</p>
+<h2><span id="rails-包含哪些東西">Rails 包含哪些東西</span></h2>
+<p>這裡用 Rails 6 的預設去說明<br>
+雖然我們都只講 Rails, 但其實它裡面還包含了很多不同層面的東西<br>
+往下之前我們必須先定義好幾項名詞</p>
+<p>Rails 是一種 Web Framework, 並不是一個 Appliction Server<br>
+而運行我們 Rails 程式的 Server, 我們會把它稱為 Application Server</p>
+<p>那 Application Server 是什麼呢?<br>
+可以運行程式的商業邏輯並處理 HTTP 請求, 我們就可以稱之為是 Appliaction Server</p>
 <p>在 Rails 安裝的 gem 中裡面會看 Rack &amp; Puma 兩個東西</p>
 <ul>
 <li>Puma 屬於 Application Server</li>
 <li>Rack 屬於一種中間件, 統一接口讓所有 Application Server 都能透過統一的 Interface 去跟程式溝通</li>
 </ul>
-<p>所以到目前為止整體架構如下  </p>
-<p>Ruby - 程式語言<br>MRI - 實作 Ruby 底層運行的一種機制<br>Rails - Web Framework<br>Rack - 中間件, 統一接口讓所有 Application Server 都能透過統一的 Interface 去跟程式溝通溝通<br>Puma - Appliction Server  </p>
-<p>但有趣的地方在於, 我查了很多資料<br>在 Puma 和 Heroku 官網說 Puma 是一種 Web Server<br>在其他部落格或是 StackOverflow 中, 都會把 Puma 說是一種 Application Server<br>不過就以我理解來說, 把 Puma 的定位想成 Application Server 會比較妥當<br>在跟別人的討論過程中, 也有人提出因為 Application Server 也是 Web Server 的一種<br>所以我在猜這應該是為啥 Puma 官網歸類在 Web Server 的原因  </p>
-<p>那這裡定義的 Web Server 又是什麼呢?<br>處理靜態檔案, 例如 Nginx / Apache 就非常適合這種應用, 它們也就屬於 Web Server 的範疇<br>除此之外, Nginx / Apache 也很適合處理大量 Request<br>並且可以當作 Reverse Proxy 把 Request bypass 到 Application Server<br>也就是我們俗稱的 Load Balancer  </p>
-<p>綜合以上會出現其中一種架構<br>Nginx (Web Server) -&gt; Puma (Appliaction Server) -&gt; Rack -&gt; Rails Appliaction  </p>
+<p>所以到目前為止整體架構如下</p>
+<p>Ruby - 程式語言<br>
+MRI - 實作 Ruby 底層運行的一種機制<br>
+Rails - Web Framework<br>
+Rack - 中間件, 統一接口讓所有 Application Server 都能透過統一的 Interface 去跟程式溝通溝通<br>
+Puma - Appliction Server</p>
+<p>但有趣的地方在於, 我查了很多資料<br>
+在 Puma 和 Heroku 官網說 Puma 是一種 Web Server<br>
+在其他部落格或是 StackOverflow 中, 都會把 Puma 說是一種 Application Server<br>
+不過就以我理解來說, 把 Puma 的定位想成 Application Server 會比較妥當<br>
+在跟別人的討論過程中, 也有人提出因為 Application Server 也是 Web Server 的一種<br>
+所以我在猜這應該是為啥 Puma 官網歸類在 Web Server 的原因</p>
+<p>那這裡定義的 Web Server 又是什麼呢?<br>
+處理靜態檔案, 例如 Nginx / Apache 就非常適合這種應用, 它們也就屬於 Web Server 的範疇<br>
+除此之外, Nginx / Apache 也很適合處理大量 Request<br>
+並且可以當作 Reverse Proxy 把 Request bypass 到 Application Server<br>
+也就是我們俗稱的 Load Balancer</p>
+<p>綜合以上會出現其中一種架構<br>
+Nginx (Web Server) -&gt; Puma (Appliaction Server) -&gt; Rack -&gt; Rails Appliaction</p>
 <p>可以參考以下文章</p>
 <ol>
 <li><a href="https://www.justinweiss.com/articles/a-web-server-vs-an-app-server/">A Web Server vs. an App Server</a></li>
@@ -235,28 +291,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><a href="https://www.rubyguides.com/2018/09/rack-middleware/">Rack Explained For Ruby Developers</a></li>
 <li><a href="https://medium.com/ruby-on-rails-web-application-development/custom-400-500-error-pages-in-ruby-on-rails-exception-handler-3a04975e4677">Custom (400 / 500) Error Pages in Ruby on Rails -&gt; Exception Handler (文章中間有提到 Rails 架構)</a></li>
 </ol>
-<h2><span id="rails-機制">Rails 機制</span></h2><p>接著我們會說明 Rails 和 Puma 有哪些比較特別的機制</p>
+<h2><span id="rails-機制">Rails 機制</span></h2>
+<p>接著我們會說明 Rails 和 Puma 有哪些比較特別的機制</p>
 <blockquote>
-<p>這裡目前還是以 Rails 和 Puma 官網的資料做整理<br>若有我沒提到的部分, 非常歡迎留言, 我會再重新整理出新的內容<br>不然目前只會以個人學習到的部分去做紀錄</p>
+<p>這裡目前還是以 Rails 和 Puma 官網的資料做整理<br>
+若有我沒提到的部分, 非常歡迎留言, 我會再重新整理出新的內容<br>
+不然目前只會以個人學習到的部分去做紀錄</p>
 </blockquote>
-<p>Rails 針對每一個請求都會重新去 new 出一個 instance<br>也就是你宣告在 Controller 裡的 instance 變數, 是只給當下的請求使用<br>下一個請求拿到的資料就會是原本預設設定好的, 而不會跟前一個請求有相依性  </p>
+<p>Rails 針對每一個請求都會重新去 new 出一個 instance<br>
+也就是你宣告在 Controller 裡的 instance 變數, 是只給當下的請求使用<br>
+下一個請求拿到的資料就會是原本預設設定好的, 而不會跟前一個請求有相依性</p>
 <p>接著來說說 Puma 作為 Application Server 做了哪些事情</p>
 <blockquote>
-<p>Puma serves the request using a thread pool.<br>Each request is served in a separate thread,<br>so truly concurrent Ruby implementations (JRuby, Rubinius) will use all available CPU cores.<br>Originally designed as a server for Rubinius, Puma also works well with Ruby (MRI) and JRuby.</p>
+<p>Puma serves the request using a thread pool.<br>
+Each request is served in a separate thread,<br>
+so truly concurrent Ruby implementations (JRuby, Rubinius) will use all available CPU cores.
+Originally designed as a server for Rubinius, Puma also works well with Ruby (MRI) and JRuby.</p>
 </blockquote>
-<p>依照官網說明, Puma 原本是被設計給 Rubinius 去使用的<br>而這裡的 Rubinius 也就是我們提到, 透過不同的實作機制可以讓 Ruby 變成一個可以真正執行 multi-threads 的機制<br>透過 Puma &amp; Rubinius 組合, 就可以完全處理運用所有 CPU 資源  </p>
-<p>至於 Ruby (MRI) 的話, 只要是處理關於 blocking I/O (例如 Network 相關的)<br>Puma 則是會盡可能讓他們以平行化的方式完成  </p>
-<p>不過這邊我們來看看一個高 CPU 運算的 rails 案例 (Puma min &amp; max thread: 5)<br>我定義一個 function, 並在 rails controller 去呼叫, <code>fib(37)</code> 大約花費 2 秒內</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span></span></span><br><span class="line">    <span class="keyword">return</span> n <span class="keyword">if</span> n &lt; <span class="number">2</span></span><br><span class="line">    fib(n-<span class="number">2</span>) + fib(n-<span class="number">1</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>當我透過 Ruby (MRI) 去執行的時候, 同時開兩個網頁呼叫 URL<br>得到的結果是, 兩個頁面都花了將近 4 秒以後才回傳回來<br>其實這就是 GIL Context Switching 而造成的影響<br>這裡也符合一開始我們 example code 的結果  </p>
-<p>但如果 Puma 的 min &amp; max thread 改成 1 的話<br>第一個 request 會是 2 秒<br>第二個 request 會是 4 秒<br>因為 Puma 最多同時只能處理一個請求, 另一個請求就只好等前一個處理完畢  </p>
-<p>如果要更詳細說明 Puma 機制的話<br>每當有一個 TCP 請求近來, Puma 每一個 Worker 會有一條專門接收請求的 Thread<br>這個 Thread 是單條且獨立於 Puma 中的 Thread Pool, 這裡把它稱之 Receive Thread  </p>
-<p>每當 Receive Thread 讀取完請求後, 會把請求放入到一個 todo list 之中<br>接著當 Thread Pool 裡面有 free/waiting Thread 就會撿去處理  </p>
-<p>上面的流程是在 <code>queue_requests: true</code> 這個情況 (預設行為)<br>若是為 false, 就會變成請求一進來直接被放入到 todo, 接著由 Thread Pool 去讀取請求  </p>
+<p>依照官網說明, Puma 原本是被設計給 Rubinius 去使用的<br>
+而這裡的 Rubinius 也就是我們提到, 透過不同的實作機制可以讓 Ruby 變成一個可以真正執行 multi-threads 的機制<br>
+透過 Puma &amp; Rubinius 組合, 就可以完全處理運用所有 CPU 資源</p>
+<p>至於 Ruby (MRI) 的話, 只要是處理關於 blocking I/O (例如 Network 相關的)<br>
+Puma 則是會盡可能讓他們以平行化的方式完成</p>
+<p>不過這邊我們來看看一個高 CPU 運算的 rails 案例 (Puma min &amp; max thread: 5)<br>
+我定義一個 function, 並在 rails controller 去呼叫, <code>fib(37)</code> 大約花費 2 秒內</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span></span></span><br><span class="line">    <span class="keyword">return</span> n <span class="keyword">if</span> n &lt; <span class="number">2</span></span><br><span class="line">    fib(n-<span class="number">2</span>) + fib(n-<span class="number">1</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>當我透過 Ruby (MRI) 去執行的時候, 同時開兩個網頁呼叫 URL<br>
+得到的結果是, 兩個頁面都花了將近 4 秒以後才回傳回來<br>
+其實這就是 GIL Context Switching 而造成的影響<br>
+這裡也符合一開始我們 example code 的結果</p>
+<p>但如果 Puma 的 min &amp; max thread 改成 1 的話<br>
+第一個 request 會是 2 秒<br>
+第二個 request 會是 4 秒<br>
+因為 Puma 最多同時只能處理一個請求, 另一個請求就只好等前一個處理完畢</p>
+<p>如果要更詳細說明 Puma 機制的話<br>
+每當有一個 TCP 請求近來, Puma 每一個 Worker 會有一條專門接收請求的 Thread<br>
+這個 Thread 是單條且獨立於 Puma 中的 Thread Pool, 這裡把它稱之 Receive Thread</p>
+<p>每當 Receive Thread 讀取完請求後, 會把請求放入到一個 todo list 之中<br>
+接著當 Thread Pool 裡面有 free/waiting Thread 就會撿去處理</p>
+<p>上面的流程是在 <code>queue_requests: true</code> 這個情況 (預設行為)<br>
+若是為 false, 就會變成請求一進來直接被放入到 todo, 接著由 Thread Pool 去讀取請求</p>
 <blockquote>
-<p>更詳細的說明可以直接看 <a href="https://github.com/Puma/Puma/blob/master/docs/architecture.md">Puma Architecture</a>  </p>
+<p>更詳細的說明可以直接看 <a href="https://github.com/Puma/Puma/blob/master/docs/architecture.md">Puma Architecture</a></p>
 </blockquote>
-<h2><span id="後記">後記</span></h2><p>這篇說的東西有點多也有點雜, 有些東西也是輕描淡寫的帶過<br>之後看到更深入之後, 應該會根據不同部分去做深入介紹</p>
+<h2><span id="後記">後記</span></h2>
+<p>這篇說的東西有點多也有點雜, 有些東西也是輕描淡寫的帶過<br>
+之後看到更深入之後, 應該會根據不同部分去做深入介紹</p>
 
             </div>
         
@@ -303,9 +383,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
-    <div class="card-content" style="display: flex; justify-content: center;">
-        <iframe src="https://button.like.co/in/embed/jk82421/button" frameborder="0"></iframe>
+    <div class="card-content" style="display: flex; justify-content: center;" id="liker">
     </div>
+    <script>
+        var iframe = document.createElement("iframe")
+        iframe.src = "https://button.like.co/in/embed/jk82421/button?referrer=" + encodeURIComponent(location.href)
+        document.getElementById("liker").appendChild(iframe)
+    </script>
     <div class="card-content">
         <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
         

