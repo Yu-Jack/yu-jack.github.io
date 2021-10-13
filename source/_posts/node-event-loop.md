@@ -9,16 +9,16 @@ catalog: true
 
 ## Event Loop
 
-關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本
-透過以下兩篇可以更加清楚了解兩者之間的差異
+關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本  
+透過以下兩篇可以更加清楚了解兩者之間的差異  
 
-[Event Loop 運行機制解析 - 瀏覽器篇](/2020/02/03/javascript-runtime-event-loop-browser/)
-Event Loop 運行機制解析 - Node.js 篇 (本篇)
+[Event Loop 運行機制解析 - 瀏覽器篇](/2020/02/03/javascript-runtime-event-loop-browser/)  
+Event Loop 運行機制解析 - Node.js 篇 (本篇)  
 
 ## 前言
 
-去年說好要寫的 Event Loop - Node.js 篇終於完成了
-話不多說, 直接來看一個範例, 這個範例在 瀏覽器 和 Node.js 上執行上會不會一樣?
+去年說好要寫的 Event Loop - Node.js 篇終於完成了  
+話不多說, 直接來看一個範例, 這個範例在 瀏覽器 和 Node.js 上執行上會不會一樣?  
 
 ```javascript
 setTimeout(()=>{
