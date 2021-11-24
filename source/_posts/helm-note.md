@@ -12,7 +12,7 @@ catalog: true
 helm 是一個 k8s 設定檔管理的一種工具，這邊是紀錄一些比較特別的用法，避免以後忘記。
  
 
-## 流程
+## 架構
 
 heml 的架構大概如下  
 
@@ -98,6 +98,20 @@ othervalue: {{ .Values.othervalue }}
 somename: {{ include "test.name" . }}
 ```
 
+## dry-run
+
+另外寫完可以直接在 local 用 dry-run 的方式確認是否設定正確 (在 Chart.yaml 同個目錄下)
+`helm template {name} . --dry-run --debug`  
+
+也可以指定特定 values  
+`helm template {name} . --dry-run --debug -f values/staging.yaml`  
+
 ## 後記
 
 以上簡單記錄使用方式，有遇到更特別再陸續補上。
+
+## 參考
+
+1. https://helm.sh/docs/chart_template_guide/debugging/
+2. https://helm.sh/docs/chart_template_guide/control_structures/#looping-with-the-range-action
+3. https://helm.sh/docs/chart_template_guide/variables/
