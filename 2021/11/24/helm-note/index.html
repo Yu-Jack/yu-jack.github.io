@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>helm 語法筆記 - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言helm 是一個 k8s 設定檔管理的一種工具，這邊是紀錄一些比較特別的用法，避免以後忘記。 流程heml 的架構大概如下   12345|--Chart.yaml|--values.yaml|--templates|----_helpers.tpl|----deployment.yaml 基本取值基本上 templates &gt; deployment.yaml 就是 outline，實際">
+<meta property="og:type" content="article">
+<meta property="og:title" content="helm 語法筆記">
+<meta property="og:url" content="https://yu-jack.github.io/2021/11/24/helm-note/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言helm 是一個 k8s 設定檔管理的一種工具，這邊是紀錄一些比較特別的用法，避免以後忘記。 流程heml 的架構大概如下   12345|--Chart.yaml|--values.yaml|--templates|----_helpers.tpl|----deployment.yaml 基本取值基本上 templates &gt; deployment.yaml 就是 outline，實際">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2021-11-24T14:46:39.000Z">
+<meta property="article:modified_time" content="2021-11-24T16:18:02.764Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="CI&#x2F;CD">
+<meta property="article:tag" content="helm">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+    <style>
+        .content img {
+            display: block;   
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="helm 語法筆記" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2021-11-24T14:46:39.000Z">2021-11-24</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/DevOps/">DevOps</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分鐘 閱讀文 (大約 404 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                helm 語法筆記
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>helm 是一個 k8s 設定檔管理的一種工具，這邊是紀錄一些比較特別的用法，避免以後忘記。</p>
+<h2><span id="流程">流程</span></h2><p>heml 的架構大概如下  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|--Chart.yaml</span><br><span class="line">|--values.yaml</span><br><span class="line">|--templates</span><br><span class="line">|----_helpers.tpl</span><br><span class="line">|----deployment.yaml</span><br></pre></td></tr></table></figure>
+<h3><span id="基本取值">基本取值</span></h3><p>基本上 templates &gt; deployment.yaml 就是 outline，實際的值都會放在 values.yaml 裡面，而在 template 簡單使用的方式大概有以下兩種。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># deployment.yaml</span></span><br><span class="line"><span class="attr">xxx:</span> <span class="string">&#123;&#123;</span> <span class="string">.Values.xxxx</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">&#123;&#123;</span> <span class="string">.Chart.name</span> <span class="string">&#125;&#125;</span> <span class="comment"># 會拿 Chart.yaml 裡的東西</span></span><br></pre></td></tr></table></figure>
+<p>對應到 values.yaml 和 Chart.yaml 格式是這樣</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># values.yaml</span></span><br><span class="line"><span class="attr">xxx:</span> <span class="number">1</span></span><br><span class="line"><span class="comment"># Chart.yaml</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">helm-test</span></span><br></pre></td></tr></table></figure>
+<p>而在 deployment.yaml 裡面也可以拿 <code>_helpers.tpl</code> 裡面的東西，最簡單的就是透過 <code>include &quot;test.name&quot; .</code> 去拿。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># deployment.yaml</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">&#123;&#123;</span> <span class="string">include</span> <span class="string">"test.name"</span> <span class="string">.</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>而在 <code>_helpers.tpl</code> 裡面是這樣宣告的</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">define</span> <span class="string">"test.name"</span> <span class="string">-&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">default</span> <span class="string">.Chart.Name</span> <span class="string">.Values.nameOverride</span> <span class="string">|</span> <span class="string">trunc</span> <span class="number">63</span> <span class="string">|</span> <span class="string">trimSuffix</span> <span class="string">"-"</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">end</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<h3><span id="不同-scope">不同 scope</span></h3><p>但因為有 array 的關係，所以在 helm 可以這樣用</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">range</span> <span class="string">.Values.list</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">&#123;&#123;</span> <span class="string">.name</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">end&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>對應到 values.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">othervalue:</span> <span class="string">cool</span></span><br><span class="line"><span class="attr">list:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">name</span></span><br></pre></td></tr></table></figure>
+<p>但如果想在這個 range scope 裡面使用 <code>.Values.othervalue</code> 是沒辦法的，因為 scope 關係，所以必須改用 <code>$</code> 這個全域變數取得最上層的 scope，變成 <code>$.Values.othervalue</code> 就可以在 range scope 裡面使用</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">range</span> <span class="string">.Values.list</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">&#123;&#123;</span> <span class="string">.name</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">othervalue:</span> <span class="string">&#123;&#123;</span> <span class="string">$.Values.othervalue</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">end&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>而對應到 <code>_helpers.tpl</code> 的話，一樣會有 scope 問題，所以必須把 <code>.</code> 改成 <code>$</code> 才可以正常取值。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">range</span> <span class="string">.Values.list</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">&#123;&#123;</span> <span class="string">.name</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">othervalue:</span> <span class="string">&#123;&#123;</span> <span class="string">$.Values.othervalue</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">somename:</span> <span class="string">&#123;&#123;</span> <span class="string">include</span> <span class="string">"test.name"</span> <span class="string">$</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;&#123;-</span> <span class="string">end&#125;&#125;</span></span><br><span class="line"><span class="comment"># 對比在外層的使用方式</span></span><br><span class="line"><span class="attr">othervalue:</span> <span class="string">&#123;&#123;</span> <span class="string">.Values.othervalue</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">somename:</span> <span class="string">&#123;&#123;</span> <span class="string">include</span> <span class="string">"test.name"</span> <span class="string">.</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<h2><span id="後記">後記</span></h2><p>以上簡單記錄使用方式，有遇到更特別再陸續補上。</p>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/CI-CD/" rel="tag">CI/CD</a>, <a class="has-link-grey -link" href="/tags/helm/" rel="tag">helm</a>, <a class="has-link-grey -link" href="/tags/k8s/" rel="tag">k8s</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2021/11/23/upstream/">
+                <span class="level-item">上游思維</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" style="display: flex; justify-content: center;" id="liker">
+    </div>
+    <script>
+        var iframe = document.createElement("iframe")
+        iframe.src = "https://button.like.co/in/embed/jk82421/button?referrer=" + encodeURIComponent(location.href)
+        document.getElementById("liker").appendChild(iframe)
+    </script>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2021/11/24/helm-note/';
+        this.page.identifier = '2021/11/24/helm-note/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <style>
+        .custom-flex-container {
+            display: flex; 
+            justify-content: center; 
+            margin-top: 30px;
+        }
+    </style>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content" style="max-height: 85vh; overflow-y: auto;">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#流程">
+        <span class="has-mr-6">2</span>
+        <span>流程</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#基本取值">
+        <span class="has-mr-6">2.1</span>
+        <span>基本取值</span>
+        </a></li><li>
+        <a class="is-flex" href="#不同-scope">
+        <span class="has-mr-6">2.2</span>
+        <span>不同 scope</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">3</span>
+        <span>後記</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2021 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
