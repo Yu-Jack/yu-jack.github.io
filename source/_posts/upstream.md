@@ -1,7 +1,7 @@
 ---
 title: 上游思維
 categories: 讀書心得
-date: 2021-11-23 23:16:24
+date: 2021-11-25 08:16:24
 tags: [讀書心得]
 header-img: /images/banner.jpg
 catalog: true
