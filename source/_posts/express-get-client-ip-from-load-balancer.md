@@ -7,6 +7,8 @@ header-img: /images/banner.jpg
 catalog: true
 ---
 
+<span style="color: green">[Update 2021-12-06]</span> 新增[推薦拿法](#推薦拿法)
+
 ## 前言
 
 我們有時候要取得使用者 IP  
@@ -75,6 +77,25 @@ catalog: true
 應該要根據你前面放了多少個 Load Balancer 去決定要拿***從後面數過來的第幾個***才是正確的  
 
 ![](/images/aws/aws-get-ip-04.png)
+
+## 推薦拿法
+
+但實際上，真的非常難要你一個一個 IP 去數，所以像在 express 中有提供 `trust proxy` 的一個變數  
+可以透過設定這個變數，去幫你把 `x-forwarded-for` 裡面的 IP 去做白名單過濾  
+
+舉例來說，現在前面有一層 Load Balancer，並只有設定 `app.set('trust proxy', true)`  
+以及 `x-forwarded-for: 3.3.3.3, 1.1.1.1, 2.2.2., 2.2.2.2`，此時 `req.ip` 會拿到 `3.3.3.3`  
+在[ express 官網](https://expressjs.com/zh-tw/guide/behind-proxies.html)也有提到只有這樣設定會取得最左邊的 `x-forwarded-for`  
+
+但我實際的 IP 想要取得的是 `1.1.1.1`，而 `2.2.2.x` 是我的 proxy，則可以這樣設定  
+```js
+app.set('trust proxy', true)
+app.set('trust proxy', ['loopback', '2.2.2.0/24'])
+```
+
+代表『信任的 proxy』有 `127.0.0.1` 以及 `2.2.2.0/24`  
+接著取得 IP 的順序就會從右到左，如果有在白名單裡面，則跳過不看，最後取得 `req.ip` 就會是 `1.1.1.1`  
+這樣就不用一個一個數了！其他像是 Rails 也有類似的設定，所以每個語言應該都有對應的東西  
 
 ## References
 
