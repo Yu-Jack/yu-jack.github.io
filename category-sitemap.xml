@@ -63,13 +63,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Security/</loc>
-        <lastmod>2020-11-29T06:04:24.395Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Payment-Gateway/</loc>
         <lastmod>2020-12-13T02:02:12.547Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -112,13 +105,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
-        <lastmod>2021-10-13T14:34:39.176Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
         <lastmod>2021-10-13T14:35:27.096Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -135,6 +121,20 @@
     <url>
         <loc>https://yu-jack.github.io/categories/%25E8%25AE%2580%25E6%259B%25B8%25E5%25BF%2583%25E5%25BE%2597/</loc>
         <lastmod>2021-12-01T15:11:20.505Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/JavaScript/</loc>
+        <lastmod>2021-12-06T13:33:15.444Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Security/</loc>
+        <lastmod>2021-12-06T13:36:32.060Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

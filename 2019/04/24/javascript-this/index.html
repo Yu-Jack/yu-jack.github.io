@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼">
+    <meta name="description" content="前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript this 是什麼? 如何運作的呢?">
 <meta property="og:url" content="https://yu-jack.github.io/2019/04/24/javascript-this/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼">
+<meta property="og:description" content="前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-04-24T15:09:32.000Z">
-<meta property="article:modified_time" content="2020-01-29T08:25:29.000Z">
+<meta property="article:modified_time" content="2021-12-06T13:33:15.444Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="JavaScript">
 <meta property="article:tag" content="this">
@@ -174,9 +174,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>相信寫過 js 的人對於 this 都有一定的認識<br>但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純<br>所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事<br>以及最後面教學如何一步一步判定 this 會是指向什麼</p>
+                <h2><span id="前言">前言</span></h2><p>相信寫過 js 的人對於 this 都有一定的認識<br>但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純<br>所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事<br>以及最後面教學如何一步一步判定 this 會是指向什麼</p>
 <a id="more"></a>
-<h2><span id="this-是什麼">this 是什麼 ？</span></h2><p>this 單純看英文解釋的話，是代表『自身』<br>聽起來好像有這麼一回事，但實際上使用起來根本不是這樣<br>實際上 js 中 this 代表的是執行時的對象，並不代表自身<br>簡單來就說就是找<em>函數被調用的位置</em>  </p>
+<h2><span id="this-是什麼">this 是什麼 ？</span></h2><p>this 單純看英文解釋的話，是代表『自身』<br>聽起來好像有這麼一回事，但實際上使用起來根本不是這樣<br>實際上 js 中 this 代表的是執行時的對象，並不代表自身<br>簡單來就說就是找<em>函數被調用的位置</em>  </p>
 <p>讓我們看看以下的範例</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">`foo: <span class="subst">$&#123;num&#125;</span>`</span>)</span><br><span class="line">    <span class="keyword">this</span>.count++;</span><br><span class="line">&#125;</span><br><span class="line">foo.count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">7</span>) &#123;</span><br><span class="line">        foo(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// foo: 8</span></span><br><span class="line"><span class="comment">// foo: 9</span></span><br><span class="line"><span class="comment">// foo 被調用多少次</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.count) <span class="comment">// 0 --- ??? 為什麼是 0 ??</span></span><br></pre></td></tr></table></figure>
 <p>雖然 console.log 真的有跑出來 foo 的兩個輸出<br>但 foo.count 卻還是 0<br>這其中的原因是，真正執行 foo 調用的位置的地方是<em>全域(瀏覽器中為 window 物件)</em><br>注意到這點回去可以執行這行 <code>window.count</code> 會發現為 NaN，卻不是 undefined  </p>
@@ -322,7 +322,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </a></li><li>
         <a class="is-flex" href="#this-是什麼">
         <span class="has-mr-6">2</span>
-        <span>this 是什麼 ？</span>
+        <span>this 是什麼 ？</span>
         </a></li><li>
         <a class="is-flex" href="#this-綁定規則">
         <span class="has-mr-6">3</span>
