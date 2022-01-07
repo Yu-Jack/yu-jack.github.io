@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-04-18T12:29:49.000Z">
-<meta property="article:modified_time" content="2021-04-24T13:50:18.783Z">
+<meta property="article:modified_time" content="2022-01-07T15:03:29.902Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -154,7 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    8 分鐘 閱讀文 (大約 1238 個字)
+                    8 分鐘 閱讀文 (大約 1239 個字)
                 </span>
                 
                 
@@ -179,7 +179,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2><span id="正文">正文</span></h2><p>在說 Receiver 之前, 我們得先談談 struct 這個東西<br>先說 go 並沒有 class 的概念存在, 反而是存在 struct<br>寫過 C 的人應該會了解 struct, 簡單來說就是定義資料的結構<br>像我定義一個資料結構是叫做 User 裡面有一個參數叫做 Name</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>接著透過以下方法去使用 struct, 就會看到 jack 被印出來  </p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line">user := User &#123;</span><br><span class="line">    Name: <span class="string">"jack"</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	user := User&#123;</span><br><span class="line">		Name: <span class="string">"jack"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(user)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	user := User&#123;</span><br><span class="line">		Name: <span class="string">"jack"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(user)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>那如果我想透過 function 去更改我的名字呢?<br>透過以下 function 就可以實現  </p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeName</span><span class="params">(user *User)</span></span> &#123;</span><br><span class="line">	user.Name = <span class="string">"hi"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	user := User&#123;</span><br><span class="line">		Name: <span class="string">"jack"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	changeName(&amp;user)</span><br><span class="line">	fmt.Println(user)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>看到上面的 <code>*</code> <code>&amp;</code> 時, 要注意到 go 語言有指標的概念存在<br>指標這東西講起來也複雜, 我直接實際帶例子看看差別<br>你會發現下面的例子, 我移除掉 <code>*</code> <code>&amp;</code> 這兩個符號後, 依舊印出來是 jack<br>結果跟上面例子不一樣, 這就是指標的特性<br>當你呼叫 function 用指標當作參數的話, 當裡面更改參數時, 是會連同修改到外面傳進來的參數<br>套在 js 概念時, 其中一個例子就是當 js function 中對傳進來的『物件中參數做更動，而不是重新賦值』時<br>也會連同修改到外面傳進來的參數, 簡單來說, 就是改到同一塊記憶體位置  </p>
@@ -365,7 +365,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="level">
             <div class="level-start has-text-centered-mobile">
                 <p class="is-size-7">
-                &copy; 2021 Jack Yu&nbsp;
+                &copy; 2022 Jack Yu&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 
