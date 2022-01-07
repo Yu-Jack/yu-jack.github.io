@@ -157,7 +157,7 @@ Value Type 則是複製一份, 所以在使用的時候不會改到傳進來的�
 func (user *User) changeName() {
 	user.Name = "hi"
 }
-func (school *School) changeName() {
+func (school School) changeName() {
 	school.Name = "hi"
 }
 ```
