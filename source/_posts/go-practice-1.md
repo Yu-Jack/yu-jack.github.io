@@ -39,8 +39,8 @@ type User struct {
 ```go
 package main
 import "fmt"
-user := User {
-    Name: "jack",
+type User struct {
+    Name string
 }
 func main() {
 	user := User{
