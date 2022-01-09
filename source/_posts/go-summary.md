@@ -990,3 +990,7 @@ func main() {
 ```
 
 所以在使用 select 要小心監聽的 channel 的情況，若有加上 default 的條件，對於 channel 會不會 block 就需要更加理解，否則可能全部都走到 default 去了，另外如果當 select 中存在兩者一樣的 case 則是會隨機挑一條去執行，這個網路上查基本上都會有，這邊就不附範例程式碼。
+
+## References
+
+主要是從個人 [Github Issuse](https://github.com/Yu-Jack/yu-jack.github.io/issues/9) 整理過來的一些資料
