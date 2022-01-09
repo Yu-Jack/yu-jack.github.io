@@ -9,6 +9,8 @@ catalog: true
 
 ## 前言
 
+最近一兩個月開始寫比較多 Go 的專案，所以就把在寫 Go 時覺得應該要先知道的資訊記錄下來，這篇目前不會紀錄跟測試相關的，測試會再額外拉出來介紹。
+
 strcut 和 receiver 的內容在之前的[學習 Golang 的心得 - Receiver](/2021/04/18/go-practice-1/) 就已經有提到過，這邊會快速帶過。整篇內容不會講太多細節，主要是可以清楚了解 Go 有哪些比較特別的用法，有些主題的原理我會再額外開文章去轉寫詳細內容。
 
 ## struct 
@@ -309,7 +311,7 @@ func main() {
 
 ## init
 
-通常在寫 class 的語言時，會習慣有 construct 的東西存在，當在 new 一個東西時去執行一些動作。雖然 Go 沒有 class，但有類似的東西可以使用，也就是透過 `init`，會發現以下程式不用實際去呼叫 `init` 這個 function 也能被執行到。
+通常在寫 class 的語言時，會習慣有 construct 的東西存在，當在 new 一個東西時去執行一些動作。只是 Go 沒有 class，且用 package 的概念，但還是相對類似的東西可以使用，也就是 `init`，會發現以下程式不用實際去呼叫 `init` 這個 function 也能被執行到。
 
 ```go
 package main
@@ -573,7 +575,9 @@ func main() {
 * unbuffered channel
     當執行讀寫其中一個動作，會 block 當前 goroutine，若同時沒有其他 goroutine 則會陷入 deadlock
 * buffered chhannel
-    當 channel 沒滿的時候，是可以在同一個 goroutine 中讀寫多次，若寫到滿時，則會 block 當前 goroutine，若同時沒有其他 goroutine 則會陷入 deadlock。但 channel 是空的時候，執行讀取也會 block 當前 goroutine，若同時沒有其他 goroutine 也會陷入 deadlock。
+    當 channel 沒滿的時候，是可以在同一個 goroutine 中讀寫多次
+    若 channel 是滿的時後，則會 block 當前 goroutine，若同時沒有其他 goroutine 則會陷入 deadlock。
+    若 channel 是空的時候，執行讀取也會 block 當前 goroutine，若同時沒有其他 goroutine 也會陷入 deadlock。
 
 ## sync flow
 
@@ -993,4 +997,4 @@ func main() {
 
 ## References
 
-主要是從個人 [Github Issuse](https://github.com/Yu-Jack/yu-jack.github.io/issues/9) 整理過來的一些資料
+主要是從個人邊學邊紀錄在 [Github Issuse](https://github.com/Yu-Jack/yu-jack.github.io/issues/9) 這邊整理過來的一些資料
