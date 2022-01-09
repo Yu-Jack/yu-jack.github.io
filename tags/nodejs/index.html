@@ -171,11 +171,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言因工作上需要幫忙協助建立一個 DNS Server 去測試以下一個情境當發 request 的時候解析 Domain 成 IP 這一段如果 timeout 或是時間太久的話, 相關發 request 的套件會如何處理 exception  
-安裝教學在安裝之前, 請先確認是否已經有安裝 Node.js, 有的話可以繼續往下看  
+                前言
+因工作上需要幫忙協助建立一個 DNS Server 去測試以下一個情境
+當發 request 的時候解析 Domain 成 IP 這一段
+如果 timeout 或是時間太久的話, 相關發 request 的套件會如何處理 exception
+安裝教學
+在安裝之前, 請先確認是否已經有安裝 Node.js, 有的話可以繼續往下看
 
-mkdir nodejs-dns-server  
-cd...
+mkdir nodejs-dns-server
+cd n...
             </div>
         
         
@@ -231,8 +235,12 @@ cd...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言上次提到了, 關於在 http module 裡面的 close function當呼叫 server.close(() =&gt; {console.log(&quot;server is closed&quot;)})express 會等到請求處理完事件後才會關閉  
-但那次我們單純只提到了伺服器的部分那麼當我的伺服器跟資料庫連動的時候, 也是一樣的狀況嗎?  
+                前言
+上次提到了, 關於在 http module 裡面的 close function
+當呼叫 server.close(() =&gt; {console.log(&quot;server is closed&quot;)})
+express 會等到請求處理完事件後才會關閉
+但那次我們單純只提到了伺服器的部分
+那麼當我的伺服器跟資料庫連動的時候, 也是一樣的狀況嗎?
 這篇將會 demo ...
             </div>
         
@@ -289,9 +297,13 @@ cd...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言在上一篇有討論到如何去寫 async/await 的 try-catch 比較好那這篇會注重在另一種在最外層不需要 try-catch 的寫法上  
-那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)最後面會去比較這兩種寫法的優劣
-寫法一先來複習之前提到過的寫法  
+                前言
+在上一篇有討論到如何去寫 async/await 的 try-catch 比較好
+那這篇會注重在另一種在最外層不需要 try-catch 的寫法上
+那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)
+最後面會去比較這兩種寫法的優劣
+寫法一
+先來複習之前提到過的寫法
 1234567891011121314151617181920212223242526...
             </div>
         
@@ -348,8 +360,15 @@ cd...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言工作久了，一定都會面臨到一個問題就是 Zero Downtime 更新 (零停機更新)簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』這邊就紀錄如何去實現這需求  
-相信寫過 node.js 的人會知道在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線那究竟要如何達到 zero downtime 更新呢?我們來看看以下的 Cases，左邊是模擬伺服器...
+                前言
+工作久了，一定都會面臨到一個問題
+就是 Zero Downtime 更新 (零停機更新)
+簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』
+這邊就紀錄如何去實現這需求
+相信寫過 node.js 的人會知道
+在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線
+那究竟要如何達到 zero downtime 更新呢?
+我們來看看以下的 Cases，左邊是...
             </div>
         
         
@@ -405,10 +424,13 @@ cd...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下要如何達到使用 session 的方法
+                這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下
+要如何達到使用 session 的方法
 知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到重點筆記
-
-前言以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人但當我們在前後端完全分離的...
+&lt;!-- more --&gt;
+前言
+以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面
+而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別...
             </div>
         
         
@@ -464,9 +486,14 @@ cd...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                上一篇主要是介紹如何使用這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  
-
-callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情那就是 callback 第一個參數都會是 error雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的假設當 callback 參數回傳越來越多的時候，...
+                上一篇主要是介紹如何使用
+這篇會介紹該如何去在每一種使用方式之中去做 Error Handling
+&lt;!-- more --&gt;
+callback
+相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情
+那就是 callback 第一個參數都會是 error
+雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的
+假設當...
             </div>
         
         
@@ -522,8 +549,9 @@ callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Li
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                [Update 2019-05-02] 關於 Error Handing 可以看下一篇文章
-這篇主要紀錄 callback, promise, async/await 的使用方式以及如何從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, ev...
+                &lt;span style=&quot;color: green&quot;&gt;[Update 2019-05-02]&lt;/span&gt; 關於 Error Handing 可以看下一篇文章
+這篇主要紀錄 callback, promise, async/await 的使用方式
+以及如何從到 callback 和 promise 的 hell world 進入到 async/aw...
             </div>
         
         
@@ -579,9 +607,14 @@ callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Li
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
-
-介紹在 express 裡面有一個 function 叫做 express.static()這個是一個 middleware，最常被用在要讀取一些靜態檔案上面以這個寫法來說...
+                前言
+最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
+加上小弟常用 nodejs + express 去寫前後端
+於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
+&lt;!-- more --&gt;
+介紹
+在 express 裡面有一個 function 叫做 express.static()
+這個是一個 middleware...
             </div>
         
         
@@ -637,10 +670,13 @@ callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Li
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                稍微紀錄一下在 nodejs 裡面 module.exports 和 require以及在 ECMA6 的 export 和 import 的使用方式
-
-nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
-123456789101112131415161...
+                稍微紀錄一下在 nodejs 裡面 module.exports 和 require
+以及在 ECMA6 的 export 和 import 的使用方式
+&lt;!--more--&gt;
+nodejs
+首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function
+然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
+1234...
             </div>
         
         
@@ -698,10 +734,12 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP
 
-申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習
+申請完之後，可以看到 Features 那邊有很多不同的功能
+這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習
+&lt;!--more--&gt;
 
-
-在開始正式介紹之前，我們可以思考一個情境身為工程師，就是會想要降低人工干涉的事情，大量自動化那今天，我想要自動部署...
+在開始正式介紹之前，我們可以思考一個情境
+身為工程師，就是會想要降低人工干涉的...
             </div>
         
         
