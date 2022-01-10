@@ -352,7 +352,7 @@ func main() {
 
 ## buffered / unbuffered channel
 
-channel 主要是被設計在不同 goroutine 之間溝通的一種方式，並不是採用以往認知的共享記憶體，然後還要設計去限制一次只能有一個 thread 去對共享記憶體中的資料做讀寫，這種複雜的方式，在 Go 裡面不同 goroutine 的溝通是更加簡單的。
+channel 主要是被設計在不同 goroutine 之間溝通的一種方式，並不是採用以往認知的共享記憶體，然後還要設計去限制一次只能有一個 thread 去對共享記憶體中的資料做讀寫這種複雜的方式，在 Go 裡面不同 goroutine 的溝通是更加簡單的。
 
 先來對名詞簡單定義一下，後面會有更完整的總結說明。
 
