@@ -356,8 +356,8 @@ channel 主要是被設計在不同 goroutine 之間溝通的一種方式，並�
 
 先來對名詞簡單定義一下，後面會有更完整的總結說明。
 
-* unbuffered channel: 無法指定大小，讀寫操作必須是一對的
-* buffered channel: 可以指定這個 channel 塞多少大小的資料
+* unbuffered channel: 無法指定 channel 大小
+* buffered channel: 可以指定 channel 大小
 
 再來對語法簡單說明一下
 
