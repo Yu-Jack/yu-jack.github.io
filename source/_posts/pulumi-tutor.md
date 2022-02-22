@@ -136,7 +136,7 @@ route53.NewZone(ctx, "myjackzone", &route53.ZoneArgs{
 
 另外 Stack file 儲存的位置會根據你設定的 `backend url` 而有所不一樣，舉例來說可以用 pulumi service 或是 aws s3 去管理這個 stack file，所以在一開始建議先想好要用什麼 Backend 去管理所有 Stack file，又或是分開管理，就依照不同需求去處理。
 
-而當要做切換不同 Backend 的時候，只需要用 `pulumi login ${backend-url}` 切換即可，其他部分可以參考 [State and Backends](https://www.pulumi.com/docs/intro/concepts/state/#state-and-backends)。
+而當要做切換不同 Backend 的時候，只需要用 `pulumi login ${backend-url}` 切換即可，其他部分可以參考 [State and Backends](https://www.pulumi.com/docs/intro/concepts/state/#state-and-backends)，接著要繼續回去講 Import Resource 的部分。
 
 ### Resource file
 
