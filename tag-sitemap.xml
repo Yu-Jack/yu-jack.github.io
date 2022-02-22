@@ -72,6 +72,13 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/disk/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -94,13 +101,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/header/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -184,6 +184,13 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/ecma6/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/ngrok/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -192,13 +199,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/localhost/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/ecma6/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -717,7 +717,7 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/pulumi/</loc>
-        <lastmod>2022-02-22T14:49:39.457Z</lastmod>
+        <lastmod>2022-02-22T14:56:33.059Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
