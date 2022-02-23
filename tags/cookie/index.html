@@ -171,13 +171,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下
-要如何達到使用 session 的方法
+                這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下要如何達到使用 session 的方法
 知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到重點筆記
-&lt;!-- more --&gt;
-前言
-以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面
-而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別...
+
+前言以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人但當我們在前後端完全分離的...
             </div>
         
         
@@ -233,13 +230,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近在使用 CloudFront Header forward 的設定
-CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
-於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
-&lt;!-- more --&gt;
-但由於 CF 上面的設定寫的不是很清楚
-於是發現以下這篇 AWS 官方文章
-這裡直...
+                最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
+
+但由於 CF 上面的設定寫的不是很清楚於是發現以下這篇 AWS 官方文章這裡直接做一個總結
+
+None: 使用 CloudF...
             </div>
         
         
@@ -423,14 +418,6 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
                 <span class="level-item tag">6</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Golang/">
-            <span class="level-start">
-                <span class="level-item">Golang</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">3</span>
-            </span>
-        </a></li><li>
         <a class="level is-marginless" href="/categories/Ruby/">
             <span class="level-start">
                 <span class="level-item">Ruby</span>
@@ -439,25 +426,17 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
                 <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Experience/">
+        <a class="level is-marginless" href="/categories/Golang/">
             <span class="level-start">
-                <span class="level-item">Experience</span>
+                <span class="level-item">Golang</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Java/">
+        <a class="level is-marginless" href="/categories/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/">
             <span class="level-start">
-                <span class="level-item">Java</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Payment-Gateway/">
-            <span class="level-start">
-                <span class="level-item">Payment Gateway</span>
+                <span class="level-item">讀書心得</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -471,17 +450,33 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/">
+        <a class="level is-marginless" href="/categories/Experience/">
             <span class="level-start">
-                <span class="level-item">讀書心得</span>
+                <span class="level-item">Experience</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Bot/">
+        <a class="level is-marginless" href="/categories/Payment-Gateway/">
             <span class="level-start">
-                <span class="level-item">Bot</span>
+                <span class="level-item">Payment Gateway</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Java/">
+            <span class="level-start">
+                <span class="level-item">Java</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Operating-System/">
+            <span class="level-start">
+                <span class="level-item">Operating System</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -495,17 +490,9 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Google/">
+        <a class="level is-marginless" href="/categories/Bot/">
             <span class="level-start">
-                <span class="level-item">Google</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Operating-System/">
-            <span class="level-start">
-                <span class="level-item">Operating System</span>
+                <span class="level-item">Bot</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -522,6 +509,14 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         <a class="level is-marginless" href="/categories/tool/">
             <span class="level-start">
                 <span class="level-item">tool</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Google/">
+            <span class="level-start">
+                <span class="level-item">Google</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>

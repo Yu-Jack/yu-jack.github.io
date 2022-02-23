@@ -19,21 +19,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言 試想一下，我們把專案寫完之後 接下來就是要進行本地測試 測試完成後，把專案推上去，把 PR 發給相關人員通過後 需要把大家的 branch 都合併 然後我們就要把這個程式放到正式環境 CI 就是上述提到的版控、程式碼分析、建置、自動化測試 CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛 但其實當久，版控、程式碼分析、建置、自動">
+    <meta name="description" content="前言試想一下，我們把專案寫完之後接下來就是要進行本地測試測試完成後，把專案推上去，把 PR 發給相關人員通過後需要把大家的 branch 都合併然後我們就要把這個程式放到正式環境   CI 就是上述提到的版控、程式碼分析、建置、自動化測試CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛但其實當久，版控、程式碼分析、建置、自動化測試、部">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CI&#x2F;CD 實現 - bitbucket &amp; Jenkins 篇">
 <meta property="og:url" content="https://yu-jack.github.io/2020/02/17/ci-cd-jenkins/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言 試想一下，我們把專案寫完之後 接下來就是要進行本地測試 測試完成後，把專案推上去，把 PR 發給相關人員通過後 需要把大家的 branch 都合併 然後我們就要把這個程式放到正式環境 CI 就是上述提到的版控、程式碼分析、建置、自動化測試 CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛 但其實當久，版控、程式碼分析、建置、自動">
+<meta property="og:description" content="前言試想一下，我們把專案寫完之後接下來就是要進行本地測試測試完成後，把專案推上去，把 PR 發給相關人員通過後需要把大家的 branch 都合併然後我們就要把這個程式放到正式環境   CI 就是上述提到的版控、程式碼分析、建置、自動化測試CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用 雖然大家都狂說 CI&#x2F;CD 是很屌很猛但其實當久，版控、程式碼分析、建置、自動化測試、部">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-02-16T21:07:54.000Z">
 <meta property="article:modified_time" content="2020-11-29T06:04:24.378Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
-<meta property="article:tag" content="jenkins">
 <meta property="article:tag" content="DevOps">
 <meta property="article:tag" content="CI&#x2F;CD">
+<meta property="article:tag" content="jenkins">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
 
@@ -176,167 +176,68 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2>
-<p>試想一下，我們把專案寫完之後<br>
-接下來就是要進行本地測試
-測試完成後，把專案推上去，把 PR 發給相關人員通過後<br>
-需要把大家的 branch 都合併<br>
-然後我們就要把這個程式放到正式環境</p>
-<p>CI 就是上述提到的版控、程式碼分析、建置、自動化測試
-CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用</p>
-<p>雖然大家都狂說 CI/CD 是很屌很猛<br>
-但其實當久，版控、程式碼分析、建置、自動化測試、部署這一整套流程<br>
-自然而然能夠自動化就自動化，而且每個公司的 CI/CD 流程都會根據架構服務有所變形</p>
-<p>CI/CD 工具只是輔助，重點是整套流程要出來才對<br>
-根據不同流程，會有不同的 CI/CD 工具可以應用<br>
-應該先釐清公司的服務和架構該如何做到 CI/CD 再來去想用哪些工具<br>
-假如說公司都已經全都 container 化，那用 drone 或許是一個不錯的選擇<br>
-又或是現階段架構不大，可以採用人工介入的半自動 CI/CD 來減少全自動化的成本等等<br>
-在這推薦筆者覺得觀念寫得不錯的文章<a href="https://columns.chicken-house.net/2017/08/05/what-cicd-do-you-need/">架構師觀點: 你需要什麼樣的 CI / CD ?</a></p>
-<p>這篇文章主要是記錄筆者有在使用 CI/CD 流程的一部分筆記</p>
-<h2><span id="流程圖">流程圖</span></h2>
-<p>大致上流程如下</p>
+                <h2><span id="前言">前言</span></h2><p>試想一下，我們把專案寫完之後<br>接下來就是要進行本地測試<br>測試完成後，把專案推上去，把 PR 發給相關人員通過後<br>需要把大家的 branch 都合併<br>然後我們就要把這個程式放到正式環境  </p>
+<p>CI 就是上述提到的版控、程式碼分析、建置、自動化測試<br>CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者使用</p>
+<p>雖然大家都狂說 CI/CD 是很屌很猛<br>但其實當久，版控、程式碼分析、建置、自動化測試、部署這一整套流程<br>自然而然能夠自動化就自動化，而且每個公司的 CI/CD 流程都會根據架構服務有所變形  </p>
+<p>CI/CD 工具只是輔助，重點是整套流程要出來才對<br>根據不同流程，會有不同的 CI/CD 工具可以應用<br>應該先釐清公司的服務和架構該如何做到 CI/CD 再來去想用哪些工具<br>假如說公司都已經全都 container 化，那用 drone 或許是一個不錯的選擇<br>又或是現階段架構不大，可以採用人工介入的半自動 CI/CD 來減少全自動化的成本等等<br>在這推薦筆者覺得觀念寫得不錯的文章<a href="https://columns.chicken-house.net/2017/08/05/what-cicd-do-you-need/">架構師觀點: 你需要什麼樣的 CI / CD ?</a></p>
+<p>這篇文章主要是記錄筆者有在使用 CI/CD 流程的一部分筆記  </p>
+<h2><span id="流程圖">流程圖</span></h2><p>大致上流程如下</p>
 <ol>
-<li>本地端把程式 push 到 bitbucket</li>
+<li>本地端把程式 push 到 bitbucket  </li>
 <li>bitbucket 接收到 push 的通知後，把此消息告訴 jenkins server</li>
 <li>jenkins 收到從 bitbucket 來的消息後，開始把程式 pull 下來</li>
 <li>jenkins pull 成功後，開始執行 test</li>
 <li>成功執行完 test 後，執行部署</li>
 <li>部署成功後發送通知給 slack</li>
 </ol>
-<p>流程圖如下，但第 5 個步驟的部署並不會有實際例子<br>
-這會在後記部分進行說明<br>
-<img src="/images/jenkins/flow.png" alt></p>
-<h2><span id="準備">準備</span></h2>
-<p>以下四點要事前準備</p>
+<p>流程圖如下，但第 5 個步驟的部署並不會有實際例子<br>這會在後記部分進行說明<br><img src="/images/jenkins/flow.png" alt></p>
+<h2><span id="準備">準備</span></h2><p>以下四點要事前準備</p>
 <ol>
-<li>jenkins 可以使用 docker 安裝的，這樣就不會污染到本機環境了</li>
-<li>專案是需要用到 npm，所以必須進到 jenkins 裡面安裝 node.js</li>
-<li>專案則是使用 bibucket，所以需要自己準備好 bitbucket repository</li>
-<li>此篇是使用『Slack App』去做發布訊息，所以需要一個 Slack App 的 Oauth Token 去做認證<br>
-可以參考筆者之前的<a href="/2017/10/14/Slack-Bot/">文章</a>去建立 Slack App</li>
+<li>jenkins 可以使用 docker 安裝的，這樣就不會污染到本機環境了  </li>
+<li>專案是需要用到 npm，所以必須進到 jenkins 裡面安裝 node.js  </li>
+<li>專案則是使用 bibucket，所以需要自己準備好 bitbucket repository  </li>
+<li>此篇是使用『Slack App』去做發布訊息，所以需要一個 Slack App 的 Oauth Token 去做認證<br>可以參考筆者之前的<a href="/2017/10/14/Slack-Bot/">文章</a>去建立 Slack App</li>
 </ol>
-<h3><span id="jenkins-安裝">jenkins 安裝</span></h3>
-<p>透過此指令 <code>docker run -it -p 8080:8080 -u root jenkins/jenkins:lts</code><br>
-安裝 jenkins 最新版，並以 root 的角色登到 container 裡面<br>
-接下來用 root 的使用者安裝 node.js<br>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://deb.nodesource.com/setup_12.x | bash -</span><br><span class="line">apt-get install -y nodejs</span><br></pre></td></tr></table></figure></p>
-<p>接下來用瀏覽器開啟 http://localhost:8080 去把 jenkins 給初始化<br>
-進到頁面首先會要求你輸入初始密碼<br>
-使用以下指令把密碼取得，並複製上去即可完成<br>
-<code>cat /var/jenkins_home/secrets/initialAdminPassword</code><br>
-後面就是新增一個 admin 帳號和密碼就不截圖說明了</p>
-<h3><span id="bitbucket-專案">bitbucket 專案</span></h3>
-<p>準備一個 node.js 專案，透過 <code>npm init</code> 去初始化<br>
-然後在 package.json 的 scripts 裡面添加一行 test 指令<br>
-然後把此專案的 bitbucet 連結準備好<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"echo 'Start CI/CD!'"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3><span id="取得-slack-app-oath-access-token">取得 Slack App Oath Access Token</span></h3>
-<p>請到 https://api.slack.com/apps 點選要使用的 Slack App 去取得 Oath Access Token
-<img src="/images/jenkins/slack-01.png" alt></p>
-<p>這邊需要此權限『chat:write:bot』
-<img src="/images/jenkins/slack-02.png" alt></p>
-<h2><span id="jenkins-amp-bitbucket-串接">jenkins &amp; bitbucket 串接</span></h2>
-<h3><span id="jenkins-設定">jenkins 設定</span></h3>
-<p>首先進到 jenkins 的管理頁面，這裡以 http://localhost:8080 為主<br>
-首先為了要 bibucket 任何 push, merge 動作能夠在 jenkins 這邊去識別以下的條件<br>
-『當 jenkins 設定當 bibucket [push/merge/...等等] master 會建置，其餘 branch 不會建置』<br>
-就先必須安裝 bitbucket plugins 去做這件事情，不安裝的話 jenkins 無法識別 bitbucket 的通知<br>
-點選左邊『管理 jenkins』，然後點選『管理外掛程式』，把 bitbucket 先安裝好<br>
-除此之外要做到 slack 通知，也把『Slack Notification』此外掛裝好<br>
-<img src="/images/jenkins/jenkins-plugins-01.png" alt>
-<img src="/images/jenkins/jenkins-plugins-02.png" alt></p>
-<p>回到 jenkins 首頁按下左上角『新增作業』，選擇 free style<br>
-<img src="/images/jenkins/jenkins-01.png" alt></p>
-<p>往下滑到原始碼管理，選擇 git<br>
-把剛剛準備好的 bitbucket 連結貼上去<br>
-然後應該會出現下列的錯誤訊息，代表需要帳號密碼才可以存取此 repository<br>
-<img src="/images/jenkins/jenkins-02.png" alt></p>
-<p>點選圖中的 add 去新增使用者帳號密碼<br>
-<img src="/images/jenkins/jenkins-03.png" alt></p>
-<p>輸入成功後，會跳回去剛剛的畫面，輸入正確的話就不會出現錯誤訊息</p>
+<h3><span id="jenkins-安裝">jenkins 安裝</span></h3><p>透過此指令 <code>docker run -it -p 8080:8080 -u root jenkins/jenkins:lts</code><br>安裝 jenkins 最新版，並以 root 的角色登到 container 裡面<br>接下來用 root 的使用者安裝 node.js<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://deb.nodesource.com/setup_12.x | bash -</span><br><span class="line">apt-get install -y nodejs</span><br></pre></td></tr></table></figure></p>
+<p>接下來用瀏覽器開啟 <a href="http://localhost:8080">http://localhost:8080</a> 去把 jenkins 給初始化<br>進到頁面首先會要求你輸入初始密碼<br>使用以下指令把密碼取得，並複製上去即可完成<br><code>cat /var/jenkins_home/secrets/initialAdminPassword</code><br>後面就是新增一個 admin 帳號和密碼就不截圖說明了  </p>
+<h3><span id="bitbucket-專案">bitbucket 專案</span></h3><p>準備一個 node.js 專案，透過 <code>npm init</code> 去初始化<br>然後在 package.json 的 scripts 裡面添加一行 test 指令<br>然後把此專案的 bitbucet 連結準備好<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"echo 'Start CI/CD!'"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3><span id="取得-slack-app-oath-access-token">取得 Slack App Oath Access Token</span></h3><p>請到 <a href="https://api.slack.com/apps">https://api.slack.com/apps</a> 點選要使用的 Slack App 去取得 Oath Access Token<br><img src="/images/jenkins/slack-01.png" alt></p>
+<p>這邊需要此權限『chat:write:bot』<br><img src="/images/jenkins/slack-02.png" alt></p>
+<h2><span id="jenkins-amp-bitbucket-串接">jenkins &amp; bitbucket 串接</span></h2><h3><span id="jenkins-設定">jenkins 設定</span></h3><p>首先進到 jenkins 的管理頁面，這裡以 <a href="http://localhost:8080">http://localhost:8080</a> 為主<br>首先為了要 bibucket 任何 push, merge 動作能夠在 jenkins 這邊去識別以下的條件<br>『當 jenkins 設定當 bibucket [push/merge/…等等] master 會建置，其餘 branch 不會建置』<br>就先必須安裝 bitbucket plugins 去做這件事情，不安裝的話 jenkins 無法識別 bitbucket 的通知<br>點選左邊『管理 jenkins』，然後點選『管理外掛程式』，把 bitbucket 先安裝好<br>除此之外要做到 slack 通知，也把『Slack Notification』此外掛裝好<br><img src="/images/jenkins/jenkins-plugins-01.png" alt><br><img src="/images/jenkins/jenkins-plugins-02.png" alt></p>
+<p>回到 jenkins 首頁按下左上角『新增作業』，選擇 free style<br><img src="/images/jenkins/jenkins-01.png" alt></p>
+<p>往下滑到原始碼管理，選擇 git<br>把剛剛準備好的 bitbucket 連結貼上去<br>然後應該會出現下列的錯誤訊息，代表需要帳號密碼才可以存取此 repository<br><img src="/images/jenkins/jenkins-02.png" alt></p>
+<p>點選圖中的 add 去新增使用者帳號密碼<br><img src="/images/jenkins/jenkins-03.png" alt></p>
+<p>輸入成功後，會跳回去剛剛的畫面，輸入正確的話就不會出現錯誤訊息  </p>
 <blockquote>
-<p>下圖的 branch 設定意義是指<br>
-當 bitbucket master 有變更的時候，會觸發此建置<br>
-但要注意，此設定要搭配 bitbucket plugin 合用才會有效喔</p>
+<p>下圖的 branch 設定意義是指<br>當 bitbucket master 有變更的時候，會觸發此建置<br>但要注意，此設定要搭配 bitbucket plugin 合用才會有效喔  </p>
 </blockquote>
 <p><img src="/images/jenkins/jenkins-04.png" alt></p>
-<p>接下來往下滾動會看到『建置觸發程序』，勾選圖中那兩樣，並保留排程空白<br>
-<img src="/images/jenkins/jenkins-05.png" alt></p>
-<p>再往下把看到建置，請點選『新增建置步驟』&gt;『新增 shell』<br>
-<img src="/images/jenkins/jenkins-06.png" alt></p>
-<p>輸入以下 shell<br>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$WORKSPACE</span> <span class="comment"># 移動到專案的目錄</span></span><br><span class="line">npm run <span class="built_in">test</span> <span class="comment"># 執行 test 指令</span></span><br></pre></td></tr></table></figure>
-<img src="/images/jenkins/jenkins-07.png" alt></p>
-<p>接下來為了要把建置的結果通知給相關人員<br>
-請點選『新增建置後動作』&gt;『Slack Notification』
-<img src="/images/jenkins/jenkins-08.png" alt></p>
-<p>這邊先勾選成功會通知即可<br>
-<img src="/images/jenkins/jenkins-09.png" alt></p>
-<p>接下來會看到各個要輸入資訊的地方，先把除了 Credential 以外的填完<br>
-<img src="/images/jenkins/jenkins-10.png" alt></p>
-<p>此 Credential 必須要用到剛剛得到的 Oath Access Token<br>
-這裡點選 add，進去後類型選擇『Secret Text』，並把 Token 填入<br>
-<img src="/images/jenkins/jenkins-11.png" alt></p>
+<p>接下來往下滾動會看到『建置觸發程序』，勾選圖中那兩樣，並保留排程空白<br><img src="/images/jenkins/jenkins-05.png" alt></p>
+<p>再往下把看到建置，請點選『新增建置步驟』&gt;『新增 shell』<br><img src="/images/jenkins/jenkins-06.png" alt>  </p>
+<p>輸入以下 shell<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$WORKSPACE</span> <span class="comment"># 移動到專案的目錄</span></span><br><span class="line">npm run <span class="built_in">test</span> <span class="comment"># 執行 test 指令</span></span><br></pre></td></tr></table></figure><br><img src="/images/jenkins/jenkins-07.png" alt></p>
+<p>接下來為了要把建置的結果通知給相關人員<br>請點選『新增建置後動作』&gt;『Slack Notification』<br><img src="/images/jenkins/jenkins-08.png" alt></p>
+<p>這邊先勾選成功會通知即可<br><img src="/images/jenkins/jenkins-09.png" alt></p>
+<p>接下來會看到各個要輸入資訊的地方，先把除了 Credential 以外的填完<br><img src="/images/jenkins/jenkins-10.png" alt></p>
+<p>此 Credential 必須要用到剛剛得到的 Oath Access Token<br>這裡點選 add，進去後類型選擇『Secret Text』，並把 Token 填入<br><img src="/images/jenkins/jenkins-11.png" alt></p>
 <blockquote>
-<p>這邊補充一下<br>
-如果不想要每一個專案都設定一次<br>
-可以回到 jenkins 首頁，點選裡面的設定<br>
-可以設定全域，這樣所有專案就可以吃同一個設定<br>
-就不需要讓每一個專案都設定 oath channel 等等的東西了<br>
-但基本的設定還是要設置，像是在『建置成功』『建置失敗』的情境下要發送通知<br>
-這種如果不設定的話，訊息是不會發送到 slack 的</p>
+<p>這邊補充一下<br>如果不想要每一個專案都設定一次<br>可以回到 jenkins 首頁，點選裡面的設定<br>可以設定全域，這樣所有專案就可以吃同一個設定<br>就不需要讓每一個專案都設定 oath channel 等等的東西了<br>但基本的設定還是要設置，像是在『建置成功』『建置失敗』的情境下要發送通知<br>這種如果不設定的話，訊息是不會發送到 slack 的</p>
 </blockquote>
-<p>接下來按下右下角 Test Connection<br>
-成功的話就會在 slack 上面看到 jenkins 的訊息了<br>
-最後按下儲存</p>
-<p>接下來要設定能夠讓 bitbucket 呼叫到我們 jenkins 的 api<br>
-在此之前我們需要先建立 api token<br>
-點選『使用者』&gt;『點選剛建立的 admin』
-即可取得 api token<br>
-<img src="/images/jenkins/jenkins-12.png" alt></p>
+<p>接下來按下右下角 Test Connection<br>成功的話就會在 slack 上面看到 jenkins 的訊息了<br>最後按下儲存  </p>
+<p>接下來要設定能夠讓 bitbucket 呼叫到我們 jenkins 的 api<br>在此之前我們需要先建立 api token<br>點選『使用者』&gt;『點選剛建立的 admin』<br>即可取得 api token<br><img src="/images/jenkins/jenkins-12.png" alt></p>
 <p><img src="/images/jenkins/jenkins-13.png" alt></p>
-<p>『按下 Add new token』，馬賽克那一串就是 api token 了<br>
-<img src="/images/jenkins/jenkins-14.png" alt></p>
-<h3><span id="bitbucket-設定">Bitbucket 設定</span></h3>
-<p>到 bitbucket 的專案設定裡面，點選 webhook<br>
-<img src="/images/jenkins/bitbucket-01.png" alt></p>
-<p>把此 url 設定進去<br>
-<code>http://[jenkins 帳號]:[jenkins api token]@[jenkins url]:[jenkins port]/git/notifyCommit?url=[bitbucket branch]</code>
-如果 jenkins 帳號是 <code>admin</code>，api token 是 <code>12345</code><br>
-然後 jenkins url 是 ngrok or public ip，這邊以 <code>1.1.1.1</code> 為範例<br>
-port 是 <code>8080</code>，branch 是 <code>https://user@bitbucket.org/user/ci-cd-test.git</code>
-全部綜合起來，連接應該要如下<br>
-<code>http://admin:12345@1.1.1.1:8080/git/notifyCommit?url=https://user@bitbucket.org/user/ci-cd-test.git</code>
-<img src="/images/jenkins/bitbucket-02.png" alt></p>
+<p>『按下 Add new token』，馬賽克那一串就是 api token 了<br><img src="/images/jenkins/jenkins-14.png" alt></p>
+<h3><span id="bitbucket-設定">Bitbucket 設定</span></h3><p>到 bitbucket 的專案設定裡面，點選 webhook<br><img src="/images/jenkins/bitbucket-01.png" alt></p>
+<p>把此 url 設定進去<br><code>http://[jenkins 帳號]:[jenkins api token]@[jenkins url]:[jenkins port]/git/notifyCommit?url=[bitbucket branch]</code><br>如果 jenkins 帳號是 <code>admin</code>，api token 是 <code>12345</code><br>然後 jenkins url 是 ngrok or public ip，這邊以 <code>1.1.1.1</code> 為範例<br>port 是 <code>8080</code>，branch 是 <code>https://user@bitbucket.org/user/ci-cd-test.git</code><br>全部綜合起來，連接應該要如下<br><code>http://admin:12345@1.1.1.1:8080/git/notifyCommit?url=https://user@bitbucket.org/user/ci-cd-test.git</code><br><img src="/images/jenkins/bitbucket-02.png" alt></p>
 <blockquote>
-<p>如果沒有自己 server 的人<br>
-可以用 <a href="/2017/11/08/ngrok/">Ngrok - Connect to your localhost!</a> 讓 bitbucket 連線到你的 jenkins server</p>
+<p>如果沒有自己 server 的人<br>可以用 <a href="/2017/11/08/ngrok/">Ngrok - Connect to your localhost!</a> 讓 bitbucket 連線到你的 jenkins server</p>
 </blockquote>
-<p>建立完成後，點選『View Request』就可以看有沒有 branch 被推上來<br>
-<img src="/images/jenkins/bitbucket-03.png" alt></p>
-<h3><span id="實作結果">實作結果</span></h3>
-<p>接下來到專案內，隨意修改並進行 push，就會看到下面有列出 request 進來<br>
-<img src="/images/jenkins/bitbucket-04.png" alt></p>
-<p>在 jenkins 上面就會看到有建置開始在運行了<br>
-左下角出現 #6 就是正在建置的號碼<br>
-<img src="/images/jenkins/jenkins-15.png" alt></p>
-<p>點選進去後，可以看到 commit 的 log<br>
-<img src="/images/jenkins/jenkins-16.png" alt></p>
-<p>點選『Console Output』，最下面可以看到剛剛專案的 <code>Start CI/CD</code> 就出現了
-<img src="/images/jenkins/jenkins-17.png" alt></p>
-<p>Slack 裡面也會出現建置成功的通知<br>
-<img src="/images/jenkins/jenkins-18.png" alt></p>
-<h2><span id="後記">後記</span></h2>
-<p>這樣就算是打通 CI/CD 粗略流程了<br>
-實際上 CI 還要包含跑測試以及跑程式掃描<br>
-而 CD 還要有部署到伺服器<br>
-以 CD 來說可以利用 <code>ssh root@1.1.1.1 &quot;echo 1&quot;</code> 直接執行遠端伺服器的指令<br>
-去連到另一台伺服器去跑已經撰寫好了 deploy shell<br>
-或是有的使用 k8s 去做部署<br>
-又或是你家的 production server 就直接放在 jenkins server 上 XD<br>
-這些東西都是要根據每個公司不同的伺服器架構去決定要如何去撰寫<br>
-這裡就不詳細介紹該如何去實作了</p>
+<p>建立完成後，點選『View Request』就可以看有沒有 branch 被推上來<br><img src="/images/jenkins/bitbucket-03.png" alt></p>
+<h3><span id="實作結果">實作結果</span></h3><p>接下來到專案內，隨意修改並進行 push，就會看到下面有列出 request 進來<br><img src="/images/jenkins/bitbucket-04.png" alt></p>
+<p>在 jenkins 上面就會看到有建置開始在運行了<br>左下角出現 #6 就是正在建置的號碼<br><img src="/images/jenkins/jenkins-15.png" alt></p>
+<p>點選進去後，可以看到 commit 的 log<br><img src="/images/jenkins/jenkins-16.png" alt></p>
+<p>點選『Console Output』，最下面可以看到剛剛專案的 <code>Start CI/CD</code> 就出現了<br><img src="/images/jenkins/jenkins-17.png" alt></p>
+<p>Slack 裡面也會出現建置成功的通知<br><img src="/images/jenkins/jenkins-18.png" alt></p>
+<h2><span id="後記">後記</span></h2><p>這樣就算是打通 CI/CD 粗略流程了<br>實際上 CI 還要包含跑測試以及跑程式掃描<br>而 CD 還要有部署到伺服器<br>以 CD 來說可以利用 <code>ssh root@1.1.1.1 &quot;echo 1&quot;</code> 直接執行遠端伺服器的指令<br>去連到另一台伺服器去跑已經撰寫好了 deploy shell<br>或是有的使用 k8s 去做部署<br>又或是你家的 production server 就直接放在 jenkins server 上 XD<br>這些東西都是要根據每個公司不同的伺服器架構去決定要如何去撰寫<br>這裡就不詳細介紹該如何去實作了</p>
 
             </div>
         

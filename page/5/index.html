@@ -161,14 +161,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Event Loop (2021-03-14 Updated)
-關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本
-透過以下兩篇可以更加清楚了解兩者之間的差異
-Event Loop 運行機制解析 - 瀏覽器篇 (本篇)
-Event Loop 運行機制解析 - Node.js 篇
-前言
-網路上有許多文章在討論瀏覽器內 event loop 的機制
-不少文章都有探討到所...
+                Event Loop (2021-03-14 Updated)關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本透過以下兩篇可以更加清楚了解兩者之間的差異  
+Event Loop 運行機制解析 - 瀏覽器篇 (本篇)Event Loop 運行機制解析 - Node.js 篇  
+前言網路上有許多文章在討論瀏覽器內 event loop 的機制不少文章都有探討到所謂...
             </div>
         
         
@@ -224,12 +219,8 @@ Event Loop 運行機制解析 - Node.js 篇
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                &lt;span style=&quot;color: green&quot;&gt;[Update 2021-12-06]&lt;/span&gt; 新增推薦拿法
-前言
-我們有時候要取得使用者 IP
-往往都會用最簡單的方式取得 IP
-以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP
-但你知道，當伺服器被多層的 L...
+                [Update 2021-12-06] 新增推薦拿法
+前言我們有時候要取得使用者 IP往往都會用最簡單的方式取得 IP以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候取得到的 IP 會是 Load Balancer 的嗎?而真正的 IP 會被 ...
             </div>
         
         
@@ -285,17 +276,11 @@ Event Loop 運行機制解析 - Node.js 篇
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠
-此時會需要把硬碟增加大小，以免整台機器爆掉
-接下來會針對如何增加硬碟大小做說明
-&lt;!-- more --&gt;
-確認硬碟大小方法
-可以透過 df -h . 指令確認硬碟目前使用的大小
-這時候可以看到硬碟配置的大小
+                前言在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠此時會需要把硬碟增加大小，以免整台機器爆掉接下來會針對如何增加硬碟大小做說明  
 
-接下來可以透過 lsblk 回找最大上限的配置可以是多少
-上面 xvda 就是最多可以有多少大...
+確認硬碟大小方法可以透過 df -h . 指令確認硬碟目前使用的大小這時候可以看到硬碟配置的大小
+接下來可以透過 lsblk 回找最大上限的配置可以是多少上面 xvda 就是最多可以有多少大小下面 xvda1 就是實際上目前有多少大小
+看...
             </div>
         
         
@@ -351,14 +336,9 @@ Event Loop 運行機制解析 - Node.js 篇
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用
-掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用
-&lt;!-- more --&gt;
-以 load balancer 來說
-外面 https:443 進來後，要導入到 http:8080 的服務
-就會需要把憑證解開，然後進一步把流量往裡面送
-所以在 load balancer 上面就一...
+                前言AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用掛載在上面的憑證可以給 load balanacer, cloudfront 等等使用  
+
+以 load balancer 來說外面 https:443 進來後，要導入到 http:8080 的服務就會需要把憑證解開，然後進一步把流量往裡面送所以在 load balancer 上面就一定要掛載 private/public ke...
             </div>
         
         
@@ -414,15 +394,9 @@ AWS 有提供一套服務可以把申請好的憑證一次給多個服務使用
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-上一篇我們講到使用 sinon 搭配 express 的使用基礎
-今天會介紹的是關於在 nodejs 的 express unit test
-實作 unit test 的幾個技巧以及可能會遇到的問題
-該如何解決問題，並依靠 sinon 去達到希望的功效
-&lt;!-- more --&gt;
-stub 同一個 object
-在開始寫 unit test 之後
-會開始發現一件事情，就是需...
+                前言上一篇我們講到使用 sinon 搭配 express 的使用基礎今天會介紹的是關於在 nodejs 的 express unit test實作 unit test 的幾個技巧以及可能會遇到的問題該如何解決問題，並依靠 sinon 去達到希望的功效  
+
+stub 同一個 object在開始寫 unit test 之後會開始發現一件事情，就是需要對同一個物件重複做 stub在 a.test...
             </div>
         
         
@@ -478,10 +452,8 @@ stub 同一個 object
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-&lt;span style=&quot;color: green&quot;&gt;[2020-10-13 Update]&lt;/span&gt; Unit Test 定義可以參考筆者新寫的一篇
-Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?
-以下文章內容提到的 unit test 在上述文章的定義上比較偏向於 Integratio...
+                前言[2020-10-13 Update] Unit Test 定義可以參考筆者新寫的一篇Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是哪些?以下文章內容提到的 unit test 在上述文章的定義上比較偏向於 Integration Test  
+[2019-12-22 Update]在 express unit test 一些技巧教學以及困難點...
             </div>
         
         
@@ -537,16 +509,10 @@ Unit Test 實踐守則 (一) - Unit Test 定義是什麼, 涵蓋的範圍又是�
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務
-其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能
-這邊就先不多作介紹，之後會寫在其他篇幅做介紹
-那 CloudWatch 主要包含以下兩個大項目
-&lt;!-- more --&gt;
+                前言AWS CloudWatch 是一個可以監控日誌用以及伺服器狀態等等的服務其他還有像是 Alarm Events 都是從以下兩個大項目延伸出去的額外功能這邊就先不多作介紹，之後會寫在其他篇幅做介紹那 CloudWatch 主要包含以下兩個大項目  
 
-Metric
-紀錄了 AWS 上面服務的狀態
-包含 EC2 的 CPU、網路使用量、記憶體用量...
+
+Metric 紀錄了 AWS 上面服務的狀態 包含 EC2 的 CPU、網路使用量、記憶體用量和硬碟大小 API Gateway API...
             </div>
         
         
@@ -602,22 +568,13 @@ Metric
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Encrypted Pastebin
-這題總共有四個 flag
-&lt;!-- more --&gt;
-0x00
-一開始畫面長這樣
+                Encrypted Pastebin這題總共有四個 flag
 
+0x00一開始畫面長這樣
 試著輸入值之後，發現上面有一段 ?post= 資料
-
 嘗試更改之後，發現 flag
-
-0x01
-根據上一個 error message 得知有用到 base64
-所以可以知道 ?post= 的是 base64
-接下來再輸入一些奇怪的值試試看
-
-發現程式使用的是...
+0x01根據上一個 error message 得知有用到 base64所以可以知道 ?post= 的是 base64接下來再輸入一些奇怪的值試試看
+發現程式使用的是 aes-128-cbc 去把資料作加密且根據錯誤訊息表...
             </div>
         
         
@@ -673,12 +630,9 @@ Metric
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                什麼是 HTTP Request Smuggling ?
-今日常見的網頁應用程式往往會有多一層 server 的存在
-請求 --&gt; front-end server --&gt; back-end server
-front-end server 接收到請求的時候，會轉發到 back-end server 去處理
-&lt;!-- more --&gt;
-http request smug...
+                什麼是 HTTP Request Smuggling ?今日常見的網頁應用程式往往會有多一層 server 的存在請求 –&gt; front-end server –&gt; back-end serverfront-end server 接收到請求的時候，會轉發到 back-end server 去處理  
+
+http request smuglling 的漏洞就是出現在『轉發』到 ba...
             </div>
         
         
@@ -734,19 +688,14 @@ http request smug...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Cody's First Blog
-這題總共有 3 個 flag
-&lt;!-- more --&gt;
-0x00
-一開始畫面長這樣
+                Cody’s First Blog這題總共有 3 個 flag
+0x00一開始畫面長這樣
+裡面有提到好像是用 php 建立的試著提交看看 &lt;?php echo phpinfo(); ?&gt;就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
+0x01接下來看一下 source code 發現一個特別的地方  
 
-裡面有提到好像是用 php 建立的
-試著提交看看 &lt;?php echo phpinfo(); ?&gt;
-就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
+被註解掉的 admin path
 
-
-0x01
-接下來看一下 source code 發現一個特別的地方...
+Path: ...
             </div>
         
         
@@ -959,14 +908,6 @@ http request smug...
                 <span class="level-item tag">6</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Golang/">
-            <span class="level-start">
-                <span class="level-item">Golang</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">3</span>
-            </span>
-        </a></li><li>
         <a class="level is-marginless" href="/categories/Ruby/">
             <span class="level-start">
                 <span class="level-item">Ruby</span>
@@ -975,25 +916,17 @@ http request smug...
                 <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Experience/">
+        <a class="level is-marginless" href="/categories/Golang/">
             <span class="level-start">
-                <span class="level-item">Experience</span>
+                <span class="level-item">Golang</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Java/">
+        <a class="level is-marginless" href="/categories/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/">
             <span class="level-start">
-                <span class="level-item">Java</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Payment-Gateway/">
-            <span class="level-start">
-                <span class="level-item">Payment Gateway</span>
+                <span class="level-item">讀書心得</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -1007,17 +940,33 @@ http request smug...
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/">
+        <a class="level is-marginless" href="/categories/Experience/">
             <span class="level-start">
-                <span class="level-item">讀書心得</span>
+                <span class="level-item">Experience</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Bot/">
+        <a class="level is-marginless" href="/categories/Payment-Gateway/">
             <span class="level-start">
-                <span class="level-item">Bot</span>
+                <span class="level-item">Payment Gateway</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Java/">
+            <span class="level-start">
+                <span class="level-item">Java</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Operating-System/">
+            <span class="level-start">
+                <span class="level-item">Operating System</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -1031,17 +980,9 @@ http request smug...
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Google/">
+        <a class="level is-marginless" href="/categories/Bot/">
             <span class="level-start">
-                <span class="level-item">Google</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Operating-System/">
-            <span class="level-start">
-                <span class="level-item">Operating System</span>
+                <span class="level-item">Bot</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -1058,6 +999,14 @@ http request smug...
         <a class="level is-marginless" href="/categories/tool/">
             <span class="level-start">
                 <span class="level-item">tool</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Google/">
+            <span class="level-start">
+                <span class="level-item">Google</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
