@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2022-02-22T14:00:17.000Z">
-<meta property="article:modified_time" content="2022-02-22T15:02:12.937Z">
+<meta property="article:modified_time" content="2022-02-24T05:21:26.844Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="pulumi">
 <meta name="twitter:card" content="summary">
@@ -154,7 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    19 分鐘 閱讀文 (大約 2860 個字)
+                    20 分鐘 閱讀文 (大約 3030 個字)
                 </span>
                 
                 
@@ -208,8 +208,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>可以發現有一個 urn 儲存有 <code>myjackzone</code> 這個字眼，所以其實可以對應到這個名稱是資源管理用的名稱，再對回去原本程式碼，就會發現 <code>jackjack.com</code> 以及 <code>myjackzone</code> 的意義是不一樣。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">route53.NewZone(ctx, <span class="string">"myjackzone"</span>, &amp;route53.ZoneArgs&#123;</span><br><span class="line">			Comment:      pulumi.String(<span class="string">""</span>),</span><br><span class="line">			ForceDestroy: pulumi.Bool(<span class="literal">false</span>),</span><br><span class="line">			Name:         pulumi.String(<span class="string">"jackjack.com"</span>),</span><br><span class="line">		&#125;, pulumi.Protect(<span class="literal">true</span>))</span><br></pre></td></tr></table></figure>
 <h3><span id="state-and-backend">State and Backend</span></h3><p>另外 Stack file 儲存的位置會根據你設定的 <code>backend url</code> 而有所不一樣，舉例來說可以用 pulumi service 或是 aws s3 去管理這個 stack file，所以在一開始建議先想好要用什麼 Backend 去管理所有 Stack file，又或是分開管理，就依照不同需求去處理。</p>
-<p>而當要做切換不同 Backend 的時候，只需要用 <code>pulumi login ${backend-url}</code> 切換即可，其他部分可以參考 <a href="https://www.pulumi.com/docs/intro/concepts/state/#state-and-backends">State and Backends</a>，接著要繼續回去講 Import Resource 的部分。</p>
-<h3><span id="resource-file">Resource file</span></h3><p>當然 pulumi 也有提供可以直接 import 整個資源檔，但必須要自己製作，整體格式如下。</p>
+<p>而當要做切換不同 Backend 的時候，只需要用 <code>pulumi login ${backend-url}</code> 切換即可，其他部分可以參考 <a href="https://www.pulumi.com/docs/intro/concepts/state/#state-and-backends">State and Backends</a>。</p>
+<h3><span id="graph">Graph</span></h3><p>另外提到一下，pulumi 有支援把整個 infra 的東西會出 <code>pulumi stack graph {graph_file_name}</code>，檔案是 <code>DOT</code> 格式，接著就看要用什麼把圖話出來，這邊提供一個隨便找到的工具 <a href="https://dreampuf.github.io/GraphvizOnline/">GraphvizOnline</a>。</p>
+<p>接著比較值得一提的是 pulumi service 提供的圖表蠻好看的，以下就是 <a href="https://api.pulumi.com">https://api.pulumi.com</a> 提供的圖表。</p>
+<p><img src="/images/pulumi-tutor/06.png" alt></p>
+<p>不過要注意，上面這張圖是沒有 parent 的，所以在建立資源時，如果想讓圖表比較好看，可以在 parent 多加資源加上，就可以變這樣。</p>
+<p><img src="/images/pulumi-tutor/07.png" alt></p>
+<h3><span id="resource-file">Resource file</span></h3><p>接著要繼續講 Import Resource 的部分，當然 pulumi 也有提供可以直接 import 整個資源檔，但必須要自己製作，整體格式如下。</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"resources"</span>: [&#123;</span><br><span class="line">        <span class="attr">"type"</span>: <span class="string">"aws:route53/zone:Zone"</span>,</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"myZone"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="string">"Z1D633PJN98FT9"</span></span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>接著透過 <code>pulumi import -f filename.json</code>，就可以完成匯入，其他詳細介紹可以直接看官網<a href="https://www.pulumi.com/docs/guides/adopting/import/#bulk-import-operations">Bulk Import Operations</a></p>
 <h3><span id="multiple-regions">Multiple Regions</span></h3><p>當然有些服務不太可能只存在在一個 region，勢必會出現多個 region 的存在，那麼要如何 import 多個 region 呢？只需要填入 <code>nameTable</code> 以及 <code>provider</code> 的 key-value 即可完成，整體 json 檔案如下。</p>
@@ -363,12 +368,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <span class="has-mr-6">3.2</span>
         <span>State and Backend</span>
         </a></li><li>
-        <a class="is-flex" href="#resource-file">
+        <a class="is-flex" href="#graph">
         <span class="has-mr-6">3.3</span>
+        <span>Graph</span>
+        </a></li><li>
+        <a class="is-flex" href="#resource-file">
+        <span class="has-mr-6">3.4</span>
         <span>Resource file</span>
         </a></li><li>
         <a class="is-flex" href="#multiple-regions">
-        <span class="has-mr-6">3.4</span>
+        <span class="has-mr-6">3.5</span>
         <span>Multiple Regions</span>
         </a></li></ul></li><li>
         <a class="is-flex" href="#create-resource">
