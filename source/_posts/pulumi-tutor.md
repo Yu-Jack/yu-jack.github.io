@@ -136,11 +136,23 @@ route53.NewZone(ctx, "myjackzone", &route53.ZoneArgs{
 
 另外 Stack file 儲存的位置會根據你設定的 `backend url` 而有所不一樣，舉例來說可以用 pulumi service 或是 aws s3 去管理這個 stack file，所以在一開始建議先想好要用什麼 Backend 去管理所有 Stack file，又或是分開管理，就依照不同需求去處理。
 
-而當要做切換不同 Backend 的時候，只需要用 `pulumi login ${backend-url}` 切換即可，其他部分可以參考 [State and Backends](https://www.pulumi.com/docs/intro/concepts/state/#state-and-backends)，接著要繼續回去講 Import Resource 的部分。
+而當要做切換不同 Backend 的時候，只需要用 `pulumi login ${backend-url}` 切換即可，其他部分可以參考 [State and Backends](https://www.pulumi.com/docs/intro/concepts/state/#state-and-backends)。
+
+### Graph
+
+另外提到一下，pulumi 有支援把整個 infra 的東西會出 `pulumi stack graph {graph_file_name}`，檔案是 `DOT` 格式，接著就看要用什麼把圖話出來，這邊提供一個隨便找到的工具 [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/)。
+
+接著比較值得一提的是 pulumi service 提供的圖表蠻好看的，以下就是 [https://api.pulumi.com](https://api.pulumi.com) 提供的圖表。
+
+![](/images/pulumi-tutor/06.png)
+
+不過要注意，上面這張圖是沒有 parent 的，所以在建立資源時，如果想讓圖表比較好看，可以在 parent 多加資源加上，就可以變這樣。
+
+![](/images/pulumi-tutor/07.png)
 
 ### Resource file
 
-當然 pulumi 也有提供可以直接 import 整個資源檔，但必須要自己製作，整體格式如下。
+接著要繼續講 Import Resource 的部分，當然 pulumi 也有提供可以直接 import 整個資源檔，但必須要自己製作，整體格式如下。
 
 ```json
 {
