@@ -132,6 +132,10 @@ route53.NewZone(ctx, "myjackzone", &route53.ZoneArgs{
 		}, pulumi.Protect(true))
 ```
 
+### Refresh
+
+那通常 import 之後，若有人是手動在 Cloud Provider 上面做更動的話，要把這個更動同步到 Stack 裡面，只需要用 `pulumi refresh` 去同步即可，不過同步完，因為程式碼會遺漏缺少的部分，所以會需要補上對應的程式碼。
+
 ### State and Backend
 
 另外 Stack file 儲存的位置會根據你設定的 `backend url` 而有所不一樣，舉例來說可以用 pulumi service 或是 aws s3 去管理這個 stack file，所以在一開始建議先想好要用什麼 Backend 去管理所有 Stack file，又或是分開管理，就依照不同需求去處理。
@@ -204,7 +208,11 @@ aws.NewProvider(ctx, "useast-1", &aws.ProviderArgs{
 
 ## Create Resource
 
-呼叫 API 建立資源的部分都蠻單純的，不同資源建立的用法都在官方文件上，這邊就不多帶下去，不過我們要看一個比較特別的點。
+呼叫 API 建立資源的部分都蠻單純的，不同資源建立的用法都在官方文件上。
+
+不過在每次建立之前可以先透過 `pulumi preview --diff` 的方式去了解這次有什麼變更，這也可以搭配前面提到的 refresh 去使用，例如 `pulumi preview --diff --refresh` 去確認狀態。
+
+這邊就不多帶下去，不過我們要看一個比較特別的點。
 
 ### Execution Order
 
