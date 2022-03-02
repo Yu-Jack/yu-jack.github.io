@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="[Update 2020-09-06] 新增 Interface &amp; method_missing[Update 2020-07-31] 新增 send &amp; self   介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號因為這篇是以個人角度去看的所以內容比較適合學過一種 Jav">
+    <meta name="description" content="[Update 2020-09-06] 新增 Interface &amp; method_missing[Update 2020-07-31] 新增 send &amp; self   介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號，可以當作一個粗淺的 ruby 教學 XD因為這篇是以個人角">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ruby 初學者應該要知道的幾件事">
 <meta property="og:url" content="https://yu-jack.github.io/2021/06/20/new-to-learn-ruby/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="[Update 2020-09-06] 新增 Interface &amp; method_missing[Update 2020-07-31] 新增 send &amp; self   介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號因為這篇是以個人角度去看的所以內容比較適合學過一種 Jav">
+<meta property="og:description" content="[Update 2020-09-06] 新增 Interface &amp; method_missing[Update 2020-07-31] 新增 send &amp; self   介紹因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號，可以當作一個粗淺的 ruby 教學 XD因為這篇是以個人角">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-06-20T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-09-21T08:41:00.578Z">
+<meta property="article:modified_time" content="2022-03-02T04:23:36.162Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="ruby">
 <meta name="twitter:card" content="summary">
@@ -154,7 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    24 分鐘 閱讀文 (大約 3587 個字)
+                    24 分鐘 閱讀文 (大約 3601 個字)
                 </span>
                 
                 
@@ -174,7 +174,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
             <div class="content" style="word-break: break-all;">
                 <p><span style="color: green">[Update 2020-09-06]</span> 新增 <a href="#interface">Interface</a> &amp; <a href="#method_missing">method_missing</a><br><span style="color: green">[Update 2020-07-31]</span> 新增 <a href="#send">send</a> &amp; <a href="#class-amp-instance-method">self</a>  </p>
-<h2><span id="介紹">介紹</span></h2><p>因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言<br>這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號<br>因為這篇是以個人角度去看的<br>所以內容比較適合學過一種 Java or JavaScript 的讀者  </p>
+<h2><span id="介紹">介紹</span></h2><p>因近期工作關係會需要寫到 Rails, 所以開始學習 Ruby 這個語言<br>這篇文章會列出個人覺得學習 Ruby 這個語言, 要先知道的幾樣東西以及符號，可以當作一個粗淺的 ruby 教學 XD<br>因為這篇是以個人角度去看的<br>所以內容比較適合學過一種 Java or JavaScript 的讀者  </p>
 <h2><span id="function-執行">Function 執行</span></h2><p>以個人經驗來說, 學習 Ruby 第一件讓我很困惑的地方就是關於 function 執行的方式<br>在寫過的 JavaScript, Java, Go 三個語言中, 這是差異最大的地方<br>在 JavaScript 定義 function 後去執行不外乎是這樣  </p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params">thing</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`I'm doing <span class="subst">$&#123;thing&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">doSomething(<span class="string">"work"</span>)</span><br></pre></td></tr></table></figure>
 <p>在 Ruby 中也只是差在語法定義不同而已<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">doSomething</span><span class="params">(thing)</span></span></span><br><span class="line">    puts <span class="string">"I'm doing <span class="subst">#&#123;thing&#125;</span>"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">doSomething(<span class="string">"work"</span>)</span><br></pre></td></tr></table></figure></p>
