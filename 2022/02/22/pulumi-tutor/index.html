@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言Pulumi 是 Infrastructure as Code (IaC) 的一套管理工具，通常會開始用 IaC 的時間點，部分是已經有 Cloud Provider 在運行的情況，並且想用程式碼進行管理，畢竟一開始剛建立 Infrastructure 可能還是會選用 UI 建立會來得比較快速。 通常 IaC 會有幾個好處  版本控制，透過 code review 確保修改不會錯誤 不必依賴">
+    <meta name="description" content="前言Pulumi 是 Infrastructure as Code (IaC) 的一套管理工具，通常會開始用 IaC 的時間點，部分是已經有 Cloud Provider 在運行的情況，並且想用程式碼進行管理，畢竟一開始剛建立 Infrastructure 可能還是會選用 UI 建立會來得比較快速。   這篇文章會寫一些 Pulumi 使用教學，以及如果是導入會先從什麼指令開始做比較合理。   進">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pulumi 導入教學介紹">
 <meta property="og:url" content="https://yu-jack.github.io/2022/02/22/pulumi-tutor/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言Pulumi 是 Infrastructure as Code (IaC) 的一套管理工具，通常會開始用 IaC 的時間點，部分是已經有 Cloud Provider 在運行的情況，並且想用程式碼進行管理，畢竟一開始剛建立 Infrastructure 可能還是會選用 UI 建立會來得比較快速。 通常 IaC 會有幾個好處  版本控制，透過 code review 確保修改不會錯誤 不必依賴">
+<meta property="og:description" content="前言Pulumi 是 Infrastructure as Code (IaC) 的一套管理工具，通常會開始用 IaC 的時間點，部分是已經有 Cloud Provider 在運行的情況，並且想用程式碼進行管理，畢竟一開始剛建立 Infrastructure 可能還是會選用 UI 建立會來得比較快速。   這篇文章會寫一些 Pulumi 使用教學，以及如果是導入會先從什麼指令開始做比較合理。   進">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2022-02-22T14:00:17.000Z">
-<meta property="article:modified_time" content="2022-02-24T08:39:30.834Z">
+<meta property="article:modified_time" content="2022-03-02T07:28:08.240Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="pulumi">
 <meta name="twitter:card" content="summary">
@@ -154,7 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    21 分鐘 閱讀文 (大約 3215 個字)
+                    22 分鐘 閱讀文 (大約 3266 個字)
                 </span>
                 
                 
@@ -173,8 +173,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>Pulumi 是 Infrastructure as Code (IaC) 的一套管理工具，通常會開始用 IaC 的時間點，部分是已經有 Cloud Provider 在運行的情況，並且想用程式碼進行管理，畢竟一開始剛建立 Infrastructure 可能還是會選用 UI 建立會來得比較快速。</p>
-<p>通常 IaC 會有幾個好處</p>
+                <h2><span id="前言">前言</span></h2><p>Pulumi 是 Infrastructure as Code (IaC) 的一套管理工具，通常會開始用 IaC 的時間點，部分是已經有 Cloud Provider 在運行的情況，並且想用程式碼進行管理，畢竟一開始剛建立 Infrastructure 可能還是會選用 UI 建立會來得比較快速。  </p>
+<p>這篇文章會寫一些 Pulumi 使用教學，以及如果是導入會先從什麼指令開始做比較合理。  </p>
+<p>進入實作前，先來談談通常 IaC 管理話會有什麼樣的好處  </p>
 <ol>
 <li>版本控制，透過 code review 確保修改不會錯誤</li>
 <li>不必依賴 UI，可建置 CI/CD 流程</li>
