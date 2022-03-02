@@ -11,7 +11,7 @@ catalog: true
 
 Pulumi 是 Infrastructure as Code (IaC) 的一套管理工具，通常會開始用 IaC 的時間點，部分是已經有 Cloud Provider 在運行的情況，並且想用程式碼進行管理，畢竟一開始剛建立 Infrastructure 可能還是會選用 UI 建立會來得比較快速。  
 
-這篇文章會寫一些 Pulumi 使用教學，以及如果是導入會先從什麼指令開始做比較合理。  
+這篇文章會寫一些 Pulumi 使用教學，以及如果是導入會先從什麼指令開始做比較適合，當然都是個人主觀意見，歡迎大家討論！  
 
 進入實作前，先來談談通常 IaC 管理話會有什麼樣的好處  
 
