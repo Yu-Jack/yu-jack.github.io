@@ -11,6 +11,7 @@ catalog: true
     .emgithub-container code.hljs {
         color: unset;
         background: unset;
+        line-height: 18px;
     }
 </style>
 
