@@ -7,14 +7,6 @@ header-img: /images/banner.jpg
 catalog: true
 ---
 
-<style>
-    .emgithub-container code.hljs {
-        color: unset;
-        background: unset;
-        line-height: 18px;
-    }
-</style>
-
 ## 前言
 
 在前一篇 [Pulumi 導入教學介紹#state-and-backend](/2022/02/22/pulumi-tutor/#state-and-backend) 中有提到不同 Backend 的差異。
@@ -53,3 +45,11 @@ catalog: true
 ## 後記
 
 很可惜目前只能想到這 Case 去驗證，之後等到實作遇到更多的案例再來分享在這了！
+
+<style>
+    .emgithub-container code.hljs {
+        color: unset;
+        background: unset;
+        line-height: 18px;
+    }
+</style>
