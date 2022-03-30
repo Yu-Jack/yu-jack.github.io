@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言 OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別 這篇會針對它們之間的差別進行解釋 正文 我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容) OAuth OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的 但在對角色和細節流程上面的定義不大一樣 這會到 OAuth 2.0 實作的文">
+    <meta name="description" content="前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋   正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)   OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的文章時">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OAuth 是什麼? 跟 SSO 有什麼關係或差別?">
 <meta property="og:url" content="https://yu-jack.github.io/2020/04/13/sso-vs-oauth/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言 OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別 這篇會針對它們之間的差別進行解釋 正文 我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容) OAuth OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的 但在對角色和細節流程上面的定義不大一樣 這會到 OAuth 2.0 實作的文">
+<meta property="og:description" content="前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋   正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)   OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的文章時">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-04-13T02:05:21.000Z">
@@ -176,106 +176,51 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2>
-<p>OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別<br>
-這篇會針對它們之間的差別進行解釋</p>
-<h2><span id="正文">正文</span></h2>
-<p>我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)</p>
-<h3><span id="oauth">OAuth</span></h3>
-<p>OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的<br>
-但在對角色和細節流程上面的定義不大一樣<br>
-這會到 OAuth 2.0 實作的文章時稍微提到一些大體差別</p>
-<p>這邊就針對 OAuth 2.0 去進行簡單介紹<br>
-在 RFC 上面對於 OAuth 2.0 的定義如下</p>
+                <h2><span id="前言">前言</span></h2><p>OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別<br>這篇會針對它們之間的差別進行解釋  </p>
+<h2><span id="正文">正文</span></h2><p>我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)  </p>
+<h3><span id="oauth">OAuth</span></h3><p>OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的<br>但在對角色和細節流程上面的定義不大一樣<br>這會到 OAuth 2.0 實作的文章時稍微提到一些大體差別  </p>
+<p>這邊就針對 OAuth 2.0 去進行簡單介紹<br>在 RFC 上面對於 OAuth 2.0 的定義如下  </p>
 <blockquote>
-<p>The OAuth 2.0 authorization framework enables a third-party<br>
-application to obtain limited access to an HTTP service, either on<br>
-behalf of a resource owner by orchestrating an approval interaction<br>
-between the resource owner and the HTTP service, or by allowing the<br>
-third-party application to obtain access on its own behalf.</p>
+<p>The OAuth 2.0 authorization framework enables a third-party<br>application to obtain limited access to an HTTP service, either on<br>behalf of a resource owner by orchestrating an approval interaction<br>between the resource owner and the HTTP service, or by allowing the<br>third-party application to obtain access on its own behalf.  </p>
 </blockquote>
-<p>簡單來說, OAuth 能夠讓第三方應用程式去取得使用者的資料<br>
-舉例來說就是 Google 製作了 OAuth 服務讓 PChome (第三方) 能夠取得使用者在 Google 上面的資料</p>
-<p>這邊有三個重要的地方</p>
+<p>簡單來說, OAuth 能夠讓第三方應用程式去取得使用者的資料<br>舉例來說就是 Google 製作了 OAuth 服務讓 PChome (第三方) 能夠取得使用者在 Google 上面的資料  </p>
+<p>這邊有三個重要的地方  </p>
 <ol>
-<li>authorization (授權)</li>
-<li>third-party application (第三方應用程式)</li>
-<li>approval interaction between the resource owner and the HTTP service</li>
+<li>authorization (授權)  </li>
+<li>third-party application (第三方應用程式)  </li>
+<li>approval interaction between the resource owner and the HTTP service  </li>
 </ol>
-<p>Authorization 是一種授權的概念, 也就是當你登入成功之後, 你被賦予了可以使用多少服務的權限<br>
-所以 OAuth 是一種&lt;span style=&quot;color: red&quot;&gt;授權&lt;/span&gt;框架, 它可以授權其它第三方應用程式取得使用者資料<br>
-當然還是要經過使用者允許之後 (approval interaction), 才會授權給第三方取得使用者的資料</p>
+<p>Authorization 是一種授權的概念, 也就是當你登入成功之後, 你被賦予了可以使用多少服務的權限<br>所以 OAuth 是一種<span style="color: red">授權</span>框架, 它可以授權其它第三方應用程式取得使用者資料<br>當然還是要經過使用者允許之後 (approval interaction), 才會授權給第三方取得使用者的資料  </p>
 <blockquote>
-<p>這在 OAuth 1.0 以及 OAuth 2.0 裡面都是一樣的</p>
+<p>這在 OAuth 1.0 以及 OAuth 2.0 裡面都是一樣的  </p>
 </blockquote>
-<h3><span id="sso">SSO</span></h3>
-<p>在 RFC 上面對於 SSO 的定義蠻有趣的, 它是直接給例子 XD</p>
+<h3><span id="sso">SSO</span></h3><p>在 RFC 上面對於 SSO 的定義蠻有趣的, 它是直接給例子 XD  </p>
 <blockquote>
-<p>Bob has an account in an application hosted by a cloud service<br>
-provider SomeCSP.  SomeCSP has federated its user identities with a<br>
-cloud service provider AnotherCSP.  Bob requests a service from an<br>
-application running on AnotherCSP.  The application running on<br>
-AnotherCSP, relying on Bob's authentication by SomeCSP and using<br>
-identity information provided by SomeCSP, serves Bob's request.</p>
+<p>Bob has an account in an application hosted by a cloud service<br>provider SomeCSP.  SomeCSP has federated its user identities with a<br>cloud service provider AnotherCSP.  Bob requests a service from an<br>application running on AnotherCSP.  The application running on<br>AnotherCSP, relying on Bob’s authentication by SomeCSP and using<br>identity information provided by SomeCSP, serves Bob’s request.  </p>
 </blockquote>
-<p>簡單翻譯一下, Bob 有一組帳號密碼是在 SomeCSP 這個服務底下<br>
-此時 Bob 使用一個在 AnotherCSP 服務底下的應用程式<br>
-這個應用程式要透過 SomeCSP 去&lt;span style=&quot;color: red&quot;&gt;認證&lt;/span&gt;此使用者的身份接著才能使用 SomeCSP 提供的身份資料去服務 Bob</p>
-<p>夠冗長了吧 XD<br>
-這邊就在幫它簡化一下, 也就是說 Bob 想要使用 AnotherCSP 的服務時<br>
-必須先透過 SomeCSP 進行登入&lt;span style=&quot;color: red&quot;&gt;認證&lt;/span&gt;才能使用</p>
-<p>這裡有一個重點, 就是 authentication (認證)<br>
-當你拿著帳號密碼來登入的時候, 此時就是在做認證, 確認是不是真的是你</p>
-<h3><span id="小總結">小總結</span></h3>
-<p>這兩個東西的重點是不一樣的, 一個在於授權, 一個在於認證</p>
-<p>OAuth 是一種授權框架, 而不是認證框架<br>
-SSO 是一種認證的方式, 而不是授權的方式</p>
-<p>認證: 使用者拿著帳號密碼去登入網站, 這叫做認證<br>
-授權: 使用者登入後, 開始依照本身的權限去操作, 這叫做授權</p>
-<h2><span id="舉例">舉例</span></h2>
-<p>接著我們用更貼近生活的例子再次解釋一次這兩種概念</p>
-<h3><span id="sso-例子">SSO 例子</span></h3>
-<p>今天我在 Google 日曆登入我的帳號<br>
-但使用完日曆之後, 我想先去收個 Gmail, 這時候會發現我並不用重新登入, 而是可以直接使用 Gmail<br>
-原因是這兩個服務的帳號密碼其實是一樣, 再透過 Google 的 cookie-session 機制能夠讓我不需要重新登入</p>
-<h3><span id="oauth-例子">OAuth 例子</span></h3>
-<p>今天我在 Pchome 購物, 發現一台 Mac 很想買<br>
-於是我點下登入按鈕, 發現跳出可以用 Facebook or Line or Google 登入<br>
-那因為常用 Google, 所以我選擇用 Google 登入<br>
-此時我就被導入到 Google 的登入頁面輸入帳號密碼<br>
-認證完成之後, 我被導回 PChome 後就發現我有會員的身份, 然後就開開心心的買完東西</p>
-<p>接著隔天我在 Yahoo 購物, 發現 magic keyboard 比 PChome 更便宜<br>
-於是我在 Yahoo 按下登入按鈕, 發現又跳出可以用  Facebook or Line or Google 登入<br>
-我一樣選擇用 Google 登入, 但因為昨天我早就登入過了, 所以今天我不用重新輸入帳號密碼<br>
-只要在 Google 頁面按下 Approve 確認, 就被導入 Yahoo<br>
-然後發現我有會員的身份, 然後開開心心的買完東西</p>
-<p>上面流程會發現一件事情, 我們只用了一個帳號就可以使用 Yahoo 和 PChome 的服務<br>
-這個狀況很像剛剛 SSO 提到的, 我登入後使用 A 服務, 再次使用服務 B 時, 是不用重新登入</p>
-<p>但這裡有一個小小的差別<br>
-請注意, 當我們在登入後使用 Google Calander 後, 再去使用 Gmail 的時候<br>
-Google 不會叫你重新按下 Approve 才能使用 Gmail, 而是直接跳到 Gmail 的頁面讓你用</p>
-<p>但在 PChome 和 Yahoo 的狀況下<br>
-當我按下 Google 登入按鈕, 我一定都會被導轉到 Google 登入頁面去按下 Approve 或輸入帳密<br>
-這裡就是一開始提到的 approval interaction 的部分</p>
-<p>這是一個 OAuth 的核心地方, 也就是&lt;span style=&quot;color: red&quot;&gt;授權&lt;/span&gt; PChome 和 Yahoo 可以存取&lt;span style=&quot;color: red&quot;&gt;我的 Google 資料&lt;/span&gt;<br>
-所以在 PChome 和 Yahoo 按下 Googe 登入回來後, 會發現我的 email 已經在它們裡面</p>
-<p>但也會有另一個疑問出現, 那為什麼我在 Google 登入後<br>
-我從 PChome 和 Yahoo 按下 Goolge 登入, 我不需要輸入帳密, 只需要按下 Approve 呢?</p>
-<p>其實這原因很單純, 在使用 Facebook 網頁的時候, 你今天看完, 隔天再看, 是不需要重新登入<br>
-這就是透過 cookie-session 的機制達到, 但這跟 OAuth 並無太大相關性</p>
-<p>只是 OAuth 還有一個特性<br>
-當我使用其他購物網站, 繼續使用 Google 登入的時候<br>
-這樣 ... 我是不是只要記得 Google 的帳號密碼, 其他購物網站其實都不用紀錄?<br>
-也就代表, 我使用其他購物網站, 我都&lt;span style=&quot;color: red&quot;&gt;不需要重新輸入帳號密碼&lt;/span&gt;就能登入了</p>
-<p>沒錯, 其實透過 OAuth 也能達到 SSO<br>
-但前提是如果全世界的人都用 Google OAuth 的時候, 的確只要一組帳號密碼就能登入所有服務</p>
-<p>所以其實 OAuth 和 SSO 的概念某方面其實是算相近, 所以這也是常常被搞混的其中一點</p>
-<h2><span id="後記">後記</span></h2>
-<p>寫一寫才發現, 這篇應該當第一篇才對 XD</p>
-<h2><span id="references">References</span></h2>
-<ol>
-<li>https://tools.ietf.org/html/rfc6749#section-1</li>
-<li>https://tools.ietf.org/html/rfc7642#section-3.2</li>
+<p>簡單翻譯一下, Bob 有一組帳號密碼是在 SomeCSP 這個服務底下<br>此時 Bob 使用一個在 AnotherCSP 服務底下的應用程式<br>這個應用程式要透過 SomeCSP 去<span style="color: red">認證</span>此使用者的身份接著才能使用 SomeCSP 提供的身份資料去服務 Bob  </p>
+<p>夠冗長了吧 XD<br>這邊就在幫它簡化一下, 也就是說 Bob 想要使用 AnotherCSP 的服務時<br>必須先透過 SomeCSP 進行登入<span style="color: red">認證</span>才能使用  </p>
+<p>這裡有一個重點, 就是 authentication (認證)<br>當你拿著帳號密碼來登入的時候, 此時就是在做認證, 確認是不是真的是你  </p>
+<h3><span id="小總結">小總結</span></h3><p>這兩個東西的重點是不一樣的, 一個在於授權, 一個在於認證  </p>
+<p>OAuth 是一種授權框架, 而不是認證框架<br>SSO 是一種認證的方式, 而不是授權的方式  </p>
+<p>認證: 使用者拿著帳號密碼去登入網站, 這叫做認證<br>授權: 使用者登入後, 開始依照本身的權限去操作, 這叫做授權  </p>
+<h2><span id="舉例">舉例</span></h2><p>接著我們用更貼近生活的例子再次解釋一次這兩種概念  </p>
+<h3><span id="sso-例子">SSO 例子</span></h3><p>今天我在 Google 日曆登入我的帳號<br>但使用完日曆之後, 我想先去收個 Gmail, 這時候會發現我並不用重新登入, 而是可以直接使用 Gmail<br>原因是這兩個服務的帳號密碼其實是一樣, 再透過 Google 的 cookie-session 機制能夠讓我不需要重新登入  </p>
+<h3><span id="oauth-例子">OAuth 例子</span></h3><p>今天我在 Pchome 購物, 發現一台 Mac 很想買<br>於是我點下登入按鈕, 發現跳出可以用 Facebook or Line or Google 登入<br>那因為常用 Google, 所以我選擇用 Google 登入<br>此時我就被導入到 Google 的登入頁面輸入帳號密碼<br>認證完成之後, 我被導回 PChome 後就發現我有會員的身份, 然後就開開心心的買完東西  </p>
+<p>接著隔天我在 Yahoo 購物, 發現 magic keyboard 比 PChome 更便宜<br>於是我在 Yahoo 按下登入按鈕, 發現又跳出可以用  Facebook or Line or Google 登入<br>我一樣選擇用 Google 登入, 但因為昨天我早就登入過了, 所以今天我不用重新輸入帳號密碼<br>只要在 Google 頁面按下 Approve 確認, 就被導入 Yahoo<br>然後發現我有會員的身份, 然後開開心心的買完東西  </p>
+<p>上面流程會發現一件事情, 我們只用了一個帳號就可以使用 Yahoo 和 PChome 的服務<br>這個狀況很像剛剛 SSO 提到的, 我登入後使用 A 服務, 再次使用服務 B 時, 是不用重新登入  </p>
+<p>但這裡有一個小小的差別<br>請注意, 當我們在登入後使用 Google Calander 後, 再去使用 Gmail 的時候<br>Google 不會叫你重新按下 Approve 才能使用 Gmail, 而是直接跳到 Gmail 的頁面讓你用  </p>
+<p>但在 PChome 和 Yahoo 的狀況下<br>當我按下 Google 登入按鈕, 我一定都會被導轉到 Google 登入頁面去按下 Approve 或輸入帳密<br>這裡就是一開始提到的 approval interaction 的部分  </p>
+<p>這是一個 OAuth 的核心地方, 也就是<span style="color: red">授權</span> PChome 和 Yahoo 可以存取<span style="color: red">我的 Google 資料</span><br>所以在 PChome 和 Yahoo 按下 Googe 登入回來後, 會發現我的 email 已經在它們裡面  </p>
+<p>但也會有另一個疑問出現, 那為什麼我在 Google 登入後<br>我從 PChome 和 Yahoo 按下 Goolge 登入, 我不需要輸入帳密, 只需要按下 Approve 呢?  </p>
+<p>其實這原因很單純, 在使用 Facebook 網頁的時候, 你今天看完, 隔天再看, 是不需要重新登入<br>這就是透過 cookie-session 的機制達到, 但這跟 OAuth 並無太大相關性  </p>
+<p>只是 OAuth 還有一個特性<br>當我使用其他購物網站, 繼續使用 Google 登入的時候<br>這樣 … 我是不是只要記得 Google 的帳號密碼, 其他購物網站其實都不用紀錄?<br>也就代表, 我使用其他購物網站, 我都<span style="color: red">不需要重新輸入帳號密碼</span>就能登入了  </p>
+<p>沒錯, 其實透過 OAuth 也能達到 SSO<br>但前提是如果全世界的人都用 Google OAuth 的時候, 的確只要一組帳號密碼就能登入所有服務  </p>
+<p>所以其實 OAuth 和 SSO 的概念某方面其實是算相近, 所以這也是常常被搞混的其中一點  </p>
+<h2><span id="後記">後記</span></h2><p>寫一寫才發現, 這篇應該當第一篇才對 XD  </p>
+<h2><span id="references">References</span></h2><ol>
+<li><a href="https://tools.ietf.org/html/rfc6749#section-1">https://tools.ietf.org/html/rfc6749#section-1</a></li>
+<li><a href="https://tools.ietf.org/html/rfc7642#section-3.2">https://tools.ietf.org/html/rfc7642#section-3.2</a></li>
 <li><a href="https://blog.51cto.com/favccxx/1635938">OAuth与SSO、REST有哪些区别与联系</a></li>
 </ol>
 
