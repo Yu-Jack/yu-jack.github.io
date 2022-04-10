@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning (Certificate Pinning) 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又是要">
+    <meta name="description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning (Certificate Pinning) 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊 (Man-in-the-middle Attack, aka MITM) 而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="從 SSL 到 SSL Pinning 看完你就懂！">
 <meta property="og:url" content="https://yu-jack.github.io/2020/03/02/ssl-pinning/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning (Certificate Pinning) 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解這個的意思我們要先來說說 SSL 是什麼而 SSL Pinning 又是要">
+<meta property="og:description" content="前言看不懂跟我說，我想辦法補充 XD   正文開始 …某天有人問我   某: SSL Pinning (Certificate Pinning) 是什麼東西啊?我: SSL Pinning 是為了抵禦中間人攻擊 (Man-in-the-middle Attack, aka MITM) 而形成的一種防禦機制某: …… 你這樣說最好是有人聽得懂我: 我錯了 … 給點機會讓我重新解釋解釋   為了要了解">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-03-01T16:02:54.000Z">
-<meta property="article:modified_time" content="2020-11-29T06:04:24.392Z">
+<meta property="article:modified_time" content="2022-04-10T14:39:27.618Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="Security">
@@ -156,7 +156,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    28 分鐘 閱讀文 (大約 4137 個字)
+                    28 分鐘 閱讀文 (大約 4161 個字)
                 </span>
                 
                 
@@ -177,7 +177,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="content" style="word-break: break-all;">
                 <h2><span id="前言">前言</span></h2><p>看不懂跟我說，我想辦法補充 XD  </p>
 <p>正文開始 …<br>某天有人問我  </p>
-<p>某: SSL Pinning (Certificate Pinning) 是什麼東西啊?<br>我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制<br>某: …… 你這樣說最好是有人聽得懂<br>我: 我錯了 … 給點機會讓我重新解釋解釋  </p>
+<p>某: SSL Pinning (Certificate Pinning) 是什麼東西啊?<br>我: SSL Pinning 是為了抵禦中間人攻擊 (Man-in-the-middle Attack, aka MITM) 而形成的一種防禦機制<br>某: …… 你這樣說最好是有人聽得懂<br>我: 我錯了 … 給點機會讓我重新解釋解釋  </p>
 <p>為了要了解這個的意思<br>我們要先來說說 SSL 是什麼<br>而 SSL Pinning 又是要 pin 什麼東西<br>然後中間人又是哪個小三??</p>
 <h2><span id="什麼是-ssl">什麼是 SSL?</span></h2><p>SSL 全名是，Secure Sockets Layer<br>但這是屬於舊的標準，新的標準則是 Transport Layer Security (TLS)  </p>
 <p>但不管新舊標準，他們的目的都是同一個<br>那就是保護使用者資料的安全為目的，但 … 怎樣算保護呢?  </p>
@@ -218,7 +218,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2><span id="什麼是-ssl-pinning">什麼是 SSL Pinning ?</span></h2><p>SSL Pinning 也可以稱為 Certificate Pinning<br>而前面有提到一個概念，公私鑰是一對一配對的<br>所以同一組公私鑰出來的憑證，這個憑證裡面的公鑰絕對是不會變的<br>而 SSL Pinning 就是要把 SSL 固定起來<br>這個固定就是利用公鑰的特性達到的  </p>
 <p>假設今天我有一個 App 是專門瀏覽 github.com 用的<br>github.com 憑證內的公鑰是 O 的話<br>而我 App 裡面的程式，已經有預先寫好 O 這個公鑰<br>所以當我瀏覽 github.com 的時候，取得憑證內的公鑰 O<br>拿這個公鑰 O 去跟程式裡面寫好的 O 比對是一樣的，就繼續連線<br>不一樣的話就拒絕連線，因為不一樣的話，一定是有什麼狀況發生，不要連線比較好<br>這就是 SSL Pinning，確保連線的網址憑證是安全的  </p>
 <p>而發生不一樣的狀況，通常是所謂的中間人攻擊  </p>
-<h2><span id="中間人攻擊">中間人攻擊</span></h2><p>在正常連線的狀況下，都是屬於下圖的狀況 (這邊以最單純只有 server 的架構來表示<br><img src="/images/ssl/ssl-03.png" alt></p>
+<h2><span id="中間人攻擊">中間人攻擊</span></h2><p>中間人攻擊英文是 Man-in-the-middle Attack，又稱 MITM<br>在正常連線的狀況下，都是屬於下圖的狀況 (這邊以最單純只有 server 的架構來表示<br><img src="/images/ssl/ssl-03.png" alt></p>
 <p>中間人攻擊，就是中間卡了一個人幫你跟伺服器進行資料交換<br>這樣就代表所有東西都會被這個中間人看光光<br><img src="/images/ssl/ssl-04.png" alt></p>
 <p>接下來可能會有一個疑惑，我都用 SSL 了，他怎麼會看到我傳送的封包?<br>但其實當中間卡一個人的時候，你並不會知道中間真的有卡了一人在幫你交換資料<br>以你連線到 github.com 的時候，如果你不特別去點憑證來看<br>你其實並不會知道到底是怎麼一回事，讓我們看看下面 gif 的例子  </p>
 <p><img src="/images/ssl/ssl-05.gif" alt></p>
