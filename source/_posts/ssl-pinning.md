@@ -15,7 +15,7 @@ catalog: true
 某天有人問我  
 
 某: SSL Pinning (Certificate Pinning) 是什麼東西啊?  
-我: SSL Pinning 是為了抵禦中間人攻擊而形成的一種防禦機制  
+我: SSL Pinning 是為了抵禦中間人攻擊 (Man-in-the-middle Attack, aka MITM) 而形成的一種防禦機制  
 某: ...... 你這樣說最好是有人聽得懂  
 我: 我錯了 ... 給點機會讓我重新解釋解釋  
 
@@ -131,8 +131,9 @@ github.com 憑證內的公鑰是 O 的話
 
 而發生不一樣的狀況，通常是所謂的中間人攻擊  
 
-## 中間人攻擊
+## 中間人攻擊 
 
+中間人攻擊英文是 Man-in-the-middle Attack，又稱 MITM  
 在正常連線的狀況下，都是屬於下圖的狀況 (這邊以最單純只有 server 的架構來表示  
 ![](/images/ssl/ssl-03.png)
 
