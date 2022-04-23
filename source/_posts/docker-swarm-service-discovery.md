@@ -51,7 +51,7 @@ catalog: true
 ![host-b-container](/images/docker-swarm/16.png)  
 
 那麼一個疑問就來了, 他是怎麼找到另一個 container-b 的呢?  
-為何在原本的 overlay 環境下無法連線, 但在這個 overlay 下卻可以連線  
+為何在原本的 overlay 環境下無法連線, 但在這個 overlay 下卻可以連線  
 試著在 container-a 裡面找是否有 iptables 等等的相關設定  
 後來是透過 `ip neigh` 找到區網內把 IP 解析成 MAC 地址的一個地方  
 透過 ARP 的方式可以找到 container-b 正確的位置  

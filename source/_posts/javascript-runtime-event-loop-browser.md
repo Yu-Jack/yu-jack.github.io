@@ -269,7 +269,7 @@ console.log(3);
 ![](/images/browser/example-03.gif)
 
 我們再來看看 chrome 的 performance 的結果如何  
-為了方便檢測，把 js 那一段程式把也改成由 click 進行觸發  
+為了方便檢測，把 js 那一段程式把也改成由 click 進行觸發  
 ```html
 <html lang="en">
     <button id="button">button</button>
@@ -325,7 +325,7 @@ console.log(3);
 > 中間有一段有用慢動作播放，以方便看渲染效果
 
 我們再來看看 chrome 的 performance 的結果如何  
-為了方便檢測，把 js 那一段程式把也改成由 click 進行觸發  
+為了方便檢測，把 js 那一段程式把也改成由 click 進行觸發  
 ```html
 <html lang="en">
     <button id="button">button</button>
@@ -358,7 +358,7 @@ console.log(3);
 放大左半邊來看看，會發現左半邊執行了一個叫做 test function  
 也就是我們程式碼裡面的 click callback function  
 callback function 裡面有一個 setTimeout function  
-所以在 task 結束的尾端可以發現有一個 setTimeout 事件被觸發  
+所以在 task 結束的尾端可以發現有一個 setTimeout 事件被觸發  
 但這個 setTimeout 的 test2 function 是在下下一輪 task 才會進行動作 (畫面右邊的 test2)  
 而在中間的 task 就進行 paint 的動作 (變成黃色)
 ![](/images/browser/example-04-per-02.png)

@@ -458,7 +458,7 @@ doHash(); // D
 ```
 
 結果秒數變得跟 doHash 一樣長的時間了!?!?!?
-為什麼加上 doHash 後會影響 fs 的時間 !?
+為什麼加上 doHash 後會影響 fs 的時間 !?
 
 原因是因為 fs 是跟 pbkdf2 用同樣的 Thread Pool
 還記得我們只有 4 個 Thread 嗎?

@@ -9,7 +9,7 @@ catalog: true
 
 有時候在使用類似 Apple Pay 的東西
 並不知道該如何去看手機中 Safari 的偵錯
-然後就會愣在那裡，並不知道該怎麼 Debug
+然後就會愣在那裡，並不知道該怎麼 Debug
 今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
 
 <!--more-->

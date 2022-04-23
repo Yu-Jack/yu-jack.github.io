@@ -189,7 +189,7 @@ Root 憑證和一般我們所講的憑證有什麼不同，後面會介紹到
 2. Intermediate Certificate: DigitCert SHA2 Extended Validation Server CA
 3. Leaf Certificate: github.com 
 
-Leaf 是被 Intermediate 簽署認證  
+Leaf 是被 Intermediate 簽署認證  
 Intermediate 是被 Root 簽署認證  
 
 而 Root 憑證本身就會被安裝在手機以及瀏覽器以內  

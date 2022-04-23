@@ -6,6 +6,8 @@ tags: [ruby, rails, Puma, GIL]
 header-img: /images/banner.jpg
 catalog: true
 ---
+
+<span style="color: green">[Update 2022-04-23]</span> 新增 sleep case
 ## 介紹
 
 筆者在學習新的語言時  
@@ -289,6 +291,14 @@ end
 
 > 更詳細的說明可以直接看 [Puma Architecture](https://github.com/Puma/Puma/blob/master/docs/architecture.md)  
 
+另外還有一個特別的部分，在 rails 中那條 Thread sleep 的話，是會釋放 GIL 的  
+以上面的情況來說，max/min thread 為 2，並同時有兩個 request 進來  
+一個打到高 CPU 運算 (約 2s)  
+一個打到 sleep(2)  
+兩個 request 都會是只有花費 2s 左右就回來，所以呼叫 sleep 並不用擔心 GIL 會被鎖住  
+
+但要注意的是，那條 Thread 就會被佔用著  
+也就是以剛剛情況來說，再來第三個 request 打到高 CPU 運算的話，會是 4s 後才會回傳  
 
 ## 後記
 

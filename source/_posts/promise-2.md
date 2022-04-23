@@ -18,7 +18,7 @@ catalog: true
 那就是 callback 第一個參數都會是 error  
 雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的  
 假設當 callback 參數回傳越來越多的時候，總不可能把 error 放在最後一個去處理  
-因為你會始終不知道哪一個會是 error (就算寫註解也會讀到瘋掉)  
+因為你會始終不知道哪一個會是 error (就算寫註解也會讀到瘋掉)  
 試想一下這幾段 code 就可以理解了
 
 ```javascript
@@ -27,7 +27,7 @@ function test(cb) {
     cb(successful_data_1, successful_data_2)
 }
 test((successful_data_1, successful_data_2) => {
-    // 開心地處理兩個回傳的資料
+    // 開心地處理兩個回傳的資料
 })
 // --- 分隔線  
 function test(cb) {
@@ -35,7 +35,7 @@ function test(cb) {
     cb(error)
 }
 test((error) => {
-    // 咦? 第一個到底是 error 還是我原本的 successful_data_1
+    // 咦? 第一個到底是 error 還是我原本的 successful_data_1
 })
 ```
 
@@ -49,7 +49,7 @@ function test(cb) {
 test((error, successful_data_1, successful_data_2) => {
     if (error != null) {
     }
-    // 開心地處理兩個回傳的資料
+    // 開心地處理兩個回傳的資料
 })
 // --- 分隔線  
 function test(cb) {

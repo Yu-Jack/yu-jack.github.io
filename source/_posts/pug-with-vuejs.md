@@ -35,7 +35,7 @@ div.container
 
 這裡隱藏了一個會影響效能的 Bug  
 但我們先來說說, 加上了 pug 的情況下, 是如何運行  
-首先, 透過 nodejs + pug 會先去渲染成 html  
+首先, 透過 nodejs + pug 會先去渲染成 html  
 這個 html 就是在進入頁面的時候, 伺服器給予的
 所以上面的內容會變成如下  
 

@@ -130,7 +130,7 @@ executor.setRejectedExecutionHandler(new RejectedExecutionHandler() {
 
 #### 調用者運行策略 (CallerRunsPolicy)
 
-簡單來說，飽和後會直接由調用 Thread Pool 的主 Thread 自己來執行這個 Task
+簡單來說，飽和後會直接由調用 Thread Pool 的主 Thread 自己來執行這個 Task
 但在這個期間，主 Thread 就無法再度提交 Task
 從而讓 Thread Pool 有時間把正在處理的 Task 給完成
 
