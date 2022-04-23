@@ -19,16 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="介紹筆者在學習新的語言時在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制   以筆者最熟悉的 Node.js 來說一定會談論到 Node.js Event Loop像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理透過了解這些原理, 可以避免寫 code 的時候遇到一些問題舉例來說想在 Node.js 裡面 sleep 5">
+    <meta name="description" content="[Update 2022-04-23] 新增 sleep case 介紹筆者在學習新的語言時在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制   以筆者最熟悉的 Node.js 來說一定會談論到 Node.js Event Loop像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理透過了解這些原理, 可以避免寫 code 的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ruby &amp; Rails 運行機制和 single or multi-thread 淺談">
 <meta property="og:url" content="https://yu-jack.github.io/2021/07/04/rails-mechanism/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="介紹筆者在學習新的語言時在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制   以筆者最熟悉的 Node.js 來說一定會談論到 Node.js Event Loop像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理透過了解這些原理, 可以避免寫 code 的時候遇到一些問題舉例來說想在 Node.js 裡面 sleep 5">
+<meta property="og:description" content="[Update 2022-04-23] 新增 sleep case 介紹筆者在學習新的語言時在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制   以筆者最熟悉的 Node.js 來說一定會談論到 Node.js Event Loop像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理透過了解這些原理, 可以避免寫 code 的">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-04T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-07-19T02:43:22.899Z">
+<meta property="article:modified_time" content="2022-04-23T05:41:35.436Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="ruby">
 <meta property="article:tag" content="rails">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    17 分鐘 閱讀文 (大約 2617 個字)
+                    18 分鐘 閱讀文 (大約 2770 個字)
                 </span>
                 
                 
@@ -176,7 +176,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="介紹">介紹</span></h2><p>筆者在學習新的語言時<br>在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制  </p>
+                <p><span style="color: green">[Update 2022-04-23]</span> 新增 sleep case</p>
+<h2><span id="介紹">介紹</span></h2><p>筆者在學習新的語言時<br>在了解完語言的一些特色後, 會開始稍微研究此語言的運行機制  </p>
 <p>以筆者最熟悉的 Node.js 來說<br>一定會談論到 Node.js Event Loop<br>像是 Node.js Event Loop 是 Single Thread, 但 Node.js 本身不是等等原理<br>透過了解這些原理, 可以避免寫 code 的時候遇到一些問題<br>舉例來說想在 Node.js 裡面 sleep 5 秒的話, 一定會搭配 Promise 的機制避免 Block Event Loop  </p>
 <p>那這篇主要是淺談, 畢竟對 Ruby 這個語言還不深入<br>也順便把這篇當作紀錄, 之後有更深的了解也會更新在這篇或挑主題深入說明  </p>
 <p>此篇用的 Ruby 版本為 2.7 的版本<br>尚未談論到 Ruby 3 引入的新機制, 這等筆者對 Ruby 有比較多的了解後再說了 XD  </p>
@@ -256,6 +257,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <blockquote>
 <p>更詳細的說明可以直接看 <a href="https://github.com/Puma/Puma/blob/master/docs/architecture.md">Puma Architecture</a>  </p>
 </blockquote>
+<p>另外還有一個特別的部分，在 rails 中那條 Thread sleep 的話，是會釋放 GIL 的<br>以上面的情況來說，max/min thread 為 2，並同時有兩個 request 進來<br>一個打到高 CPU 運算 (約 2s)<br>一個打到 sleep(2)<br>兩個 request 都會是只有花費 2s 左右就回來，所以呼叫 sleep 並不用擔心 GIL 會被鎖住  </p>
+<p>但要注意的是，那條 Thread 就會被佔用著<br>也就是以剛剛情況來說，再來第三個 request 打到高 CPU 運算的話，會是 4s 後才會回傳  </p>
 <h2><span id="後記">後記</span></h2><p>這篇說的東西有點多也有點雜, 有些東西也是輕描淡寫的帶過<br>之後看到更深入之後, 應該會根據不同部分去做深入介紹</p>
 
             </div>

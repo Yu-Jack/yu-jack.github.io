@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-02-19T03:31:09.000Z">
-<meta property="article:modified_time" content="2020-01-29T08:25:29.000Z">
+<meta property="article:modified_time" content="2022-04-23T05:39:50.922Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Executor">
@@ -205,7 +205,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">executor.setRejectedExecutionHandler(<span class="keyword">new</span> RejectedExecutionHandler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor executor)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Get you!"</span>);</span><br><span class="line">        r.run();</span><br><span class="line">        System.out.println(<span class="string">"Done in handler"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h4><span id="拋棄策略-discardpolicy">拋棄策略 (DiscardPolicy)</span></h4><p>不做任何處理直接拋棄</p>
 <h4><span id="拋棄舊任務策略-discardoldestpolicy">拋棄舊任務策略 (DiscardOldestPolicy)</span></h4><p>把 Queue 之中最頭的元素拋棄，並在嘗試重新提交 Task</p>
-<h4><span id="調用者運行策略-callerrunspolicy">調用者運行策略 (CallerRunsPolicy)</span></h4><p>簡單來說，飽和後會直接由調用 Thread Pool 的主 Thread 自己來執行這個 Task<br>但在這個期間，主 Thread 就無法再度提交 Task<br>從而讓 Thread Pool 有時間把正在處理的 Task 給完成</p>
+<h4><span id="調用者運行策略-callerrunspolicy">調用者運行策略 (CallerRunsPolicy)</span></h4><p>簡單來說，飽和後會直接由調用 Thread Pool 的主 Thread 自己來執行這個 Task<br>但在這個期間，主 Thread 就無法再度提交 Task<br>從而讓 Thread Pool 有時間把正在處理的 Task 給完成</p>
 <h2><span id="創建-thread-pool-的四個常用方法">創建 Thread Pool 的四個常用方法</span></h2><p>這四個常用的方法都是透過 ThreadPoolExecutor 的不同參數所實作而成的</p>
 <ol>
 <li><p><code>public static ExecutorService newFixedThreadPool(int nThreads)</code><br> 創建固定數量的 Thead，提交 Task 的時候如果未達 <code>nThreads</code> 的數量的話，則會一直新建 Thread<br> 達到 <code>nThreads</code> 時，之後的 Task 則會進入到佇列中</p>

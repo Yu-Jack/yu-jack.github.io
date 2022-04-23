@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-03-01T16:02:54.000Z">
-<meta property="article:modified_time" content="2022-04-10T14:39:27.618Z">
+<meta property="article:modified_time" content="2022-04-23T05:39:50.885Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="Security">
@@ -236,7 +236,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>Intermediate Certificate: DigitCert SHA2 Extended Validation Server CA</li>
 <li>Leaf Certificate: github.com </li>
 </ol>
-<p>Leaf 是被 Intermediate 簽署認證<br>Intermediate 是被 Root 簽署認證  </p>
+<p>Leaf 是被 Intermediate 簽署認證<br>Intermediate 是被 Root 簽署認證  </p>
 <p>而 Root 憑證本身就會被安裝在手機以及瀏覽器以內<br>但談到我剛剛有一個 github.com 被中間人攻擊的例子<br>是我自行把中間人的 Root 憑證給安裝到電腦中，才會被攻擊<br>實際上，其實有可能透過社交工程的方法，引誘使用者安裝這些不安全的 Root 憑證  </p>
 <blockquote>
 <p>以 Android 來說，可能會在 Settings &gt; Security &gt; Trusted Credentials 看到很多根憑證<br>以 Mac 電腦來說，可以在 terminal 使用 open file:///System/Library/Security/Certificates.bundle/Contents/Resources/TrustStore.html<br>打開後就會看到裝在這台電腦上面所有信任的 Root 憑證  </p>
