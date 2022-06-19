@@ -65,7 +65,7 @@ func main() {
 }
 ```
 
-可以看到特別的地方在於 function name 前面有一個類似參數的東西，那個叫做 receiver，另一個是 pointer 的部分，詳細的內容建議到[學習 Golang 的心得 - Receiver](/2021/04/18/go-practice-1/) 了解一下，裡面也有提到 Go 裡面是只有存在 pass by value。
+可以看到特別的地方在於 function name 前面有一個類似參數的東西，那個叫做 receiver，另一個是 pointer 的部分，詳細的內容建議到[學習 Golang 的心得 - Receiver](/2021/04/18/go-practice-1/) 了解一下，裡面也有提到 Go 裡面是只有存在 pass by value，但以 map & slice 來說他們 copy 的是 pointer value，而不是資料本身，換句話說 map & slice 傳到 function 裡面做修改時是會影響外面的。
 
 ## interface
 
