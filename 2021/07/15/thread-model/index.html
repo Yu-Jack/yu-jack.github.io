@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Thead Model 介紹 - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+<title>Thread Model 介紹 - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -21,14 +21,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <meta name="description" content="介紹在學習各個語言底層如何去操作 Thread 時都會看到一個名詞 Thread Model也就是不同語言開 Thread 的方式都不太一樣舉例來說, 會看到某些文章寫出以下類似的結果   1234Ruby 1.8  1:N, aka Green threadsJava 8    1:1, 但某個版本之前都是使用 1:NRuby 1.9  1:1, 但使用 GILGo   1.1  M:N, 確切">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Thead Model 介紹">
+<meta property="og:title" content="Thread Model 介紹">
 <meta property="og:url" content="https://yu-jack.github.io/2021/07/15/thread-model/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
 <meta property="og:description" content="介紹在學習各個語言底層如何去操作 Thread 時都會看到一個名詞 Thread Model也就是不同語言開 Thread 的方式都不太一樣舉例來說, 會看到某些文章寫出以下類似的結果   1234Ruby 1.8  1:N, aka Green threadsJava 8    1:1, 但某個版本之前都是使用 1:NRuby 1.9  1:1, 但使用 GILGo   1.1  M:N, 確切">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-15T04:40:00.000Z">
-<meta property="article:modified_time" content="2021-07-19T07:18:59.010Z">
+<meta property="article:modified_time" content="2022-06-22T02:44:26.300Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="thread">
 <meta property="article:tag" content="thread model">
@@ -98,7 +98,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="Thead Model 介紹" height="28">
+                <img src="/images/logo.svg" alt="Thread Model 介紹" height="28">
             
             </a>
         </div> -->
@@ -171,7 +171,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Thead Model 介紹
+                Thread Model 介紹
             
         </h1>
         
