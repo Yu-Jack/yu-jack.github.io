@@ -1,5 +1,5 @@
 ---
-title: Thead Model 介紹
+title: Thread Model 介紹
 categories: Operating System
 date: 2021-07-15 12:40:00
 tags: [thread, thread model, process, operating system]
