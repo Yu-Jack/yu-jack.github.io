@@ -63,14 +63,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/debug/</loc>
+        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
         <lastmod>2022-04-23T05:39:50.922Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/NodeJs/</loc>
+        <loc>https://yu-jack.github.io/categories/debug/</loc>
         <lastmod>2022-04-23T05:39:50.922Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -98,14 +98,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Vue/</loc>
+        <loc>https://yu-jack.github.io/categories/Development/</loc>
         <lastmod>2022-04-23T05:39:50.923Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Development/</loc>
+        <loc>https://yu-jack.github.io/categories/Vue/</loc>
         <lastmod>2022-04-23T05:39:50.923Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -126,15 +126,15 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Golang/</loc>
-        <lastmod>2022-06-19T04:31:19.904Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/Operating-System/</loc>
+        <lastmod>2022-06-22T02:44:26.300Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Operating-System/</loc>
-        <lastmod>2022-06-22T02:44:26.300Z</lastmod>
+        <loc>https://yu-jack.github.io/categories/Golang/</loc>
+        <lastmod>2022-10-04T13:45:15.755Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

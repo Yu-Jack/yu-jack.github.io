@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Go Concurrency Patterns - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="介紹這篇主要是前陣子讀完 Concurrency in Go 的一些心得。裡面提到很多關於 Concurrency 實作的一些技巧，讀完之後有特別實作出來，可以參考個人的 repository go-concurrency-patterns。 以下是個人從書中擷取出來認為比較核心的技巧和觀念，本文不會提及太多 Patterns，詳細可以上面的 repository 看看唷！ 核心技巧書中提到的 P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go Concurrency Patterns">
+<meta property="og:url" content="https://yu-jack.github.io/2022/10/04/go-concurrency/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="介紹這篇主要是前陣子讀完 Concurrency in Go 的一些心得。裡面提到很多關於 Concurrency 實作的一些技巧，讀完之後有特別實作出來，可以參考個人的 repository go-concurrency-patterns。 以下是個人從書中擷取出來認為比較核心的技巧和觀念，本文不會提及太多 Patterns，詳細可以上面的 repository 看看唷！ 核心技巧書中提到的 P">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2022-10-04T13:11:30.000Z">
+<meta property="article:modified_time" content="2022-10-04T13:45:15.755Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="concurrency">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+    <style>
+        .content img {
+            display: block;   
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Go Concurrency Patterns" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分鐘 閱讀文 (大約 1145 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Go Concurrency Patterns
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="介紹">介紹</span></h2><p>這篇主要是前陣子讀完 Concurrency in Go 的一些心得。裡面提到很多關於 Concurrency 實作的一些技巧，讀完之後有特別實作出來，可以參考個人的 repository <a href="https://github.com/Yu-Jack/go-concurrency-patterns">go-concurrency-patterns</a>。</p>
+<p>以下是個人從書中擷取出來認為比較核心的技巧和觀念，本文不會提及太多 Patterns，詳細可以上面的 repository 看看唷！</p>
+<h2><span id="核心技巧">核心技巧</span></h2><p>書中提到的 Patterns 都是最大化利用 channel 的特性去達成。</p>
+<p>先舉書中第一個 Generator Pattern 來做說明。可以發現以下 generateData function 是負責去建立和關閉 channel，而外面則是用 range 去讀 channel。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateData</span><span class="params">()</span> &lt;-<span class="title">chan</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	data := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(data <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">			data &lt;- i</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">close</span>(data)</span><br><span class="line">	&#125;(data)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> data</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	data := generateData()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> d := <span class="keyword">range</span> data &#123;</span><br><span class="line">		fmt.Println(d)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其實這是利用了 channel 的兩特性而結合的一種 pattern</p>
+<ol>
+<li>不能向已關閉的 channel 進行寫入</li>
+<li>可以向已關閉的 channel 進行讀取</li>
+</ol>
+<p>正是因為以上兩點，所以書中才會建議建立 channel 的人是要負責關閉的，而不是讀取又或是其他地方去關閉。以第 2. 點來說，透過 range 讀取 channel 的話，當 channel 被關閉時，是會跳出 range 這個 loop 的。即使不用 range，用 v, ok := &lt;- data 中的 ok 也能夠知道 channel 究竟有沒有被關閉。</p>
+<p>所以在讀取部分可以很大限度避免 panic 出現，而在寫入的部分更可以透過指定 function 回傳是只能讀的 channel，進而避免外面使用的人出現 panic 的情況。</p>
+<h2><span id="核心觀念">核心觀念</span></h2><p>核心觀念則是要防止 goroutine leak，因爲 goroutine 在 go 中其實是一個不太佔資源的東西，但是若只是因為他不佔資源，而隨意使用還是會造成很大的後果。</p>
+<p>所以要如何正確關閉 goroutine 就變得非常重要，以最基本的就是透過 done channel 以及 timeout 去關閉 channel。</p>
+<p>先從 done channel 來看看，舉下面例子來說，我從 channel 讀到一定數量想要跳掉，但我又不是建立 channel 的人，該怎麼去關閉呢？其實可以透過傳入 done 這個 channel 並讓裡面的 goroutine 使用 select 去監聽。透過這種方式的話，即使外面 function 沒有把 channel 讀完，只要透過 defer close(done) 的方式，確保外面 function 結束時一定會去關閉。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateData</span><span class="params">(done &lt;-<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span> &lt;-<span class="title">chan</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	data := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(data <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> <span class="built_in">close</span>(data)</span><br><span class="line"></span><br><span class="line">		i := <span class="number">0</span></span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">select</span> &#123;</span><br><span class="line">			<span class="keyword">case</span> &lt;-done:</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			<span class="keyword">case</span> data &lt;- i:</span><br><span class="line">				i++</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;(data)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> data</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span><br><span class="line">	data := generateData(done)</span><br><span class="line"></span><br><span class="line">	counter := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> d := <span class="keyword">range</span> data &#123;</span><br><span class="line">		fmt.Println(counter, d)</span><br><span class="line">		counter++</span><br><span class="line">		<span class="keyword">if</span> counter == <span class="number">5</span> &#123;</span><br><span class="line">			<span class="built_in">close</span>(done)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果不關閉的話，就會一直卡在 data &lt;- i 這邊，而裡面的 goroutine 永遠都不會結束。也就意味著，萬一這個 function 被呼叫一百萬次，而每次都是讀一半就結束然後不關閉的話，就會有一百萬個 goroutine 卡在那邊，這也是非常消耗資源的一件事情。</p>
+<p>再來看看 timeout，其實也是類似的概念，只是把原本吧 select case &lt;-done: 的地方換成 &lt;-time.After(10 * time.Second)。這樣能夠預防萬一 generateData 執行太久，外面一堆 function 都在等著讀取，進而導致一堆 goroutine 排隊等著讀取的現象發生，就像呼叫一百萬次，結果這一百萬個都要等待 generateData 產完資料，這也是一件非常消耗資源的事情。</p>
+<p>另外透過 timeout 也能盡量避免資源被吃掉的問題出現，但如果你是本身流量就很大那完全就是另一回事了。然後透過 timeout 也可以防止 deadlock 的問題出現，原因是有些資源會互卡，在互卡的情況下，如果不設置 timeout，就會永遠 pending 在那邊。當然不是說設定 timeout 是最佳解，只是一種預防程式掛掉的方式，實際還是得找為什麼資源會互卡這件事。</p>
+<h2><span id="後記">後記</span></h2><p>個人還蠻推薦看這本書，這篇省略蠻多東西，但有把我覺得最重要的東西提出來。</p>
+<p>另外有把書中提到的 Pattern 整理在 <a href="https://github.com/Yu-Jack/go-concurrency-patterns">go-concurrency-patterns</a>，有興趣的可以讀看看。</p>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/concurrency/" rel="tag">concurrency</a>, <a class="has-link-grey -link" href="/tags/golang/" rel="tag">golang</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2022/03/13/pulumi-tutor-2/">
+                <span class="level-item">Pulumi Service 與 File System Backend 差異</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" style="display: flex; justify-content: center;" id="liker">
+    </div>
+    <script>
+        var iframe = document.createElement("iframe")
+        iframe.src = "https://button.like.co/in/embed/jk82421/button?referrer=" + encodeURIComponent(location.href)
+        document.getElementById("liker").appendChild(iframe)
+    </script>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2022/10/04/go-concurrency/';
+        this.page.identifier = '2022/10/04/go-concurrency/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+    <style>
+        .custom-flex-container {
+            display: flex; 
+            justify-content: center; 
+            margin-top: 30px;
+        }
+    </style>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content" style="max-height: 85vh; overflow-y: auto;">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#介紹">
+        <span class="has-mr-6">1</span>
+        <span>介紹</span>
+        </a></li><li>
+        <a class="is-flex" href="#核心技巧">
+        <span class="has-mr-6">2</span>
+        <span>核心技巧</span>
+        </a></li><li>
+        <a class="is-flex" href="#核心觀念">
+        <span class="has-mr-6">3</span>
+        <span>核心觀念</span>
+        </a></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">4</span>
+        <span>後記</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2022 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
