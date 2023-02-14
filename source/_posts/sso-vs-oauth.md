@@ -78,6 +78,11 @@ SSO 是一種認證的方式, 而不是授權的方式
 認證: 使用者拿著帳號密碼去登入網站, 這叫做認證  
 授權: 使用者登入後, 開始依照本身的權限去操作, 這叫做授權  
 
+> <span style="color: green">[2023-02-14 Update]</span> 
+> 這邊補充一下，SSO 強調的是一種概念，SSO 實作方式有很多種  
+> 例如之前分享的 [CAS](https://yu-jack.github.io/2020/04/20/sso-2/) 和 [iframe & cookie](https://yu-jack.github.io/2020/04/06/sso-1/)  
+> 其實 OAuth 也是實作 SSO 的一種方式，就像在 [OAuth 例子](#oauth-例子)最後一段中提到的  
+
 ## 舉例  
 
 接著我們用更貼近生活的例子再次解釋一次這兩種概念  
