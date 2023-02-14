@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-04-13T02:05:21.000Z">
-<meta property="article:modified_time" content="2020-11-29T06:04:24.395Z">
+<meta property="article:modified_time" content="2023-02-14T13:53:42.402Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="w3HexSchool">
 <meta property="article:tag" content="Security">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    11 分鐘 閱讀文 (大約 1673 個字)
+                    12 分鐘 閱讀文 (大約 1754 個字)
                 </span>
                 
                 
@@ -204,6 +204,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3><span id="小總結">小總結</span></h3><p>這兩個東西的重點是不一樣的, 一個在於授權, 一個在於認證  </p>
 <p>OAuth 是一種授權框架, 而不是認證框架<br>SSO 是一種認證的方式, 而不是授權的方式  </p>
 <p>認證: 使用者拿著帳號密碼去登入網站, 這叫做認證<br>授權: 使用者登入後, 開始依照本身的權限去操作, 這叫做授權  </p>
+<blockquote>
+<p><span style="color: green">[2023-02-14 Update]</span><br>這邊補充一下，SSO 強調的是一種概念，SSO 實作方式有很多種<br>例如之前分享的 <a href="https://yu-jack.github.io/2020/04/20/sso-2/">CAS</a> 和 <a href="https://yu-jack.github.io/2020/04/06/sso-1/">iframe &amp; cookie</a><br>其實 OAuth 也是實作 SSO 的一種方式，就像在 <a href="#oauth-例子">OAuth 例子</a>最後一段中提到的  </p>
+</blockquote>
 <h2><span id="舉例">舉例</span></h2><p>接著我們用更貼近生活的例子再次解釋一次這兩種概念  </p>
 <h3><span id="sso-例子">SSO 例子</span></h3><p>今天我在 Google 日曆登入我的帳號<br>但使用完日曆之後, 我想先去收個 Gmail, 這時候會發現我並不用重新登入, 而是可以直接使用 Gmail<br>原因是這兩個服務的帳號密碼其實是一樣, 再透過 Google 的 cookie-session 機制能夠讓我不需要重新登入  </p>
 <h3><span id="oauth-例子">OAuth 例子</span></h3><p>今天我在 Pchome 購物, 發現一台 Mac 很想買<br>於是我點下登入按鈕, 發現跳出可以用 Facebook or Line or Google 登入<br>那因為常用 Google, 所以我選擇用 Google 登入<br>此時我就被導入到 Google 的登入頁面輸入帳號密碼<br>認證完成之後, 我被導回 PChome 後就發現我有會員的身份, 然後就開開心心的買完東西  </p>
@@ -410,7 +413,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="level">
             <div class="level-start has-text-centered-mobile">
                 <p class="is-size-7">
-                &copy; 2022 Jack Yu&nbsp;
+                &copy; 2023 Jack Yu&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 
