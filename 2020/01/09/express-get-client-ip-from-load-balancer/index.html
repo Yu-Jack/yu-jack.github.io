@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="[Update 2021-12-06] 新增推薦拿法 前言我們有時候要取得使用者 IP往往都會用最簡單的方式取得 IP以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候取得到的 IP 會是 Load Balancer 的嗎?而真正的 IP 會被 Loa">
+    <meta name="description" content="&lt;span style&#x3D;&quot;color: green&quot;&gt;[Update 2021-12-06]&lt;&#x2F;span&gt; 新增推薦拿法 前言 我們有時候要取得使用者 IP 往往都會用最簡單的方式取得 IP 以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP 但你知道，當伺服器被多層的 Load">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何從多層 Load Balancer &#x2F; Nginx 取得使用者正確的 IP?">
 <meta property="og:url" content="https://yu-jack.github.io/2020/01/09/express-get-client-ip-from-load-balancer/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="[Update 2021-12-06] 新增推薦拿法 前言我們有時候要取得使用者 IP往往都會用最簡單的方式取得 IP以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候取得到的 IP 會是 Load Balancer 的嗎?而真正的 IP 會被 Loa">
+<meta property="og:description" content="&lt;span style&#x3D;&quot;color: green&quot;&gt;[Update 2021-12-06]&lt;&#x2F;span&gt; 新增推薦拿法 前言 我們有時候要取得使用者 IP 往往都會用最簡單的方式取得 IP 以 express 為例子，會使用 req.connection.remoteAddress req.ip 等等方式取得 IP 但你知道，當伺服器被多層的 Load">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-01-08T16:30:25.000Z">
@@ -177,32 +177,73 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <p><span style="color: green">[Update 2021-12-06]</span> 新增<a href="#推薦拿法">推薦拿法</a></p>
-<h2><span id="前言">前言</span></h2><p>我們有時候要取得使用者 IP<br>往往都會用最簡單的方式取得 IP<br>以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>取得到的 IP 會是 Load Balancer 的嗎?<br>而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>如果不知道的話，那這邊文章有可能會幫助到你  </p>
-<a id="more"></a>
-<p>接下來會以 AWS 的 Load Balancer 以及伺服器上建立一個 Nginx 服務<br>然後還有一個 express server 服務來說明<br>從無 Load Balancer 到雙層 Load Balancer 的架構下分別該如何取得 IP</p>
-<h2><span id="direct-connection">Direct Connection</span></h2><p>架構示意圖如下<br><img src="/images/aws/aws-get-ip-01-arch.png" alt></p>
-<p>當我們連線時直接連到伺服器時<br>可以透過 express 的 <code>req.connection.remoteAddress</code> 取得到使用者的 IP (233.x.x.x)<br>原因是此時的呼叫者是使用者  </p>
+                <p>&lt;span style=&quot;color: green&quot;&gt;[Update 2021-12-06]&lt;/span&gt; 新增<a href="#%E6%8E%A8%E8%96%A6%E6%8B%BF%E6%B3%95">推薦拿法</a></p>
+<h2><span id="前言">前言</span></h2>
+<p>我們有時候要取得使用者 IP<br>
+往往都會用最簡單的方式取得 IP<br>
+以 express 為例子，會使用 <code>req.connection.remoteAddress</code> <code>req.ip</code> 等等方式取得 IP<br>
+但你知道，當伺服器被多層的 Load Balancer 保護在前面的時候<br>
+取得到的 IP 會是 Load Balancer 的嗎?<br>
+而真正的 IP 會被 Load Balancer 放在 <code>X-Forwarded-For</code> 上面，傳遞到後面伺服器<br>
+如果不知道的話，那這邊文章有可能會幫助到你</p>
+<p>&lt;!-- more --&gt;</p>
+<p>接下來會以 AWS 的 Load Balancer 以及伺服器上建立一個 Nginx 服務<br>
+然後還有一個 express server 服務來說明<br>
+從無 Load Balancer 到雙層 Load Balancer 的架構下分別該如何取得 IP</p>
+<h2><span id="direct-connection">Direct Connection</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-01-arch.png" alt></p>
+<p>當我們連線時直接連到伺服器時
+可以透過 express 的 <code>req.connection.remoteAddress</code> 取得到使用者的 IP (233.x.x.x)<br>
+原因是此時的呼叫者是使用者</p>
 <p><img src="/images/aws/aws-get-ip-01.png" alt></p>
-<h2><span id="單層-load-balancer">單層 Load Balancer</span></h2><p>架構示意圖如下<br><img src="/images/aws/aws-get-ip-02-arch.png" alt></p>
-<p>當我們遇到只有一層 Load Balancer 時<br>透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的<br>是 Load Balancer 的 IP (10.x.x.x, 圖中最下面)<br>原因是 Load Balancer 作為中介者，取得到了 Rqeuest 之後<br>會再往後端伺服器轉發，這時候呼叫者就是 Load Balancer 而不會是使用者<br>使用者真正的 IP 是會放在 header 的 <code>X-Forwarded-For</code> 上面 (233.x.x.x)   </p>
+<h2><span id="單層-load-balancer">單層 Load Balancer</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-02-arch.png" alt></p>
+<p>當我們遇到只有一層 Load Balancer 時<br>
+透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的
+是 Load Balancer 的 IP (10.x.x.x, 圖中最下面)<br>
+原因是 Load Balancer 作為中介者，取得到了 Rqeuest 之後<br>
+會再往後端伺服器轉發，這時候呼叫者就是 Load Balancer 而不會是使用者<br>
+使用者真正的 IP 是會放在 header 的 <code>X-Forwarded-For</code> 上面 (233.x.x.x)</p>
 <blockquote>
-<p>這邊 Load Balancer 可以是 Nginx，但這邊我們用 AWS Load Balancer 做 DEMO<br>原因是我們後面會需要架構出兩層 Load Balancer 的狀況</p>
+<p>這邊 Load Balancer 可以是 Nginx，但這邊我們用 AWS Load Balancer 做 DEMO<br>
+原因是我們後面會需要架構出兩層 Load Balancer 的狀況</p>
 </blockquote>
 <p><img src="/images/aws/aws-get-ip-02.png" alt></p>
-<h2><span id="雙層-load-balancer">雙層 Load Balancer</span></h2><p>架構示意圖如下<br><img src="/images/aws/aws-get-ip-03-arch.png" alt></p>
-<p>而當我們再加上一層 Load Balancer 的時候 (這裡用 nginx 代替)<br>透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的是 Nginx 的 IP<br>因為呼叫者從上一個案例的 Load Balancer 變成了 Nginx<br>而我們這邊 Nginx 是架設在 localhost 裡面，所以可以看到 IP 是 127.0.0.1 (圖中最下面)<br>那前面 Load balancer 的 IP 就被放到 X-Forwarded-For 上面去了 (10.x.x.x 那個)  </p>
+<h2><span id="雙層-load-balancer">雙層 Load Balancer</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-03-arch.png" alt></p>
+<p>而當我們再加上一層 Load Balancer 的時候 (這裡用 nginx 代替)<br>
+透過 express 的 <code>req.connection.remoteAddress</code> 會取得到的是 Nginx 的 IP<br>
+因為呼叫者從上一個案例的 Load Balancer 變成了 Nginx<br>
+而我們這邊 Nginx 是架設在 localhost 裡面，所以可以看到 IP 是 127.0.0.1 (圖中最下面)<br>
+那前面 Load balancer 的 IP 就被放到 X-Forwarded-For 上面去了 (10.x.x.x 那個)</p>
 <p><img src="/images/aws/aws-get-ip-03.png" alt></p>
-<h2><span id="雙層-load-balancer-惡意-x-forwarded-for">雙層 Load Balancer + 惡意 X-Forwarded-For</span></h2><p>架構示意圖如下<br><img src="/images/aws/aws-get-ip-04-arch.png" alt></p>
-<p>狀況如同前面的 Case，但這邊唯一不一樣的是<br>萬一使用者自己在 X-Forwarded-For 加了 <code>X-Forwarded-For: 5.5.5.5, 6.6.6.6</code><br>這些資料是會被放到 X-Forwarded-For 最前面去的<br>所以在取得 IP 的時候要特別注意並不是取得 X-Forwarded-For 的第一個就可以了<br>應該要根據你前面放了多少個 Load Balancer 去決定要拿<strong><em>從後面數過來的第幾個</em></strong>才是正確的  </p>
+<h2><span id="雙層-load-balancer-惡意-x-forwarded-for">雙層 Load Balancer + 惡意 X-Forwarded-For</span></h2>
+<p>架構示意圖如下<br>
+<img src="/images/aws/aws-get-ip-04-arch.png" alt></p>
+<p>狀況如同前面的 Case，但這邊唯一不一樣的是<br>
+萬一使用者自己在 X-Forwarded-For 加了 <code>X-Forwarded-For: 5.5.5.5, 6.6.6.6</code><br>
+這些資料是會被放到 X-Forwarded-For 最前面去的<br>
+所以在取得 IP 的時候要特別注意並不是取得 X-Forwarded-For 的第一個就可以了<br>
+應該要根據你前面放了多少個 Load Balancer 去決定要拿<strong><em>從後面數過來的第幾個</em></strong>才是正確的</p>
 <p><img src="/images/aws/aws-get-ip-04.png" alt></p>
-<h2><span id="推薦拿法">推薦拿法</span></h2><p>但實際上，真的非常難要你一個一個 IP 去數，所以像在 express 中有提供 <code>trust proxy</code> 的一個變數<br>可以透過設定這個變數，去幫你把 <code>x-forwarded-for</code> 裡面的 IP 去做白名單過濾  </p>
-<p>舉例來說，現在前面有一層 Load Balancer，並只有設定 <code>app.set(&#39;trust proxy&#39;, true)</code><br>以及 <code>x-forwarded-for: 3.3.3.3, 1.1.1.1, 2.2.2., 2.2.2.2</code>，此時 <code>req.ip</code> 會拿到 <code>3.3.3.3</code><br>在<a href="https://expressjs.com/zh-tw/guide/behind-proxies.html"> express 官網</a>也有提到只有這樣設定會取得最左邊的 <code>x-forwarded-for</code>  </p>
-<p>但我實際的 IP 想要取得的是 <code>1.1.1.1</code>，而 <code>2.2.2.x</code> 是我的 proxy，則可以這樣設定<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.set(<span class="string">'trust proxy'</span>, <span class="literal">true</span>)</span><br><span class="line">app.set(<span class="string">'trust proxy'</span>, [<span class="string">'loopback'</span>, <span class="string">'2.2.2.0/24'</span>])</span><br></pre></td></tr></table></figure></p>
-<p>代表『信任的 proxy』有 <code>127.0.0.1</code> 以及 <code>2.2.2.0/24</code><br>接著取得 IP 的順序就會從右到左，如果有在白名單裡面，則跳過不看，最後取得 <code>req.ip</code> 就會是 <code>1.1.1.1</code><br>這樣就不用一個一個數了！其他像是 Rails 也有類似的設定，所以每個語言應該都有對應的東西  </p>
-<h2><span id="references">References</span></h2><p>其他還有很多詳細的介紹，非常推薦看以下這篇文章，大推！</p>
+<h2><span id="推薦拿法">推薦拿法</span></h2>
+<p>但實際上，真的非常難要你一個一個 IP 去數，所以像在 express 中有提供 <code>trust proxy</code> 的一個變數<br>
+可以透過設定這個變數，去幫你把 <code>x-forwarded-for</code> 裡面的 IP 去做白名單過濾</p>
+<p>舉例來說，現在前面有一層 Load Balancer，並只有設定 <code>app.set('trust proxy', true)</code><br>
+以及 <code>x-forwarded-for: 3.3.3.3, 1.1.1.1, 2.2.2., 2.2.2.2</code>，此時 <code>req.ip</code> 會拿到 <code>3.3.3.3</code><br>
+在<a href="https://expressjs.com/zh-tw/guide/behind-proxies.html"> express 官網</a>也有提到只有這樣設定會取得最左邊的 <code>x-forwarded-for</code></p>
+<p>但我實際的 IP 想要取得的是 <code>1.1.1.1</code>，而 <code>2.2.2.x</code> 是我的 proxy，則可以這樣設定<br>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.set(<span class="string">'trust proxy'</span>, <span class="literal">true</span>)</span><br><span class="line">app.set(<span class="string">'trust proxy'</span>, [<span class="string">'loopback'</span>, <span class="string">'2.2.2.0/24'</span>])</span><br></pre></td></tr></table></figure></p>
+<p>代表『信任的 proxy』有 <code>127.0.0.1</code> 以及 <code>2.2.2.0/24</code><br>
+接著取得 IP 的順序就會從右到左，如果有在白名單裡面，則跳過不看，最後取得 <code>req.ip</code> 就會是 <code>1.1.1.1</code><br>
+這樣就不用一個一個數了！其他像是 Rails 也有類似的設定，所以每個語言應該都有對應的東西</p>
+<h2><span id="references">References</span></h2>
+<p>其他還有很多詳細的介紹，非常推薦看以下這篇文章，大推！</p>
 <ol>
-<li><a href="https://devco.re/blog/2014/06/19/client-ip-detection/">https://devco.re/blog/2014/06/19/client-ip-detection/</a></li>
+<li>https://devco.re/blog/2014/06/19/client-ip-detection/</li>
 </ol>
 
             </div>
@@ -250,6 +291,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content" id="google-ad">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
+            crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-1515253208026743"
+            data-ad-slot="4645257753"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
     <div class="card-content" style="display: flex; justify-content: center;" id="liker">
     </div>
     <script>

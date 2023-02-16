@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="介紹這篇主要是介紹如何在本地不同資料夾下面，去引用別的資料夾的 go package 使用好處在於如果 clone 別人 source code 下來想要改的話，可以利用這種方式直接引用修改後的 source就不用自己還要推到 repository 實作這是我主要的程式 main.go，裡面會去使用我自己建立的 package123456789package mainimport (	&quot;githu">
+    <meta name="description" content="介紹 這篇主要是介紹如何在本地不同資料夾下面，去引用別的資料夾的 go package 使用 好處在於如果 clone 別人 source code 下來想要改的話，可以利用這種方式直接引用修改後的 source 就不用自己還要推到 repository 實作 這是我主要的程式 main.go，裡面會去使用我自己建立的 package 123456789package mainimport (	&quot;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go local package 設置">
 <meta property="og:url" content="https://yu-jack.github.io/2021/09/21/go-local-package/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="介紹這篇主要是介紹如何在本地不同資料夾下面，去引用別的資料夾的 go package 使用好處在於如果 clone 別人 source code 下來想要改的話，可以利用這種方式直接引用修改後的 source就不用自己還要推到 repository 實作這是我主要的程式 main.go，裡面會去使用我自己建立的 package123456789package mainimport (	&quot;githu">
+<meta property="og:description" content="介紹 這篇主要是介紹如何在本地不同資料夾下面，去引用別的資料夾的 go package 使用 好處在於如果 clone 別人 source code 下來想要改的話，可以利用這種方式直接引用修改後的 source 就不用自己還要推到 repository 實作 這是我主要的程式 main.go，裡面會去使用我自己建立的 package 123456789package mainimport (	&quot;">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-09-21T04:53:00.000Z">
@@ -174,24 +174,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="介紹">介紹</span></h2><p>這篇主要是介紹如何在本地不同資料夾下面，去引用別的資料夾的 go package 使用<br>好處在於如果 clone 別人 source code 下來想要改的話，可以利用這種方式直接引用修改後的 source<br>就不用自己還要推到 repository</p>
-<h2><span id="實作">實作</span></h2><p>這是我主要的程式 <code>main.go</code>，裡面會去使用我自己建立的 package<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/Yu-Jack/go-hello"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	hello.Cool()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而 go.mod 目前設置如下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module example/hello-2</span><br><span class="line">go 1.16</span><br></pre></td></tr></table></figure></p>
-<p>接著跑 <code>go get github.com/Yu-Jack/go-hello</code> 把專案載下來後，<code>go.mod</code> 就會變這樣<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module example/hello-2</span><br><span class="line">go 1.16</span><br><span class="line">require github.com/Yu-Jack/go-hello v0.0.0-20210921041315-798ac1b7038c // indirect</span><br></pre></td></tr></table></figure></p>
-<p>如果出現 <code>410 Gone</code> 以及 <code>fatal: could not read Username for &#39;https://github.com&#39;: terminal prompts disabled</code> 的錯誤，有以下幾個可能原因  </p>
+                <h2><span id="介紹">介紹</span></h2>
+<p>這篇主要是介紹如何在本地不同資料夾下面，去引用別的資料夾的 go package 使用<br>
+好處在於如果 clone 別人 source code 下來想要改的話，可以利用這種方式直接引用修改後的 source<br>
+就不用自己還要推到 repository</p>
+<h2><span id="實作">實作</span></h2>
+<p>這是我主要的程式 <code>main.go</code>，裡面會去使用我自己建立的 package
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/Yu-Jack/go-hello"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	hello.Cool()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而 go.mod 目前設置如下
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module example/hello-2</span><br><span class="line">go 1.16</span><br></pre></td></tr></table></figure></p>
+<p>接著跑 <code>go get github.com/Yu-Jack/go-hello</code> 把專案載下來後，<code>go.mod</code> 就會變這樣<br>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module example/hello-2</span><br><span class="line">go 1.16</span><br><span class="line">require github.com/Yu-Jack/go-hello v0.0.0-20210921041315-798ac1b7038c // indirect</span><br></pre></td></tr></table></figure></p>
+<p>如果出現 <code>410 Gone</code> 以及 <code>fatal: could not read Username for 'https://github.com': terminal prompts disabled</code> 的錯誤，有以下幾個可能原因</p>
 <ul>
-<li>第一個因為 https 預設是禁止的，所以建議用 ssh，所以在 gitconfig 要下這個指令去改 <code>git config --global url.&quot;git@github.com:&quot;.insteadOf &quot;https://github.com/&quot;</code>，不過這個方式記得要把自己的 ssh key 上傳到 github 上    </li>
-<li>第二個是 GOPROXY &amp; GOSUMOB 設定，別透過 proxy 去拿就可以 (如果是 public 專案可以看下面的備註的部分)    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 原本</span><br><span class="line">GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;proxy.golang.org,direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;sum.golang.org&quot;</span><br><span class="line"></span><br><span class="line"># 改成，既得用 export 的方式，直接 go env -w 是無法改的 </span><br><span class="line">GOPROXY&#x3D;&quot;direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;off&quot;</span><br></pre></td></tr></table></figure>
-  <a href="https://github.com/golang/go/issues/35164#issuecomment-546503518">解法來源-issuecomment-546503518</a></li>
+<li>第一個因為 https 預設是禁止的，所以建議用 ssh，所以在 gitconfig 要下這個指令去改 <code>git config --global url.&quot;git@github.com:&quot;.insteadOf &quot;https://github.com/&quot;</code>，不過這個方式記得要把自己的 ssh key 上傳到 github 上</li>
+<li>第二個是 GOPROXY &amp; GOSUMOB 設定，別透過 proxy 去拿就可以 (如果是 public 專案可以看下面的備註的部分)<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 原本</span><br><span class="line">GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;proxy.golang.org,direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;sum.golang.org&quot;</span><br><span class="line"></span><br><span class="line"># 改成，既得用 export 的方式，直接 go env -w 是無法改的 </span><br><span class="line">GOPROXY&#x3D;&quot;direct&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;off&quot;</span><br></pre></td></tr></table></figure>
+<a href="https://github.com/golang/go/issues/35164#issuecomment-546503518">解法來源-issuecomment-546503518</a></li>
 <li>若不想用第二種方式，可以用第三種設定 <code>go env -w GOPRIVATE=&quot;github.com/Yu-Jack&quot;</code> 直接指定 repository 的位置即可，之後要移除可以透過 <code>go env -u GOPRIVATE</code></li>
 </ul>
 <blockquote>
-<p>### 備註<br>如果專案是 public 的話，可以考慮等 1~2 小時<br>接著就正常了，因為中間多一層 proxy 要一段時間才會生效<br>如果急著要用的話，就可以考慮用 2 or 3 的方法<br>以上面的 case 來說，會到 <a href="https://sum.golang.org/lookup/github.com/!yu-!jack/go-hello@v0.0.0-20210921041315-798ac1b7038c">https://sum.golang.org/lookup/github.com/!yu-!jack/go-hello@v0.0.0-20210921041315-798ac1b7038c</a> 這裡讀取資料<br>如果在還沒生效之前，就會都是拿到 410 Gone  </p>
+<p>### 備註
+如果專案是 public 的話，可以考慮等 1~2 小時<br>
+接著就正常了，因為中間多一層 proxy 要一段時間才會生效<br>
+如果急著要用的話，就可以考慮用 2 or 3 的方法<br>
+以上面的 case 來說，會到 https://sum.golang.org/lookup/github.com/!yu-!jack/go-hello@v0.0.0-20210921041315-798ac1b7038c 這裡讀取資料<br>
+如果在還沒生效之前，就會都是拿到 410 Gone</p>
 </blockquote>
-<p>目前這樣設置的方式就是去讀從 gihub clone 下來的程式，通常會被放在 GOPATH 的路徑 (pkg/github 裡面)<br>但通常會有權限問題，所以只能讀取，那如果想要隨意優改的話可以這樣做 (這裡不考慮改權限)  </p>
-<p>先把另一個專案 <code>github.com/Yu-Jack/go-hello</code> clone 到你想儲存的地方<br>這邊假設存在 <code>/Users/{usernme}/Downloads/go-hello</code> 底下<br>接著把剛剛的 <code>go.mod</code> 增加一行，去修改指向的位置，這邊就用絕對位置，但相對位置也是可以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace github.com&#x2F;Yu-Jack&#x2F;go-hello &#x3D;&gt; &#x2F;Users&#x2F;&#123;usernme&#125;&#x2F;Downloads&#x2F;go-hello</span><br></pre></td></tr></table></figure></p>
-<p>接著嘗試修改 clone 下來的專案，<a href="https://github.com/Yu-Jack/go-hello">Github 原始程式碼</a>如下<br>可以修改一些字串後並重新跑 <code>go run main.go</code> 就會發現有成功吃到修改的部分<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> hello</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Cool</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"hello"</span>) <span class="comment">// 可以改成 fmt.Println("hello yujack")</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2><span id="references">References</span></h2><p><a href="https://github.com/golang/go/wiki/Modules#can-i-work-entirely-outside-of-vcs-on-my-local-filesystem">Can I work entirely outside of VCS on my local filesystem?</a></p>
+<p>目前這樣設置的方式就是去讀從 gihub clone 下來的程式，通常會被放在 GOPATH 的路徑 (pkg/github 裡面)<br>
+但通常會有權限問題，所以只能讀取，那如果想要隨意優改的話可以這樣做 (這裡不考慮改權限)</p>
+<p>先把另一個專案 <code>github.com/Yu-Jack/go-hello</code> clone 到你想儲存的地方<br>
+這邊假設存在 <code>/Users/{usernme}/Downloads/go-hello</code> 底下<br>
+接著把剛剛的 <code>go.mod</code> 增加一行，去修改指向的位置，這邊就用絕對位置，但相對位置也是可以<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace github.com&#x2F;Yu-Jack&#x2F;go-hello &#x3D;&gt; &#x2F;Users&#x2F;&#123;usernme&#125;&#x2F;Downloads&#x2F;go-hello</span><br></pre></td></tr></table></figure></p>
+<p>接著嘗試修改 clone 下來的專案，<a href="https://github.com/Yu-Jack/go-hello">Github 原始程式碼</a>如下<br>
+可以修改一些字串後並重新跑 <code>go run main.go</code> 就會發現有成功吃到修改的部分<br>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> hello</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Cool</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"hello"</span>) <span class="comment">// 可以改成 fmt.Println("hello yujack")</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2><span id="references">References</span></h2>
+<p><a href="https://github.com/golang/go/wiki/Modules#can-i-work-entirely-outside-of-vcs-on-my-local-filesystem">Can I work entirely outside of VCS on my local filesystem?</a></p>
 
             </div>
         
@@ -238,6 +258,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content" id="google-ad">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
+            crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-1515253208026743"
+            data-ad-slot="4645257753"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
     <div class="card-content" style="display: flex; justify-content: center;" id="liker">
     </div>
     <script>
