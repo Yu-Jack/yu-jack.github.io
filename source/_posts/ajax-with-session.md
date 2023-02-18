@@ -7,8 +7,7 @@ header-img: /images/banner.jpg
 catalog: true
 ---
 
-這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下
-要如何達到使用 session 的方法
+這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下，要如何達到使用 session 的方法
 
 知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到[重點筆記](#重點筆記)
 
