@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言 在前一篇 Pulumi 導入教學介紹#state-and-backend 中有提到不同 Backend 的差異。 但每一個不同的 Backend 有各自的優缺點，當然最好的是選用 Pulumi Service 他們本加自己的 Backend，詳細優點說明可以看 Deciding On a Backend 的說明。 這篇就是實際來操作直接使用 pulumi host service 跟用 fi">
+    <meta name="description" content="前言在前一篇 Pulumi 導入教學介紹#state-and-backend 中有提到不同 Backend 的差異。 但每一個不同的 Backend 有各自的優缺點，當然最好的是選用 Pulumi Service 他們本加自己的 Backend，詳細優點說明可以看 Deciding On a Backend 的說明。 這篇就是實際來操作直接使用 pulumi host service 跟用 fil">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pulumi Service 與 File System Backend 差異">
 <meta property="og:url" content="https://yu-jack.github.io/2022/03/13/pulumi-tutor-2/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言 在前一篇 Pulumi 導入教學介紹#state-and-backend 中有提到不同 Backend 的差異。 但每一個不同的 Backend 有各自的優缺點，當然最好的是選用 Pulumi Service 他們本加自己的 Backend，詳細優點說明可以看 Deciding On a Backend 的說明。 這篇就是實際來操作直接使用 pulumi host service 跟用 fi">
+<meta property="og:description" content="前言在前一篇 Pulumi 導入教學介紹#state-and-backend 中有提到不同 Backend 的差異。 但每一個不同的 Backend 有各自的優缺點，當然最好的是選用 Pulumi Service 他們本加自己的 Backend，詳細優點說明可以看 Deciding On a Backend 的說明。 這篇就是實際來操作直接使用 pulumi host service 跟用 fil">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2022-03-13T14:00:17.000Z">
@@ -173,34 +173,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2>
-<p>在前一篇 <a href="/2022/02/22/pulumi-tutor/#state-and-backend">Pulumi 導入教學介紹#state-and-backend</a> 中有提到不同 Backend 的差異。</p>
+                <h2><span id="前言">前言</span></h2><p>在前一篇 <a href="/2022/02/22/pulumi-tutor/#state-and-backend">Pulumi 導入教學介紹#state-and-backend</a> 中有提到不同 Backend 的差異。</p>
 <p>但每一個不同的 Backend 有各自的優缺點，當然最好的是選用 Pulumi Service 他們本加自己的 Backend，詳細優點說明可以看 <a href="https://www.pulumi.com/docs/intro/concepts/state/#deciding-on-a-backend">Deciding On a Backend</a> 的說明。</p>
 <p>這篇就是實際來操作直接使用 pulumi host service 跟用 file system 的差異去驗證 Pulumi 說明的是否正確，不過有些點我沒有頭緒驗證，所以只能驗證一些能重現的情境 XD</p>
-<h2><span id="concurrent">Concurrent</span></h2>
-<p>通常在執行 <code>pulumi up</code> 的時候，有可能會出現同時有兩個人在運行，我們就來直接看實際差異吧！</p>
+<h2><span id="concurrent">Concurrent</span></h2><p>通常在執行 <code>pulumi up</code> 的時候，有可能會出現同時有兩個人在運行，我們就來直接看實際差異吧！</p>
 <p>以下是用 tmux synchronize-panes 去做同時操作，所以會有左右各一個畫面出現。</p>
-<h3><span id="s3-bucket">S3 Bucket</span></h3>
-<p>當我同時執行 <code>pulumi up</code>，Pulumi 會先嘗試去建立 lock file，會發現是互相鎖起來的。</p>
+<h3><span id="s3-bucket">S3 Bucket</span></h3><p>當我同時執行 <code>pulumi up</code>，Pulumi 會先嘗試去建立 lock file，會發現是互相鎖起來的。</p>
 <p><img src="/images/pulumi-tutor-2/01.png" alt></p>
 <p>原因是在 Update 的程式碼裡面，有一段呼叫 Lock 程式碼。</p>
-<p>&lt;script src=&quot;https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fpulumi%2Fpulumi%2Fblob%2Fc5a4321b61f4f3b02701c57ea2c262773c9d2f2a%2Fpkg%2Fbackend%2Ffilestate%2Fbackend.go%23L457-L478&amp;style=github&amp;showBorder=on&amp;showFileMeta=on&amp;fetchFromJsDelivr=on&quot;&gt;&lt;/script&gt;</p>
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fpulumi%2Fpulumi%2Fblob%2Fc5a4321b61f4f3b02701c57ea2c262773c9d2f2a%2Fpkg%2Fbackend%2Ffilestate%2Fbackend.go%23L457-L478&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script>
+
 <p>這個 Method 在建立 Lock 的同時，前後都會檢查一次 Lock，所以才互相撞到。</p>
-<p>&lt;script src=&quot;https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fpulumi%2Fpulumi%2Fblob%2Fc5a4321b61f4f3b02701c57ea2c262773c9d2f2a%2Fpkg%2Fbackend%2Ffilestate%2Flock.go%23L105-L129&amp;style=github&amp;showBorder=on&amp;showFileMeta=on&amp;fetchFromJsDelivr=on&quot;&gt;&lt;/script&gt;</p>
-<h3><span id="pulumi-service">Pulumi Service</span></h3>
-<p>當我改用 pulumi 時會發現，有一邊被 reject 掉，另一邊接著就會成功執行，個人猜測應該類似用 increment ID + unique key 去避免 concurrent request。</p>
+<p><script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fpulumi%2Fpulumi%2Fblob%2Fc5a4321b61f4f3b02701c57ea2c262773c9d2f2a%2Fpkg%2Fbackend%2Ffilestate%2Flock.go%23L105-L129&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script></p>
+<h3><span id="pulumi-service">Pulumi Service</span></h3><p>當我改用 pulumi 時會發現，有一邊被 reject 掉，另一邊接著就會成功執行，個人猜測應該類似用 increment ID + unique key 去避免 concurrent request。</p>
 <p>另外還有跟 Concurrent 無關的優點，是直接用 Pulumi Serviec 就可以不需要設定 <code>PULUMI_CONFIG_PASSPHRASE</code> or <code>PULUMI_CONFIG_PASSPHRASE_FILE</code> 算是蠻方便的。</p>
 <p><img src="/images/pulumi-tutor-2/02.png" alt></p>
-<h2><span id="後記">後記</span></h2>
-<p>很可惜目前只能想到這 Case 去驗證，之後等到實作遇到更多的案例再來分享在這了！</p>
-<p>&lt;style&gt;
-.emgithub-container code.hljs {
-color: unset;
-background: unset;
-line-height: 18px;
-}
-&lt;/style&gt;</p>
-
+<h2><span id="後記">後記</span></h2><p>很可惜目前只能想到這 Case 去驗證，之後等到實作遇到更多的案例再來分享在這了！</p>
+<style>
+    .emgithub-container code.hljs {
+        color: unset;
+        background: unset;
+        line-height: 18px;
+    }
+</style>
             </div>
         
         
