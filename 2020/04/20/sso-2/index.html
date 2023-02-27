@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言 CAS 全名是 Central Authentication Service 一個獨立的認證服務, 概念是在使用服務之前 如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入 登入成功之後就會被導回去原本使用服務的頁面 題外話, 這裡的英文 Authentication 是有含義所在的 代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行&lt;span s">
+    <meta name="description" content="前言CAS 全名是 Central Authentication Service一個獨立的認證服務, 概念是在使用服務之前如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入登入成功之後就會被導回去原本使用服務的頁面   題外話, 這裡的英文 Authentication 是有含義所在的代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行認證而認證成功後, 有沒有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Single Sign On 實作方式介紹 (CAS)">
 <meta property="og:url" content="https://yu-jack.github.io/2020/04/20/sso-2/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言 CAS 全名是 Central Authentication Service 一個獨立的認證服務, 概念是在使用服務之前 如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入 登入成功之後就會被導回去原本使用服務的頁面 題外話, 這裡的英文 Authentication 是有含義所在的 代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行&lt;span s">
+<meta property="og:description" content="前言CAS 全名是 Central Authentication Service一個獨立的認證服務, 概念是在使用服務之前如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入登入成功之後就會被導回去原本使用服務的頁面   題外話, 這裡的英文 Authentication 是有含義所在的代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行認證而認證成功後, 有沒有">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-04-20T02:05:21.000Z">
@@ -175,103 +175,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2>
-<p>CAS 全名是 Central Authentication Service<br>
-一個獨立的認證服務, 概念是在使用服務之前<br>
-如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入<br>
-登入成功之後就會被導回去原本使用服務的頁面</p>
-<p>題外話, 這裡的英文 Authentication 是有含義所在的<br>
-代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行&lt;span style=&quot;color: red&quot;&gt;認證&lt;/span&gt;<br>
-而認證成功後, 有沒有被&lt;span style=&quot;color: red&quot;&gt;授權&lt;/span&gt;存取服務的權限則是另一個單詞 Authorization<br>
-通常代表, 判斷使用者有沒有權限可以存取資源,  例如要修改個人資料有沒有權限等等</p>
-<h2><span id="角色">角色</span></h2>
-<p>在介紹流程之前, 先定義四個角色</p>
+                <h2><span id="前言">前言</span></h2><p>CAS 全名是 Central Authentication Service<br>一個獨立的認證服務, 概念是在使用服務之前<br>如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入<br>登入成功之後就會被導回去原本使用服務的頁面  </p>
+<p>題外話, 這裡的英文 Authentication 是有含義所在的<br>代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行<span style="color: red">認證</span><br>而認證成功後, 有沒有被<span style="color: red">授權</span>存取服務的權限則是另一個單詞 Authorization<br>通常代表, 判斷使用者有沒有權限可以存取資源,  例如要修改個人資料有沒有權限等等  </p>
+<h2><span id="角色">角色</span></h2><p>在介紹流程之前, 先定義四個角色  </p>
 <ol>
-<li>使用者: 就是我們使用者</li>
-<li>應用服務 A : 使用者必須要登入後才能使用的 A 服務 (AP 1)</li>
+<li>使用者: 就是我們使用者  </li>
+<li>應用服務 A : 使用者必須要登入後才能使用的 A 服務 (AP 1)  </li>
 <li>應用服務 B : 使用者必須要登入後才能使用的 B 服務  (AP 2)</li>
-<li>CAS Server:  使用者被導轉到需要輸入帳密登入的地方</li>
+<li>CAS Server:  使用者被導轉到需要輸入帳密登入的地方  </li>
 </ol>
-<h2><span id="第一次登入使用-a-流程">第一次登入使用 A 流程</span></h2>
-<ol>
-<li>使用者開啟應用服務 A 的頁面, 但使用者尚未登入獲得認證, 並點下登入按鈕</li>
-<li>使用者被導轉到 CAS Server 的登入頁面</li>
-<li>使用者在 CAS Server 進行登入</li>
-<li>使用者登入成功之後, CAS Server 會寫入一個 cookie 在 CAS Server 的網域下並產生 session</li>
-<li>使用者被導轉到應用服務 A 頁面, 此時導轉網址的 Query String 會有剛剛 CAS Server 寫入的 cookie 資料</li>
-<li>應用服務 A 拿著剛剛的 cookie 資料, 送往到 CAS Server 進行驗證</li>
-<li>驗證成功, 生成自己的 cookie &amp; session 給這個客戶使用</li>
-<li>接著進行登入成功的頁面, 開始使用服務 A</li>
+<h2><span id="第一次登入使用-a-流程">第一次登入使用 A 流程</span></h2><ol>
+<li>使用者開啟應用服務 A 的頁面, 但使用者尚未登入獲得認證, 並點下登入按鈕  </li>
+<li>使用者被導轉到 CAS Server 的登入頁面  </li>
+<li>使用者在 CAS Server 進行登入  </li>
+<li>使用者登入成功之後, CAS Server 會寫入一個 cookie 在 CAS Server 的網域下並產生 session   </li>
+<li>使用者被導轉到應用服務 A 頁面, 此時導轉網址的 Query String 會有剛剛 CAS Server 寫入的 cookie 資料  </li>
+<li>應用服務 A 拿著剛剛的 cookie 資料, 送往到 CAS Server 進行驗證  </li>
+<li>驗證成功, 生成自己的 cookie &amp; session 給這個客戶使用  </li>
+<li>接著進行登入成功的頁面, 開始使用服務 A  </li>
 </ol>
 <p><img src="/images/sso/case-01.png" alt="Case A"></p>
-<h2><span id="第二次登入使用-b-流程">第二次登入使用 B 流程</span></h2>
-<ol>
-<li>使用者開啟應用服務 B 的頁面, 但使用者尚未得到應用服務 B 的認證, 並點下登入按鈕</li>
-<li>使用者被導轉到 CAS Server</li>
-<li>此時因為在第一次登入 CAS Server 已經寫入 cookie CAS Server 的網域<br>
-當使用者被轉到 CAS Server 後, CAS Server 會取得此使用者的資訊<br>
-就知道此使用者已經登入過, 所以不需要重新登入</li>
-<li>此時 CAS Server 把使用者導回應用服務 B 上</li>
-<li>導轉到應用服務 B 的時候, 此時導轉網址的 Query String 會拿到 CAS Server 的 Cookie 資料</li>
-<li>應用服務 B 拿著剛剛的 cookie 資料, 送往到 CAS Server 進行驗證</li>
-<li>驗證成功, 應用服務 B 生成自己的 cookie &amp; session 給這個客戶使用</li>
-<li>接著進行登入成功的頁面, 開始使用服務 B</li>
+<h2><span id="第二次登入使用-b-流程">第二次登入使用 B 流程</span></h2><ol>
+<li>使用者開啟應用服務 B 的頁面, 但使用者尚未得到應用服務 B 的認證, 並點下登入按鈕  </li>
+<li>使用者被導轉到 CAS Server  </li>
+<li>此時因為在第一次登入 CAS Server 已經寫入 cookie CAS Server 的網域<br> 當使用者被轉到 CAS Server 後, CAS Server 會取得此使用者的資訊<br> 就知道此使用者已經登入過, 所以不需要重新登入  </li>
+<li>此時 CAS Server 把使用者導回應用服務 B 上  </li>
+<li>導轉到應用服務 B 的時候, 此時導轉網址的 Query String 會拿到 CAS Server 的 Cookie 資料  </li>
+<li>應用服務 B 拿著剛剛的 cookie 資料, 送往到 CAS Server 進行驗證  </li>
+<li>驗證成功, 應用服務 B 生成自己的 cookie &amp; session 給這個客戶使用  </li>
+<li>接著進行登入成功的頁面, 開始使用服務 B  </li>
 </ol>
 <p><img src="/images/sso/case-02.png" alt="Case B"></p>
 <blockquote>
-<p>為何要驗證 ticket 是因為導轉回來的 query string 是可能被更改的<br>
-所以要先確保回來的 ticket 真的是 CAS Server 給的, 而不是哪一個駭客幹的<br>
-在 DEMO 專案裡面, 每一段我都有加上 checksum<br>
-這是為了保證這一定是 CAS Server 傳送的 (達到資料一致性)</p>
+<p>為何要驗證 ticket 是因為導轉回來的 query string 是可能被更改的<br>所以要先確保回來的 ticket 真的是 CAS Server 給的, 而不是哪一個駭客幹的<br>在 DEMO 專案裡面, 每一段我都有加上 checksum<br>這是為了保證這一定是 CAS Server 傳送的 (達到資料一致性)  </p>
 </blockquote>
-<h2><span id="實作-cas-流程">實作 CAS 流程</span></h2>
-<p>講完流程就要來用程式實作整體流程<br>
-先附上個人撰寫的 <a href="https://github.com/Yu-Jack/cas-example">CAS 測試專案</a>(Node.js 版)<br>
-可以到 github 去 clone 下來玩玩<br>
-為了練習點英文, 所以那專案的 README 是用英文寫, 寫不好請見諒 XD</p>
-<h3><span id="workflow-快速介紹">Workflow 快速介紹</span></h3>
-<p>這裡在快速把流程帶過一次</p>
-<p>在第一次使用 AP1 的時候, 點了 login url 之後會被導轉 CAS Server<br>
-此時會進行登入, &lt;span style=&quot;color: red&quot;&gt;需要進行帳號密碼驗證&lt;/span&gt;, 登入成功後會進入到 AP1 manager 頁面</p>
-<p>此時進入到 AP2, 點了 login url 是先被導轉到 CAS Server<br>
-但因為 CAS Server 有辦法識別此 cookie 是已經登入過<br>
-所以&lt;span style=&quot;color: red&quot;&gt;不用再驗證帳號密碼&lt;/span&gt;，接著被導轉到 AP2 manager 頁面<br>
-原因是, 我已經登入過了, 就不用再登入了</p>
-<p>下面會針對 AP Server 和 CAS Server 的重點程式碼進行說明</p>
-<h3><span id="ap-server-機制">AP Server 機制</span></h3>
-<p>進到 AP 的登入頁面後, 裡面會有一個 url, 點了就會被跳轉到 CAS Server<br>
-但因為你要告訴 CAS Server 你是從哪邊跳轉過來的, 這樣登入成功後 CAS Server 才有辦法把你跳轉到原本的頁面<br>
-所以會需要附上 URL, 這邊為了安全機制有加上 checksum, 不然輸入任何網址 CAS 都會跳轉過去喔！</p>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ap server nodejs code, 這裏採用 ejs 模板去渲染頁面, 頁面的程式碼看下面那段 ejs</span></span><br><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.render(<span class="string">"ap1_index"</span>, &#123;</span><br><span class="line">        checksum: getHmac(URL),</span><br><span class="line">        serviceUrl: URL</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- ap server render ejs 的頁面, 也就是 ap 的登入頁面 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>this is AP1<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%</span> <span class="attr">let</span> <span class="attr">url</span> = <span class="string">"http://test.cas-example.com:3000/?checksum="</span> + <span class="attr">checksum</span> + "&amp;<span class="attr">serviceUrl</span>=<span class="string">" + serviceUrl; %&gt;</span></span></span><br><span class="line"><span class="tag"><span class="string">&lt;a href=&lt;%= url %&gt;&gt;go to login &lt;%= url %&gt; &lt;/a&gt;</span></span></span><br></pre></td></tr></table></figure></p>
-<p>接著成功登入 CAS 之後, AP 會需要重新拿著 CAS 給的 ticket 去驗證此人是否真的存在<br>
-這邊 status = 200 代表成功, 如果檢測成功, 就會跳轉到 managr 頁面就完成登入了</p>
+<h2><span id="實作-cas-流程">實作 CAS 流程</span></h2><p>講完流程就要來用程式實作整體流程<br>先附上個人撰寫的 <a href="https://github.com/Yu-Jack/cas-example">CAS 測試專案</a>(Node.js 版)<br>可以到 github 去 clone 下來玩玩<br>為了練習點英文, 所以那專案的 README 是用英文寫, 寫不好請見諒 XD  </p>
+<h3><span id="workflow-快速介紹">Workflow 快速介紹</span></h3><p>這裡在快速把流程帶過一次  </p>
+<p>在第一次使用 AP1 的時候, 點了 login url 之後會被導轉 CAS Server<br>此時會進行登入, <span style="color: red">需要進行帳號密碼驗證</span>, 登入成功後會進入到 AP1 manager 頁面  </p>
+<p>此時進入到 AP2, 點了 login url 是先被導轉到 CAS Server<br>但因為 CAS Server 有辦法識別此 cookie 是已經登入過<br>所以<span style="color: red">不用再驗證帳號密碼</span>，接著被導轉到 AP2 manager 頁面<br>原因是, 我已經登入過了, 就不用再登入了  </p>
+<p>下面會針對 AP Server 和 CAS Server 的重點程式碼進行說明  </p>
+<h3><span id="ap-server-機制">AP Server 機制</span></h3><p>進到 AP 的登入頁面後, 裡面會有一個 url, 點了就會被跳轉到 CAS Server<br>但因為你要告訴 CAS Server 你是從哪邊跳轉過來的, 這樣登入成功後 CAS Server 才有辦法把你跳轉到原本的頁面<br>所以會需要附上 URL, 這邊為了安全機制有加上 checksum, 不然輸入任何網址 CAS 都會跳轉過去喔！  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ap server nodejs code, 這裏採用 ejs 模板去渲染頁面, 頁面的程式碼看下面那段 ejs</span></span><br><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.render(<span class="string">"ap1_index"</span>, &#123;</span><br><span class="line">        checksum: getHmac(URL),</span><br><span class="line">        serviceUrl: URL</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- ap server render ejs 的頁面, 也就是 ap 的登入頁面 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>this is AP1<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%</span> <span class="attr">let</span> <span class="attr">url</span> = <span class="string">"http://test.cas-example.com:3000/?checksum="</span> + <span class="attr">checksum</span> + "&amp;<span class="attr">serviceUrl</span>=<span class="string">" + serviceUrl; %&gt;</span></span></span><br><span class="line"><span class="tag"><span class="string">&lt;a href=&lt;%= url %&gt;&gt;go to login &lt;%= url %&gt; &lt;/a&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>接著成功登入 CAS 之後, AP 會需要重新拿著 CAS 給的 ticket 去驗證此人是否真的存在<br>這邊 status = 200 代表成功, 如果檢測成功, 就會跳轉到 managr 頁面就完成登入了  </p>
 <blockquote>
-<p>這裏的 ticket 可以想像是登入成功後的一組識別碼<br>
-就像去飲料店買飲料拿到的號碼牌一樣, 用此號碼牌就可辨別是誰買的飲料<br>
-在這邊的號碼牌就是辨別誰已經登入成功</p>
+<p>這裏的 ticket 可以想像是登入成功後的一組識別碼<br>就像去飲料店買飲料拿到的號碼牌一樣, 用此號碼牌就可辨別是誰買的飲料<br>在這邊的號碼牌就是辨別誰已經登入成功  </p>
 </blockquote>
-<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ap server nodejs code</span></span><br><span class="line"><span class="comment">// 去向 CAS Server 驗證此 ticket 是否有效</span></span><br><span class="line"><span class="keyword">const</span> response = <span class="keyword">await</span> axios.post(<span class="string">"http://test.cas-example.com:3000/verify"</span>, &#123;</span><br><span class="line">    ticket,</span><br><span class="line">    checksum: getHmac(ticket),</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.data);</span><br><span class="line"><span class="keyword">if</span> (response.status === <span class="number">200</span>) &#123;</span><br><span class="line">    req.session.login = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> res.redirect(<span class="string">"/manager"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而 AP 的 manager 頁面也要做點限制, 除了認證成功以外的就不允許進到這頁面<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ap server nodejs code</span></span><br><span class="line">app.get(<span class="string">'/manager'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (!req.session.login) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.redirect(<span class="string">"/failed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    res.render(<span class="string">"ap1_manager"</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h3><span id="cas-server-機制">CAS Server 機制</span></h3>
-<p>剛剛提到 AP 會帶著需要告訴 CAS 結束後要跳轉回來的地方<br>
-下面那段程式可以看到資訊正確的話, 最後會 redirect 到 serviceUrl<br>
-這個 serviceUrl 就是 AP 提供的<br>
-而其他 session 部分就是為了保存下次同樣使用者再來的時候, 就會被判定早已登入過<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CAS Server nodejs code</span></span><br><span class="line"><span class="comment">// 登入成功執行此段程式碼的最後一段, 就會被跳轉回去當時 AP 提供的 serviceUrl</span></span><br><span class="line"><span class="keyword">if</span> (username !== <span class="string">"123"</span> &amp;&amp; password !== <span class="string">"123"</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> res.redirect(<span class="string">"/bad"</span>)</span><br><span class="line">&#125;</span><br><span class="line">req.session.login = <span class="literal">true</span>;</span><br><span class="line">req.session.userInfo = &#123;&#125;;</span><br><span class="line"><span class="keyword">const</span> ticket = <span class="built_in">require</span>(<span class="string">"randomstring"</span>).generate(<span class="number">10</span>);</span><br><span class="line">DB.set(ticket, serviceUrl);</span><br><span class="line">req.session.userInfo[serviceUrl] = ticket;</span><br><span class="line">res.redirect(<span class="string">`<span class="subst">$&#123;serviceUrl&#125;</span>?ticket=<span class="subst">$&#123;ticket&#125;</span>&amp;checksum=<span class="subst">$&#123;getHmac(ticket, serviceUrl)&#125;</span>`</span>)</span><br></pre></td></tr></table></figure></p>
-<p>下面這段 code 就是當使用者被判定登入過的話, 就可以給一個 ticket 然後就直接跳轉過去<br>
-而&lt;span style=&quot;color :red&quot;&gt;不需要再去判斷 username 和 password 是否正確&lt;/span&gt;<br>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CAS Server nodejs code</span></span><br><span class="line"><span class="keyword">if</span> (req.session.login) &#123;</span><br><span class="line">  <span class="keyword">if</span> (req.session.userInfo.hasOwnProperty(serviceUrl)) &#123;</span><br><span class="line">      <span class="keyword">const</span> ticket = req.session.userInfo[serviceUrl];</span><br><span class="line">      <span class="keyword">return</span> res.redirect(<span class="string">`<span class="subst">$&#123;serviceUrl&#125;</span>?ticket=<span class="subst">$&#123;ticket&#125;</span>&amp;checksum=<span class="subst">$&#123;getHmac(ticket, serviceUrl)&#125;</span>`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> ticket = <span class="built_in">require</span>(<span class="string">"randomstring"</span>).generate(<span class="number">10</span>);</span><br><span class="line">  DB.set(ticket, serviceUrl);</span><br><span class="line">  req.session.userInfo[serviceUrl] = ticket;</span><br><span class="line">  <span class="keyword">return</span> res.redirect(<span class="string">`<span class="subst">$&#123;serviceUrl&#125;</span>?ticket=<span class="subst">$&#123;ticket&#125;</span>&amp;checksum=<span class="subst">$&#123;getHmac(ticket, serviceUrl)&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>重點程式碼就介紹到這篇, 剩下的可以直接 clone 我的 <a href="https://github.com/Yu-Jack/cas-example">CAS 測試專案</a>(Node.js 版) 玩玩看<br>
-至於其他程式碼就是做一些保護機制、錯誤訊息顯示簡單的 DB<br>
-讓在執行流程順暢以及比較知道執行時到了哪一個步驟</p>
-<h2><span id="demo">DEMO</span></h2>
-<p>&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/sso/cas-example.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
-<h2><span id="後記">後記</span></h2>
-<p>在現實使用狀況上, 還需要考量各種狀況和安全機制<br>
-而且現實使用上除了要加上 https, cookie 也要設成 httpOnly Secure 去防止駭客竊取<br>
-這部分就要花費蠻多功去討論, 就留給未來看哪天會寫寫這個主題 XD</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ap server nodejs code</span></span><br><span class="line"><span class="comment">// 去向 CAS Server 驗證此 ticket 是否有效</span></span><br><span class="line"><span class="keyword">const</span> response = <span class="keyword">await</span> axios.post(<span class="string">"http://test.cas-example.com:3000/verify"</span>, &#123;</span><br><span class="line">    ticket,</span><br><span class="line">    checksum: getHmac(ticket),</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.data);</span><br><span class="line"><span class="keyword">if</span> (response.status === <span class="number">200</span>) &#123;</span><br><span class="line">    req.session.login = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> res.redirect(<span class="string">"/manager"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而 AP 的 manager 頁面也要做點限制, 除了認證成功以外的就不允許進到這頁面<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ap server nodejs code</span></span><br><span class="line">app.get(<span class="string">'/manager'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (!req.session.login) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.redirect(<span class="string">"/failed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    res.render(<span class="string">"ap1_manager"</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3><span id="cas-server-機制">CAS Server 機制</span></h3><p>剛剛提到 AP 會帶著需要告訴 CAS 結束後要跳轉回來的地方<br>下面那段程式可以看到資訊正確的話, 最後會 redirect 到 serviceUrl<br>這個 serviceUrl 就是 AP 提供的<br>而其他 session 部分就是為了保存下次同樣使用者再來的時候, 就會被判定早已登入過<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CAS Server nodejs code</span></span><br><span class="line"><span class="comment">// 登入成功執行此段程式碼的最後一段, 就會被跳轉回去當時 AP 提供的 serviceUrl</span></span><br><span class="line"><span class="keyword">if</span> (username !== <span class="string">"123"</span> &amp;&amp; password !== <span class="string">"123"</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> res.redirect(<span class="string">"/bad"</span>)</span><br><span class="line">&#125;</span><br><span class="line">req.session.login = <span class="literal">true</span>;</span><br><span class="line">req.session.userInfo = &#123;&#125;;</span><br><span class="line"><span class="keyword">const</span> ticket = <span class="built_in">require</span>(<span class="string">"randomstring"</span>).generate(<span class="number">10</span>);</span><br><span class="line">DB.set(ticket, serviceUrl);</span><br><span class="line">req.session.userInfo[serviceUrl] = ticket;</span><br><span class="line">res.redirect(<span class="string">`<span class="subst">$&#123;serviceUrl&#125;</span>?ticket=<span class="subst">$&#123;ticket&#125;</span>&amp;checksum=<span class="subst">$&#123;getHmac(ticket, serviceUrl)&#125;</span>`</span>)</span><br></pre></td></tr></table></figure></p>
+<p>下面這段 code 就是當使用者被判定登入過的話, 就可以給一個 ticket 然後就直接跳轉過去<br>而<span style="color :red">不需要再去判斷 username 和 password 是否正確</span><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CAS Server nodejs code</span></span><br><span class="line"><span class="keyword">if</span> (req.session.login) &#123;</span><br><span class="line">  <span class="keyword">if</span> (req.session.userInfo.hasOwnProperty(serviceUrl)) &#123;</span><br><span class="line">      <span class="keyword">const</span> ticket = req.session.userInfo[serviceUrl];</span><br><span class="line">      <span class="keyword">return</span> res.redirect(<span class="string">`<span class="subst">$&#123;serviceUrl&#125;</span>?ticket=<span class="subst">$&#123;ticket&#125;</span>&amp;checksum=<span class="subst">$&#123;getHmac(ticket, serviceUrl)&#125;</span>`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> ticket = <span class="built_in">require</span>(<span class="string">"randomstring"</span>).generate(<span class="number">10</span>);</span><br><span class="line">  DB.set(ticket, serviceUrl);</span><br><span class="line">  req.session.userInfo[serviceUrl] = ticket;</span><br><span class="line">  <span class="keyword">return</span> res.redirect(<span class="string">`<span class="subst">$&#123;serviceUrl&#125;</span>?ticket=<span class="subst">$&#123;ticket&#125;</span>&amp;checksum=<span class="subst">$&#123;getHmac(ticket, serviceUrl)&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>重點程式碼就介紹到這篇, 剩下的可以直接 clone 我的 <a href="https://github.com/Yu-Jack/cas-example">CAS 測試專案</a>(Node.js 版) 玩玩看<br>至於其他程式碼就是做一些保護機制、錯誤訊息顯示簡單的 DB<br>讓在執行流程順暢以及比較知道執行時到了哪一個步驟  </p>
+<h2><span id="demo">DEMO</span></h2><video width="100%" controls><source src="/images/sso/cas-example.mp4" type="video/mp4"></video>
+
+<h2><span id="後記">後記</span></h2><p>在現實使用狀況上, 還需要考量各種狀況和安全機制<br>而且現實使用上除了要加上 https, cookie 也要設成 httpOnly Secure 去防止駭客竊取<br>這部分就要花費蠻多功去討論, 就留給未來看哪天會寫寫這個主題 XD</p>
 
             </div>
         
@@ -331,13 +288,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
-    <div class="card-content" style="display: flex; justify-content: center;" id="liker">
-    </div>
-    <script>
-        var iframe = document.createElement("iframe")
-        iframe.src = "https://button.like.co/in/embed/jk82421/button?referrer=" + encodeURIComponent(location.href)
-        document.getElementById("liker").appendChild(iframe)
-    </script>
     <div class="card-content">
         <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
         
