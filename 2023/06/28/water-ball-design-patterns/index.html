@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>水球學院 - 軟體設計模式精通之旅心得 - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言會接觸到這個是前同事介紹的，當時他跟我介紹是跟 OOAD 的部分，我一直都對這塊蠻感興趣的。以前開發功能大多是用文字配合 draw.io 去畫畫圖，沒有特別 follow UML 的畫法或是 OOAD 的思考脈絡，基本上這樣功能也是能實作出來。而設計面就配合文字和腦袋思考給記錄下來，看有沒有需要重新設計程式的部分，然後再補到原本的圖上。 但這樣的問題會是圖沒有 follow 比較統一的規則，後">
+<meta property="og:type" content="article">
+<meta property="og:title" content="水球學院 - 軟體設計模式精通之旅心得">
+<meta property="og:url" content="https://yu-jack.github.io/2023/06/28/water-ball-design-patterns/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言會接觸到這個是前同事介紹的，當時他跟我介紹是跟 OOAD 的部分，我一直都對這塊蠻感興趣的。以前開發功能大多是用文字配合 draw.io 去畫畫圖，沒有特別 follow UML 的畫法或是 OOAD 的思考脈絡，基本上這樣功能也是能實作出來。而設計面就配合文字和腦袋思考給記錄下來，看有沒有需要重新設計程式的部分，然後再補到原本的圖上。 但這樣的問題會是圖沒有 follow 比較統一的規則，後">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2023-06-28T03:47:41.000Z">
+<meta property="article:modified_time" content="2023-06-28T05:34:30.674Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="design patterns">
+<meta property="article:tag" content="OOA">
+<meta property="article:tag" content="OOD">
+<meta property="article:tag" content="OOP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+    <style>
+        .content img {
+            display: block;   
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="水球學院 - 軟體設計模式精通之旅心得" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2023-06-28T03:47:41.000Z">2023-06-28</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    15 分鐘 閱讀文 (大約 2263 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                水球學院 - 軟體設計模式精通之旅心得
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>會接觸到這個是前同事介紹的，當時他跟我介紹是跟 OOAD 的部分，我一直都對這塊蠻感興趣的。以前開發功能大多是用文字配合 draw.io 去畫畫圖，沒有特別 follow UML 的畫法或是 OOAD 的思考脈絡，基本上這樣功能也是能實作出來。而設計面就配合文字和腦袋思考給記錄下來，看有沒有需要重新設計程式的部分，然後再補到原本的圖上。</p>
+<p>但這樣的問題會是圖沒有 follow 比較統一的規則，後續讀的人會比較辛苦。而這個課程吸引我的點是會教如何以 OOAD 的思路去看待一份需求，並用 UML 畫出來。這帶來一個好處，透過統一規則，別人要看懂也會很快就能讀懂，就算看不懂的人，只要說明一些 UML 規則也很快就能上手，這部分就跟 DDD 裡面提到的 Ubiquitous Language 是類似的概念。</p>
+<p>簡而言之，這堂課我是為了學習如何以 OOAD 的思考去開發功能。至於 Design Patterns 對來我說算是複習而已，換個用 Composition 為主的 Golang 熟悉 Design Pattern 也是蠻有幫助。所以心得文上不會著墨太多 Design Patterns 的部分。</p>
+<p>這篇文章不會帶入太多教學的內容，而是目前課程大約上了 60~70% 的一些心得和有在社群討論過的一些想法。</p>
+<h2><span id="心得一影片-x-文章-x-社群-x-review">心得一：影片 x 文章 x 社群 x Review</span></h2><p>整體在用影片學習上我覺得很不錯，一個很大原因是影片的教學都有把重點都呈現出來，內容上也很清晰，所以在學習上其實沒有太大問題。而有些需要補充影片內容的部分，會透過文章的方式額外開放出來，也可以把想法拋到社群裡面討論。最後再透過每週 Code Review 去互相探討 OOAD 的思路以及最後 OOP 有沒有遇到什麼困難，除此之外，網站也會提供 Java 版本的詳解讓你參考，整體來說是有學習到東西的。</p>
+<h2><span id="心得二ooad-有用嗎要畫很完善嗎">心得二：OOAD 有用嗎？要畫很完善嗎？</span></h2><p>以個人角度來說是有用的，不過不學 OOAD 你還是有辦法開發功能。就像不學武功你還是能打人，但學了武功你知道怎麼打得更有效率更痛。總之最重要的一點是以圖像方式輔助你理解需求這點，再透過 OOAD 關注各階段要注意的部分，讓你能夠專心處理。</p>
+<p>OOA 關注的是行為，而有些太詳細行為不一定要用 UML 的方式呈現，可以用文字標注在旁邊。最後會產出一份所謂的領域模型 (Domain Model)，這個階段不會有任何設計或是程式細節出現，也不介意要用資料庫還是檔案等等細節的部分。捕捉物件的行為就是 OOA 階段最重要的事情，而同時會觀察到需求給你了哪些 forces，迫使你在 OOD 的時候必須要考量這些 forces 進行設計。</p>
+<p>OOD 關注的是設計，會依照 OOA 觀察到的 forces 去決定需要套用哪種 Design Pattern。另外我個人在 OOD 會簡單帶入思考程式流程上有沒有問題，但不會思考過於細節的部分，因為重點在於設計，而不是程式開發。</p>
+<p>目前依照我完成的例子來說，OOAD 大部分囊括我實作的 80%，剩下就是一些程式細節沒有在圖上需要額外處理的部分。而在 OOP 階段發現當時 OOAD 有誤，再回頭修正 OOAD 其實就可以了，但就是要記住「什麼原因促使你在 OOP 階段發現 OOAD 有誤』，這樣在下次 OOAD 就能儘早發現問題所在。</p>
+<p>透過 UML 的方式去視覺化呈現需求，對於開發者來說是非常有幫助的。不過其實也不一定要用 UML 去畫，只要能夠視覺化呈現出來，並讓大家有統一的共識，其實用什麼工具都不是問題。這點其實就像 System Thinking 的模板類似，透過視覺化幫你釐清遇到的問題，以更高的視角去俯視整體。</p>
+<h2><span id="心得三ood-特化成語言專用">心得三：OOD 特化成語言專用？</span></h2><p>這點是有在 Discord 討論過，因為我寫 Golang 的關係，所以很多繼承地方會想轉用介面的方式去畫 OOD。但其實按照 OOD 的概念來說需要的是統一語言，也就是說其實不需要特別為了 Golang 去畫出 Golang 版本的 OOD。以 High Level 來說，這張圖不管到什麼語言他應該都要能通用。以 Golang 來說，進到實作階段再自己重新進行 mapping 其實就足以。</p>
+<h2><span id="心得四題目出的不錯">心得四：題目出的不錯</span></h2><p>目前整題進度算是 60~70% 都放在 <a href="https://github.com/Yu-Jack/water-ball-missions">Github</a>，覺得好玩的題目是大老二和寶藏地圖。其實開發程式久了都知道，除了程式開發是一種挑戰，需求分析也是一個難題。這些題目的難度對我來說都算剛好，有複雜有簡單的地方，但不至於太難。只要掌握前面 OOAD 分析的思路，其實很快都可以完成。</p>
+<p>舉例來說有一個題目是大老二，在 OOA 階段下會簡單描述一些判斷行為，就可以發現圖中 <code>Player</code> 的 <code>play()</code> 有列出潛在的問題，這部份是題目有要求未來會擴充更多牌型。就代表在 OOA 階段要把這點給列出來，這樣在 OOD 階段就可以針對這個 force 處理。</p>
+<p><img src="/images/water-ball/big2_ooa.png" alt></p>
+<p>所以在 OOD 階段就可以針對判斷多種牌型做設計，以這個例子來說就是利用 CoR 去處理判斷這件事，所以 OOD 圖出來就會長這樣。</p>
+<p><img src="/images/water-ball/big2_ood.png" alt></p>
+<p>最後對應到程式就是變這樣。</p>
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FYu-Jack%2Fwater-ball-missions%2Fblob%2Fmain%2Fbig2%2Finternal%2Fdomain%2Fcard_pattern%2Fvalidator_handler.go&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script>
+
+<p>除此之外題目也有蠻多限制去規定哪裡要有 OCP 存在或是一定要按照什麼規則進行，舉例來說像是大老二有限定說一定只能出同樣的牌型。雖然實際上我們在玩的大老二是有所謂壓牌的概念，類似同花順可以壓所有牌型。但你不能因為你習慣這樣玩，就不照題目開發，因為這代表你忽視了客戶的需求。除非你問客戶他說可以壓牌，你才可以開發壓牌版的大老二。</p>
+<p>不過在真實開發環境下，其實不會有人跟你說哪邊要遵守什麼，所以題目這樣同時是優點也是缺點。這不能太依賴別人告訴你，而是在 OOA 階段的時候發現這些問題，並進而去詢問 PM/PO 有沒有擴增可能性，或是找其他 RD 討論有沒有需要先留後路。這還蠻看當下的 context 決定的。</p>
+<h2><span id="其他心得">其他心得</span></h2><ol>
+<li>當時開始寫題目的時間點有非常非常多的人排隊，導致每個人 review 的時間頂多 5 分鐘，其實根本不夠。但目前比較少人的情況，平均一個人可以拿到 15~20 分鐘 review 時間就可以討論很多細節，這點未來似乎會引入助教幫忙協助處理。</li>
+<li>畢竟課程是長達半年的時間，所以其實當有問題拋出來的時候，不太會在很短時間內有人回覆你，畢竟大家也是在上班。會需要預期你的問題拋出來討論的時候，可能會是 1~2 天後才會有人跟你討論。</li>
+<li>雖然沒有規定要用什麼語言撰寫，但如果是用天生有 OO 概念的語言的話，在學習整個課程會比較便利點。因為不用最後一段把 OOD 在實作時轉成像是 Golang 比較特別的寫法。</li>
+</ol>
+<h2><span id="後記">後記</span></h2><p>對我來說多學習不同 modeling 方法是有助於開發的，這樣我能透過每一個方法的不同角度，更深入地了解到事情的全貌。</p>
+<style>
+    .emgithub-container code.hljs {
+        color: unset;
+        background: unset;
+        line-height: 18px;
+    }
+</style>
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/OOA/" rel="tag">OOA</a>, <a class="has-link-grey -link" href="/tags/OOD/" rel="tag">OOD</a>, <a class="has-link-grey -link" href="/tags/OOP/" rel="tag">OOP</a>, <a class="has-link-grey -link" href="/tags/design-patterns/" rel="tag">design patterns</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2022/10/04/go-concurrency/">
+                <span class="level-item">Go Concurrency Patterns</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content" id="google-ad">
+        <p style="text-align: center;">如果喜歡我的內容，歡迎點廣告支持，謝謝！</p>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
+            crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-1515253208026743"
+            data-ad-slot="4645257753"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2023/06/28/water-ball-design-patterns/';
+        this.page.identifier = '2023/06/28/water-ball-design-patterns/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+        <hr>
+        <p style="font-style: italic; font-size: larger; text-align: center">Testing Github Issues Comments</p>
+        <div class="utterances">
+            <script src="https://utteranc.es/client.js"
+                    repo="Yu-Jack/yu-jack.github.io"
+                    issue-term="title"
+                    theme="github-light"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+    <style>
+        .custom-flex-container {
+            display: flex; 
+            justify-content: center; 
+            margin-top: 30px;
+        }
+    </style>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content" style="max-height: 85vh; overflow-y: auto;">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#心得一影片-x-文章-x-社群-x-review">
+        <span class="has-mr-6">2</span>
+        <span>心得一：影片 x 文章 x 社群 x Review</span>
+        </a></li><li>
+        <a class="is-flex" href="#心得二ooad-有用嗎要畫很完善嗎">
+        <span class="has-mr-6">3</span>
+        <span>心得二：OOAD 有用嗎？要畫很完善嗎？</span>
+        </a></li><li>
+        <a class="is-flex" href="#心得三ood-特化成語言專用">
+        <span class="has-mr-6">4</span>
+        <span>心得三：OOD 特化成語言專用？</span>
+        </a></li><li>
+        <a class="is-flex" href="#心得四題目出的不錯">
+        <span class="has-mr-6">5</span>
+        <span>心得四：題目出的不錯</span>
+        </a></li><li>
+        <a class="is-flex" href="#其他心得">
+        <span class="has-mr-6">6</span>
+        <span>其他心得</span>
+        </a></li><li>
+        <a class="is-flex" href="#後記">
+        <span class="has-mr-6">7</span>
+        <span>後記</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2023 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

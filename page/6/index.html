@@ -136,6 +136,68 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-10-20T13:08:38.000Z">2019-10-20</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Security/">Security</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    13 分鐘 閱讀文 (大約 1883 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/10/20/hacker101-part6/">Hacker 101 CTF Write Up Part 6 - Encrypted Pastebin (Padding Oracle 以及翻轉攻擊)</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                Encrypted Pastebin這題總共有四個 flag
+
+0x00一開始畫面長這樣
+試著輸入值之後，發現上面有一段 ?post= 資料
+嘗試更改之後，發現 flag
+0x01根據上一個 error message 得知有用到 base64所以可以知道 ?post= 的是 base64接下來再輸入一些奇怪的值試試看
+發現程式使用的是 aes-128-cbc 去把資料作加密且根據錯誤訊息表...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/10/20/hacker101-part6/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-09-30T07:44:52.000Z">2019-09-30</time>
                 
                 <div class="level-item">
@@ -672,63 +734,6 @@ this 是什麼 ？this 單純看英文解釋的話，是代表『自身』聽起
 
 
 
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-02-19T03:31:09.000Z">2019-02-19</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Java/">Java</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    11 分鐘 閱讀文 (大約 1585 個字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/02/19/java-executor/">Java Executor、TheadPoolExecutor 設定參數基本介紹</a>
-            
-        </h1>
-         
-            <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
-Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
-            </div>
-        
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/02/19/java-executor/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -803,7 +808,7 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            76
+                            77
                         </p>
                     </a>
                 </div>
@@ -827,7 +832,7 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            104
+                            108
                         </p>
                     </a>
                 </div>
@@ -1032,6 +1037,17 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
             彙整
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2023/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2023</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2022/10/">
@@ -1469,6 +1485,19 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-06-28T03:47:41.000Z">2023-06-28</time></div>
+                    <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球學院 - 軟體設計模式精通之旅心得</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
                     <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
                     <p class="is-size-7 is-uppercase">
@@ -1512,19 +1541,6 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
                     <a href="/2022/01/09/go-summary/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初學 Go 該注意的事</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-11-25T00:16:24.000Z">2021-11-25</time></div>
-                    <a href="/2021/11/25/upstream/" class="title has-link-black-ter is-size-6 has-text-weight-normal">上游思維 - 在問題發生前解決的根本之道</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/">讀書心得</a>
                     </p>
                 </div>
             </div>
@@ -1557,6 +1573,19 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-06-28T03:47:41.000Z">2023-06-28</time></div>
+                    <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球學院 - 軟體設計模式精通之旅心得</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
                     <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
                     <p class="is-size-7 is-uppercase">
@@ -1600,19 +1629,6 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
                     <a href="/2022/01/09/go-summary/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初學 Go 該注意的事</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-11-25T00:16:24.000Z">2021-11-25</time></div>
-                    <a href="/2021/11/25/upstream/" class="title has-link-black-ter is-size-6 has-text-weight-normal">上游思維 - 在問題發生前解決的根本之道</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/">讀書心得</a>
                     </p>
                 </div>
             </div>
