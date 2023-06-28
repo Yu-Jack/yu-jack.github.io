@@ -172,9 +172,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Event Loop關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本透過以下兩篇可以更加清楚了解兩者之間的差異  
-Event Loop 運行機制解析 - 瀏覽器篇Event Loop 運行機制解析 - Node.js 篇 (本篇)  
-前言去年說好要寫的 Event Loop - Node.js 篇終於完成了話不多說, 直接來看一個範例, 這個範例在 瀏覽器 和...
+                Event Loop
+關於 Event Loop 也寫了兩篇, 針對瀏覽器和 Node.js 版本
+透過以下兩篇可以更加清楚了解兩者之間的差異
+Event Loop 運行機制解析 - 瀏覽器篇
+Event Loop 運行機制解析 - Node.js 篇 (本篇)
+前言
+去年說好要寫的 Event Loop - Node.js 篇終於完成了
+話不多說, 直接來看一個範例, 這個範例在 瀏覽器 ...
             </div>
         
         
@@ -230,8 +235,12 @@ Event Loop 運行機制解析 - 瀏覽器篇Event Loop 運行機制解析 - Node
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言上次提到了, 關於在 http module 裡面的 close function當呼叫 server.close(() =&gt; {console.log(&quot;server is closed&quot;)})express 會等到請求處理完事件後才會關閉  
-但那次我們單純只提到了伺服器的部分那麼當我的伺服器跟資料庫連動的時候, 也是一樣的狀況嗎?  
+                前言
+上次提到了, 關於在 http module 裡面的 close function
+當呼叫 server.close(() =&gt; {console.log(&quot;server is closed&quot;)})
+express 會等到請求處理完事件後才會關閉
+但那次我們單純只提到了伺服器的部分
+那麼當我的伺服器跟資料庫連動的時候, 也是一樣的狀況嗎?
 這篇將會 demo ...
             </div>
         
@@ -288,8 +297,15 @@ Event Loop 運行機制解析 - 瀏覽器篇Event Loop 運行機制解析 - Node
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言工作久了，一定都會面臨到一個問題就是 Zero Downtime 更新 (零停機更新)簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』這邊就紀錄如何去實現這需求  
-相信寫過 node.js 的人會知道在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線那究竟要如何達到 zero downtime 更新呢?我們來看看以下的 Cases，左邊是模擬伺服器...
+                前言
+工作久了，一定都會面臨到一個問題
+就是 Zero Downtime 更新 (零停機更新)
+簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』
+這邊就紀錄如何去實現這需求
+相信寫過 node.js 的人會知道
+在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線
+那究竟要如何達到 zero downtime 更新呢?
+我們來看看以下的 Cases，左邊是...
             </div>
         
         
@@ -347,8 +363,10 @@ Event Loop 運行機制解析 - 瀏覽器篇Event Loop 運行機制解析 - Node
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下，要如何達到使用 session 的方法
 知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到重點筆記
-
-前言以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人但當我們在前後端完全分離...
+&lt;!-- more --&gt;
+前言
+以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面
+而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別...
             </div>
         
         
@@ -404,9 +422,14 @@ Event Loop 運行機制解析 - 瀏覽器篇Event Loop 運行機制解析 - Node
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
-
-介紹在 express 裡面有一個 function 叫做 express.static()這個是一個 middleware，最常被用在要讀取一些靜態檔案上面以這個寫法來說...
+                前言
+最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
+加上小弟常用 nodejs + express 去寫前後端
+於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
+&lt;!-- more --&gt;
+介紹
+在 express 裡面有一個 function 叫做 express.static()
+這個是一個 middleware...
             </div>
         
         
@@ -462,10 +485,13 @@ Event Loop 運行機制解析 - 瀏覽器篇Event Loop 運行機制解析 - Node
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                稍微紀錄一下在 nodejs 裡面 module.exports 和 require以及在 ECMA6 的 export 和 import 的使用方式
-
-nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
-123456789101112131415161...
+                稍微紀錄一下在 nodejs 裡面 module.exports 和 require
+以及在 ECMA6 的 export 和 import 的使用方式
+&lt;!--more--&gt;
+nodejs
+首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function
+然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
+1234...
             </div>
         
         
@@ -548,7 +574,7 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            19
+                            20
                         </p>
                     </a>
                 </div>
@@ -689,17 +715,17 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Payment-Gateway/">
+        <a class="level is-marginless" href="/categories/Java/">
             <span class="level-start">
-                <span class="level-item">Payment Gateway</span>
+                <span class="level-item">Java</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Java/">
+        <a class="level is-marginless" href="/categories/Payment-Gateway/">
             <span class="level-start">
-                <span class="level-item">Java</span>
+                <span class="level-item">Payment Gateway</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -713,6 +739,14 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
+        <a class="level is-marginless" href="/categories/Bot/">
+            <span class="level-start">
+                <span class="level-item">Bot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Development/">
             <span class="level-start">
                 <span class="level-item">Development</span>
@@ -721,9 +755,9 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Bot/">
+        <a class="level is-marginless" href="/categories/Modeling/">
             <span class="level-start">
-                <span class="level-item">Bot</span>
+                <span class="level-item">Modeling</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -1216,7 +1250,7 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-06-28T03:47:41.000Z">2023-06-28</time></div>
                     <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球學院 - 軟體設計模式精通之旅心得</a>
                     <p class="is-size-7 is-uppercase">
-                        
+                        <a class="has-link-grey -link" href="/categories/Modeling/">Modeling</a>
                     </p>
                 </div>
             </div>
@@ -1304,7 +1338,7 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-06-28T03:47:41.000Z">2023-06-28</time></div>
                     <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球學院 - 軟體設計模式精通之旅心得</a>
                     <p class="is-size-7 is-uppercase">
-                        
+                        <a class="has-link-grey -link" href="/categories/Modeling/">Modeling</a>
                     </p>
                 </div>
             </div>
