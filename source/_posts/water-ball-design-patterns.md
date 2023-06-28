@@ -1,5 +1,6 @@
 ---
 title: 水球學院 - 軟體設計模式精通之旅心得
+categories: Modeling
 date: 2023-06-28 11:47:41
 tags: [design patterns, OOA, OOD, OOP]
 header-img: /images/banner.jpg
