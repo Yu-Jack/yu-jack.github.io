@@ -55,7 +55,7 @@ OOD 關注的是設計，會依照 OOA 觀察到的 forces 去決定需要套用
 
 最後對應到程式就是變這樣。
 
-<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FYu-Jack%2Fwater-ball-missions%2Fblob%2Fmain%2Fbig2%2Finternal%2Fdomain%2Fcard_pattern%2Fvalidator_handler.go&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script>
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FYu-Jack%2Fwater-ball-missions%2Fblob%2Fmain%2F2_Boss_big2%2Finternal%2Fdomain%2Fcard_pattern%2Fvalidator_handler.go&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script>
 
 除此之外題目也有蠻多限制去規定哪裡要有 OCP 存在或是一定要按照什麼規則進行，舉例來說像是大老二有限定說一定只能出同樣的牌型。雖然實際上我們在玩的大老二是有所謂壓牌的概念，類似同花順可以壓所有牌型。但你不能因為你習慣這樣玩，就不照題目開發，因為這代表你忽視了客戶的需求。除非你問客戶他說可以壓牌，你才可以開發壓牌版的大老二。
 
