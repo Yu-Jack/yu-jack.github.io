@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2023-06-28T03:47:41.000Z">
-<meta property="article:modified_time" content="2023-06-29T09:43:01.964Z">
+<meta property="article:modified_time" content="2023-07-10T07:59:17.631Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="design patterns">
 <meta property="article:tag" content="OOA">
@@ -199,7 +199,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>所以在 OOD 階段就可以針對判斷多種牌型做設計，以這個例子來說就是利用 CoR 去處理判斷這件事，所以 OOD 圖出來就會長這樣。</p>
 <p><img src="/images/water-ball/big2_ood.png" alt></p>
 <p>最後對應到程式就是變這樣。</p>
-<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FYu-Jack%2Fwater-ball-missions%2Fblob%2Fmain%2Fbig2%2Finternal%2Fdomain%2Fcard_pattern%2Fvalidator_handler.go&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script>
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FYu-Jack%2Fwater-ball-missions%2Fblob%2Fmain%2F2_Boss_big2%2Finternal%2Fdomain%2Fcard_pattern%2Fvalidator_handler.go&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script>
 
 <p>除此之外題目也有蠻多限制去規定哪裡要有 OCP 存在或是一定要按照什麼規則進行，舉例來說像是大老二有限定說一定只能出同樣的牌型。雖然實際上我們在玩的大老二是有所謂壓牌的概念，類似同花順可以壓所有牌型。但你不能因為你習慣這樣玩，就不照題目開發，因為這代表你忽視了客戶的需求。除非你問客戶他說可以壓牌，你才可以開發壓牌版的大老二。</p>
 <p>不過在真實開發環境下，其實不會有人跟你說哪邊要遵守什麼，所以題目這樣同時是優點也是缺點。這不能太依賴別人告訴你，而是在 OOA 階段的時候發現這些問題，並進而去詢問 PM/PO 有沒有擴增可能性，或是找其他 RD 討論有沒有需要先留後路。這很看當下的 context 決定的有沒有潛在的 forces，而這也很吃開發經驗，這就需要多寫扣去察覺了。</p>
