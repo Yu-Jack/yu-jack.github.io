@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言在上一篇 Docker Swarm 網路架構介紹 - load balancing traffic path 介紹過當流量進來的時候流程接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線   Container IP還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6在我們透過 DNS 之前, 我們">
+    <meta name="description" content="前言 在上一篇 Docker Swarm 網路架構介紹 - load balancing traffic path 介紹過當流量進來的時候流程 接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線 Container IP 還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6 在我們透過 DNS 之前,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker Swarm 網路架構介紹 - Service Discovery">
 <meta property="og:url" content="https://yu-jack.github.io/2020/06/02/docker-swarm-service-discovery/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言在上一篇 Docker Swarm 網路架構介紹 - load balancing traffic path 介紹過當流量進來的時候流程接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線   Container IP還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6在我們透過 DNS 之前, 我們">
+<meta property="og:description" content="前言 在上一篇 Docker Swarm 網路架構介紹 - load balancing traffic path 介紹過當流量進來的時候流程 接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線 Container IP 還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6 在我們透過 DNS 之前,">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-06-02T13:50:13.000Z">
@@ -176,33 +176,89 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>在上一篇 <a href="/2020/05/25/docker-swarm-load-balancing/">Docker Swarm 網路架構介紹 - load balancing traffic path</a> 介紹過當流量進來的時候流程<br>接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線  </p>
-<h2><span id="container-ip">Container IP</span></h2><p>還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6<br>在我們透過 DNS 之前, 我們能不能先用 container IP 去互相連線呢?<br><img src="/images/docker-swarm/12.png" alt="host-a-container"><br><img src="/images/docker-swarm/13.png" alt="host-b-container">  </p>
+                <h2><span id="前言">前言</span></h2>
+<p>在上一篇 <a href="/2020/05/25/docker-swarm-load-balancing/">Docker Swarm 網路架構介紹 - load balancing traffic path</a> 介紹過當流量進來的時候流程<br>
+接下來這篇會介紹如何讓 container 之間可以透過 DNS 的方式進行連線</p>
+<h2><span id="container-ip">Container IP</span></h2>
+<p>還記得上一篇提到實際上運行 service 的兩個 container IP 為 10.0.0.5, 10.0.0.6<br>
+在我們透過 DNS 之前, 我們能不能先用 container IP 去互相連線呢?<br>
+<img src="/images/docker-swarm/12.png" alt="host-a-container"><br>
+<img src="/images/docker-swarm/13.png" alt="host-b-container"></p>
 <blockquote>
-<p>因為筆者機器重開的原因, 接下來的 ip 可能都會有些變動<br>原本是 10.0.0.5 10.0.0.6<br>會換成 10.0.0.7 10.0.0.8<br>又或是 10.0.0.9 10.0.0.10<br>主要去注意我在講哪一個 container 以及後面括號的 ip 即可  </p>
+<p>因為筆者機器重開的原因, 接下來的 ip 可能都會有些變動<br>
+原本是 10.0.0.5 10.0.0.6<br>
+會換成 10.0.0.7 10.0.0.8<br>
+又或是 10.0.0.9 10.0.0.10<br>
+主要去注意我在講哪一個 container 以及後面括號的 ip 即可</p>
 </blockquote>
-<p>我們在 container-a (10.0.0.7) curl container-b (10.0.0.8) 那一台會發現無法連線  </p>
-<p><img src="/images/docker-swarm/15.png" alt="host-b-container">  </p>
-<p>這非常詭異, 理論上 container 之間應該要可以連線<br>不然上一篇的隱藏的 ingress_sbox 怎麼可以連到其他台 container 呢?  </p>
-<p>但神奇的事就來了, Docker 官方有說明可以透過 Custom Overlay Network 的方式讓 container 互相連線<br>我們先來實作 custom overlay network 讓 container 之間互相連線<br>再來頗析為何只有 Default Overlay Network 的 ingress_sbox 可以連線到其他 container, 但其他 container 之間卻無法連線  </p>
-<h2><span id="custom-overlay-network">Custom Overlay Network</span></h2><p>透過 <code>docker network create -d overlay my-overlay</code> 建立自訂義的 overlay network<br>接著再啟動 service 的時候把這個 overlay network 附加上去<br><code>docker service create -p 5000:3000 --network=&quot;my-overlay&quot; --name=&quot;hello-a&quot;  --replicas 2 node-test</code><br>建立完成之後, 我們先進去看一下 container 的網路介面<br>會發現, 每個 container 裡面又多了一個 10.0.1.x 的網路介面<br>這個就是我們自定義的 overlay network, 所以 container 之間溝通就會透過此組 IP 去溝通<br>此時會發現上面 10.0.0.x 的 IP 還是會保留, 原因是那是給 ingress_sbox 去做 load balancing 使用的<br>接著我們試著在 container-a (10.0.1.4) curl container-b (10.0.1.3)<br>會發現有正常回傳一個 HI, 就代表連線成功了！<br><img src="/images/docker-swarm/17.png" alt="host-a-container"><br><img src="/images/docker-swarm/16.png" alt="host-b-container">  </p>
-<p>那麼一個疑問就來了, 他是怎麼找到另一個 container-b 的呢?<br>為何在原本的 overlay 環境下無法連線, 但在這個 overlay 下卻可以連線<br>試著在 container-a 裡面找是否有 iptables 等等的相關設定<br>後來是透過 <code>ip neigh</code> 找到區網內把 IP 解析成 MAC 地址的一個地方<br>透過 ARP 的方式可以找到 container-b 正確的位置<br>另外從下面圖的結果看來, 可以發現 10.0.0.x 並沒有在這裡面<br>這也符合在 default overlay network 狀況下, container 之間是無法連線的<br><img src="/images/docker-swarm/18.png" alt="container ARP">  </p>
-<p>按照上面邏輯 default overlay network 下的 ingress_sbox 的 ARP 解析中<br>應該會出現 10.0.0.x 10.0.0.y 兩個 container IP<br>因為在上一篇 ingress_sbox 充當 load balancing 的角色<br>ingress_sbox 必須知道 10.0.0.x 以及 10.0.0.y 的 MAC 地址在哪裡<br>從下圖中就可以看到確實在 ingress_sbox 裡面是有針對 10.0.0.x/y 去做 ARP 解析的<br><img src="/images/docker-swarm/19.png" alt="ingress_sbox ARP">  </p>
-<p>接著最後就是來到 custom DNS 的部分, 在 container-a 和 container-b 裡面<br>是可以輸入 <a href="http://hello-a:3000">http://hello-a:3000</a> 去使用的 API 服務<br>在 container-a/b 中應該有一個地方會把 hello-a 這個 domain 解析成特定的 IP<br>這樣才能讀取到服務, 但是這個設定在哪裡?  </p>
-<p>這個設定其實是藏在 Docker Engine 裡面的 DNS Server<br>根據 <a href="https://success.docker.com/article/networking#swarmnativeservicediscovery">Docker 官網 - Swarm Native Service Discovery</a><br>在 container query hello-a 的時候<br>會先到 Docker 裡面的 DNS Server 去解析這個域名<br>解析成功後才會返為此域名的 IP  </p>
-<p>以官方提供的流程圖來說, Query myservice 這個域名<br>透過 Docker DNS Server 會回傳此域名的 IP 為 10.0.0.3  </p>
-<p><img src="/images/docker-swarm/20.png" alt="ingress_sbox ARP">  </p>
-<p>至於詳細設定的部分我翻了老半天都找不到, 這可能要直接去讀 docker 源碼了…  </p>
-<h2><span id="後記">後記</span></h2><p>這樣一來就稍微搞懂 docker 以及 docker swarm 裡面的網路架構流程<br>大致上都是透過以下幾個技術去處理掉整個流程  </p>
+<p>我們在 container-a (10.0.0.7) curl container-b (10.0.0.8) 那一台會發現無法連線</p>
+<p><img src="/images/docker-swarm/15.png" alt="host-b-container"></p>
+<p>這非常詭異, 理論上 container 之間應該要可以連線<br>
+不然上一篇的隱藏的 ingress_sbox 怎麼可以連到其他台 container 呢?</p>
+<p>但神奇的事就來了, Docker 官方有說明可以透過 Custom Overlay Network 的方式讓 container 互相連線<br>
+我們先來實作 custom overlay network 讓 container 之間互相連線<br>
+再來頗析為何只有 Default Overlay Network 的 ingress_sbox 可以連線到其他 container, 但其他 container 之間卻無法連線</p>
+<h2><span id="custom-overlay-network">Custom Overlay Network</span></h2>
+<p>透過 <code>docker network create -d overlay my-overlay</code> 建立自訂義的 overlay network<br>
+接著再啟動 service 的時候把這個 overlay network 附加上去<br>
+<code>docker service create -p 5000:3000 --network=&quot;my-overlay&quot; --name=&quot;hello-a&quot; --replicas 2 node-test</code><br>
+建立完成之後, 我們先進去看一下 container 的網路介面<br>
+會發現, 每個 container 裡面又多了一個 10.0.1.x 的網路介面<br>
+這個就是我們自定義的 overlay network, 所以 container 之間溝通就會透過此組 IP 去溝通<br>
+此時會發現上面 10.0.0.x 的 IP 還是會保留, 原因是那是給 ingress_sbox 去做 load balancing 使用的<br>
+接著我們試著在 container-a (10.0.1.4) curl container-b (10.0.1.3)<br>
+會發現有正常回傳一個 HI, 就代表連線成功了！<br>
+<img src="/images/docker-swarm/17.png" alt="host-a-container"><br>
+<img src="/images/docker-swarm/16.png" alt="host-b-container"></p>
+<p>那麼一個疑問就來了, 他是怎麼找到另一個 container-b 的呢?<br>
+為何在原本的 overlay 環境下無法連線, 但在這個 overlay 下卻可以連線<br>
+試著在 container-a 裡面找是否有 iptables 等等的相關設定<br>
+後來是透過 <code>ip neigh</code> 找到區網內把 IP 解析成 MAC 地址的一個地方<br>
+透過 ARP 的方式可以找到 container-b 正確的位置<br>
+另外從下面圖的結果看來, 可以發現 10.0.0.x 並沒有在這裡面<br>
+這也符合在 default overlay network 狀況下, container 之間是無法連線的<br>
+<img src="/images/docker-swarm/18.png" alt="container ARP"></p>
+<p>按照上面邏輯 default overlay network 下的 ingress_sbox 的 ARP 解析中<br>
+應該會出現 10.0.0.x 10.0.0.y 兩個 container IP
+因為在上一篇 ingress_sbox 充當 load balancing 的角色<br>
+ingress_sbox 必須知道 10.0.0.x 以及 10.0.0.y 的 MAC 地址在哪裡<br>
+從下圖中就可以看到確實在 ingress_sbox 裡面是有針對 10.0.0.x/y 去做 ARP 解析的<br>
+<img src="/images/docker-swarm/19.png" alt="ingress_sbox ARP"></p>
+<p>接著最後就是來到 custom DNS 的部分, 在 container-a 和 container-b 裡面<br>
+是可以輸入 http://hello-a:3000 去使用的 API 服務<br>
+在 container-a/b 中應該有一個地方會把 hello-a 這個 domain 解析成特定的 IP<br>
+這樣才能讀取到服務, 但是這個設定在哪裡?</p>
+<p>這個設定其實是藏在 Docker Engine 裡面的 DNS Server<br>
+根據 <a href="https://success.docker.com/article/networking#swarmnativeservicediscovery">Docker 官網 - Swarm Native Service Discovery</a><br>
+在 container query hello-a 的時候<br>
+會先到 Docker 裡面的 DNS Server 去解析這個域名<br>
+解析成功後才會返為此域名的 IP</p>
+<p>以官方提供的流程圖來說, Query myservice 這個域名<br>
+透過 Docker DNS Server 會回傳此域名的 IP 為 10.0.0.3</p>
+<p><img src="/images/docker-swarm/20.png" alt="ingress_sbox ARP"></p>
+<p>至於詳細設定的部分我翻了老半天都找不到, 這可能要直接去讀 docker 源碼了...</p>
+<h2><span id="後記">後記</span></h2>
+<p>這樣一來就稍微搞懂 docker 以及 docker swarm 裡面的網路架構流程<br>
+大致上都是透過以下幾個技術去處理掉整個流程</p>
 <ol>
-<li>iptables<br> 防火牆管控, 可以導轉流量到應該要去的位置, 或是過濾不要的流量  </li>
-<li>IPVS (IP Virtual Server, tool: ipvsadm)<br> Linux 核心擁有的 Load Balancing<br> 在上一篇的範例中, 運用在 ingress_sbox —load balancing—&gt; service  </li>
-<li>ARP (Address Resolution Protocol)<br> 解析 IP 後取得真正的 MAC Address 用<br> 在本篇的範例中, 運用在 container 之間互相溝通</li>
-<li>NAT (Network Address Translation, tool: iptables)<br> 運用在 iptables 裡面的機制, 可以改變封包傳送端與接收端的 IP 地址<br> 在上一篇的範例中, 運用在 localhost:5000 -&gt; ingress_sbox  </li>
-<li>Embedded DNS Server<br> 在 container 之中, 自定義的網域會來到這邊做解析, 並取得到自定義網域下的真實 IP<br> 在本篇的範例中, 運用在 query hello-a 域名時  </li>
+<li>iptables
+防火牆管控, 可以導轉流量到應該要去的位置, 或是過濾不要的流量</li>
+<li>IPVS (IP Virtual Server, tool: ipvsadm)
+Linux 核心擁有的 Load Balancing
+在上一篇的範例中, 運用在 ingress_sbox ---load balancing---&gt; service</li>
+<li>ARP (Address Resolution Protocol)
+解析 IP 後取得真正的 MAC Address 用
+在本篇的範例中, 運用在 container 之間互相溝通</li>
+<li>NAT (Network Address Translation, tool: iptables)
+運用在 iptables 裡面的機制, 可以改變封包傳送端與接收端的 IP 地址<br>
+在上一篇的範例中, 運用在 localhost:5000 -&gt; ingress_sbox</li>
+<li>Embedded DNS Server
+在 container 之中, 自定義的網域會來到這邊做解析, 並取得到自定義網域下的真實 IP<br>
+在本篇的範例中, 運用在 query hello-a 域名時</li>
 </ol>
 <p>這邊就記錄下來, 方便以後有個思路可以循著走</p>
-<h2><span id="references">References</span></h2><ol>
+<h2><span id="references">References</span></h2>
+<ol>
 <li><a href="https://ops.tips/blog/blocking-ingress-traffic-to-docker-swarm-worker-machines/">Blocking ingress traffic to Docker swarm worker machines</a></li>
 <li><a href="http://wiki.weithenn.org/cgi-bin/wiki.pl?IPTables-Linux_Firewall">iptables</a></li>
 <li><a href="https://neuvector.com/network-security/docker-swarm-container-networking/">How Docker Swarm Container Networking Works – Under the Hood</a></li>
