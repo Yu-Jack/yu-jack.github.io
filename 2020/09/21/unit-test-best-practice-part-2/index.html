@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言 上一篇我們會討論到什麼 Unit Test 定義是什麼, 涵蓋的範圍又是哪些? 接著我們會討論到 如何從什麼層面去思考一個好的 Unit Test? 這篇著重於在心法, 也就是先思考我們要的 Unit Test 要有什麼樣的效果 透過瞭解這些效果之後, 再來制定想要的組合 每個人認為好的 Unit Test 可能都不一樣 但這邊就以書中內容去介紹什麼是一個好的 Unit Test 什麼是一個">
+    <meta name="description" content="前言上一篇我們會討論到什麼 Unit Test 定義是什麼, 涵蓋的範圍又是哪些?接著我們會討論到 如何從什麼層面去思考一個好的 Unit Test? 這篇著重於在心法, 也就是先思考我們要的 Unit Test 要有什麼樣的效果透過瞭解這些效果之後, 再來制定想要的組合每個人認為好的 Unit Test 可能都不一樣但這邊就以書中內容去介紹什麼是一個好的 Unit Test   什麼是一個好的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unit Test 實踐守則 (二) - 如何從什麼層面去思考一個好的 Unit Test?">
 <meta property="og:url" content="https://yu-jack.github.io/2020/09/21/unit-test-best-practice-part-2/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言 上一篇我們會討論到什麼 Unit Test 定義是什麼, 涵蓋的範圍又是哪些? 接著我們會討論到 如何從什麼層面去思考一個好的 Unit Test? 這篇著重於在心法, 也就是先思考我們要的 Unit Test 要有什麼樣的效果 透過瞭解這些效果之後, 再來制定想要的組合 每個人認為好的 Unit Test 可能都不一樣 但這邊就以書中內容去介紹什麼是一個好的 Unit Test 什麼是一個">
+<meta property="og:description" content="前言上一篇我們會討論到什麼 Unit Test 定義是什麼, 涵蓋的範圍又是哪些?接著我們會討論到 如何從什麼層面去思考一個好的 Unit Test? 這篇著重於在心法, 也就是先思考我們要的 Unit Test 要有什麼樣的效果透過瞭解這些效果之後, 再來制定想要的組合每個人認為好的 Unit Test 可能都不一樣但這邊就以書中內容去介紹什麼是一個好的 Unit Test   什麼是一個好的">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-09-21T02:22:57.000Z">
@@ -175,114 +175,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2>
-<p>上一篇我們會討論到什麼 <a href="/2020/09/14/unit-test-best-practice-part-1/">Unit Test 定義是什麼, 涵蓋的範圍又是哪些?</a><br>
-接著我們會討論到 <a href="/2020/09/21/unit-test-best-practice-part-2/">如何從什麼層面去思考一個好的 Unit Test?</a></p>
-<p>這篇著重於在心法, 也就是先思考我們要的 Unit Test 要有什麼樣的效果<br>
-透過瞭解這些效果之後, 再來制定想要的組合<br>
-每個人認為好的 Unit Test 可能都不一樣<br>
-但這邊就以書中內容去介紹什麼是一個好的 Unit Test</p>
-<h2><span id="什麼是一個好的-unit-test">什麼是一個好的 Unit Test?</span></h2>
-<p>書中對好的 Unit Test 目標定義有三個</p>
+                <h2><span id="前言">前言</span></h2><p>上一篇我們會討論到什麼 <a href="/2020/09/14/unit-test-best-practice-part-1/">Unit Test 定義是什麼, 涵蓋的範圍又是哪些?</a><br>接著我們會討論到 <a href="/2020/09/21/unit-test-best-practice-part-2/">如何從什麼層面去思考一個好的 Unit Test?</a></p>
+<p>這篇著重於在心法, 也就是先思考我們要的 Unit Test 要有什麼樣的效果<br>透過瞭解這些效果之後, 再來制定想要的組合<br>每個人認為好的 Unit Test 可能都不一樣<br>但這邊就以書中內容去介紹什麼是一個好的 Unit Test  </p>
+<h2><span id="什麼是一個好的-unit-test">什麼是一個好的 Unit Test?</span></h2><p>書中對好的 Unit Test 目標定義有三個  </p>
 <ol>
 <li>可以被整合在開發流程中</li>
 <li>專注在最重要的程式</li>
 <li>用最小維護成本提供出最大的價值</li>
 </ol>
-<p>基於第三點的目標, 可以看出書中其實不推薦開發者為所有程式碼都加上 Unit Test<br>
-雖然帶來的效益可能不錯, 但取而代之的是維護成本極高</p>
-<p>可以試想, 當你為所有程式都寫上 Unit Test 之後<br>
-當你要開始重構或是因為新功能開始把其他程式進行合併<br>
-原本寫的 Unit Test 基本上會變得毫無作用<br>
-甚至因為寫了太多 Unit Test 導致執行測試時間過長</p>
-<p>當然這並不是說為所有程式寫上 Unit Test 不好<br>
-但我們要思考的是會有一些隱藏成本存在的</p>
-<p>竟然目標已經有了, 接著就是要透過什麼方式達到<br>
-書中提供以下四個面向, 以分析的角度去決定以及如何取捨去達到目標</p>
-<h2><span id="unit-test-的四個面向">Unit Test 的四個面向</span></h2>
-<p>以下是書中提供的四個面向去思考, 看完之後我們再回頭看看剛剛舉例的 behavior</p>
+<p>基於第三點的目標, 可以看出書中其實不推薦開發者為所有程式碼都加上 Unit Test<br>雖然帶來的效益可能不錯, 但取而代之的是維護成本極高  </p>
+<p>可以試想, 當你為所有程式都寫上 Unit Test 之後<br>當你要開始重構或是因為新功能開始把其他程式進行合併<br>原本寫的 Unit Test 基本上會變得毫無作用<br>甚至因為寫了太多 Unit Test 導致執行測試時間過長  </p>
+<p>當然這並不是說為所有程式寫上 Unit Test 不好<br>但我們要思考的是會有一些隱藏成本存在的  </p>
+<p>竟然目標已經有了, 接著就是要透過什麼方式達到<br>書中提供以下四個面向, 以分析的角度去決定以及如何取捨去達到目標  </p>
+<h2><span id="unit-test-的四個面向">Unit Test 的四個面向</span></h2><p>以下是書中提供的四個面向去思考, 看完之後我們再回頭看看剛剛舉例的 behavior  </p>
 <ol>
 <li>Protection against <a href="https://en.wikipedia.org/wiki/Software_regression">regression</a>: 保護程式不出現 Bug</li>
 <li>Resistance to refactoring: 不因重構導致影響撰寫 Unit Test</li>
 <li>Fast feedback: 能不能快速給予結果, 而不會等待很久</li>
 <li>Maintainability: 能不能輕易理解/執行 unit test 的內容</li>
 </ol>
-<p>關於第四點是一定必做的, 如果連第四點都做不到, 那就不會有人寫 Unit Test 了<br>
-除了第四點是必做之外, 其他三點之間會有一些互斥行為存在</p>
-<p>舉例來說, 要把 Protection against regression 做到極致的話<br>
-就會需要寫很多 Unit Test, 但這會導致 Resistance to refactoring 指標往下降</p>
-<p>上面這段話很饒口對吧, 用白話來說的話就是</p>
-<p>『要把 Bug 降到最低的話, 就把所有程式都加上 Unit Test 就好 (unit of code)<br>
-但當把所有程式加上 Unit Test, 哪天要重構功能時, 大部分的 Unit Test 都不能跑了』</p>
-<p>這裡定義一下重構為『在不改變程式外在行為的前提之下，改變程式內部結構以提升設計品質』<br>
-可以看看在 Teddy 的投影片裡提到的<a href="https://www.slideshare.net/teddysoft/ss-238494517?fbclid=IwAR3zNqIevurDkP0pz3FbidPNgYG1wsO7YcatIIUoKf6KRtXsp_xDTYZzFp4">重構的定義</a></p>
-<p>假設 Unit Test 測試的粒度, 以上篇提到的 unit of code 中的例子, 測試『hash 使用者密碼』
-原本程式碼如下
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hash.js</span></span><br><span class="line"><span class="keyword">const</span> crypto = <span class="built_in">require</span>(<span class="string">"crypto"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">password</span>) =&gt;</span> crypto.createHash(<span class="string">"sha256"</span>).update(password).digest(<span class="string">"hex"</span>)</span><br></pre></td></tr></table></figure></p>
-<p>測試程式碼如下<br>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hash = <span class="built_in">require</span>(<span class="string">"hash.js"</span>)</span><br><span class="line">it(<span class="string">"when give the string to hash 256, should return sha256 string"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// act		</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = hash(<span class="string">"123"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>未來因為部分的程式需要用到 sha512<br>
-所以需要加上其他的 hash 方式, 想要調整此程式碼變成如下<br>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hash.js</span></span><br><span class="line"><span class="keyword">const</span> crypto = <span class="built_in">require</span>(<span class="string">"crypto"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    sha256: <span class="function">(<span class="params">password</span>) =&gt;</span> crypto.createHash(<span class="string">"sha256"</span>).update(password).digest(<span class="string">"hex"</span>),</span><br><span class="line">    sha512: <span class="function">(<span class="params">password</span>) =&gt;</span> crypto.createHash(<span class="string">"sha512"</span>).update(password).digest(<span class="string">"hex"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>測試程式碼就需要進行調整<br>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hash = <span class="built_in">require</span>(<span class="string">"hash.js"</span>)</span><br><span class="line">it(<span class="string">"when give the string to hash 256 should return sha256 string"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = hash.sha256(<span class="string">"password"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-以 unit of code 概念來說, 這樣重構時, 就會需要連 Unit Test 一起重構</p>
-<p>但如果以 unit of behavior 來說, 舉例如下<br>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> userService = <span class="built_in">require</span>(<span class="string">"./userService.js"</span>)</span><br><span class="line"></span><br><span class="line">it(<span class="string">"when user type correct password, user should login successfully"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">const</span> hashPassword = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = userService.isPasswordMatch(<span class="string">"123"</span>, hashPassword)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>關於第四點是一定必做的, 如果連第四點都做不到, 那就不會有人寫 Unit Test 了<br>除了第四點是必做之外, 其他三點之間會有一些互斥行為存在  </p>
+<p>舉例來說, 要把 Protection against regression 做到極致的話<br>就會需要寫很多 Unit Test, 但這會導致 Resistance to refactoring 指標往下降  </p>
+<p>上面這段話很饒口對吧, 用白話來說的話就是  </p>
+<p>『要把 Bug 降到最低的話, 就把所有程式都加上 Unit Test 就好 (unit of code)<br>但當把所有程式加上 Unit Test, 哪天要重構功能時, 大部分的 Unit Test 都不能跑了』</p>
+<p>這裡定義一下重構為『在不改變程式外在行為的前提之下，改變程式內部結構以提升設計品質』<br>可以看看在 Teddy 的投影片裡提到的<a href="https://www.slideshare.net/teddysoft/ss-238494517?fbclid=IwAR3zNqIevurDkP0pz3FbidPNgYG1wsO7YcatIIUoKf6KRtXsp_xDTYZzFp4">重構的定義</a>  </p>
+<p>假設 Unit Test 測試的粒度, 以上篇提到的 unit of code 中的例子, 測試『hash 使用者密碼』<br>原本程式碼如下<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hash.js</span></span><br><span class="line"><span class="keyword">const</span> crypto = <span class="built_in">require</span>(<span class="string">"crypto"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">password</span>) =&gt;</span> crypto.createHash(<span class="string">"sha256"</span>).update(password).digest(<span class="string">"hex"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>測試程式碼如下<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hash = <span class="built_in">require</span>(<span class="string">"hash.js"</span>)</span><br><span class="line">it(<span class="string">"when give the string to hash 256, should return sha256 string"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// act		</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = hash(<span class="string">"123"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>未來因為部分的程式需要用到 sha512<br>所以需要加上其他的 hash 方式, 想要調整此程式碼變成如下<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hash.js</span></span><br><span class="line"><span class="keyword">const</span> crypto = <span class="built_in">require</span>(<span class="string">"crypto"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    sha256: <span class="function">(<span class="params">password</span>) =&gt;</span> crypto.createHash(<span class="string">"sha256"</span>).update(password).digest(<span class="string">"hex"</span>),</span><br><span class="line">    sha512: <span class="function">(<span class="params">password</span>) =&gt;</span> crypto.createHash(<span class="string">"sha512"</span>).update(password).digest(<span class="string">"hex"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>測試程式碼就需要進行調整<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hash = <span class="built_in">require</span>(<span class="string">"hash.js"</span>)</span><br><span class="line">it(<span class="string">"when give the string to hash 256 should return sha256 string"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = hash.sha256(<span class="string">"password"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><br>以 unit of code 概念來說, 這樣重構時, 就會需要連 Unit Test 一起重構  </p>
+<p>但如果以 unit of behavior 來說, 舉例如下<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> userService = <span class="built_in">require</span>(<span class="string">"./userService.js"</span>)</span><br><span class="line"></span><br><span class="line">it(<span class="string">"when user type correct password, user should login successfully"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// arrange</span></span><br><span class="line">    <span class="keyword">const</span> exceptedResult = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">const</span> hashPassword = <span class="string">"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// act</span></span><br><span class="line">    <span class="keyword">const</span> actualResult = userService.isPasswordMatch(<span class="string">"123"</span>, hashPassword)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assert</span></span><br><span class="line">    expect.equal(actualResult, exceptedResult)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>眼尖的讀者應該有發現到<br>
-筆者在 Unit Test 裡面有寫註解關於 arrange, act, assert<br>
-這其實是很著名的 3A Pattern 寫法<br>
-後面在提到如何寫好的 Unit Test 時會講到</p>
+<p>眼尖的讀者應該有發現到<br>筆者在 Unit Test 裡面有寫註解關於 arrange, act, assert<br>這其實是很著名的 3A Pattern 寫法<br>後面在提到如何寫好的 Unit Test 時會講到  </p>
 </blockquote>
-<p>因為 unit of behavior 關注的點是輸入密碼這個行為造成的結果, 並不用關注裡面怎麼去實作 hash 這件事情<br>
-所以在重構 hash function 的時候, 就不會需要重新調整 unit test 了<br>
-而且重構 hash function 之後, 跑完 unit test 如果是通過也就代表結果正確</p>
-<p>另外上述這種測試方式, 是針對『實作細節』去進行的<br>
-而『實作細節』是有可能跟著重構變更, 但程式的最終結果除非需求改變否則不會變更<br>
-如下圖所示, 書中是不推崇過度測試『實作細節』</p>
+<p>因為 unit of behavior 關注的點是輸入密碼這個行為造成的結果, 並不用關注裡面怎麼去實作 hash 這件事情<br>所以在重構 hash function 的時候, 就不會需要重新調整 unit test 了<br>而且重構 hash function 之後, 跑完 unit test 如果是通過也就代表結果正確  </p>
+<p>另外上述這種測試方式, 是針對『實作細節』去進行的<br>而『實作細節』是有可能跟著重構變更, 但程式的最終結果除非需求改變否則不會變更<br>如下圖所示, 書中是不推崇過度測試『實作細節』</p>
 <p><img src="/images/unit-test/unit-test-best-practice-14.png" alt></p>
-<p>過度使用 unit of code 的方式除了會降低 Resistance to refactoring 這個指標外<br>
-也會降低 Fast Feedback 這個指標<br>
-因為過多的 Unit Test 會讓整體跑 Unit Test 拉得過長</p>
-<p>以這三個指標來說, 會出現以下這張結果</p>
+<p>過度使用 unit of code 的方式除了會降低 Resistance to refactoring 這個指標外<br>也會降低 Fast Feedback 這個指標<br>因為過多的 Unit Test 會讓整體跑 Unit Test 拉得過長  </p>
+<p>以這三個指標來說, 會出現以下這張結果  </p>
 <p><img src="/images/unit-test/unit-test-best-practice-02.png" alt></p>
-<p>這張圖是以 Resistance to refactoring 為主軸去調整<br>
-以 Resistance to refactoring 為主, 也就是書中的核心思想<br>
-『The goal is to enable sustainable growth of the software project.』</p>
-<p>書中也提到這個三角形是可變動的<br>
-如果希望系統很少 Bug, 那麼相對應 Test Case 就會寫得非常多去驗證<br>
-所以主軸可能就會以 Protection against regression 為主<br>
-也就是以剛剛的測試『hash 使用者密碼』來說<br>
-這個 Test Case 就需要測試</p>
-<p>那剩下就是 Resistance to refactoring 和 Fast feedback 去選擇<br>
-這很難拿到三項都是完美的一百分，所以會有一個折衷點存在</p>
+<p>這張圖是以 Resistance to refactoring 為主軸去調整<br>以 Resistance to refactoring 為主, 也就是書中的核心思想<br>『The goal is to enable sustainable growth of the software project.』  </p>
+<p>書中也提到這個三角形是可變動的<br>如果希望系統很少 Bug, 那麼相對應 Test Case 就會寫得非常多去驗證<br>所以主軸可能就會以 Protection against regression 為主<br>也就是以剛剛的測試『hash 使用者密碼』來說<br>這個 Test Case 就需要測試  </p>
+<p>那剩下就是 Resistance to refactoring 和 Fast feedback 去選擇<br>這很難拿到三項都是完美的一百分，所以會有一個折衷點存在  </p>
 <blockquote>
 <p>題外話: 這也很類似分散式系統裡面的 <a href="https://zh.wikipedia.org/zh-hant/CAP%E5%AE%9A%E7%90%86">CAP 理論</a></p>
 </blockquote>
-<h2><span id="後記">後記</span></h2>
-<p>筆者認為根據不同情境會組出不同樣的組合<br>
-舉極端的例子, 如果只是很初期 MVP 用的專案的話, 甚至連 Unit Test 都不需要<br>
-因為產品沒辦法趕快生出來的話, 可能就被別家搶走生意了<br>
-好不好維護這是以後等生意做成再來考慮的事情<br>
-不然沒生意的話, 這個專案可能就直接進垃圾桶了 QQ</p>
-<p>那麼如果要寫好一個 unit test 該怎麼寫呢?<br>
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-&lt;img src=&quot;/images/wait.png&quot; style=&quot;margin: 0&quot; width=300 /&gt;
-我們得先來看看重構！<br>
-來看看下一篇<a href="/2020/09/28/unit-test-best-practice-part-3/">為何寫好 Unit Test 前需要先了解重構?</a></p>
+<h2><span id="後記">後記</span></h2><p>筆者認為根據不同情境會組出不同樣的組合<br>舉極端的例子, 如果只是很初期 MVP 用的專案的話, 甚至連 Unit Test 都不需要<br>因為產品沒辦法趕快生出來的話, 可能就被別家搶走生意了<br>好不好維護這是以後等生意做成再來考慮的事情<br>不然沒生意的話, 這個專案可能就直接進垃圾桶了 QQ  </p>
+<p>那麼如果要寫好一個 unit test 該怎麼寫呢?<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br><img src="/images/wait.png" style="margin: 0" width="300"><br>我們得先來看看重構！<br>來看看下一篇<a href="/2020/09/28/unit-test-best-practice-part-3/">為何寫好 Unit Test 前需要先了解重構?</a></p>
 
             </div>
         
