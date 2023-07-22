@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2023-06-28T03:47:41.000Z">
-<meta property="article:modified_time" content="2023-07-22T15:18:04.019Z">
+<meta property="article:modified_time" content="2023-07-22T15:20:19.770Z">
 <meta property="article:author" content="Jack Yu">
 <meta property="article:tag" content="design patterns">
 <meta property="article:tag" content="OOA">
@@ -157,7 +157,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span class="level-item has-text-grey">
                     
                     
-                    22 分鐘 閱讀文 (大約 3353 個字)
+                    22 分鐘 閱讀文 (大約 3354 個字)
                 </span>
                 
                 
@@ -207,7 +207,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FYu-Jack%2Fwater-ball-missions%2Fblob%2Fmain%2F2_Boss_big2%2Finternal%2Fdomain%2Fcard_pattern%2Fvalidator_handler.go&style=github&showBorder=on&showFileMeta=on&fetchFromJsDelivr=on"></script>
 
 <p>我知道上面跳的有點快，所以在這邊多補充一些思路，最主要的原因就是在 OOA 階段發現了行為變動性的存在以及需求的壓力，我們會有很多不同種牌組合會形成多種牌型，而我們要做的是去判斷牌型且在不能違反 OCP 的原則下去做 Design。那因為每一種牌型基本上對應到一種需求，所以這個現階段適合的做法就是用 CoR 去解決這個壓力。</p>
-<p>基本上題目都有蠻多限制去規定哪裡要有 OCP 存在或是一定要按照什麼規則進行，以規則來說像是剛剛大老二有限定說一定只能出同樣的牌型。雖然實際上我們在玩的大老二是有所謂壓牌的概念，類似同花順可以壓所有牌型。但你不能因為你習慣這樣玩，就不照題目開發，因為這代表你忽視了客戶的需求。除非你問客戶他說可以壓牌，你才可以開發壓牌版的大老二。而以城市擴充性上有要求再新增牌型時不能破壞核心程式碼，簡單來說在新增牌型的情況下，只需要新增一個檔案且在 Client 端讓他把這個新的牌型加入進來即可，剩下核心程式碼完全不用動。</p>
+<p>基本上題目都有蠻多限制去規定哪裡要有 OCP 存在或是一定要按照什麼規則進行，以規則來說像是剛剛大老二有限定說一定只能出同樣的牌型。雖然實際上我們在玩的大老二是有所謂壓牌的概念，類似同花順可以壓所有牌型。但你不能因為你習慣這樣玩，就不照題目開發，因為這代表你忽視了客戶的需求。除非你問客戶他說可以壓牌，你才可以開發壓牌版的大老二。而以程式擴充性上有要求在新增牌型時不能破壞核心程式碼，換句話說就是在新增牌型的情況下，只需要新增一個檔案且在 Client 端把這個新的牌型加入進來即可，剩下核心程式碼完全不能動到。</p>
 <p>不過在真實開發環境下，其實不會有人跟你說哪邊要遵守什麼，所以題目這樣同時是優點也是缺點。這不能太依賴別人告訴你，而是在 OOA 階段的時候發現這些問題，並進而去詢問 PM/PO 有沒有擴增可能性，或是找其他 RD 討論有沒有需要先留後路。這很看當下的 context 決定的有沒有潛在的 forces，而這也很吃開發經驗，這就需要多寫扣去察覺了。</p>
 <h2><span id="其他心得">其他心得</span></h2><ol>
 <li>當時開始寫題目的時間點有非常非常多的人排隊，導致每個人 review 的時間頂多 5 分鐘，其實根本不夠。但目前比較少人的情況，平均一個人可以拿到 15~20 分鐘 review 時間就可以討論很多細節，這點未來似乎會引入助教幫忙協助處理。</li>
