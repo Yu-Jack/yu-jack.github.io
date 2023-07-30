@@ -1,5 +1,5 @@
 ---
-title: How Minds Change (中譯 - 如何讓人改變想法)
+title: How Minds Change (中譯 - 如何讓人改變想法) 心得
 categories: 讀書心得
 date: 2023-07-18 21:16:24
 tags: [讀書心得]
