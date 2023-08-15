@@ -13,7 +13,7 @@ catalog: true
 
 但這樣的問題會是圖沒有 follow 比較統一的規則，後續讀的人會比較辛苦。而這個課程吸引我的點是會教如何以 OOAD 的思路去看待一份需求，並用 UML 畫出來。這帶來一個好處，透過統一規則，別人要看懂也會很快就能讀懂，就算看不懂的人，只要說明一些 UML 規則也很快就能上手，這部分就跟 DDD 裡面提到的 Ubiquitous Language 是類似的概念。
 
-簡而言之，這堂課我是為了學習如何以 OOAD 的思考去開發功能。至於 Design Patterns 對來我說算是複習而已，換個用 Composition 為主的 Golang 熟悉 Design Pattern 也是蠻有幫助。所以心得文上不會著墨太多 Design Patterns 的部分。
+簡而言之，這堂課我是為了學習如何以 OOAD 的思考去開發功能，原本想說 Design Patterns 的部分就當作複習，順便換個用 Composition 為主的 Golang 熟悉 Design Pattern 也是不錯。不過實際上了之後，有發現自己對於一些 Design Pattern 的使用原因不到很精通，所以整體來說算有幫助到我更加釐清。只是這篇心得文上不會著墨太多 Design Patterns 的部分，還是會說明 OOAD 這塊比較多。
 
 這篇文章不會帶入太多教學的內容，而是目前課程大約上了 60~70% 的一些心得和有在社群討論過的一些想法。
 
