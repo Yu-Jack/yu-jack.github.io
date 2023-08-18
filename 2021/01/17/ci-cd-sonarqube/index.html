@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言究竟如何評估一個專案狀態是好是壞, 是否有持續成長變得更好?在沒有數據化的情況下, 也只能依靠感覺去評估專案是否有往好的方向前進那麼如果想要評估, 該依什麼樣的角度去思考呢?筆者認為 Code Analytics 以及 Test Coverage 是一個能參考的結果 特別是 Test Coverage 的部分, 這得依據 Testing 寫得好壞去評估萬一一個 Testing 是沒有任何斷言(">
+    <meta name="description" content="前言 究竟如何評估一個專案狀態是好是壞, 是否有持續成長變得更好? 在沒有數據化的情況下, 也只能依靠感覺去評估專案是否有往好的方向前進 那麼如果想要評估, 該依什麼樣的角度去思考呢? 筆者認為 Code Analytics 以及 Test Coverage 是一個能參考的結果 特別是 Test Coverage 的部分, 這得依據 Testing 寫得好壞去評估 萬一一個 Testing 是沒有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CI&#x2F;CD 實現 - Sonarqube 篇">
 <meta property="og:url" content="https://yu-jack.github.io/2021/01/17/ci-cd-sonarqube/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言究竟如何評估一個專案狀態是好是壞, 是否有持續成長變得更好?在沒有數據化的情況下, 也只能依靠感覺去評估專案是否有往好的方向前進那麼如果想要評估, 該依什麼樣的角度去思考呢?筆者認為 Code Analytics 以及 Test Coverage 是一個能參考的結果 特別是 Test Coverage 的部分, 這得依據 Testing 寫得好壞去評估萬一一個 Testing 是沒有任何斷言(">
+<meta property="og:description" content="前言 究竟如何評估一個專案狀態是好是壞, 是否有持續成長變得更好? 在沒有數據化的情況下, 也只能依靠感覺去評估專案是否有往好的方向前進 那麼如果想要評估, 該依什麼樣的角度去思考呢? 筆者認為 Code Analytics 以及 Test Coverage 是一個能參考的結果 特別是 Test Coverage 的部分, 這得依據 Testing 寫得好壞去評估 萬一一個 Testing 是沒有">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-01-17T08:14:40.000Z">
@@ -176,18 +176,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>究竟如何評估一個專案狀態是好是壞, 是否有持續成長變得更好?<br>在沒有數據化的情況下, 也只能依靠感覺去評估專案是否有往好的方向前進<br>那麼如果想要評估, 該依什麼樣的角度去思考呢?<br>筆者認為 Code Analytics 以及 Test Coverage 是一個能<strong>參考</strong>的結果</p>
-<p>特別是 Test Coverage 的部分, 這得依據 Testing 寫得好壞去評估<br>萬一一個 Testing 是沒有任何斷言(assert)的話, 這樣 Test Coverage 也是 100%<br>這就沒有任何參考價值了</p>
-<p>專案變得更好, 這句有點抽象<br>那我們來想想, 什麼樣叫做爛專案</p>
+                <h2><span id="前言">前言</span></h2>
+<p>究竟如何評估一個專案狀態是好是壞, 是否有持續成長變得更好?
+在沒有數據化的情況下, 也只能依靠感覺去評估專案是否有往好的方向前進
+那麼如果想要評估, 該依什麼樣的角度去思考呢?
+筆者認為 Code Analytics 以及 Test Coverage 是一個能<strong>參考</strong>的結果</p>
+<p>特別是 Test Coverage 的部分, 這得依據 Testing 寫得好壞去評估
+萬一一個 Testing 是沒有任何斷言(assert)的話, 這樣 Test Coverage 也是 100%
+這就沒有任何參考價值了</p>
+<p>專案變得更好, 這句有點抽象
+那我們來想想, 什麼樣叫做爛專案</p>
 <ol>
 <li>程式碼可讀性非常差, 接手後沒人看得懂</li>
 <li>註解寫的亂七八糟, 沒有任何參考價值</li>
 <li>變數函式命名都是靠擲筊想出來的, 只有通靈王才讀得懂</li>
 <li>漏洞一堆, 框架都提供 ORM 讓你用結果還自己組 sql 導致 sql injection</li>
 <li>架構設計上沒有預先思考, 同樣程式碼一直重複在所有地方</li>
-<li>沒有自動化測試, 改一個地方後雙重間接地影響到其他功能  ……. 等等</li>
+<li>沒有自動化測試, 改一個地方後雙重間接地影響到其他功能  ....... 等等</li>
 </ol>
-<p>其實還有很多, 但就簡單列幾個<br>那問題就來了, 專案一開始爛沒關係, 凡是給別人一個機會看他會不會變得更好<br>聽起來只要上面列的幾點, 有持續改善就是越來越好, 但我們要怎麼知道?<br>這就會需要 Code Analytics 以及 Test Coverage 的從旁幫助</p>
+<p>其實還有很多, 但就簡單列幾個
+那問題就來了, 專案一開始爛沒關係, 凡是給別人一個機會看他會不會變得更好
+聽起來只要上面列的幾點, 有持續改善就是越來越好, 但我們要怎麼知道?
+這就會需要 Code Analytics 以及 Test Coverage 的從旁幫助</p>
 <p>透過每次提交新的程式碼去獲取以下數據, 就可以知道每一次新提交的程式碼是否有改善</p>
 <ol>
 <li>Test Coverage</li>
@@ -196,39 +206,88 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>是否有程式碼壞味道</li>
 <li>是否有明顯的 Bug</li>
 </ol>
-<p>但這實際改善還是得配合 Code Review 才能做到<br>比如說是程式設計架構好不好, 這還是得透過『人』去處理, 畢竟事在人為<br>獲取以上數值只是拿來量化專案<br>工具只是一種輔助, 實際能幫助的還是有限的<br>如果寫的人不看建議也不想修改 …… 那我會先建議你先喝杯茶再說了  </p>
-<p>那這邊使用的工具會是使用 Sonarqube + Jenkins + Slack<br>Jenkins + Slack 上次 CI/CD 那篇就提過, 所以這裡不會提到太多<br>這裡會以 Sonarqube 掃描和如何在 Jenkins 上使用為主軸</p>
-<h2><span id="sonarqube-介紹">Sonarqube 介紹</span></h2><p>Sonarqube 就是一款 Code Analytics 的工具<br>可以幫你獲取上述幾點的數據, 也會告訴你當有漏洞或壞味道出現時應該怎麼修改程式</p>
-<p>這邊快速簡介 Sonarqube 的運行架構, Sonarqube 會有所謂 scanner 以及 server<br>scanner 就是專門去掃程式用的, 掃完程式的結果會放置 server<br>而我們就會登入到這台 server 去看程式掃出來的結果</p>
-<p>這是掃描專案的主畫面, 可以看到上面有出現兩個 Bug<br><img src="/images/ci-cd-sonarqube/images-01.png" alt></p>
-<p>這個 Bug 點進去會看到這樣的圖<br><img src="/images/ci-cd-sonarqube/images-02.png" alt></p>
-<p>我事先先寫了一個無窮迴圈的程式<br>這時 sonarqube 就有幫我掃出來問題<br>再往下點進去, 他會有一個說明告訴你為什麼他會找到這個 Bug<br>他會給你一個正例和反例讓你了解問題在哪<br><img src="/images/ci-cd-sonarqube/images-03.png" alt></p>
-<p>以上為其中一個例子, 其他還有很多規則像是 Security Hopspot<br>以下圖來說, 他就會告訴你在寫 express 的時候, 要注意不要寫入過於敏感的資訊<br>也告訴你不要嘗試以為用 encode 的方法存入就沒問題, 因為還是會被 decode 出來<br><img src="/images/ci-cd-sonarqube/images-04.png" alt></p>
-<p>再來就是我們比較注意的點, 也就是是否這些問題和 Test Coverage 都有記錄起來<br>這裡都會記錄每次掃描到的問題, 所以透過折線圖會清楚了解到目前專案是不是累積越來越多問題<br>可以看到 04:25 掃描的結果和 04:30 掃描的差異結果<br><img src="/images/ci-cd-sonarqube/images-05.png" alt="04:25"><br><img src="/images/ci-cd-sonarqube/images-06.png" alt="04:30"></p>
-<p>再來就是 Test Coverage, Sonarqube 其實也提供讓你把 Unit Test 的結果丟上去並去做紀錄<br>從下圖中可以看到 2020/12/18 當時有掃描了 2 個 unit test, 且 Test coverage 都是 100%<br><img src="/images/ci-cd-sonarqube/images-07.png" alt></p>
-<p>而圖中上面可以看到目前總共用 6 個 Unit Test, 且總體的 Test coverage 都是 100%<br>所以除了每次分別紀錄的 Test coverage 之外, 也會告訴你總體的 Test coverage 是否有在成長</p>
-<h2><span id="整合後流程使用說明">整合後流程使用說明</span></h2><p>有一點非常重要先提到, 因為 Sonarqube 掃描多 branch 版本是需要錢的<br>但我只有 community 的版本可以用, 也就是上面只有一個 branch 可以用<br>所以做法上, 我會把一個 branch 放成一個 project</p>
-<p>假設專案叫做 test, branch 有 test1 和 test2<br>在 Sonarqube server 上就會建立兩個 Project 去做掃描</p>
+<p>但這實際改善還是得配合 Code Review 才能做到<br>
+比如說是程式設計架構好不好, 這還是得透過『人』去處理, 畢竟事在人為<br>
+獲取以上數值只是拿來量化專案
+工具只是一種輔助, 實際能幫助的還是有限的<br>
+如果寫的人不看建議也不想修改 ...... 那我會先建議你先喝杯茶再說了</p>
+<p>那這邊使用的工具會是使用 Sonarqube + Jenkins + Slack
+Jenkins + Slack 上次 CI/CD 那篇就提過, 所以這裡不會提到太多
+這裡會以 Sonarqube 掃描和如何在 Jenkins 上使用為主軸</p>
+<h2><span id="sonarqube-介紹">Sonarqube 介紹</span></h2>
+<p>Sonarqube 就是一款 Code Analytics 的工具
+可以幫你獲取上述幾點的數據, 也會告訴你當有漏洞或壞味道出現時應該怎麼修改程式</p>
+<p>這邊快速簡介 Sonarqube 的運行架構, Sonarqube 會有所謂 scanner 以及 server
+scanner 就是專門去掃程式用的, 掃完程式的結果會放置 server
+而我們就會登入到這台 server 去看程式掃出來的結果</p>
+<p>這是掃描專案的主畫面, 可以看到上面有出現兩個 Bug
+<img src="/images/ci-cd-sonarqube/images-01.png" alt></p>
+<p>這個 Bug 點進去會看到這樣的圖
+<img src="/images/ci-cd-sonarqube/images-02.png" alt></p>
+<p>我事先先寫了一個無窮迴圈的程式
+這時 sonarqube 就有幫我掃出來問題
+再往下點進去, 他會有一個說明告訴你為什麼他會找到這個 Bug
+他會給你一個正例和反例讓你了解問題在哪
+<img src="/images/ci-cd-sonarqube/images-03.png" alt></p>
+<p>以上為其中一個例子, 其他還有很多規則像是 Security Hopspot
+以下圖來說, 他就會告訴你在寫 express 的時候, 要注意不要寫入過於敏感的資訊
+也告訴你不要嘗試以為用 encode 的方法存入就沒問題, 因為還是會被 decode 出來
+<img src="/images/ci-cd-sonarqube/images-04.png" alt></p>
+<p>再來就是我們比較注意的點, 也就是是否這些問題和 Test Coverage 都有記錄起來
+這裡都會記錄每次掃描到的問題, 所以透過折線圖會清楚了解到目前專案是不是累積越來越多問題
+可以看到 04:25 掃描的結果和 04:30 掃描的差異結果
+<img src="/images/ci-cd-sonarqube/images-05.png" alt="04:25">
+<img src="/images/ci-cd-sonarqube/images-06.png" alt="04:30"></p>
+<p>再來就是 Test Coverage, Sonarqube 其實也提供讓你把 Unit Test 的結果丟上去並去做紀錄
+從下圖中可以看到 2020/12/18 當時有掃描了 2 個 unit test, 且 Test coverage 都是 100%
+<img src="/images/ci-cd-sonarqube/images-07.png" alt></p>
+<p>而圖中上面可以看到目前總共用 6 個 Unit Test, 且總體的 Test coverage 都是 100%
+所以除了每次分別紀錄的 Test coverage 之外, 也會告訴你總體的 Test coverage 是否有在成長</p>
+<h2><span id="整合後流程使用說明">整合後流程使用說明</span></h2>
+<p>有一點非常重要先提到, 因為 Sonarqube 掃描多 branch 版本是需要錢的
+但我只有 community 的版本可以用, 也就是上面只有一個 branch 可以用
+所以做法上, 我會把一個 branch 放成一個 project</p>
+<p>假設專案叫做 test, branch 有 test1 和 test2
+在 Sonarqube server 上就會建立兩個 Project 去做掃描</p>
 <ol>
 <li>test:test1</li>
 <li>test:test2</li>
 </ol>
 <p>而為何以這種方式建立</p>
-<p>原因是這整套系統使用的基本需求就是會掃描開發者各自的 branch<br>但為了讓開發者各自的 branch 第一次掃描也會被 Sonarqube 算在<strong>新提交的程式碼</strong>的前提下<br>必須先掃描一次 develop branch 的版本到 Sonarqube 當做基底  </p>
-<p>這樣當下次開發者掃描各自的 branch 時, 就可以從第一次開始計算<br>那為了不讓各自開發者互相影響到, 所以會以 {project_name}:{branch_name} 去開 Sonarqube project  </p>
-<p>我們來舉個例子看一下<br>目前有兩支 AB 程式都各有一個 Bug<br>但在 master/develop branch 中, 只存在一支程式 A, 在另一個 branch test 中存在另一支程式 B<br>如果今天我直接以 branch test 去掃描會發生什麼事情? </p>
-<p>在 New Code 是不會看到任何指標<br><img src="/images/ci-cd-sonarqube/images-11.png" alt></p>
-<p>而在 Overall Code 卻會看到兩個 Bug<br><img src="/images/ci-cd-sonarqube/images-12.png" alt></p>
-<p>那我們預期的結果是什麼?<br>我們想要在 Overall Code 中出現 AB 程式, 但在 New Code 只想要出現 B 程式<br>也就是我們得先以 master/develop 先掃描一次之後, 再去掃描另一個 branch test 才會有這樣的效果  </p>
-<p><img src="/images/ci-cd-sonarqube/images-14.png" alt><br><img src="/images/ci-cd-sonarqube/images-13.png" alt></p>
+<p>原因是這整套系統使用的基本需求就是會掃描開發者各自的 branch<br>
+但為了讓開發者各自的 branch 第一次掃描也會被 Sonarqube 算在<strong>新提交的程式碼</strong>的前提下<br>
+必須先掃描一次 develop branch 的版本到 Sonarqube 當做基底</p>
+<p>這樣當下次開發者掃描各自的 branch 時, 就可以從第一次開始計算<br>
+那為了不讓各自開發者互相影響到, 所以會以 {project_name}:{branch_name} 去開 Sonarqube project</p>
+<p>我們來舉個例子看一下<br>
+目前有兩支 AB 程式都各有一個 Bug<br>
+但在 master/develop branch 中, 只存在一支程式 A, 在另一個 branch test 中存在另一支程式 B<br>
+如果今天我直接以 branch test 去掃描會發生什麼事情?</p>
+<p>在 New Code 是不會看到任何指標
+<img src="/images/ci-cd-sonarqube/images-11.png" alt></p>
+<p>而在 Overall Code 卻會看到兩個 Bug
+<img src="/images/ci-cd-sonarqube/images-12.png" alt></p>
+<p>那我們預期的結果是什麼?<br>
+我們想要在 Overall Code 中出現 AB 程式, 但在 New Code 只想要出現 B 程式<br>
+也就是我們得先以 master/develop 先掃描一次之後, 再去掃描另一個 branch test 才會有這樣的效果</p>
+<p><img src="/images/ci-cd-sonarqube/images-14.png" alt>
+<img src="/images/ci-cd-sonarqube/images-13.png" alt></p>
 <p>整體流程圖如下</p>
-<p>藍色區域是 MainPipeline 執行<br>紅色區域是 SonarqubeJob 執行<br>被藍色包起來代表, 觸發點是 MainPipeline, 執行過程會去呼叫 SonarqubeJob  </p>
+<p>藍色區域是 MainPipeline 執行<br>
+紅色區域是 SonarqubeJob 執行<br>
+被藍色包起來代表, 觸發點是 MainPipeline, 執行過程會去呼叫 SonarqubeJob</p>
 <p><img src="/images/ci-cd-sonarqube/flow.png" alt></p>
-<h2><span id="jenkins-sonarqube">Jenkins + Sonarqube</span></h2><p>主要是透過 Jenkins pipeline 的方式去運作<br>這邊就附上上面流程中的兩個 Job 的 pipeline</p>
+<h2><span id="jenkins-sonarqube">Jenkins + Sonarqube</span></h2>
+<p>主要是透過 Jenkins pipeline 的方式去運作
+這邊就附上上面流程中的兩個 Job 的 pipeline</p>
 <ol>
-<li><p>(MainPipeline) 主要流程的 pipeline<br> <a href="https://gist.github.com/Yu-Jack/f7f03ca8dccdd04bed4a1428e48eb7af">https://gist.github.com/Yu-Jack/f7f03ca8dccdd04bed4a1428e48eb7af</a></p>
+<li>
+<p>(MainPipeline) 主要流程的 pipeline
+https://gist.github.com/Yu-Jack/f7f03ca8dccdd04bed4a1428e48eb7af</p>
 </li>
-<li><p>(SonarqubeJob) 專門掃描程式的 pipline, 而因為後面專案有使用 java 和 nodejs, 所以會根據參數決定要用哪一個去掃描<br> <a href="https://gist.github.com/Yu-Jack/f7f03ca8dccdd04bed4a1428e48eb7af#gistcomment-3591103">https://gist.github.com/Yu-Jack/f7f03ca8dccdd04bed4a1428e48eb7af#gistcomment-3591103</a></p>
+<li>
+<p>(SonarqubeJob) 專門掃描程式的 pipline, 而因為後面專案有使用 java 和 nodejs, 所以會根據參數決定要用哪一個去掃描
+https://gist.github.com/Yu-Jack/f7f03ca8dccdd04bed4a1428e48eb7af#gistcomment-3591103</p>
 </li>
 </ol>
 <blockquote>
@@ -236,52 +295,81 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </blockquote>
 <p>而特別要注意的是在 Jenkins 裡面的 Sonarqube 環境設置, 包含以下三點</p>
 <ol>
-<li><p>Jenkins plugins<br> 去外掛管理程式裡面安裝 <code>SonarQube Scanner</code> <code>nodejs</code> 兩個 plugins</p>
+<li>
+<p>Jenkins plugins
+去外掛管理程式裡面安裝 <code>SonarQube Scanner</code> <code>nodejs</code> 兩個 plugins</p>
 </li>
-<li><p>Sonarqube scanner<br> scanner 的部分在掃描程式的 pipeline 中透過以下方式設定 scannerHome</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">environment &#123;</span><br><span class="line">    scannerHome &#x3D; tool name: &#39;sonarqube-scanner-test&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 詳細的這個 <code>sonarqube-scanner-test</code> 名稱<br> 可以在 <code>管理 Jenkins &gt; Global Tool Configuration &gt; SonarQube Scanner</code> 裡面發現</p>
+<li>
+<p>Sonarqube scanner
+scanner 的部分在掃描程式的 pipeline 中透過以下方式設定 scannerHome
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">environment &#123;</span><br><span class="line">    scannerHome &#x3D; tool name: &#39;sonarqube-scanner-test&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+詳細的這個 <code>sonarqube-scanner-test</code> 名稱
+可以在 <code>管理 Jenkins &gt; Global Tool Configuration &gt; SonarQube Scanner</code> 裡面發現</p>
 </li>
-<li><p>Sonarqube server<br> server 的部分在掃描程式的 pipeline 中透過以下方式設定 server 位置</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   environment &#123;</span><br><span class="line">		sonarqube_server &#x3D; &#39;http:&#x2F;&#x2F;sonarqube:9000&#39;</span><br><span class="line">&#125;</span><br><span class="line">   ... other code</span><br><span class="line">   ... other code</span><br><span class="line">   ... other code</span><br><span class="line">withSonarQubeEnv(&#39;local-sonarqube&#39;)</span><br></pre></td></tr></table></figure>
-<p> 上面的 <code>sonarqube_server</code> 是為了打 api 暫時先設置的<br> 下面的 <code>local-sonarqube</code> 可以在 <code>管理 Jenkins &gt; 設定系統 &gt; SonarQube servers</code> 裡面發現</p>
+<li>
+<p>Sonarqube server
+server 的部分在掃描程式的 pipeline 中透過以下方式設定 server 位置
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   environment &#123;</span><br><span class="line">		sonarqube_server &#x3D; &#39;http:&#x2F;&#x2F;sonarqube:9000&#39;</span><br><span class="line">&#125;</span><br><span class="line">   ... other code</span><br><span class="line">   ... other code</span><br><span class="line">   ... other code</span><br><span class="line">withSonarQubeEnv(&#39;local-sonarqube&#39;)</span><br></pre></td></tr></table></figure>
+上面的 <code>sonarqube_server</code> 是為了打 api 暫時先設置的
+下面的 <code>local-sonarqube</code> 可以在 <code>管理 Jenkins &gt; 設定系統 &gt; SonarQube servers</code> 裡面發現</p>
 </li>
 </ol>
-<h2><span id="demo">Demo</span></h2><p>利用 MainPipeline 去 build 參數<br><img src="/images/ci-cd-sonarqube/images-08.png" alt></p>
+<h2><span id="demo">Demo</span></h2>
+<p>利用 MainPipeline 去 build 參數<br>
+<img src="/images/ci-cd-sonarqube/images-08.png" alt></p>
 <p>下面提供測試用的參數</p>
-<p>第一組測試參數<br>branch: feature/test-3<br>git_repository_name: sonarqube-test-demo<br>project_type: nodejs</p>
+<p>第一組測試參數
+branch: feature/test-3
+git_repository_name: sonarqube-test-demo
+project_type: nodejs</p>
 <p><img src="/images/ci-cd-sonarqube/images-10.png" alt></p>
-<p>第二組測試參數<br>branch: feature/test-4<br>git_repository_name: sonarqube-test-demo-java<br>project_type: java</p>
+<p>第二組測試參數
+branch: feature/test-4
+git_repository_name: sonarqube-test-demo-java
+project_type: java</p>
 <p><img src="/images/ci-cd-sonarqube/images-09.png" alt></p>
-<p>有興趣想玩玩的, 我也有包成 docker-compose.yml 可以去使用, 可以按照以下步驟去實驗<br>jenkins 和 sonarqube 的帳號密碼皆為 admin:root  </p>
+<p>有興趣想玩玩的, 我也有包成 docker-compose.yml 可以去使用, 可以按照以下步驟去實驗<br>
+jenkins 和 sonarqube 的帳號密碼皆為 admin:root</p>
 <ol>
 <li><code>docker run -d --name=&quot;demo_backup&quot; jk82421/jenkins_server:v1</code></li>
-<li><code>docker cp demo_backup:/var/jenkins_home_backup/jenkins_home ~/Downloads/jenkins-sonarqube-test</code><br> 把我的備份的 jenkins_home 先複製出來</li>
-<li>把 docker-compose 的 <code>{Your_downloaded_jenkins_home}</code> 改成  <code>/Users/name/Downloads/jenkins-sonarqube-test</code><br> 記得 name 這裡要填你自己的</li>
-<li>執行 docker-compose up,  docker-compose.yml 如下 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3.7"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">sonarqube:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jk82421/sonarqube_server:v2</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">9000</span><span class="string">:9000</span></span><br><span class="line"><span class="attr">jenkins_server:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins:lts</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#123;Your_downloaded_jenkins_home&#125;:/var/jenkins_home</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">8080</span><span class="string">:8080</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span></span><br></pre></td></tr></table></figure></li>
-<li>最後記得停止和刪除一開始備份的東西 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop demo_backup</span><br><span class="line">docker rm demo_backup</span><br></pre></td></tr></table></figure></li>
-<li>Jenkin 網頁在 <a href="http://localhost:8080">http://localhost:8080</a><br> Sonarqube 網頁在 <a href="http://localhost:9000">http://localhost:9000</a></li>
+<li><code>docker cp demo_backup:/var/jenkins_home_backup/jenkins_home ~/Downloads/jenkins-sonarqube-test</code>
+把我的備份的 jenkins_home 先複製出來</li>
+<li>把 docker-compose 的 <code>{Your_downloaded_jenkins_home}</code> 改成  <code>/Users/name/Downloads/jenkins-sonarqube-test</code>
+記得 name 這裡要填你自己的</li>
+<li>執行 docker-compose up,  docker-compose.yml 如下
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3.7"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">sonarqube:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jk82421/sonarqube_server:v2</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">9000</span><span class="string">:9000</span></span><br><span class="line"><span class="attr">jenkins_server:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins:lts</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#123;Your_downloaded_jenkins_home&#125;:/var/jenkins_home</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">8080</span><span class="string">:8080</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span></span><br></pre></td></tr></table></figure></li>
+<li>最後記得停止和刪除一開始備份的東西
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop demo_backup</span><br><span class="line">docker rm demo_backup</span><br></pre></td></tr></table></figure></li>
+<li>Jenkin 網頁在 http://localhost:8080
+Sonarqube 網頁在 http://localhost:9000</li>
 </ol>
 <p>以下紀錄 jenkins 和 sonarqube 有調整的部分</p>
-<h3><span id="sonarqube-部分">sonarqube 部分</span></h3><ol>
+<h3><span id="sonarqube-部分">sonarqube 部分</span></h3>
+<ol>
 <li>帳號密碼為: admin:root</li>
 <li>幫 admin 建立一組 api token (00f31133302ea8d7fdec5e3ff72fbb67d3b7632d)</li>
 <li>記憶體最大都調整到 1024mb</li>
 </ol>
-<h3><span id="jenkins-部分">jenkins 部分</span></h3><ol>
+<h3><span id="jenkins-部分">jenkins 部分</span></h3>
+<ol>
 <li>帳號密碼為: admin:root</li>
 <li>安裝 Sonarqube scanner</li>
 <li>環境有設置 Sonarqube scanner 的名稱, 以及設定 api token credential</li>
 <li>安裝 nodejs plusgin</li>
 <li>環境有設置 nodejs 的名稱</li>
 </ol>
-<h3><span id="docker-container-部分">docker container 部分</span></h3><ol>
+<h3><span id="docker-container-部分">docker container 部分</span></h3>
+<ol>
 <li>內存建議需要調到 4GB 以上 (因為 sonarqube + es 需要比較大的內存, 個人是調到 8GB)</li>
 </ol>
-<h3><span id="問題紀錄">問題紀錄</span></h3><p>過程中有到以下兩個常噴的錯誤<br>這兩者問題發生跟記憶體不足是有關係的<br>若遇到則把 docker container 或是使用的 host 記憶體加大應該可以解決問題  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SonarQube Process exited with exit value [es]: 137</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2021.01.17 06:37:35 WARN  web[][o.s.s.a.EmbeddedTomcat] Failed to stop web server</span><br><span class="line">org.apache.catalina.LifecycleException: A child container failed during stop</span><br></pre></td></tr></table></figure>
-<h2><span id="後記">後記</span></h2><p>這版本還有一些地方要進行調整</p>
+<h3><span id="問題紀錄">問題紀錄</span></h3>
+<p>過程中有到以下兩個常噴的錯誤<br>
+這兩者問題發生跟記憶體不足是有關係的<br>
+若遇到則把 docker container 或是使用的 host 記憶體加大應該可以解決問題</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SonarQube Process exited with exit value [es]: 137</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2021.01.17 06:37:35 WARN  web[][o.s.s.a.EmbeddedTomcat] Failed to stop web server</span><br><span class="line">org.apache.catalina.LifecycleException: A child container failed during stop</span><br></pre></td></tr></table></figure></p>
+<h2><span id="後記">後記</span></h2>
+<p>這版本還有一些地方要進行調整</p>
 <ol>
 <li>例如拉 branch 的方式, 應該要配合 credential 去處理</li>
 <li>目前 repository 是寫死的, 應該要變成可調動的參數</li>
@@ -333,8 +421,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content">
+        <p style="text-align: center;">
+            <a href="https://www.buymeacoffee.com/yujack" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+        </p>
+    </div>
     <div class="card-content" id="google-ad">
-        <p style="text-align: center;">如果喜歡我的內容，歡迎點廣告支持，謝謝！</p>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
             crossorigin="anonymous"></script>
         <ins class="adsbygoogle"

@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項確認好這三點可以先 Marked 一下待會要額外做哪一些設定    確認 ec2 instance type 是否支援 ipv6, 可參考 Instance Types 確認 ec2 instance 是在 public subnet 還是 private subnet public subnet → 要用到 internet g">
+    <meta name="description" content="前言 要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項 確認好這三點可以先 Marked 一下待會要額外做哪一些設定  確認 ec2 instance type 是否支援 ipv6, 可參考 Instance Types 確認 ec2 instance 是在 public subnet 還是 private subnet  public subnet → 要用到 internet">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何啟用 AWS EC2 IPv6 ?">
 <meta property="og:url" content="https://yu-jack.github.io/2020/03/30/ec2-ipv6/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項確認好這三點可以先 Marked 一下待會要額外做哪一些設定    確認 ec2 instance type 是否支援 ipv6, 可參考 Instance Types 確認 ec2 instance 是在 public subnet 還是 private subnet public subnet → 要用到 internet g">
+<meta property="og:description" content="前言 要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項 確認好這三點可以先 Marked 一下待會要額外做哪一些設定  確認 ec2 instance type 是否支援 ipv6, 可參考 Instance Types 確認 ec2 instance 是在 public subnet 還是 private subnet  public subnet → 要用到 internet">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-03-30T03:50:13.000Z">
@@ -176,44 +176,70 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項<br>確認好這三點可以先 Marked 一下待會要額外做哪一些設定  </p>
+                <h2><span id="前言">前言</span></h2>
+<p>要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項<br>
+確認好這三點可以先 Marked 一下待會要額外做哪一些設定</p>
 <ol>
 <li>確認 ec2 instance type 是否支援 ipv6, 可參考 <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance Types</a></li>
-<li>確認 ec2 instance 是在 public subnet 還是 private subnet<ul>
-<li>public subnet → 要用到 internet gateway  </li>
+<li>確認 ec2 instance 是在 public subnet 還是 private subnet
+<ul>
+<li>public subnet → 要用到 internet gateway</li>
 <li>private subnet → 要用到 egress-only internet gateway</li>
 </ul>
 </li>
-<li>確認 ec2 建立的方式, 以下有兩點要注意<ul>
+<li>確認 ec2 建立的方式, 以下有兩點要注意
+<ul>
 <li>2016.09 後 Linux 不需要多作設定</li>
-<li>如果機器是用 AMI 建立的話, 需要手動設定 ipv6 的設定才能啟用 ipv6<br>  其他版本 OS 使用方法可以參考 <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-dhcpv6">Configure IPv6 on Your Instances</a></li>
+<li>如果機器是用 AMI 建立的話, 需要手動設定 ipv6 的設定才能啟用 ipv6
+其他版本 OS 使用方法可以參考 <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-dhcpv6">Configure IPv6 on Your Instances</a></li>
 </ul>
 </li>
 </ol>
-<h2><span id="啟用-ipv6">啟用 ipv6</span></h2><p>啟用 ipv6 有以下幾個步驟要走  </p>
+<h2><span id="啟用-ipv6">啟用 ipv6</span></h2>
+<p>啟用 ipv6 有以下幾個步驟要走</p>
 <ol>
-<li>VPC 需要啟用 ipv6, 按下 Add IPv6 CIDR 讓它自動產生一組<br> <img src="/images/ec2-ipv6/ec2-ipv6-01.png" alt="vpc cidr"></li>
-<li>Subnet 需要設定 ipv6 CIDR, 這邊注意到圖中的 00<br> 是可以從 00 01 02 這樣慢慢設定上去, 另外這個 00 是以 16 進位表示<br> <img src="/images/ec2-ipv6/ec2-ipv6-02.png" alt="subnet cidr"></li>
-<li>設定 Route Table 對外的部分<br> Desitination: <code>::/0</code><br> 以下二擇一, 根據 ec2 所在的環境判斷<br> (Private Subnet) Target: egress-only internet gateway<br> (Public Subnet) Target: Internet network gateway  </li>
-<li>設定 ec2 的 Security Group, Outbound 的部分要設定<br> Desitination: <code>::/0</code><br> Type: <code>All Traffic</code><br> Protocol: <code>All</code><br> Port range: <code>All</code>  </li>
-<li>指派 ipv6 給 ec2, 按下 Assign New IP 之後留空, 再按下 <code>Yes, Update</code> 讓它自己指派<br> <img src="/images/ec2-ipv6/ec2-ipv6-03.png" alt="ec2 ipv6"></li>
+<li>VPC 需要啟用 ipv6, 按下 Add IPv6 CIDR 讓它自動產生一組
+<img src="/images/ec2-ipv6/ec2-ipv6-01.png" alt="vpc cidr"></li>
+<li>Subnet 需要設定 ipv6 CIDR, 這邊注意到圖中的 00
+是可以從 00 01 02 這樣慢慢設定上去, 另外這個 00 是以 16 進位表示
+<img src="/images/ec2-ipv6/ec2-ipv6-02.png" alt="subnet cidr"></li>
+<li>設定 Route Table 對外的部分
+Desitination: <code>::/0</code><br>
+以下二擇一, 根據 ec2 所在的環境判斷<br>
+(Private Subnet) Target: egress-only internet gateway<br>
+(Public Subnet) Target: Internet network gateway</li>
+<li>設定 ec2 的 Security Group, Outbound 的部分要設定
+Desitination: <code>::/0</code><br>
+Type: <code>All Traffic</code><br>
+Protocol: <code>All</code><br>
+Port range: <code>All</code></li>
+<li>指派 ipv6 給 ec2, 按下 Assign New IP 之後留空, 再按下 <code>Yes, Update</code> 讓它自己指派<br>
+<img src="/images/ec2-ipv6/ec2-ipv6-03.png" alt="ec2 ipv6"></li>
 </ol>
 <p>接下來最後一點, 就要看機器狀況, 如同一開始提到的兩個情況</p>
 <ol>
 <li>2016.09 後 Linux 不需要多作設定</li>
-<li>如果機器是用 AMI 建立的話, 需要手動設定 ipv6 的設定才能啟用 ipv6<br> 其他版本 OS 使用方法可以參考 <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-dhcpv6">Configure IPv6 on Your Instances</a></li>
+<li>如果機器是用 AMI 建立的話, 需要手動設定 ipv6 的設定才能啟用 ipv6
+其他版本 OS 使用方法可以參考 <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-dhcpv6">Configure IPv6 on Your Instances</a></li>
 </ol>
 <p>這邊就介紹用 Ubuntu 14 版本啟用的方式</p>
-<h2><span id="ubuntu-14-版本啟用-ip-v6-的方式">Ubuntu 14 版本啟用 ip v6 的方式</span></h2><ol>
-<li><p>修改 /etc/network/interfaces.d/eth0.cfg 內容<br> 請在 iface 的下面一段加上 <code>up dhclient -6 $IFACE</code></p>
- <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原本</span></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改後</span></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br><span class="line">    up dhclient -6 <span class="variable">$IFACE</span></span><br></pre></td></tr></table></figure>
+<h2><span id="ubuntu-14-版本啟用-ip-v6-的方式">Ubuntu 14 版本啟用 ip v6 的方式</span></h2>
+<ol>
+<li>
+<p>修改 /etc/network/interfaces.d/eth0.cfg 內容
+請在 iface 的下面一段加上 <code>up dhclient -6 $IFACE</code></p>
+<p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原本</span></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改後</span></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br><span class="line">    up dhclient -6 <span class="variable">$IFACE</span></span><br></pre></td></tr></table></figure></p>
 </li>
-<li><p>接著 <code>sudo reboot</code></p>
+<li>
+<p>接著 <code>sudo reboot</code></p>
 </li>
-<li>輸入 <code>ifconfig</code> 確認 ipv6 是否正確, 如果不正確, 輸入 <code>sudo dhclient -6</code> 啟用 ipv6</li>
+<li>
+<p>輸入 <code>ifconfig</code> 確認 ipv6 是否正確, 如果不正確, 輸入 <code>sudo dhclient -6</code> 啟用 ipv6</p>
+</li>
 </ol>
 <p>其他版本 OS 使用方法可以參考 <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-dhcpv6">Configure IPv6 on Your Instances</a></p>
-<h2><span id="references">References</span></h2><ol>
+<h2><span id="references">References</span></h2>
+<ol>
 <li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html#vpc-migrate-ipv6-example">Migrating to IPv6</a></li>
 </ol>
 
@@ -262,8 +288,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content">
+        <p style="text-align: center;">
+            <a href="https://www.buymeacoffee.com/yujack" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+        </p>
+    </div>
     <div class="card-content" id="google-ad">
-        <p style="text-align: center;">如果喜歡我的內容，歡迎點廣告支持，謝謝！</p>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
             crossorigin="anonymous"></script>
         <ins class="adsbygoogle"

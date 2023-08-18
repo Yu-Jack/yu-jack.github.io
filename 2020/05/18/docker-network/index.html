@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="在使用 docker 的時候最常出現網路連線的問題要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些而這些設置方法各自有可以達成什麼樣的功效   NoneNone 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務此 container 也無法訪問到外部的網路服務   H">
+    <meta name="description" content="在使用 docker 的時候最常出現網路連線的問題 要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等 要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些 而這些設置方法各自有可以達成什麼樣的功效 None None 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務 此 container 也無法訪問到外部的網路服務">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker 網路介紹">
 <meta property="og:url" content="https://yu-jack.github.io/2020/05/18/docker-network/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="在使用 docker 的時候最常出現網路連線的問題要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些而這些設置方法各自有可以達成什麼樣的功效   NoneNone 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務此 container 也無法訪問到外部的網路服務   H">
+<meta property="og:description" content="在使用 docker 的時候最常出現網路連線的問題 要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等 要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些 而這些設置方法各自有可以達成什麼樣的功效 None None 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務 此 container 也無法訪問到外部的網路服務">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-05-18T13:50:13.000Z">
@@ -176,33 +176,71 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <p>在使用 docker 的時候最常出現網路連線的問題<br>要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等<br>要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些<br>而這些設置方法各自有可以達成什麼樣的功效  </p>
-<h2><span id="none">None</span></h2><p>None 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務<br>此 container 也無法訪問到外部的網路服務  </p>
-<h2><span id="host">Host</span></h2><p>在 A 電腦上面運行 container B<br>然後透過 <code>docker run --network=&quot;host&quot; image</code> 運行時<br>在電腦 A 上面是可以直接讀取到 localhost:8080<br>並不需要設置什麼 <code>-p 8080:8080</code> 的 port forwarding 的方式即可使用<br>透過 host 設置方法, 就是直接使用 host 的網路介面, 甚至可以進行修改<br>但此這是方法並不建議使用在正式環境上  </p>
-<p>只是這邊要特別注意, 只有在 linue 的環境下才能使用 host 的指令<br>詳細可以看 <a href="https://docs.docker.com/network/host/">docker 官網</a>的解釋</p>
+                <p>在使用 docker 的時候最常出現網路連線的問題<br>
+要如何連線到 container 裡面啊, 要如何讓 container 之間互連線等等<br>
+要解決這些問題之前, 又要先了解 docker 的網路設置方法有哪些<br>
+而這些設置方法各自有可以達成什麼樣的功效</p>
+<h2><span id="none">None</span></h2>
+<p>None 代表的就是沒有網路, 也就是外部使無法訪問此 container 的服務<br>
+此 container 也無法訪問到外部的網路服務</p>
+<h2><span id="host">Host</span></h2>
+<p>在 A 電腦上面運行 container B<br>
+然後透過 <code>docker run --network=&quot;host&quot; image</code> 運行時<br>
+在電腦 A 上面是可以直接讀取到 localhost:8080<br>
+並不需要設置什麼 <code>-p 8080:8080</code> 的 port forwarding 的方式即可使用<br>
+透過 host 設置方法, 就是直接使用 host 的網路介面, 甚至可以進行修改<br>
+但此這是方法並不建議使用在正式環境上</p>
+<p>只是這邊要特別注意, 只有在 linue 的環境下才能使用 host 的指令<br>
+詳細可以看 <a href="https://docs.docker.com/network/host/">docker 官網</a>的解釋</p>
 <blockquote>
-<p>The host networking driver only works on Linux hosts<br>and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server.  </p>
+<p>The host networking driver only works on Linux hosts<br>
+and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server.</p>
 </blockquote>
-<h2><span id="bridge-預設網路介面">Bridge (預設網路介面)</span></h2><p><img src="/images/docker/bridge.png" alt="bridge network"></p>
-<p>如上圖所示, bridge 就是在各個 container 之間架起一個橋樑<br>可以想像成在這個橋樑之間的城市, 都擁有自己的街道名, 在這裡就是都有各自的 IP<br>城市之間都可以各自溝通, 也就是 container 可以使用各自擁有的 IP 進行溝通<br>而 host 算是獨立在這整個系統之外的地方, 要與這個 container 進行連線溝通必須先經過登記<br>這個登記就是在運行 container 的時候設置 <code>docker run -p targetPort:hostPort</code> 這個屬性<br>透過把 targetPort 轉換到 hostPort, 例如說 8080:3000<br>這樣在 container 裡面的 3000 port 就可以在 host 的 8080 port 讀取到服務了  </p>
-<p><br></p>
-<p>而這個 bridge 還有一種方式, 是可以自訂字 bridge 的名稱, 這也是官方最推薦的一種方式<br>可以想像原本預設 bridge 是官方自定義的一種名稱, 但我們是可以透過以下指令客製化這個 bridge 的名字<br><code>docker network create -d bridge custom-bridge</code><br>當我們客製化 bridge 的名字後, 當 container A &amp; B 透過以下方式使用這個 custom-bridge 的時候<br><code>docker run --network=&quot;custom-bridge&quot; imageA</code><br><code>docker run --network=&quot;custom-bridge&quot; imageB</code><br>就代表也只有他們彼此在使用這個網路介面, 在這個狀況下 container A &amp; B 之間溝通的方式<br>就可以透過 container ID 去進行溝通, 例: <code>http://containera-id:port</code><br>但在這使用預設的 bridge 是無法達成的, 必須要用自訂義的才可以  </p>
-<p><br></p>
-<p>除此之外, container A 和 B 之間也是能透過自定義的名字去進行溝通<br><code>docker run --network=&quot;custom-bridge&quot; --name=&quot;container-a&quot; imageA</code><br><code>docker run --network=&quot;custom-bridge&quot; --name=&quot;container-b&quot; imageB</code><br>當我在啟用 container 的時候自定義名字時<br>他們之間就可以用 <code>http://container-a:port</code> 以及 <code>http://container-b:port</code> 進行溝通了</p>
+<h2><span id="bridge-預設網路介面">Bridge (預設網路介面)</span></h2>
+<p><img src="/images/docker/bridge.png" alt="bridge network"></p>
+<p>如上圖所示, bridge 就是在各個 container 之間架起一個橋樑<br>
+可以想像成在這個橋樑之間的城市, 都擁有自己的街道名, 在這裡就是都有各自的 IP<br>
+城市之間都可以各自溝通, 也就是 container 可以使用各自擁有的 IP 進行溝通<br>
+而 host 算是獨立在這整個系統之外的地方, 要與這個 container 進行連線溝通必須先經過登記<br>
+這個登記就是在運行 container 的時候設置 <code>docker run -p targetPort:hostPort</code> 這個屬性<br>
+透過把 targetPort 轉換到 hostPort, 例如說 8080:3000<br>
+這樣在 container 裡面的 3000 port 就可以在 host 的 8080 port 讀取到服務了</p>
+<p>&lt;br&gt;</p>
+<p>而這個 bridge 還有一種方式, 是可以自訂字 bridge 的名稱, 這也是官方最推薦的一種方式<br>
+可以想像原本預設 bridge 是官方自定義的一種名稱, 但我們是可以透過以下指令客製化這個 bridge 的名字<br>
+<code>docker network create -d bridge custom-bridge</code><br>
+當我們客製化 bridge 的名字後, 當 container A &amp; B 透過以下方式使用這個 custom-bridge 的時候<br>
+<code>docker run --network=&quot;custom-bridge&quot; imageA</code><br>
+<code>docker run --network=&quot;custom-bridge&quot; imageB</code><br>
+就代表也只有他們彼此在使用這個網路介面, 在這個狀況下 container A &amp; B 之間溝通的方式<br>
+就可以透過 container ID 去進行溝通, 例: <code>http://containera-id:port</code><br>
+但在這使用預設的 bridge 是無法達成的, 必須要用自訂義的才可以</p>
+<p>&lt;br&gt;</p>
+<p>除此之外, container A 和 B 之間也是能透過自定義的名字去進行溝通<br>
+<code>docker run --network=&quot;custom-bridge&quot; --name=&quot;container-a&quot; imageA</code><br>
+<code>docker run --network=&quot;custom-bridge&quot; --name=&quot;container-b&quot; imageB</code><br>
+當我在啟用 container 的時候自定義名字時<br>
+他們之間就可以用 <code>http://container-a:port</code> 以及 <code>http://container-b:port</code> 進行溝通了</p>
 <p>快速總結</p>
 <ol>
 <li>使用預設 bridge 以及預設 name -&gt; 只能使用 container ip 互相連線</li>
 <li>使用自定義 bridge 以及預設 name -&gt; 可以透過 container ip &amp; id 互相連線</li>
 <li>使用自定義 bridge 以及自定義 name -&gt; 可以透過 container ip &amp; id &amp; name 互相連線</li>
 </ol>
-<h2><span id="overlay">Overlay</span></h2><p>此種網路配置是希望在不同 host 之間的 docker dameon 能夠互相連線<br>並且讓 host 裡面的 container 都連到同一個網路, 進而讓 container 互相溝通  </p>
+<h2><span id="overlay">Overlay</span></h2>
+<p>此種網路配置是希望在不同 host 之間的 docker dameon 能夠互相連線<br>
+並且讓 host 裡面的 container 都連到同一個網路, 進而讓 container 互相溝通</p>
 <blockquote>
-<p>docker dameon 可以想像成運行 docker container 的程序  </p>
+<p>docker dameon 可以想像成運行 docker container 的程序</p>
 </blockquote>
 <p><img src="/images/docker/overlay.png" alt="overlay network"></p>
-<p>在 docker overlay 的網路概念就一定會提到 docker swarm<br>而 docker swarm 也是 docker container cluster 的管理工具<br>那因為 docker 官網針對 overlay network 的概念是綁定在 docker swarm 上介紹  </p>
-<p>詳細的 docker swarm 下篇會講到架構<br>以及在 docker swarm 的架構下網路是如何流動的  </p>
-<h2><span id="references">References</span></h2><ol>
+<p>在 docker overlay 的網路概念就一定會提到 docker swarm<br>
+而 docker swarm 也是 docker container cluster 的管理工具<br>
+那因為 docker 官網針對 overlay network 的概念是綁定在 docker swarm 上介紹</p>
+<p>詳細的 docker swarm 下篇會講到架構<br>
+以及在 docker swarm 的架構下網路是如何流動的</p>
+<h2><span id="references">References</span></h2>
+<ol>
 <li><a href="https://docs.docker.com/network/">Docker Network Overvie</a></li>
 <li><a href="https://cowsay.blog/post/j0773pki/">給新手的 Docker 網絡入門</a></li>
 </ol>
@@ -252,8 +290,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content">
+        <p style="text-align: center;">
+            <a href="https://www.buymeacoffee.com/yujack" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+        </p>
+    </div>
     <div class="card-content" id="google-ad">
-        <p style="text-align: center;">如果喜歡我的內容，歡迎點廣告支持，謝謝！</p>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
             crossorigin="anonymous"></script>
         <ins class="adsbygoogle"

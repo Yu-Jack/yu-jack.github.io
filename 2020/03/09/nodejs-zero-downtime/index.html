@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言工作久了，一定都會面臨到一個問題就是 Zero Downtime 更新 (零停機更新)簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』這邊就紀錄如何去實現這需求   相信寫過 node.js 的人會知道在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線那究竟要如何達到 zero downtime 更新呢?我們來看看以下的 Cases，左邊是模擬伺服器，右邊">
+    <meta name="description" content="前言 工作久了，一定都會面臨到一個問題 就是 Zero Downtime 更新 (零停機更新) 簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』 這邊就紀錄如何去實現這需求 相信寫過 node.js 的人會知道 在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線 那究竟要如何達到 zero downtime 更新呢? 我們來看看以下的 Cases，左邊是模擬伺">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Node.js 如何實現 zero downtime 更新呢?">
 <meta property="og:url" content="https://yu-jack.github.io/2020/03/09/nodejs-zero-downtime/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言工作久了，一定都會面臨到一個問題就是 Zero Downtime 更新 (零停機更新)簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』這邊就紀錄如何去實現這需求   相信寫過 node.js 的人會知道在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線那究竟要如何達到 zero downtime 更新呢?我們來看看以下的 Cases，左邊是模擬伺服器，右邊">
+<meta property="og:description" content="前言 工作久了，一定都會面臨到一個問題 就是 Zero Downtime 更新 (零停機更新) 簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』 這邊就紀錄如何去實現這需求 相信寫過 node.js 的人會知道 在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線 那究竟要如何達到 zero downtime 更新呢? 我們來看看以下的 Cases，左邊是模擬伺">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-03-09T02:33:54.000Z">
@@ -175,45 +175,105 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>工作久了，一定都會面臨到一個問題<br>就是 Zero Downtime 更新 (零停機更新)<br>簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』<br>這邊就紀錄如何去實現這需求  </p>
-<p>相信寫過 node.js 的人會知道<br>在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線<br>那究竟要如何達到 zero downtime 更新呢?<br>我們來看看以下的 Cases，左邊是模擬伺服器，右邊則是模擬客戶端  </p>
-<h2><span id="case-1">Case 1</span></h2><p>在左邊可以看到，如果我要更新 a.js 的程式內容<br>我必須要先按下 Ctrl + C 把 node.js 取消掉然後重新下 node a.js 才可以<br>但取消的同時，右邊的客戶就會中斷，沒辦法繼續發送請求  </p>
-<video width="100%" controls><source src="/images/nodejs/case-01.mp4" type="video/mp4"></video>
-
-<h2><span id="case-2">Case 2</span></h2><p>接下來就有一個 pm2 誕生的時候<br>pm2 是一個管理 Node.js process 的工具，很多 production 環境也有在使用這一套<br>當  Node.js 出現錯誤的時候，pm2 會幫忙重啟 Node.js<br>但如果沒用正確，依舊會導致客戶端中斷連線的可能性<br>下面使用 pm2 把 Node.js 啟動，我使用 <code>pm2 start a.js</code><br>然後我要重新啟動 a.js 的時候，我使用了 <code>pm2 restart a.js</code>，依舊造成客戶斷線  </p>
-<video width="100%" controls><source src="/images/nodejs/case-02.mp4" type="video/mp4"></video>
-
-<h2><span id="case-3-1">Case 3-1</span></h2><p>接著就有透過 <a href="https://nodejs.org/api/cluster.html#cluster_cluster">cluster</a> 去解決這問題<br>這個東西出現是為了解決 Node.js 沒辦法最大化利用電腦多核心的缺點<br>假設電腦有四核心，透過 cluster 可以一次啟用 4 個 Node.js 的 process<br>能接受的 request 量就會比只有 1 個 process 的時候還要更多<br>在 pm2 裡面，是透過 <code>pm2 start a.js -i max</code> 的方式啟用最大核心數<br>然後當程式修改的時候，可以透過 <code>pm2 reload a.js</code> 讓程式重起，但不會影響客戶斷線  </p>
-<video width="100%" controls><source src="/images/nodejs/case-03-01.mp4" type="video/mp4"></video>
-
-<h2><span id="case-3-2">Case 3-2</span></h2><p>但！就是這個但是<br>萬一我們只有一個核心，也就是說只有一個 Node.js process 的時候<br>我們去重新啟用的時候，依舊會發生讓客戶斷線的問題  </p>
-<video width="100%" controls><source src="/images/nodejs/case-03-02.mp4" type="video/mp4"></video>
-
-<h2><span id="中場補充">中場補充</span></h2><p>要繼續往以下的 case 之前，要介紹在 http module 中有一個 close 的 function<br>當呼叫 <code>server.close(() =&gt; {console.log(&quot;server is closed&quot;)})</code><br>node.js server 會等到請求處理完事件後才會關閉  </p>
-<h3><span id="中場補充-case-01">中場補充 case 01</span></h3><p>先來看第一個 case，左邊是我們的 server，右邊是我們客戶端<br>我在 server 添加一個路由 <code>/close</code>，當 match 這個 get close 的時候，就會呼叫 close  </p>
+                <h2><span id="前言">前言</span></h2>
+<p>工作久了，一定都會面臨到一個問題<br>
+就是 Zero Downtime 更新 (零停機更新)<br>
+簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』<br>
+這邊就紀錄如何去實現這需求</p>
+<p>相信寫過 node.js 的人會知道<br>
+在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線<br>
+那究竟要如何達到 zero downtime 更新呢?<br>
+我們來看看以下的 Cases，左邊是模擬伺服器，右邊則是模擬客戶端</p>
+<h2><span id="case-1">Case 1</span></h2>
+<p>在左邊可以看到，如果我要更新 a.js 的程式內容<br>
+我必須要先按下 Ctrl + C 把 node.js 取消掉然後重新下 node a.js 才可以<br>
+但取消的同時，右邊的客戶就會中斷，沒辦法繼續發送請求<br>
+&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-01.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h2><span id="case-2">Case 2</span></h2>
+<p>接下來就有一個 pm2 誕生的時候<br>
+pm2 是一個管理 Node.js process 的工具，很多 production 環境也有在使用這一套<br>
+當  Node.js 出現錯誤的時候，pm2 會幫忙重啟 Node.js<br>
+但如果沒用正確，依舊會導致客戶端中斷連線的可能性<br>
+下面使用 pm2 把 Node.js 啟動，我使用 <code>pm2 start a.js</code><br>
+然後我要重新啟動 a.js 的時候，我使用了 <code>pm2 restart a.js</code>，依舊造成客戶斷線<br>
+&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-02.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h2><span id="case-3-1">Case 3-1</span></h2>
+<p>接著就有透過 <a href="https://nodejs.org/api/cluster.html#cluster_cluster">cluster</a> 去解決這問題<br>
+這個東西出現是為了解決 Node.js 沒辦法最大化利用電腦多核心的缺點<br>
+假設電腦有四核心，透過 cluster 可以一次啟用 4 個 Node.js 的 process<br>
+能接受的 request 量就會比只有 1 個 process 的時候還要更多<br>
+在 pm2 裡面，是透過 <code>pm2 start a.js -i max</code> 的方式啟用最大核心數<br>
+然後當程式修改的時候，可以透過 <code>pm2 reload a.js</code> 讓程式重起，但不會影響客戶斷線<br>
+&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-03-01.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h2><span id="case-3-2">Case 3-2</span></h2>
+<p>但！就是這個但是<br>
+萬一我們只有一個核心，也就是說只有一個 Node.js process 的時候<br>
+我們去重新啟用的時候，依舊會發生讓客戶斷線的問題</p>
+<p>&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-03-02.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h2><span id="中場補充">中場補充</span></h2>
+<p>要繼續往以下的 case 之前，要介紹在 http module 中有一個 close 的 function<br>
+當呼叫 <code>server.close(() =&gt; {console.log(&quot;server is closed&quot;)})</code><br>
+node.js server 會等到請求處理完事件後才會關閉</p>
+<h3><span id="中場補充-case-01">中場補充 case 01</span></h3>
+<p>先來看第一個 case，左邊是我們的 server，右邊是我們客戶端<br>
+我在 server 添加一個路由 <code>/close</code>，當 match 這個 get close 的時候，就會呼叫 close</p>
 <ul>
-<li>流程是這樣<br>當客戶呼叫 server 一個要等待兩秒的 api 時 (模擬高密集 CPU)<br>我另外去呼叫 <code>/close</code> 是不會把目前使用者的請求中斷的<br>而是會等到使用者 response 拿到後，才會關閉 server<br>關閉後左邊 server 就會觸發 callback 印出 <code>server is closed</code>  </li>
+<li>流程是這樣
+當客戶呼叫 server 一個要等待兩秒的 api 時 (模擬高密集 CPU)<br>
+我另外去呼叫 <code>/close</code> 是不會把目前使用者的請求中斷的<br>
+而是會等到使用者 response 拿到後，才會關閉 server<br>
+關閉後左邊 server 就會觸發 callback 印出 <code>server is closed</code></li>
 </ul>
-<video width="100%" controls><source src="/images/nodejs/case-00-01.mp4" type="video/mp4"></video>
-
-<h3><span id="中場補充-case-02">中場補充 case 02</span></h3><p>剛剛的 case 是模擬高密集型 CPU<br>接下來就會有一個疑問，network 的也會等到請求結束後才會關閉嗎?<br>答案是：沒錯！  </p>
-<p>左邊是我們的 server，中間是我們客戶端，右邊是另一個 api server  </p>
+<p>&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-00-01.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h3><span id="中場補充-case-02">中場補充 case 02</span></h3>
+<p>剛剛的 case 是模擬高密集型 CPU<br>
+接下來就會有一個疑問，network 的也會等到請求結束後才會關閉嗎?<br>
+答案是：沒錯！</p>
+<p>左邊是我們的 server，中間是我們客戶端，右邊是另一個 api server</p>
 <ul>
-<li>流程是這樣<br>當客戶呼叫 server 時，此台 server 去呼叫 api server<br>這台 api server 也是要處理兩秒的時間<br>然後另外去呼叫 <code>/close</code> 是不會把目前使用者的請求中斷的<br>而是會等到使用者 response 拿到後，才會關閉 server<br>關閉後左邊 server 就會觸發 callback 印出 <code>server is closed</code>  </li>
+<li>流程是這樣
+當客戶呼叫 server 時，此台 server 去呼叫 api server<br>
+這台 api server 也是要處理兩秒的時間<br>
+然後另外去呼叫 <code>/close</code> 是不會把目前使用者的請求中斷的<br>
+而是會等到使用者 response 拿到後，才會關閉 server<br>
+關閉後左邊 server 就會觸發 callback 印出 <code>server is closed</code></li>
 </ul>
-<video width="100%" controls><source src="/images/nodejs/case-00-02.mp4" type="video/mp4"></video>
+<p>&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-00-02.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h2><span id="case-4">Case 4</span></h2>
+<p>pm2 cluster 之後就接著出現 graceful relaod<br>
+透過<a href="https://pm2.keymetrics.io/docs/usage/signals-clean-restart/"> pm2 官網的教程</a><br>
+把下列這段程式碼加到程式裡面，詳細針對 <code>SIGINT</code> 的說明可以看<a href="https://pm2.keymetrics.io/docs/usage/signals-clean-restart/#explanation-signals-flow"> pm2 的 explanation-signals-flow</a>
+然後再利用剛剛中場講到的 <code>server.close()</code> 的特性去等待處理完畢<br>
+但總會有處理太久的狀況，此時也只能忍痛強制用 <code>process.exit()</code> 跳開<br>
+此 case 就是一邊修改 server，修改完成後就直接更新<br>
+可以看到右邊客戶端，拿到的結果也會跟著變，但卻不會造成客戶斷線！<br>
+透過這種方式可以接近 zero downtime 更新<br>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">process.on(<span class="string">'SIGINT'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"start closing"</span>)</span><br><span class="line">  server.close(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Stop after 10 secs</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      process.exit();</span><br><span class="line">    &#125;, <span class="number">10000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-04.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h2><span id="case-5">Case 5</span></h2>
+<p>但為何說接近呢？
+如果你的 Node.js 請求處理的時間，大於 setTimeout 的 10 秒的話，還是會造成客戶斷線<br>
+但如果請求處理時間，全部都會遠小於這個時間，那就是真的 zero downtime 更新了<br>
+那為了不要讓影片太久，我會把所有時間都調短<br>
+請求處理: 5s<br>
+客戶 timeout: 6s<br>
+強迫程式關閉: 2s (setTimeout 的時間)<br>
+pm2 option --kill-timeout: 3s<br>
+這邊要特別記住，pm2 啟用的時候的 kill timeout 也需要設置 (不設置的話預設是 1.6s)<br>
+如果不設置，最終還是以 pm2 kill timeout 為主，如果強迫程式關閉的時間，大於這個 kill timeout<br>
+那麼強迫程式關閉的時間就形同虛設，因為最終還是會吃 kill timeout 的時間<br>
+讓我們來看看以下的例子吧！(這個例子就沒有特別設置 kill timeout 而是用預設的)</p>
+<p>&lt;video width=&quot;100%&quot; controls&gt;&lt;source src=&quot;/images/nodejs/case-05.mp4&quot; type=&quot;video/mp4&quot;&gt;&lt;/video&gt;</p>
+<h2><span id="後記">後記</span></h2>
+<p>影片中的程式碼，放在附錄可以自行去測試<br>
+但記得要安裝 pm2 才可以使用</p>
+<p>要達到 zero downtime 不是一件很簡單的事情<br>
+還有的是透過 load balancer 後面接了兩台機器<br>
+然後每一台機器輪流更新，這樣也能達到 zero downtime 更新</p>
+<h2><span id="附錄-程式碼">附錄 - 程式碼</span></h2>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"></span><br><span class="line">app.use(express.static(__dirname + <span class="string">"/public"</span>))</span><br><span class="line">app.post(<span class="string">"/test"</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> counter = <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">100000000</span>; i++) &#123;</span><br><span class="line">    counter+=<span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">  res.json(&#123;</span><br><span class="line">    counter</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> server = http.createServer(app)</span><br><span class="line">server.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"server is up"</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">process.on(<span class="string">'SIGINT'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"start closing"</span>)</span><br><span class="line">  server.close(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Stop after 10 secs</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      process.exit();</span><br><span class="line">    &#125;, <span class="number">10000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Force close server after 15 secs</span></span><br><span class="line">  setTimeout(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Forcing server close !!!'</span>, e);</span><br><span class="line">    process.exit(<span class="number">1</span>);</span><br><span class="line">  &#125;, <span class="number">15000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">5000</span>; i++ ) &#123;</span><br><span class="line">        <span class="keyword">let</span> data = <span class="keyword">await</span> axios.post(<span class="string">"http://localhost:3000/test"</span>, &#123;&#125;, &#123;</span><br><span class="line">            timeout: <span class="number">10</span> * <span class="number">1000</span></span><br><span class="line">        &#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> response.data</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="built_in">console</span>.log(i)</span><br><span class="line">        <span class="built_in">console</span>.log(data)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"done"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure></p>
 
-
-<h2><span id="case-4">Case 4</span></h2><p>pm2 cluster 之後就接著出現 graceful relaod<br>透過<a href="https://pm2.keymetrics.io/docs/usage/signals-clean-restart/"> pm2 官網的教程</a><br>把下列這段程式碼加到程式裡面，詳細針對 <code>SIGINT</code> 的說明可以看<a href="https://pm2.keymetrics.io/docs/usage/signals-clean-restart/#explanation-signals-flow"> pm2 的 explanation-signals-flow</a><br>然後再利用剛剛中場講到的 <code>server.close()</code> 的特性去等待處理完畢<br>但總會有處理太久的狀況，此時也只能忍痛強制用 <code>process.exit()</code> 跳開<br>此 case 就是一邊修改 server，修改完成後就直接更新<br>可以看到右邊客戶端，拿到的結果也會跟著變，但卻不會造成客戶斷線！<br>透過這種方式可以接近 zero downtime 更新<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">process.on(<span class="string">'SIGINT'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"start closing"</span>)</span><br><span class="line">  server.close(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Stop after 10 secs</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      process.exit();</span><br><span class="line">    &#125;, <span class="number">10000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<video width="100%" controls><source src="/images/nodejs/case-04.mp4" type="video/mp4"></video>
-
-<h2><span id="case-5">Case 5</span></h2><p>但為何說接近呢？<br>如果你的 Node.js 請求處理的時間，大於 setTimeout 的 10 秒的話，還是會造成客戶斷線<br>但如果請求處理時間，全部都會遠小於這個時間，那就是真的 zero downtime 更新了<br>那為了不要讓影片太久，我會把所有時間都調短<br>請求處理: 5s<br>客戶 timeout: 6s<br>強迫程式關閉: 2s (setTimeout 的時間)<br>pm2 option –kill-timeout: 3s<br>這邊要特別記住，pm2 啟用的時候的 kill timeout 也需要設置 (不設置的話預設是 1.6s)<br>如果不設置，最終還是以 pm2 kill timeout 為主，如果強迫程式關閉的時間，大於這個 kill timeout<br>那麼強迫程式關閉的時間就形同虛設，因為最終還是會吃 kill timeout 的時間<br>讓我們來看看以下的例子吧！(這個例子就沒有特別設置 kill timeout 而是用預設的)  </p>
-<video width="100%" controls><source src="/images/nodejs/case-05.mp4" type="video/mp4"></video>
-
-<h2><span id="後記">後記</span></h2><p>影片中的程式碼，放在附錄可以自行去測試<br>但記得要安裝 pm2 才可以使用  </p>
-<p>要達到 zero downtime 不是一件很簡單的事情<br>還有的是透過 load balancer 後面接了兩台機器<br>然後每一台機器輪流更新，這樣也能達到 zero downtime 更新  </p>
-<h2><span id="附錄-程式碼">附錄 - 程式碼</span></h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"></span><br><span class="line">app.use(express.static(__dirname + <span class="string">"/public"</span>))</span><br><span class="line">app.post(<span class="string">"/test"</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> counter = <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">100000000</span>; i++) &#123;</span><br><span class="line">    counter+=<span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">  res.json(&#123;</span><br><span class="line">    counter</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> server = http.createServer(app)</span><br><span class="line">server.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"server is up"</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">process.on(<span class="string">'SIGINT'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"start closing"</span>)</span><br><span class="line">  server.close(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Stop after 10 secs</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      process.exit();</span><br><span class="line">    &#125;, <span class="number">10000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Force close server after 15 secs</span></span><br><span class="line">  setTimeout(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Forcing server close !!!'</span>, e);</span><br><span class="line">    process.exit(<span class="number">1</span>);</span><br><span class="line">  &#125;, <span class="number">15000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">5000</span>; i++ ) &#123;</span><br><span class="line">        <span class="keyword">let</span> data = <span class="keyword">await</span> axios.post(<span class="string">"http://localhost:3000/test"</span>, &#123;&#125;, &#123;</span><br><span class="line">            timeout: <span class="number">10</span> * <span class="number">1000</span></span><br><span class="line">        &#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> response.data</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="built_in">console</span>.log(i)</span><br><span class="line">        <span class="built_in">console</span>.log(data)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"done"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
             </div>
         
         
@@ -259,8 +319,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content">
+        <p style="text-align: center;">
+            <a href="https://www.buymeacoffee.com/yujack" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+        </p>
+    </div>
     <div class="card-content" id="google-ad">
-        <p style="text-align: center;">如果喜歡我的內容，歡迎點廣告支持，謝謝！</p>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
             crossorigin="anonymous"></script>
         <ins class="adsbygoogle"

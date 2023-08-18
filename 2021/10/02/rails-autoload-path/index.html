@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言在 Ruby 中如果要使用其他 class &#x2F; module 是需要透過 require &#x2F; load 去引用   12345678910# main.rbrequire &quot;.&#x2F;cool&quot;Cool.hi# cool.rbclass Cool    def self.hi        pp &quot;hi&quot;    endend 但有在寫 Rails 的會發現，根本不用去 require &#x2F; load">
+    <meta name="description" content="前言 在 Ruby 中如果要使用其他 class &#x2F; module 是需要透過 require &#x2F; load 去引用 12345678910# main.rbrequire &quot;.&#x2F;cool&quot;Cool.hi# cool.rbclass Cool    def self.hi        pp &quot;hi&quot;    endend 但有在寫 Rails 的會發現，根本不用去 require &#x2F; load 進">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rails Class&#x2F;Module Autoloading 機制">
 <meta property="og:url" content="https://yu-jack.github.io/2021/10/02/rails-autoload-path/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言在 Ruby 中如果要使用其他 class &#x2F; module 是需要透過 require &#x2F; load 去引用   12345678910# main.rbrequire &quot;.&#x2F;cool&quot;Cool.hi# cool.rbclass Cool    def self.hi        pp &quot;hi&quot;    endend 但有在寫 Rails 的會發現，根本不用去 require &#x2F; load">
+<meta property="og:description" content="前言 在 Ruby 中如果要使用其他 class &#x2F; module 是需要透過 require &#x2F; load 去引用 12345678910# main.rbrequire &quot;.&#x2F;cool&quot;Cool.hi# cool.rbclass Cool    def self.hi        pp &quot;hi&quot;    endend 但有在寫 Rails 的會發現，根本不用去 require &#x2F; load 進">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-10-02T08:46:06.000Z">
@@ -174,47 +174,81 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>在 Ruby 中如果要使用其他 class / module 是需要透過 require / load 去引用  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.rb</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">"./cool"</span></span><br><span class="line">Cool.hi</span><br><span class="line"></span><br><span class="line"><span class="comment"># cool.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cool</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">hi</span></span></span><br><span class="line">        pp <span class="string">"hi"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>但有在寫 Rails 的會發現，根本不用去 require / load 進來<br>那是因為 Rails 中有一個特別的機制，叫做 <a href="https://rails.ruby.tw/constant_autoloading_and_reloading.html#autoloading-algorithms">autoloading</a> 來幫忙解決這件事<br>但 autoloading 是有對應的演算法和機制去找<br>並不是在 rails 中任意新增檔案就可以觸發成功<br>這篇文章就會稍微說明 rails 透過什麼樣的規則去找到對應的檔案  </p>
-<h2><span id="load_path">$LOAD_PATH</span></h2><p>在提到 rails autoloading 之前，我們先來聊聊 <code>$LOAD_PATH</code><br>有發現我開頭的範例是用 <code>require &quot;./cool&quot;</code> 這種相對路徑的方式嗎？<br>為何沒辦法使用 <code>require &quot;cool&quot;</code> 去引用呢？  </p>
-<p>其實原因是 ruby 在用 require / load 的時候，會到 <code>$LOAD_PATH</code> 裡面找對應的檔案<br>也就代表說，我可以把自己定義的路徑塞到 <code>$LOAD_PATH</code> 裡面，就可以直接用 <code>require &quot;cool&quot;</code> 的方式  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.rb</span></span><br><span class="line">$LOAD_PATH &lt;&lt; Dir.pwd</span><br><span class="line"><span class="keyword">require</span> <span class="string">"cool"</span></span><br><span class="line">Cool.hi</span><br><span class="line"></span><br><span class="line"><span class="comment"># cool.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cool</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">hi</span></span></span><br><span class="line">        pp <span class="string">"hi"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+                <h2><span id="前言">前言</span></h2>
+<p>在 Ruby 中如果要使用其他 class / module 是需要透過 require / load 去引用</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.rb</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">"./cool"</span></span><br><span class="line">Cool.hi</span><br><span class="line"></span><br><span class="line"><span class="comment"># cool.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cool</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">hi</span></span></span><br><span class="line">        pp <span class="string">"hi"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>但有在寫 Rails 的會發現，根本不用去 require / load 進來<br>
+那是因為 Rails 中有一個特別的機制，叫做 <a href="https://rails.ruby.tw/constant_autoloading_and_reloading.html#autoloading-algorithms">autoloading</a> 來幫忙解決這件事<br>
+但 autoloading 是有對應的演算法和機制去找<br>
+並不是在 rails 中任意新增檔案就可以觸發成功<br>
+這篇文章就會稍微說明 rails 透過什麼樣的規則去找到對應的檔案</p>
+<h2><span id="load_path">$LOAD_PATH</span></h2>
+<p>在提到 rails autoloading 之前，我們先來聊聊 <code>$LOAD_PATH</code><br>
+有發現我開頭的範例是用 <code>require &quot;./cool&quot;</code> 這種相對路徑的方式嗎？<br>
+為何沒辦法使用 <code>require &quot;cool&quot;</code> 去引用呢？</p>
+<p>其實原因是 ruby 在用 require / load 的時候，會到 <code>$LOAD_PATH</code> 裡面找對應的檔案<br>
+也就代表說，我可以把自己定義的路徑塞到 <code>$LOAD_PATH</code> 裡面，就可以直接用 <code>require &quot;cool&quot;</code> 的方式</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.rb</span></span><br><span class="line">$LOAD_PATH &lt;&lt; Dir.pwd</span><br><span class="line"><span class="keyword">require</span> <span class="string">"cool"</span></span><br><span class="line">Cool.hi</span><br><span class="line"></span><br><span class="line"><span class="comment"># cool.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cool</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">hi</span></span></span><br><span class="line">        pp <span class="string">"hi"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>之前寫過 node.js 的原因，看到這裡還蠻熟悉的<br>require 不指定路徑也是直接到 node_module 裡面找  </p>
+<p>之前寫過 node.js 的原因，看到這裡還蠻熟悉的<br>
+require 不指定路徑也是直接到 node_module 裡面找</p>
 </blockquote>
-<p>但有一個要特別注意的點，也就是 ruby 會尋找在 class / module keyword 後面對應的字串<br>也就是説，如果 <code>cool.rb</code> 的 class 是叫做 <code>CoolYo</code> 的話，就會噴出 <code>uninitialized constant Cool (NameError)</code> 這個錯誤出現<br>可以嘗試用以下的 Code 去運行看看，就會發現有問題<br>因為 ruby 預期的 claass / module name 應該是要跟檔案名稱一樣才對  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.rb</span></span><br><span class="line">$LOAD_PATH &lt;&lt; Dir.pwd</span><br><span class="line"><span class="keyword">require</span> <span class="string">"cool"</span></span><br><span class="line">Cool.hi</span><br><span class="line"></span><br><span class="line"><span class="comment"># cool.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CoolYo</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">hi</span></span></span><br><span class="line">        pp <span class="string">"hi"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>這就是核心概念，理解這個之後 Rails 中的 autoloading 就會更好懂了  </p>
-<h2><span id="autoload_paths">autoload_paths</span></h2><p>換到 rails 中，可以透過 config.autoload_paths 去定義<br>但跟 ruby 不太一樣的是，rails 會預設幫你把一些路徑給加進去<br>舉例來說 <code>app/*</code> <code>app/*/concerns</code> 這些路徑，會自動被加入  </p>
-<h2><span id="autoloading-rules">autoloading rules</span></h2><p>接著我們來實際看例子來了解 rails autoloading 的規則</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Admin</span></span></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">BaseController</span> &lt; ApplicationController</span></span><br><span class="line">    @@all_roles = Role.all</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>可以看到以上的程式中用到 <code>Role.all</code>，這裡的 Role nested namespace 會被解析成  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Admin::BaseController::Role</span><br><span class="line">Admin::Role</span><br><span class="line">Role</span><br></pre></td></tr></table></figure>
-<p>這邊來快速解釋為何是以上那樣，其實直接用印出 <code>Module.nesting</code> 的內容就知道  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Admin</span></span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">BaseController</span></span></span><br><span class="line">        pp Module.nesting</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># [Admin::BaseController, Admin]</span></span><br></pre></td></tr></table></figure>
-<p>所以在 BaseController 裡面用到 Role 就會被接在 namespace 後面<br>[Admin::BaseController::Role, Admin::Role, Role]<br>接著會被對應到以下路徑  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">admin&#x2F;base_controller&#x2F;role.rb</span><br><span class="line">admin&#x2F;role.rb</span><br><span class="line">role.rb</span><br></pre></td></tr></table></figure>
-<p>接著就會用以上三個 path 配合 autoload_paths 去找到對應的檔案<br>舉例來說預設 <code>app/model</code> 是我們的 autoload_paths，他就會到以下路徑去找 <code>role.rb</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app&#x2F;model&#x2F;admin&#x2F;base_controller&#x2F;role.rb</span><br><span class="line">app&#x2F;model&#x2F;admin&#x2F;role.rb</span><br><span class="line">app&#x2F;model&#x2F;role.rb</span><br></pre></td></tr></table></figure>
-<p>所以可以反過來看<br>如果我的檔案放在 <code>app/model/post/cool.rb</code> 底下，我的 class 要怎麼取才是正確的呢？  </p>
-<p>就是叫做 <code>class Post::Cool</code> 即可，你改動 class 名稱、資料夾名稱或是檔案名稱，都會導致失效<br>進而拿到 <code>NameError (uninitialized constant Post::Cool)</code> 的結果  </p>
+<p>但有一個要特別注意的點，也就是 ruby 會尋找在 class / module keyword 後面對應的字串<br>
+也就是説，如果 <code>cool.rb</code> 的 class 是叫做 <code>CoolYo</code> 的話，就會噴出 <code>uninitialized constant Cool (NameError)</code> 這個錯誤出現<br>
+可以嘗試用以下的 Code 去運行看看，就會發現有問題<br>
+因為 ruby 預期的 claass / module name 應該是要跟檔案名稱一樣才對</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.rb</span></span><br><span class="line">$LOAD_PATH &lt;&lt; Dir.pwd</span><br><span class="line"><span class="keyword">require</span> <span class="string">"cool"</span></span><br><span class="line">Cool.hi</span><br><span class="line"></span><br><span class="line"><span class="comment"># cool.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CoolYo</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">hi</span></span></span><br><span class="line">        pp <span class="string">"hi"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>這就是核心概念，理解這個之後 Rails 中的 autoloading 就會更好懂了</p>
+<h2><span id="autoload_paths">autoload_paths</span></h2>
+<p>換到 rails 中，可以透過 config.autoload_paths 去定義<br>
+但跟 ruby 不太一樣的是，rails 會預設幫你把一些路徑給加進去<br>
+舉例來說 <code>app/*</code> <code>app/*/concerns</code> 這些路徑，會自動被加入</p>
+<h2><span id="autoloading-rules">autoloading rules</span></h2>
+<p>接著我們來實際看例子來了解 rails autoloading 的規則</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Admin</span></span></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">BaseController</span> &lt; ApplicationController</span></span><br><span class="line">    @@all_roles = Role.all</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到以上的程式中用到 <code>Role.all</code>，這裡的 Role nested namespace 會被解析成</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Admin::BaseController::Role</span><br><span class="line">Admin::Role</span><br><span class="line">Role</span><br></pre></td></tr></table></figure></p>
+<p>這邊來快速解釋為何是以上那樣，其實直接用印出 <code>Module.nesting</code> 的內容就知道</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Admin</span></span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">BaseController</span></span></span><br><span class="line">        pp Module.nesting</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># [Admin::BaseController, Admin]</span></span><br></pre></td></tr></table></figure></p>
+<p>所以在 BaseController 裡面用到 Role 就會被接在 namespace 後面<br>
+[Admin::BaseController::Role, Admin::Role, Role]<br>
+接著會被對應到以下路徑</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">admin&#x2F;base_controller&#x2F;role.rb</span><br><span class="line">admin&#x2F;role.rb</span><br><span class="line">role.rb</span><br></pre></td></tr></table></figure></p>
+<p>接著就會用以上三個 path 配合 autoload_paths 去找到對應的檔案<br>
+舉例來說預設 <code>app/model</code> 是我們的 autoload_paths，他就會到以下路徑去找 <code>role.rb</code></p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app&#x2F;model&#x2F;admin&#x2F;base_controller&#x2F;role.rb</span><br><span class="line">app&#x2F;model&#x2F;admin&#x2F;role.rb</span><br><span class="line">app&#x2F;model&#x2F;role.rb</span><br></pre></td></tr></table></figure></p>
+<p>所以可以反過來看<br>
+如果我的檔案放在 <code>app/model/post/cool.rb</code> 底下，我的 class 要怎麼取才是正確的呢？</p>
+<p>就是叫做 <code>class Post::Cool</code> 即可，你改動 class 名稱、資料夾名稱或是檔案名稱，都會導致失效<br>
+進而拿到 <code>NameError (uninitialized constant Post::Cool)</code> 的結果</p>
 <blockquote>
-<p>可以用 ./bin/rails console 進去後<br>直接呼叫 Post::Cool 去測試，就知道有沒有 autoload 成功  </p>
+<p>可以用 ./bin/rails console 進去後<br>
+直接呼叫 Post::Cool 去測試，就知道有沒有 autoload 成功</p>
 </blockquote>
-<p>接著來看看 module 的話，通常會在 module 裡面定義 class  </p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Nice</span></span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Yo</span></span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>以上被解析成 <code>Nice::Yo</code>，所以可以聯想到檔案路徑必須為 <code>nice/yo.rb</code><br>至於我放在 <code>app/controller/nice/yo.rb</code> 或是 <code>app/model/nice/yo.rb</code> 都可以<br>因為在 autoload_paths 裡面就有這兩個的路徑  </p>
-<p>那如果我在 authoload_paths 加上 <code>app/model/nice</code> 的話<br>當我使用 <code>Nice::Yo</code>，他的檔案配置要如何放置呢？  </p>
-<p>答案是放在 <code>app/model/nice/nice/yo.rb</code> 裡面，但這樣很奇怪<br>於是就會改成用 <code>Yo</code>，然後把多的 nice 改給刪掉<br>變成 <code>app/model/nice/yo.rb</code> 就比較合理一點  </p>
-<p>所以當你的資料夾如果有被涵蓋在 autoload_paths 底下的時候，就不需要把他當作前綴  </p>
-<h2><span id="特別的規則">特別的規則</span></h2><p>有一項在 Automatic Modules 提到，當如果是使用 module 的話<br>rails 不會強制你一定要建立檔案，而是資料夾名稱有對到即可  </p>
-<p>舉例來說，建立 <code>app/model/nice</code> 資料夾， 接著使用 <code>Nice</code> 的時候，並不會錯誤<br>rails 會幫你建置一個空的 Nice module 讓你去使用  </p>
+<p>接著來看看 module 的話，通常會在 module 裡面定義 class</p>
+<p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Nice</span></span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Yo</span></span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>以上被解析成 <code>Nice::Yo</code>，所以可以聯想到檔案路徑必須為 <code>nice/yo.rb</code><br>
+至於我放在 <code>app/controller/nice/yo.rb</code> 或是 <code>app/model/nice/yo.rb</code> 都可以<br>
+因為在 autoload_paths 裡面就有這兩個的路徑</p>
+<p>那如果我在 authoload_paths 加上 <code>app/model/nice</code> 的話<br>
+當我使用 <code>Nice::Yo</code>，他的檔案配置要如何放置呢？</p>
+<p>答案是放在 <code>app/model/nice/nice/yo.rb</code> 裡面，但這樣很奇怪<br>
+於是就會改成用 <code>Yo</code>，然後把多的 nice 改給刪掉<br>
+變成 <code>app/model/nice/yo.rb</code> 就比較合理一點</p>
+<p>所以當你的資料夾如果有被涵蓋在 autoload_paths 底下的時候，就不需要把他當作前綴</p>
+<h2><span id="特別的規則">特別的規則</span></h2>
+<p>有一項在 Automatic Modules 提到，當如果是使用 module 的話<br>
+rails 不會強制你一定要建立檔案，而是資料夾名稱有對到即可</p>
+<p>舉例來說，建立 <code>app/model/nice</code> 資料夾， 接著使用 <code>Nice</code> 的時候，並不會錯誤<br>
+rails 會幫你建置一個空的 Nice module 讓你去使用</p>
 <blockquote>
-<p>我不確定這功能可以幹嘛，但蠻特別的就順便介紹  </p>
+<p>我不確定這功能可以幹嘛，但蠻特別的就順便介紹</p>
 </blockquote>
-<h2><span id="後記">後記</span></h2><p>以上簡單介紹了 autoloading 的一些規則，應該足以應付大部分的規則<br>官方文件中還有蠻多詳細的說明，也可以建議讀官方文件更清楚唷！</p>
-<h2><span id="references">References</span></h2><p>以下都是官方的來源唷  </p>
+<h2><span id="後記">後記</span></h2>
+<p>以上簡單介紹了 autoloading 的一些規則，應該足以應付大部分的規則<br>
+官方文件中還有蠻多詳細的說明，也可以建議讀官方文件更清楚唷！</p>
+<h2><span id="references">References</span></h2>
+<p>以下都是官方的來源唷</p>
 <ol>
 <li><a href="https://rails.ruby.tw/constant_autoloading_and_reloading.html#autoload-paths">autoload_paths</a></li>
 <li><a href="https://rails.ruby.tw/constant_autoloading_and_reloading.html#autoloading-algorithms">Autoloading Algorithms</a></li>
@@ -265,8 +299,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content">
+        <p style="text-align: center;">
+            <a href="https://www.buymeacoffee.com/yujack" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+        </p>
+    </div>
     <div class="card-content" id="google-ad">
-        <p style="text-align: center;">如果喜歡我的內容，歡迎點廣告支持，謝謝！</p>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
             crossorigin="anonymous"></script>
         <ins class="adsbygoogle"

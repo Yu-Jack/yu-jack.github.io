@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="前言上一篇如何寫出一個好的 Unit Test? 留下的兩個問題  那除了 business logic 以外都不用寫 unit test 嗎? 如果測試切入點從 controller 開始, 然後對 mock&#x2F;stub 資料庫去做 unit test 不也是可以?   文章中有提到 Test Double, 但好像沒有說用在哪或是怎麼使用比較好?    在討論第一個問題之前, 我們需要先花點介紹">
+    <meta name="description" content="前言 上一篇如何寫出一個好的 Unit Test? 留下的兩個問題  那除了 business logic 以外都不用寫 unit test 嗎? 如果測試切入點從 controller 開始, 然後對 mock&#x2F;stub 資料庫去做 unit test 不也是可以? 文章中有提到 Test Double, 但好像沒有說用在哪或是怎麼使用比較好?  在討論第一個問題之前, 我們需要先花點介紹書中">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unit Test 實踐守則 (五) - 如何有效使用 Test Double">
 <meta property="og:url" content="https://yu-jack.github.io/2020/10/12/unit-test-best-practice-part-5/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="前言上一篇如何寫出一個好的 Unit Test? 留下的兩個問題  那除了 business logic 以外都不用寫 unit test 嗎? 如果測試切入點從 controller 開始, 然後對 mock&#x2F;stub 資料庫去做 unit test 不也是可以?   文章中有提到 Test Double, 但好像沒有說用在哪或是怎麼使用比較好?    在討論第一個問題之前, 我們需要先花點介紹">
+<meta property="og:description" content="前言 上一篇如何寫出一個好的 Unit Test? 留下的兩個問題  那除了 business logic 以外都不用寫 unit test 嗎? 如果測試切入點從 controller 開始, 然後對 mock&#x2F;stub 資料庫去做 unit test 不也是可以? 文章中有提到 Test Double, 但好像沒有說用在哪或是怎麼使用比較好?  在討論第一個問題之前, 我們需要先花點介紹書中">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-10-12T02:22:57.000Z">
@@ -176,59 +176,118 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="前言">前言</span></h2><p>上一篇<a href="/2020/10/05/unit-test-best-practice-part-4/">如何寫出一個好的 Unit Test? </a>留下的兩個問題</p>
+                <h2><span id="前言">前言</span></h2>
+<p>上一篇<a href="/2020/10/05/unit-test-best-practice-part-4/">如何寫出一個好的 Unit Test? </a>留下的兩個問題</p>
 <ol>
-<li>那除了 business logic 以外都不用寫 unit test 嗎?<br> 如果測試切入點從 controller 開始, 然後對 mock/stub 資料庫去做 unit test 不也是可以?  </li>
-<li>文章中有提到 Test Double, 但好像沒有說用在哪或是怎麼使用比較好?  </li>
+<li>那除了 business logic 以外都不用寫 unit test 嗎?<br>
+如果測試切入點從 controller 開始, 然後對 mock/stub 資料庫去做 unit test 不也是可以?</li>
+<li>文章中有提到 Test Double, 但好像沒有說用在哪或是怎麼使用比較好?</li>
 </ol>
-<p>在討論第一個問題之前, 我們需要先花點介紹書中 Integration Test 的定義  </p>
-<p>至於關於第二個問題<br>其實當我們開始用 Test Dobule 的時候<br>不外乎是要針對外部資源或是資料庫使用 Test Doubles<br>那麼要如何比較準確使用 Test Doubles 去測試呢?<br>是不是在 unit test 中的待測試程式<br>從資料庫取得資料時需要用到 Test Doubles 呢?</p>
-<p>以上兩個問題等等會詳細地進行說明<br>但為了要說明, 我們必須先瞭解書中 Integration Test 的定義  </p>
-<h2><span id="integration-test-是什麼">Integration Test 是什麼?</span></h2><p>還記得我們提到過 unit test 的定義嗎?  </p>
+<p>在討論第一個問題之前, 我們需要先花點介紹書中 Integration Test 的定義</p>
+<p>至於關於第二個問題<br>
+其實當我們開始用 Test Dobule 的時候<br>
+不外乎是要針對外部資源或是資料庫使用 Test Doubles<br>
+那麼要如何比較準確使用 Test Doubles 去測試呢?<br>
+是不是在 unit test 中的待測試程式<br>
+從資料庫取得資料時需要用到 Test Doubles 呢?</p>
+<p>以上兩個問題等等會詳細地進行說明<br>
+但為了要說明, 我們必須先瞭解書中 Integration Test 的定義</p>
+<h2><span id="integration-test-是什麼">Integration Test 是什麼?</span></h2>
+<p>還記得我們提到過 unit test 的定義嗎?</p>
 <ol>
 <li>驗證一小段的程式碼, 並以驗證單一行為為主, 就是 unit of behavior</li>
 <li>執行快速</li>
 <li>獨立性 (isolated) 不受其他 unit test 影響</li>
 </ol>
-<p>而在書中對 Integration Test 的定義就是, 當測試不符合上面其中一點時就是 Integration Test<br>以第一點來說, 我們 unit test 驗證的是 1 個行為<br>但對 Integration Test 來說, 驗證的是 N 個行為  </p>
-<p>除此之外, 當有對外部資源或資料庫直接操作或是做 mock 的話, 也隸屬於 Integration Test<br>可以看到作者在<a href="https://disq.us/p/28q4lb3">這則評論</a>裡面談到這件事<br>以及我去跟作者 dobule check unit test 和 Integration test 的定義的<a href="https://disq.us/p/2cg0hl8">評論</a>  </p>
-<p>不過有趣的是, 作者認為技術上配合 mock 資料庫去驗證 1 個行為這種方式, 可以算得上 unit test<br>只是作者覺得為了簡單好區分就把他歸類在 Integration Test 了</p>
+<p>而在書中對 Integration Test 的定義就是, 當測試不符合上面其中一點時就是 Integration Test<br>
+以第一點來說, 我們 unit test 驗證的是 1 個行為<br>
+但對 Integration Test 來說, 驗證的是 N 個行為</p>
+<p>除此之外, 當有對外部資源或資料庫直接操作或是做 mock 的話, 也隸屬於 Integration Test<br>
+可以看到作者在<a href="https://disq.us/p/28q4lb3">這則評論</a>裡面談到這件事<br>
+以及我去跟作者 dobule check unit test 和 Integration test 的定義的<a href="https://disq.us/p/2cg0hl8">評論</a></p>
+<p>不過有趣的是, 作者認為技術上配合 mock 資料庫去驗證 1 個行為這種方式, 可以算得上 unit test<br>
+只是作者覺得為了簡單好區分就把他歸類在 Integration Test 了</p>
 <blockquote>
-<p>Technically, a test that covers the controller and mocks the database would be a unit test,<br>but I would still categorize it as an integration test for simplicity sake.<br>from <a href="https://disq.us/p/2cg0hl8">https://disq.us/p/2cg0hl8</a><br>這個連結點進去要稍等一下, 才會跳到那個評論  </p>
+<p>Technically, a test that covers the controller and mocks the database would be a unit test,<br>
+but I would still categorize it as an integration test for simplicity sake.
+from https://disq.us/p/2cg0hl8<br>
+這個連結點進去要稍等一下, 才會跳到那個評論</p>
 </blockquote>
-<p>所以回到前面的問題『除了 business logic 以外都不用寫 unit test 嗎?』<br>這其實還是得看情況, 如果一個 API 的程式邏輯相對單純<br>那 unit test 做的事情就已經達到 Integraion Test 做的事情<br>只是定義上可能會有些不同而已  </p>
-<p>而前面提到過書中把程式分成四大類型, 而 unit test 和 Integration test 也會依照不同分類去使用 (圖一)<br>所以按照書中邏輯, 作者是不希望在進行 unit test 時牽扯到外部資源的<br>希望單純以 business logic 去進行 unit test<br>因為此特點所以在 unit test 中其實會非常少用到 Test Double (除非選用 unit of code)<br>至於其他牽扯到多個行為或是外部資源就交由 Integration Test 去處理  </p>
+<p>所以回到前面的問題『除了 business logic 以外都不用寫 unit test 嗎?』<br>
+這其實還是得看情況, 如果一個 API 的程式邏輯相對單純<br>
+那 unit test 做的事情就已經達到 Integraion Test 做的事情<br>
+只是定義上可能會有些不同而已</p>
+<p>而前面提到過書中把程式分成四大類型, 而 unit test 和 Integration test 也會依照不同分類去使用 (圖一)<br>
+所以按照書中邏輯, 作者是不希望在進行 unit test 時牽扯到外部資源的<br>
+希望單純以 business logic 去進行 unit test<br>
+因為此特點所以在 unit test 中其實會非常少用到 Test Double (除非選用 unit of code)<br>
+至於其他牽扯到多個行為或是外部資源就交由 Integration Test 去處理</p>
 <p><img src="/images/unit-test/unit-test-best-practice-09.png" alt="圖一"></p>
-<p>這也是為什麼前一篇的 unit test 是會以 userService 為切入點進行測試, 而不是 controller  </p>
-<p>如果有遵守重構的原則進行拆分, 在使用 Test Double 的時候<br>大部分都會是使用在 Integration Test 裡面<br>但 Integration Test 通常是會實際去跟外部資源進行測試<br>也就是會實際讀取資料庫, 但有一些像是要付錢的 API 可能就還是要 mock/stub 的方式去處理<br>像是<a href="https://dotblogs.com.tw/hatelove/2012/12/10/learning-tdd-in-30-days-day8-integration-testing-and-web-ui-testing-by-selenium-and-webdriver"> 91 大介紹的 Intergration Test </a>也有提到這點  </p>
-<p>所以這帶來一個問題<br>也就是既有程式在還沒拆分 business logic 之前, 或是本身邏輯違反六角形結構 (hexagonal architecture)<br>導致在 business logic 裡面去讀取資料庫時該怎麼解決  </p>
-<p>這就回歸到上一篇提到的重構環節了<br>但我們要思考的是如何在重構中又能保持原本程式 output 是不變的才對<br>針對這點, 我有特別去跟作者確認如果在 business logic 還未抽出來之前<br>會建議先使用 Integration test (無論要不要用 mock) 先去做驗證<br>沒問題的話, 在開始把 business logic 抽出來去寫 unit test 的流程適合嗎?<br>而我得到的回覆如下  </p>
+<p>這也是為什麼前一篇的 unit test 是會以 userService 為切入點進行測試, 而不是 controller</p>
+<p>如果有遵守重構的原則進行拆分, 在使用 Test Double 的時候<br>
+大部分都會是使用在 Integration Test 裡面<br>
+但 Integration Test 通常是會實際去跟外部資源進行測試<br>
+也就是會實際讀取資料庫, 但有一些像是要付錢的 API 可能就還是要 mock/stub 的方式去處理<br>
+像是<a href="https://dotblogs.com.tw/hatelove/2012/12/10/learning-tdd-in-30-days-day8-integration-testing-and-web-ui-testing-by-selenium-and-webdriver"> 91 大介紹的 Intergration Test </a>也有提到這點</p>
+<p>所以這帶來一個問題<br>
+也就是既有程式在還沒拆分 business logic 之前, 或是本身邏輯違反六角形結構 (hexagonal architecture)<br>
+導致在 business logic 裡面去讀取資料庫時該怎麼解決</p>
+<p>這就回歸到上一篇提到的重構環節了<br>
+但我們要思考的是如何在重構中又能保持原本程式 output 是不變的才對<br>
+針對這點, 我有特別去跟作者確認如果在 business logic 還未抽出來之前<br>
+會建議先使用 Integration test (無論要不要用 mock) 先去做驗證<br>
+沒問題的話, 在開始把 business logic 抽出來去寫 unit test 的流程適合嗎?<br>
+而我得到的回覆如下</p>
 <blockquote>
-<p>That’s also correct. Write an integration test first, to check the overall behavior. Then do the refactoring.<br>from <a href="https://disq.us/p/2cg0hl8">https://disq.us/p/2cg0hl8</a></p>
+<p>That's also correct. Write an integration test first, to check the overall behavior. Then do the refactoring.
+from https://disq.us/p/2cg0hl8</p>
 </blockquote>
-<p>所以這也重複驗證, 本書是希望針對 business logic 去做 unit test<br>剩餘的就交給 Integration test, 也就是上圖圖一的 Controller 部分  </p>
-<p>接著我們討論一下 Test Double 的使用方式  </p>
-<h2><span id="test-double-使用方式">Test Double 使用方式</span></h2><p>書中把 Test Double 分成兩種大類型  </p>
+<p>所以這也重複驗證, 本書是希望針對 business logic 去做 unit test<br>
+剩餘的就交給 Integration test, 也就是上圖圖一的 Controller 部分</p>
+<p>接著我們討論一下 Test Double 的使用方式</p>
+<h2><span id="test-double-使用方式">Test Double 使用方式</span></h2>
+<p>書中把 Test Double 分成兩種大類型</p>
 <p><img src="/images/unit-test/unit-test-best-practice-12.png" alt></p>
 <ol>
 <li>Mocks 是幫忙驗證以及模擬互動的結果.</li>
 <li>Stubs 是幫忙模擬 input data, 像是當成資料庫取值就會需要用到 Stubs.</li>
 </ol>
 <blockquote>
-<p>想詳細了解各個 Test Dobule 的話<br>可以參考之前我寫的<a href="/2019/12/10/unit-test-express/#test-double-測試替身"> Test Double - 測試替身</a></p>
+<p>想詳細了解各個 Test Dobule 的話<br>
+可以參考之前我寫的<a href="/2019/12/10/unit-test-express/#test-double-%E6%B8%AC%E8%A9%A6%E6%9B%BF%E8%BA%AB"> Test Double - 測試替身</a></p>
 </blockquote>
-<p>以登入的例子來討論應該要用哪一種類型的 Test Double<br>假設登入成功之後要寄信通知使用者登入成功, 程式如下<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// loginController.js</span></span><br><span class="line"><span class="comment">// axios 是一個專門發 request 用的套件</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 其餘程式就忽略  ......</span></span><br><span class="line">    axios.post(mailServiceUrl, &#123;</span><br><span class="line">        mail: mail,</span><br><span class="line">        title: <span class="string">"You've login successfully"</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>那因為上一篇重構的案例把它調整成如下<br>並且我們再加上一點邏輯在拆開的 mail.js 裡面<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// loginController.js</span></span><br><span class="line"><span class="keyword">const</span> mail = <span class="built_in">require</span>(<span class="string">"./mail.js"</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    mail.sendLoginSuccessfullyMail(mail)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// mail.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    sendLoginSuccessfullyMail: <span class="function">(<span class="params">mail</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (isMailFormatCorrect(mail) === <span class="literal">false</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"mail format is wrong"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        axios.post(mailServiceUrl, &#123;</span><br><span class="line">            mail: mail,</span><br><span class="line">            title: <span class="string">"You've login successfully"</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>此時要 mock/stub 哪一個位置才是比較適合的呢? 以及要選 mock 還是 stub 呢?<br>答案是使用 mock 在 mail.js 裡面的 axios 套件的 post 方法去進行驗證就好  </p>
-<p>原因是 mail.js 並不是實際上去發出外部請求的程式<br>而是 axios.post 才是<br>在 mail.js 裡面的程式也是內部相依性的一種<br>所以在做 mock 的時候要以最外層, 實際去呼叫外部資源的地方為主<br>透過這種方式可以以最大限度去檢測內部使用的相依性問題  </p>
-<p>如果萬一是 mock 在 mail 的 <code>sendLoginSuccessfullyMail</code> 方法的話<br>變成有一段<code>檢測 mail 格式</code>的邏輯就會沒有測試到, 而這種方式就是 unit of code<br>因為 unit of code 就是在測試程式中, 所有相依性都用 mock 去處理   </p>
-<p>那以前幾天提到六角形架構 (hexagonal architecture) 來看的話如下  </p>
-<p><img src="/images/unit-test/unit-test-best-practice-08.png" width="550/"></p>
-<p>所以在使用 mock/stub 盡量以最外面靠近外部資源的去 mock/stub<br>不過當我們在測試這類型的時候, 其實也已經被歸類在 Integration test 裡面了  </p>
-<p>那麼接著為何剛剛的 case 要使用 mock 而不是 stub?<br>在書中, 用了以下兩種方式去分類何時使用 mock 何時使用 stub<br>有回傳值使用 stub, 無回傳值使用 mock  </p>
-<p><img src="/images/unit-test/unit-test-best-practice-11.png" width="400/"></p>
-<p>不過進一步說明的話, 因為在剛剛的 case 中並沒有需要寄信的 response 去處理任何東西<br>所以我就也不需要用 stub 了<br>我只需要用 mock 去驗證<code>寄信的行為</code>是不是有符合就夠了  </p>
-<h2><span id="後記">後記</span></h2><p>透過這五篇帶大家了解一下書中內容的一些精華<br>書中有些觀點我可能沒辦法完整呈現出來<br>但有興趣的人可以去看看這本書, 真的寫得不錯！<br>如果有任何疑問, 歡迎提出來一起討論！</p>
+<p>以登入的例子來討論應該要用哪一種類型的 Test Double<br>
+假設登入成功之後要寄信通知使用者登入成功, 程式如下<br>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// loginController.js</span></span><br><span class="line"><span class="comment">// axios 是一個專門發 request 用的套件</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 其餘程式就忽略  ......</span></span><br><span class="line">    axios.post(mailServiceUrl, &#123;</span><br><span class="line">        mail: mail,</span><br><span class="line">        title: <span class="string">"You've login successfully"</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那因為上一篇重構的案例把它調整成如下<br>
+並且我們再加上一點邏輯在拆開的 mail.js 裡面<br>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// loginController.js</span></span><br><span class="line"><span class="keyword">const</span> mail = <span class="built_in">require</span>(<span class="string">"./mail.js"</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    mail.sendLoginSuccessfullyMail(mail)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// mail.js</span></span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">"axios"</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    sendLoginSuccessfullyMail: <span class="function">(<span class="params">mail</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (isMailFormatCorrect(mail) === <span class="literal">false</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"mail format is wrong"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        axios.post(mailServiceUrl, &#123;</span><br><span class="line">            mail: mail,</span><br><span class="line">            title: <span class="string">"You've login successfully"</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此時要 mock/stub 哪一個位置才是比較適合的呢? 以及要選 mock 還是 stub 呢?<br>
+答案是使用 mock 在 mail.js 裡面的 axios 套件的 post 方法去進行驗證就好</p>
+<p>原因是 mail.js 並不是實際上去發出外部請求的程式<br>
+而是 axios.post 才是<br>
+在 mail.js 裡面的程式也是內部相依性的一種<br>
+所以在做 mock 的時候要以最外層, 實際去呼叫外部資源的地方為主<br>
+透過這種方式可以以最大限度去檢測內部使用的相依性問題</p>
+<p>如果萬一是 mock 在 mail 的 <code>sendLoginSuccessfullyMail</code> 方法的話<br>
+變成有一段<code>檢測 mail 格式</code>的邏輯就會沒有測試到, 而這種方式就是 unit of code<br>
+因為 unit of code 就是在測試程式中, 所有相依性都用 mock 去處理</p>
+<p>那以前幾天提到六角形架構 (hexagonal architecture) 來看的話如下</p>
+<p>&lt;img src=&quot;/images/unit-test/unit-test-best-practice-08.png&quot; width=550/&gt;</p>
+<p>所以在使用 mock/stub 盡量以最外面靠近外部資源的去 mock/stub<br>
+不過當我們在測試這類型的時候, 其實也已經被歸類在 Integration test 裡面了</p>
+<p>那麼接著為何剛剛的 case 要使用 mock 而不是 stub?<br>
+在書中, 用了以下兩種方式去分類何時使用 mock 何時使用 stub<br>
+有回傳值使用 stub, 無回傳值使用 mock</p>
+<p>&lt;img src=&quot;/images/unit-test/unit-test-best-practice-11.png&quot; width=400/&gt;</p>
+<p>不過進一步說明的話, 因為在剛剛的 case 中並沒有需要寄信的 response 去處理任何東西<br>
+所以我就也不需要用 stub 了<br>
+我只需要用 mock 去驗證<code>寄信的行為</code>是不是有符合就夠了</p>
+<h2><span id="後記">後記</span></h2>
+<p>透過這五篇帶大家了解一下書中內容的一些精華<br>
+書中有些觀點我可能沒辦法完整呈現出來<br>
+但有興趣的人可以去看看這本書, 真的寫得不錯！<br>
+如果有任何疑問, 歡迎提出來一起討論！</p>
 
             </div>
         
@@ -275,8 +334,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="card">
+    <div class="card-content">
+        <p style="text-align: center;">
+            <a href="https://www.buymeacoffee.com/yujack" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+        </p>
+    </div>
     <div class="card-content" id="google-ad">
-        <p style="text-align: center;">如果喜歡我的內容，歡迎點廣告支持，謝謝！</p>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
             crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
