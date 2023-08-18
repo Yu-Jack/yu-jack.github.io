@@ -161,12 +161,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-上次提到了, 關於在 http module 裡面的 close function
-當呼叫 server.close(() =&gt; {console.log(&quot;server is closed&quot;)})
-express 會等到請求處理完事件後才會關閉
-但那次我們單純只提到了伺服器的部分
-那麼當我的伺服器跟資料庫連動的時候, 也是一樣的狀況嗎?
+                前言上次提到了, 關於在 http module 裡面的 close function當呼叫 server.close(() =&gt; {console.log(&quot;server is closed&quot;)})express 會等到請求處理完事件後才會關閉  
+但那次我們單純只提到了伺服器的部分那麼當我的伺服器跟資料庫連動的時候, 也是一樣的狀況嗎?  
 這篇將會 demo ...
             </div>
         
@@ -223,13 +219,9 @@ express 會等到請求處理完事件後才會關閉
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-在上一篇有討論到如何去寫 async/await 的 try-catch 比較好
-那這篇會注重在另一種在最外層不需要 try-catch 的寫法上
-那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)
-最後面會去比較這兩種寫法的優劣
-寫法一
-先來複習之前提到過的寫法
+                前言在上一篇有討論到如何去寫 async/await 的 try-catch 比較好那這篇會注重在另一種在最外層不需要 try-catch 的寫法上  
+那因為用 try-catch 和不用 try-catch 的場景比較不一樣 (最外層)最後面會去比較這兩種寫法的優劣
+寫法一先來複習之前提到過的寫法  
 1234567891011121314151617181920212223242526...
             </div>
         
@@ -286,14 +278,9 @@ express 會等到請求處理完事件後才會關閉
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-這篇文章會注重在 OAuth 2.0 的介紹
-OAuth 1.0 和 2.0 的差別其實蠻大的, 對角色的定義也有所不同
-OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a 和 2.0 的之间的区别有哪些？
+                前言這篇文章會注重在 OAuth 2.0 的介紹OAuth 1.0 和 2.0 的差別其實蠻大的, 對角色的定義也有所不同OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a 和 2.0 的之间的区别有哪些？  
 
-基本上 2.0 就是對 1.0 的角色重新定義
-簡化 1.0 的複雜流程, 以及強化 1.0 面臨到的安全問題
-但本質上的目的都是...
+基本上 2.0 就是對 1.0 的角色重新定義簡化 1.0 的複雜流程, 以及強化 1.0 面臨到的安全問題但本質上的目的都是一樣,...
             </div>
         
         
@@ -349,13 +336,8 @@ OAuth 1.0 和 OAuth 2.0 的差別詳細可以看這篇文章 OAuth 1.0，1.0a �
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-CAS 全名是 Central Authentication Service
-一個獨立的認證服務, 概念是在使用服務之前
-如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入
-登入成功之後就會被導回去原本使用服務的頁面
-題外話, 這裡的英文 Authentication 是有含義所在的
-代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行&lt;spa...
+                前言CAS 全名是 Central Authentication Service一個獨立的認證服務, 概念是在使用服務之前如果是沒有登入的使用者, 會先被跳轉到認證服務的地方進行登入登入成功之後就會被導回去原本使用服務的頁面  
+題外話, 這裡的英文 Authentication 是有含義所在的代表判斷使用者是不是他所宣稱的人, 通常會透過使用帳號密碼或是郵件等等方式進行認證而認證成功後, ...
             </div>
         
         
@@ -411,15 +393,9 @@ CAS 全名是 Central Authentication Service
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別
-這篇會針對它們之間的差別進行解釋
-正文
-我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)
-OAuth
-OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的
-但在對角色和細節流程上面的定義不大一樣
-這會到 OAuth 2.0 實...
+                前言OAuth 和 Single Sign On (SSO) 的概念不仔細研讀, 還真的不好分出這之間的差別這篇會針對它們之間的差別進行解釋  
+正文我們先看看 RFC 上面對於 OAuth 以及 SSO 的解釋是什麼 (擷取部分內容)  
+OAuthOAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的但在對角色和細節流程上面的定義不大一樣這會到 OAuth 2.0 實作的...
             </div>
         
         
@@ -475,12 +451,7 @@ OAuth 1.0 和 OAuth 2.0 的本質解決的問題上是一樣的
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-SSO 是 Sinsgle Sign On, 也就是單點登入
-簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』
-然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用
-但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存
-而是其他地方的系統都是透過 A 去做到帳密認...
+                前言SSO 是 Sinsgle Sign On, 也就是單點登入簡單來說就是『我希望我在一個地方 A 登入後, 在其他地方也能使用同一組帳號密碼登入』然而透過 cookie-session 的機制, 有時在一個服務 A 登入後, 在服務 B 也不需要登入也能直接使用但 SSO 並不代表, 我存在 A 的帳號密碼, 也會被其他地方的系統儲存而是其他地方的系統都是透過 A 去做到帳密認證, 也就...
             </div>
         
         
@@ -536,14 +507,11 @@ SSO 是 Sinsgle Sign On, 也就是單點登入
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項
-確認好這三點可以先 Marked 一下待會要額外做哪一些設定
+                前言要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項確認好這三點可以先 Marked 一下待會要額外做哪一些設定  
 
 確認 ec2 instance type 是否支援 ipv6, 可參考 Instance Types
 確認 ec2 instance 是在 public subnet 還是 private subnet
-
-public subnet → 要用到 intern...
+public subnet → 要用到 interne...
             </div>
         
         
@@ -599,16 +567,10 @@ public subnet → 要用到 intern...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近除了學習自身技術能力以外，也需要提升自己內心的能力
-最近看到一本書叫做『別人怎麼對你，都是你教的』
-裡面舉了相當多的例子讓你去了解心理學的概念，相當推薦這本書
-接下來幾篇會紀錄書中的金句和例子，但不會全部介紹
-情緒
-書中提到關於十二種情緒，但都脫離不了一項原則
+                最近除了學習自身技術能力以外，也需要提升自己內心的能力最近看到一本書叫做『別人怎麼對你，都是你教的』裡面舉了相當多的例子讓你去了解心理學的概念，相當推薦這本書接下來幾篇會紀錄書中的金句和例子，但不會全部介紹  
+情緒書中提到關於十二種情緒，但都脫離不了一項原則
 
-情緒只是一種能量，沒有好壞之分
-每一種情緒都有它獨特的價值、功能、存在的理由，都是我們可以利用的力量
-沒有所謂的負面情緒，只有...
+情緒只是一種能量，沒有好壞之分每一種情緒都有它獨特的價值、功能、存在的理由，都是我們可以利用的力量沒有所謂的負面情緒，只有情緒帶來...
             </div>
         
         
@@ -664,15 +626,9 @@ public subnet → 要用到 intern...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言
-這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言
-這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋
-下面文章統一都會用直譯去做解釋
-編譯語言
-被稱為編譯語言有一個特性
-此語言會透過編譯器編譯成另一個語言
-而編譯器是什麼呢?
+                前言網路上常有人在討論 js 是不是編譯 (compiler) 語言又或是直譯 (interpreter) 語言這是一個蠻妙的問題，但要了解這之前，我們必須先談談什麼是編譯語言什麼是直譯語言  
+這邊先來個科普，在中國那邊也會把直譯稱之為解釋型語言，所以直譯等於解釋下面文章統一都會用直譯去做解釋  
+編譯語言被稱為編譯語言有一個特性此語言會透過編譯器編譯成另一個語言而編譯器是什麼呢?  
 先...
             </div>
         
@@ -729,15 +685,8 @@ public subnet → 要用到 intern...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-工作久了，一定都會面臨到一個問題
-就是 Zero Downtime 更新 (零停機更新)
-簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』
-這邊就紀錄如何去實現這需求
-相信寫過 node.js 的人會知道
-在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線
-那究竟要如何達到 zero downtime 更新呢?
-我們來看看以下的 Cases，左邊是...
+                前言工作久了，一定都會面臨到一個問題就是 Zero Downtime 更新 (零停機更新)簡單來說就是『我希望更新的時候，不會影響正在使用的客戶』這邊就紀錄如何去實現這需求  
+相信寫過 node.js 的人會知道在啟用伺服器的時候，如果重新修改程式要更新的時候，其實正在使用的客戶也會跟著斷線那究竟要如何達到 zero downtime 更新呢?我們來看看以下的 Cases，左邊是模擬伺服器...
             </div>
         
         
