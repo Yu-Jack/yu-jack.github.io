@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="GfJLBEu3BHvdazYMXsGETTsY_cx2FLLXrqcx0H0s4cA" />
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>openSUSE Tumbleweed 和 NVIDIA Driver 安裝紀錄 - 技術雜記 Technology Notes - Jack Yu | 傑克</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NKT99TP');</script>
+
+<script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    <meta name="description" content="前言這篇主要來講解安裝 openSUSE Tumbleweed 和在上面安裝 NVIDIA Driver 的紀錄，這篇不會針對這個 OS 做太多的解釋。 整體安裝大綱大概如下  安裝 OS 如何備份 安裝繁體中文語系 安裝 NVIDIA Drive 設定聲音 設定 Clicking 行為  安裝 OS到 openSUSE 官網下載 iso 檔案後就是製作開機 USB，網路上蠻多資源的，我個人是用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openSUSE Tumbleweed 和 NVIDIA Driver 安裝紀錄">
+<meta property="og:url" content="https://yu-jack.github.io/2023/10/14/opensuse-installation/index.html">
+<meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
+<meta property="og:description" content="前言這篇主要來講解安裝 openSUSE Tumbleweed 和在上面安裝 NVIDIA Driver 的紀錄，這篇不會針對這個 OS 做太多的解釋。 整體安裝大綱大概如下  安裝 OS 如何備份 安裝繁體中文語系 安裝 NVIDIA Drive 設定聲音 設定 Clicking 行為  安裝 OS到 openSUSE 官網下載 iso 檔案後就是製作開機 USB，網路上蠻多資源的，我個人是用">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
+<meta property="article:published_time" content="2023-10-14T15:47:41.000Z">
+<meta property="article:modified_time" content="2023-10-14T14:51:37.398Z">
+<meta property="article:author" content="Jack Yu">
+<meta property="article:tag" content="openSUSE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yu-jack.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+    <style>
+        .content img {
+            display: block;   
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <!-- <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="openSUSE Tumbleweed 和 NVIDIA Driver 安裝紀錄" height="28">
+            
+            </a>
+        </div> -->
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2023-10-14T15:47:41.000Z">2023-10-14</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/openSUSE/">openSUSE</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    9 分鐘 閱讀文 (大約 1402 個字)
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 觀看次數
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                openSUSE Tumbleweed 和 NVIDIA Driver 安裝紀錄
+            
+        </h1>
+        
+            <div class="content" style="word-break: break-all;">
+                <h2><span id="前言">前言</span></h2><p>這篇主要來講解安裝 openSUSE Tumbleweed 和在上面安裝 NVIDIA Driver 的紀錄，這篇不會針對這個 OS 做太多的解釋。</p>
+<p>整體安裝大綱大概如下</p>
+<ul>
+<li>安裝 OS</li>
+<li>如何備份</li>
+<li>安裝繁體中文語系</li>
+<li>安裝 NVIDIA Drive</li>
+<li>設定聲音</li>
+<li>設定 Clicking 行為</li>
+</ul>
+<h2><span id="安裝-os">安裝 OS</span></h2><p>到 openSUSE 官網下載 iso 檔案後就是製作開機 USB，網路上蠻多資源的，我個人是用 <a href="https://rufus.ie/zh_TW/">rufus</a> 去製作的。</p>
+<p>這部份安裝倒是蠻簡單的，不過建議語系先選擇英文，系統上比較不會有問題。原因是我後續在安裝顯卡驅動的時候，因為資料夾在 Downloads 底下加上我一開始傻傻的選繁體中文，最後在 init 3 下去安裝驅動就出現亂碼問題，後來改成英文就正常多。</p>
+<h2><span id="如何備份">如何備份</span></h2><p>因為筆者在嘗試後面不同的設定時，來來回回重灌蠻多次，後來才發現有一個 snapper 可以備份，基本用法如下：</p>
+<ul>
+<li>建立備份： <code>snapper create -d &quot;describition you want to mention&quot;</code></li>
+<li>列出備份： <code>snapper list</code></li>
+<li>Rollback： <code>snapper rollback [number from snapper list]</code></li>
+</ul>
+<p>有這個東西就算後續 NIVIDA 安裝有問題，沒辦法用 GUI，也可以直接用上面指令 Rollback！</p>
+<h2><span id="安裝繁體中文語系">安裝繁體中文語系</span></h2><p>當用英文語系安裝完成之後，是沒辦法打中文以及中文字顯示會怪怪的，所以需要安裝中文字體，這裡我用了兩個方式去下載。</p>
+<ul>
+<li>第一個是透過 YaST Language 裏面去第二語系勾選繁體中文。</li>
+<li>第二個是到 <a href="https://fonts.google.com/noto/specimen/Noto+Sans+TC">Google Noto Sans Traditional Chinese</a> 去把字型下載下來</li>
+</ul>
+<p>兩個都搞定之後，從電腦上看的字就跟之前差不多了，重開機會就會有 gcin 可以使用，用法就是透過 ctrl + space 去做切換。不過因為我是同時並行，所以不確定只用第二種會不會有效。</p>
+<h2><span id="安裝-nvidia-driver">安裝 NVIDIA Driver</span></h2><p>這步驟非常麻煩，但基本上式參照 openSUSE 這篇 <a href="https://en.opensuse.org/SDB:NVIDIA_the_hard_way">SDB:NVIDIA the hard way</a> 文章去安裝。</p>
+<p>看到這邊可能會問說怎麼不用 openSUSE 這篇 <a href="https://en.opensuse.org/SDB:NVIDIA_drivers">SDB:NVIDIA drivers</a> 教學去安裝呢？</p>
+<p>原因是弄完就只剩黑屏和一個屬標在那裡了 … 不確定壞在哪裡，後來只能用 the hard way 去裝起來。</p>
+<h3><span id="到-nvidia-官網下載驅動">到 Nvidia 官網下載驅動</span></h3><p>請到 <a href="https://www.nvidia.com.tw/Download/index.aspx?lang=tw">https://www.nvidia.com.tw/Download/index.aspx?lang=tw</a> 下載驅動程式。</p>
+<p>如果不知道自己的型號，可以透過 <code>lspci | grep VGA</code> 了解。</p>
+<h3><span id="安裝必要程式">安裝必要程式</span></h3><p>再來透過 <code>zypper install devel_kernel</code> 要建置驅動的工具，如果不行的話，可以改用 YaST Software Management 裏面去搜尋並勾選按接受去下載。</p>
+<h3><span id="禁用-nouvea">禁用 nouvea</span></h3><p>因為 Nvidia 會跟內建的 nouvea 打架，所以要先禁用 nouvea 才可以。</p>
+<p>我的作法是到 YaST Boot Loader &gt; Kernel Parameters 裏面去新增 <code>nomodeset 3</code>，不過要注意這樣新增完之後，重開機會進入 <code>init 3</code> 也就是純 CLI 的介面下，如果要回去原本 GUI 可以透過 <code>init 5</code> 回到 GUI。</p>
+<p><img src="/images/opensuse-installation/yast_boot_loader.png" alt></p>
+<p>設定完之後接著重新啟動即可。</p>
+<h3><span id="開始安裝驅動">開始安裝驅動</span></h3><p>重開機後會進到 CLI 介面下，這時候用 <code>sh /home/&lt;username&gt;/Downloads/NVIDIA*.run</code> 去安裝即可，這步驟有可能會遇到幾個問題。</p>
+<ol>
+<li>no gcc： 代表你前面 kernel 那邊沒裝好。</li>
+<li>blacklist existed： 代表你可能先參照其他教學自己設定 nouvea blacklist，不過照理說這不影響，最好是先把自己設定的砍光，因為他本來就會幫你建立。</li>
+</ol>
+<p>裝完之後，重開機一樣會到 CLI，這時候輸入 <code>init 5</code> 照理說是可以正常進入到 GUI 畫面的，接著輸入 <code>nvidia-settings</code> 發現有東西跳出來就沒問題。</p>
+<p>這時候如果你有外接螢幕，應該會發現是不能使用的，所以接下來要先搞定這件事</p>
+<h3><span id="設定-xorg-configuration">設定 Xorg Configuration</span></h3><p>接下來的步驟就是參照 <a href="https://en.opensuse.org/SDB:NVIDIA_the_hard_way#Xorg_Configuration_for_Optimus_Setups">https://en.opensuse.org/SDB:NVIDIA_the_hard_way#Xorg_Configuration_for_Optimus_Setups</a> 這裡去新增檔案，以防萬一這裡做一個備份。</p>
+<p>請到 <code>/etc/X11/xorg.conf.d/</code> 底下新增 <code>10-nvidia-drm-outputclass.conf</code> 並輸入以下內容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Section &quot;OutputClass&quot;</span><br><span class="line">  Identifier &quot;intel&quot;</span><br><span class="line">  MatchDriver &quot;i915&quot;</span><br><span class="line">  Driver &quot;modesetting&quot;</span><br><span class="line">EndSection</span><br><span class="line">Section &quot;OutputClass&quot;</span><br><span class="line">  Identifier &quot;nvidia&quot;</span><br><span class="line">  MatchDriver &quot;nvidia-drm&quot;</span><br><span class="line">  Driver &quot;nvidia&quot;</span><br><span class="line">  Option &quot;AllowEmptyInitialConfiguration&quot;</span><br><span class="line">  Option &quot;PrimaryGPU&quot; &quot;yes&quot;</span><br><span class="line">  ModulePath &quot;&#x2F;usr&#x2F;lib&#x2F;nvidia&#x2F;xorg&quot;</span><br><span class="line">  ModulePath &quot;&#x2F;usr&#x2F;lib&#x2F;xorg&#x2F;modules&quot;</span><br><span class="line">EndSection</span><br></pre></td></tr></table></figure></p>
+<h3><span id="設定-nvidia-modesetting">設定 NVIDIA modesetting</span></h3><p>回到原本的 YaST Boot Loader 的參數，把原本 <code>nomodeset 3</code> 給拿掉，並新增 <code>nouveau.modeset=0 nvidia-drm.modeset=1</code>，接著重新開機就可以了。<br><img src="/images/opensuse-installation/yast_boot_loader_2.png" alt></p>
+<p>正常情況下 novouea 應該不會啟用，所以透過 <code>lsmod | grep nouveau</code> 會發現應該不會有任何輸出結果，而透過 <code>lsmod | grep nvidia</code> 會有東西出現。</p>
+<h2><span id="設定聲音">設定聲音</span></h2><p>在 YaST Boot Loader 增加 <code>snd_hda_intel.dmic_detect=0</code> 重開機就會有聲音。</p>
+<h2><span id="設定-clicking-行為">設定 Clicking 行為</span></h2><p>因為預設是 one click opens items，但個人習慣上是雙擊，這部分可以到 WorkSpace General Behavior 去做調整，但這個路徑取決於 KDE Plasma 的版本，所以也許哪天這個又換了也不一定。</p>
+<h2><span id="references">References</span></h2><ul>
+<li><a href="https://forums.developer.nvidia.com/t/nvidia-geforce-gtx-1650-no-external-monitor-not-detected-in-xrandr-opensuse-leap-15-3/215296">https://forums.developer.nvidia.com/t/nvidia-geforce-gtx-1650-no-external-monitor-not-detected-in-xrandr-opensuse-leap-15-3/215296</a></li>
+<li><a href="https://forum.suse.org.cn/t/topic/14193/9">https://forum.suse.org.cn/t/topic/14193/9</a></li>
+<li><a href="https://en.opensuse.org/SDB:NVIDIA_the_hard_way">https://en.opensuse.org/SDB:NVIDIA_the_hard_way</a></li>
+</ul>
+
+            </div>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/openSUSE/" rel="tag">openSUSE</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2023/07/18/how-minds-change/">
+                <span class="level-item">How Minds Change (中譯 - 如何讓人改變想法) 心得</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <div style="text-align: center;">
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="yujack" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+        </div>
+    </div>
+    <div class="card-content" id="google-ad">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515253208026743"
+            crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-1515253208026743"
+            data-ad-slot="4645257753"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    <div class="card-content">
+        <!-- <h3 class="title is-5 has-text-weight-normal">評論</h3> -->
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://yu-jack.github.io/2023/10/14/opensuse-installation/';
+        this.page.identifier = '2023/10/14/opensuse-installation/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'yu-jack' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+        <hr>
+        <div class="utterances">
+            <script src="https://utteranc.es/client.js"
+                    repo="Yu-Jack/yu-jack.github.io"
+                    issue-term="title"
+                    theme="github-light"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+    <style>
+        .custom-flex-container {
+            display: flex; 
+            justify-content: center; 
+            margin-top: 30px;
+        }
+    </style>
+</div>
+</div>
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+        
+            
+        
+            
+                
+
+    <div class="card widget" id="toc">
+        <div class="card-content" style="max-height: 85vh; overflow-y: auto;">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#安裝-os">
+        <span class="has-mr-6">2</span>
+        <span>安裝 OS</span>
+        </a></li><li>
+        <a class="is-flex" href="#如何備份">
+        <span class="has-mr-6">3</span>
+        <span>如何備份</span>
+        </a></li><li>
+        <a class="is-flex" href="#安裝繁體中文語系">
+        <span class="has-mr-6">4</span>
+        <span>安裝繁體中文語系</span>
+        </a></li><li>
+        <a class="is-flex" href="#安裝-nvidia-driver">
+        <span class="has-mr-6">5</span>
+        <span>安裝 NVIDIA Driver</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#到-nvidia-官網下載驅動">
+        <span class="has-mr-6">5.1</span>
+        <span>到 Nvidia 官網下載驅動</span>
+        </a></li><li>
+        <a class="is-flex" href="#安裝必要程式">
+        <span class="has-mr-6">5.2</span>
+        <span>安裝必要程式</span>
+        </a></li><li>
+        <a class="is-flex" href="#禁用-nouvea">
+        <span class="has-mr-6">5.3</span>
+        <span>禁用 nouvea</span>
+        </a></li><li>
+        <a class="is-flex" href="#開始安裝驅動">
+        <span class="has-mr-6">5.4</span>
+        <span>開始安裝驅動</span>
+        </a></li><li>
+        <a class="is-flex" href="#設定-xorg-configuration">
+        <span class="has-mr-6">5.5</span>
+        <span>設定 Xorg Configuration</span>
+        </a></li><li>
+        <a class="is-flex" href="#設定-nvidia-modesetting">
+        <span class="has-mr-6">5.6</span>
+        <span>設定 NVIDIA modesetting</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#設定聲音">
+        <span class="has-mr-6">6</span>
+        <span>設定聲音</span>
+        </a></li><li>
+        <a class="is-flex" href="#設定-clicking-行為">
+        <span class="has-mr-6">7</span>
+        <span>設定 Clicking 行為</span>
+        </a></li><li>
+        <a class="is-flex" href="#references">
+        <span class="has-mr-6">8</span>
+        <span>References</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+            
+        
+            
+        
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen ">
+            
+                
+            
+            </div>
+        
+    </div>
+    
+
+                
+    
+    
+    
+    
+    <!-- TODO: widgets 算錯 -->
+    
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+        
+            
+        
+        
+    </div>
+    
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                &copy; 2023 Jack Yu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yu-jack.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
