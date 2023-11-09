@@ -30,6 +30,13 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/disk/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/CloudFront/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -45,13 +52,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/header/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/disk/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -766,14 +766,14 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/client-go/</loc>
-        <lastmod>2023-11-09T05:52:57.978Z</lastmod>
+        <lastmod>2023-11-09T14:35:06.503Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/kubernetes/</loc>
-        <lastmod>2023-11-09T05:52:57.978Z</lastmod>
+        <lastmod>2023-11-09T14:35:06.503Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
