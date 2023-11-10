@@ -123,7 +123,7 @@ case event, ok := <-w.ResultChan():
 1. queue & items
 2. process
 
-實際上在上面做 store 的操作時，並不是直接把 object 塞到 queue 裡面，而是塞入 ID。真正的 object 是被存在 items map 結構裡面，再來可以看到 `process`，這是 Informer 在使用 Pop 時會傳進來的。
+實際上在上面做 store 的操作時，並不是直接把 object 塞到 queue 裡面，而是塞入 ID，真正的 object 是被存在 items map 結構裡面。再來可以看到 `process`，這是 Informer 在使用 Pop 時會傳進來的。
 ```go
 // client-go/tools/cache/delta_fifo.go
 type DeltaFIFO struct {
