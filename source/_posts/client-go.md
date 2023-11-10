@@ -492,7 +492,7 @@ Controller 則是扮演 coordinator 的角色，把以上東西都包起來做�
 
 ## Call Stack
 
-前面的 call stack 可能很難想像，這邊我畫了一張串起來的就會比較好想像，使用情境是以 SharedInformer 為出發，這張圖省略大量的細節，主要以概念上的順序為主去畫，這邊就會發現比較多核心的邏輯會聚集在 controller 裡面去處理。 ![](/images/client-go/sharedInformercallstack.png)
+前面的 call stack 可能很難想像，這邊我畫了一張串起來的就會比較好想像，使用情境是以 SharedInformer 為出發，這張圖省略了部分細節，主要以概念上的順序為主去畫，這邊就會發現比較多核心的邏輯會聚集在 controller 裡面去處理。 ![](/images/client-go/sharedInformercallstack.png)
 
 
 ## 最後
