@@ -329,29 +329,9 @@ func (p *sharedProcessor) run(stopCh <-chan struct{}) {
 }
 ```
 
-可以看到底下個 listener.run 會去聽 p.nextCh，而 listener.pop 會去塞 nextCh (from p.nexCh)
+可以看到底下個 listener.run 會去聽 p.nextCh，而 listener.pop 會從 addCh 拿到 notification 之後塞到 p.nextCh 裡面。
 ```go
 // client-go/tools/cache/shared_informer.go
-func (p *processorListener) run() {
-	/* 略 */
-	wait.Until(func() {
-		for next := range p.nextCh {
-			switch notification := next.(type) {
-			case updateNotification:
-				p.handler.OnUpdate(notification.oldObj, notification.newObj)
-			case addNotification:
-				p.handler.OnAdd(notification.newObj, notification.isInInitialList)
-				/* 略 */
-			case deleteNotification:
-				p.handler.OnDelete(notification.oldObj)
-			default:
-				/* 略 */
-			}
-		}
-		/* 略 */
-	}, 1*time.Second, stopCh)
-}
-
 func (p *processorListener) pop() {
 	defer utilruntime.HandleCrash()
 	defer close(p.nextCh) // Tell .run() to stop
@@ -362,20 +342,51 @@ func (p *processorListener) pop() {
 		select {
 		case nextCh <- notification:
 			// Notification dispatched
-			/* 略 */
+			var ok bool
+			notification, ok = p.pendingNotifications.ReadOne()
+			if !ok { // Nothing to pop
+				nextCh = nil // Disable this select case
+			}
 		case notificationToAdd, ok := <-p.addCh:
 			if !ok {
 				return
 			}
 			if notification == nil { // No notification to pop (and pendingNotifications is empty)
-				/* 略 */
-                notification = notificationToAdd
+				// Optimize the case - skip adding to pendingNotifications
+				notification = notificationToAdd
 				nextCh = p.nextCh
 			} else { // There is already a notification waiting to be dispatched
-				/* 略 */
+				p.pendingNotifications.WriteOne(notificationToAdd)
 			}
 		}
 	}
+}
+
+func (p *processorListener) run() {
+	// this call blocks until the channel is closed.  When a panic happens during the notification
+	// we will catch it, **the offending item will be skipped!**, and after a short delay (one second)
+	// the next notification will be attempted.  This is usually better than the alternative of never
+	// delivering again.
+	stopCh := make(chan struct{})
+	wait.Until(func() {
+		for next := range p.nextCh {
+			switch notification := next.(type) {
+			case updateNotification:
+				p.handler.OnUpdate(notification.oldObj, notification.newObj)
+			case addNotification:
+				p.handler.OnAdd(notification.newObj, notification.isInInitialList)
+				if notification.isInInitialList {
+					p.syncTracker.Finished()
+				}
+			case deleteNotification:
+				p.handler.OnDelete(notification.oldObj)
+			default:
+				utilruntime.HandleError(fmt.Errorf("unrecognized notification: %T", next))
+			}
+		}
+		// the only way to get here is if the p.nextCh is empty and closed
+		close(stopCh)
+	}, 1*time.Second, stopCh)
 }
 ```
 
