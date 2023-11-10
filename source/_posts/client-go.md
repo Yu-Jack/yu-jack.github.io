@@ -99,18 +99,6 @@ func NewFilteredListWatchFromClient(c Getter, resource string, namespace string,
 	}
 	return &ListWatch{ListFunc: listFunc, WatchFunc: watchFunc}
 }
-
-// client-go/tools/cache/controller.go
-func (c *controller) Run(stopCh <-chan struct{}) {
-	defer utilruntime.HandleCrash()
-	go func() {
-		<-stopCh
-		c.config.Queue.Close()
-	}()
-	r := NewReflectorWithOptions(
-		c.config.ListerWatcher, // 來自上面的 NewFilteredListWatchFromClient
-		c.config.ObjectType,
-    // 略
 ```
 
 接著就是要把得到的結果放進到 queue 裡面，讓 Informer 本體去做操作，可以看到這邊把最終的結果丟到一個叫做 store 的東西裡面，這裡的 store 就是圖上的 Delta FIFO Queue，接著 Queue 有東西進去，那我們就要看怎麼取出來，因為待會 Informer 也會用一樣的方始把資料取出來使用。
