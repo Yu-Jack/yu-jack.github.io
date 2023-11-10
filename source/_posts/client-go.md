@@ -309,12 +309,13 @@ func (s *sharedIndexInformer) AddEventHandlerWithResyncPeriod(handler ResourceEv
 }
 ```
 
-接著在最後啟動 sharedInformer 的時候，會把所有 listen 拿出來呼叫，這邊有兩個重點
+接著在最後啟動 sharedInformer 的時候，會把所有 listen 拿出來呼叫以下兩個方法：
 1. listenr.run
     會去聽 channel，有東西的時後就會處發原本定義的 handler
 2. listenr.pop
     會去塞 channel，根據 Watch 拿到的資料，會把對應事件塞到 channel 裡面
 ```go
+
 // client-go/tools/cache/shared_informer.go
 func (p *sharedProcessor) run(stopCh <-chan struct{}) {
 	func() {
