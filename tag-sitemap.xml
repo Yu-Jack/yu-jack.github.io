@@ -2,13 +2,6 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
-        <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/tags/slack/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -30,6 +23,20 @@
     </url>
 
     <url>
+        <loc>https://yu-jack.github.io/tags/API-Gateway/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://yu-jack.github.io/tags/certificate/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -38,20 +45,6 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/acm/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/disk/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/CloudWatch/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -73,6 +66,13 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/header/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/disk/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -766,14 +766,14 @@
 
     <url>
         <loc>https://yu-jack.github.io/tags/client-go/</loc>
-        <lastmod>2023-11-10T09:55:54.346Z</lastmod>
+        <lastmod>2023-11-10T10:00:37.535Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://yu-jack.github.io/tags/kubernetes/</loc>
-        <lastmod>2023-11-10T09:55:54.346Z</lastmod>
+        <lastmod>2023-11-10T10:00:37.535Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
