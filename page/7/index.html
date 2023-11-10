@@ -163,10 +163,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 這邊主要在介紹當前後端架構上完全分離 (連 domain 都分離) 狀況下，要如何達到使用 session 的方法
 知道 CORS 是什麼的人且想直接知道怎麼做可以直接跳到重點筆記
-&lt;!-- more --&gt;
-前言
-以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面
-而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別...
+
+前言以往我們前後端程式是寫在一起時，都是透過後端程式去 render (渲染) 一個頁面而在前端頁面做請求的時候，請求都會帶著 cookie 到 server 上去判別是否屬於為同一個人但當我們在前後端完全分離...
             </div>
         
         
@@ -222,14 +220,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                上一篇主要是介紹如何使用
-這篇會介紹該如何去在每一種使用方式之中去做 Error Handling
-&lt;!-- more --&gt;
-callback
-相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情
-那就是 callback 第一個參數都會是 error
-雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的
-假設當...
+                上一篇主要是介紹如何使用這篇會介紹該如何去在每一種使用方式之中去做 Error Handling  
+
+callback相信各位有在使用別人第三方套件或是 Node.js 原生的 Library 都會發現一件事情那就是 callback 第一個參數都會是 error雖然這看似是一個不成文的規定，但仔細想想把 error 放在第一個是非常合理的假設當 callback 參數回傳越來越多的時候，...
             </div>
         
         
@@ -285,15 +278,9 @@ callback
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-相信寫過 js 的人對於 this 都有一定的認識
-但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純
-所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事
-以及最後面教學如何一步一步判定 this 會是指向什麼
-&lt;!-- more --&gt;
-this 是什麼 ？
-this 單純看英文解釋的話，是代表『自身』
-聽起來好像有這麼一...
+                前言相信寫過 js 的人對於 this 都有一定的認識但要搞懂它真的不容易，js 的 this 並沒有其他語言的 this 那麼單純所以這邊要一步一步的去展示並介紹 js 中的 this 到底是怎麼一回事以及最後面教學如何一步一步判定 this 會是指向什麼
+
+this 是什麼 ？this 單純看英文解釋的話，是代表『自身』聽起來好像有這麼一回事，但實際上使用起來根本不是這樣實際上 js 中...
             </div>
         
         
@@ -349,11 +336,8 @@ this 單純看英文解釋的話，是代表『自身』
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念
-就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用
-使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
-Thread Pool 也是這種概念，但在 JDK 1.5 之前...
+                前言Thread Pool 的概念和使用 Database 的 Connection Pool 是很類似的概念就像 Connection Pool 的使用方法是去 Pool 裡面取得一個 Connection 使用使用完之後就關閉此 Connection，並把這個 Connection 丟回 Pool 之中讓其他程式使用
+Thread Pool 也是這種概念，但在 JDK 1.5 之前的版本...
             </div>
         
         
@@ -410,13 +394,10 @@ Thread Pool 也是這種概念，但在 JDK 1.5 之前...
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 這篇主要在介紹 SSH Tunnel 是什麼東西以及教學如何使用
-&lt;!-- more --&gt;
-使用情境介紹
-一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
-這裡有兩台機器，分別為 A B
-B 為重要的服務或是資料
-A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
-這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到...
+
+使用情境介紹一般來說會使用到 SSH Tunnel 的其中一個情境會是這樣子的
+這裡有兩台機器，分別為 A BB 為重要的服務或是資料A 為我們本身的主機，作為本地端開發時使用的 (開發會需要用到 B 的服務或是資料)
+這時候我們總不能每一次在 A 把程式打完，就一次一次把程式放到 B 上面去跑這件事實在是太麻煩了（汗所以可...
             </div>
         
         
@@ -472,13 +453,11 @@ A 為我們本身的主機，作為本地端開發時使用的 (開發會需要�
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近在使用 CloudFront Header forward 的設定
-CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
-於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
-&lt;!-- more --&gt;
-但由於 CF 上面的設定寫的不是很清楚
-於是發現以下這篇 AWS 官方文章
-這裡直...
+                最近在使用 CloudFront Header forward 的設定CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront於是開始研究起要怎麼把原始的 User Agent 完整的帶到 Origin 去
+
+但由於 CF 上面的設定寫的不是很清楚於是發現以下這篇 AWS 官方文章這裡直接做一個總結
+
+None: 使用 CloudF...
             </div>
         
         
@@ -534,9 +513,8 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                &lt;span style=&quot;color: green&quot;&gt;[Update 2019-05-02]&lt;/span&gt; 關於 Error Handing 可以看下一篇文章
-這篇主要紀錄 callback, promise, async/await 的使用方式
-以及如何從到 callback 和 promise 的 hell world 進入到 async/aw...
+                [Update 2019-05-02] 關於 Error Handing 可以看下一篇文章
+這篇主要紀錄 callback, promise, async/await 的使用方式以及如何從到 callback 和 promise 的 hell world 進入到 async/await 這兩兄弟的世界建議閱讀的人要有 Javascript 的基礎概念，包括對 non-blocking, ev...
             </div>
         
         
@@ -592,14 +570,10 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                有時候在使用類似 Apple Pay 的東西
-並不知道該如何去看手機中 Safari 的偵錯
-然後就會愣在那裡，並不知道該怎麼 Debug
-今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
-&lt;!--more--&gt;
-前提
-首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！
-沒有打開的話是不能使用...
+                有時候在使用類似 Apple Pay 的東西並不知道該如何去看手機中 Safari 的偵錯然後就會愣在那裡，並不知道該怎麼 Debug今天要跟各位來介紹如何在 iPhone 上面開啟 Safari 的開發者模式
+
+前提首先要確認 iPhone 手機上面的 Safari &gt; 進階 &gt; 網頁檢閱器 是否有打開才可以喔！沒有打開的話是不能使用 Develop Debug mode  
+...
             </div>
         
         
@@ -655,14 +629,9 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-最近突然有一個想法開始研究起瀏覽器端的 Cache 方法
-加上小弟常用 nodejs + express 去寫前後端
-於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
-&lt;!-- more --&gt;
-介紹
-在 express 裡面有一個 function 叫做 express.static()
-這個是一個 middleware...
+                前言最近突然有一個想法開始研究起瀏覽器端的 Cache 方法加上小弟常用 nodejs + express 去寫前後端於是開始研究起 express 裡面有一個 middleware 怎麼做起瀏覽器 cache 這件事
+
+介紹在 express 裡面有一個 function 叫做 express.static()這個是一個 middleware，最常被用在要讀取一些靜態檔案上面以這個寫法來說...
             </div>
         
         
@@ -718,12 +687,7 @@ CloudFront 預設會把 User-Agent 這個 header 替換成 Amazon CloudFront
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言
-這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
-上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
-所以必須在 API Gateway 必須要做 body mapping 的調整
-e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
-那這次的紀錄是讓 AWS ...
+                前言這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON所以必須在 API Gateway 必須要做 body mapping 的調整e.g 透過 Binary Support 或是 Base64Enconde 的方式處理那這次的紀錄是讓 AWS 的 API...
             </div>
         
         
