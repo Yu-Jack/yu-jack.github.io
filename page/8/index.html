@@ -136,6 +136,67 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2017-11-14T17:03:47.000Z">2017-11-15</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/AWS/">AWS</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分鐘 閱讀文 (大約 498 個字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/">如何用 AWS API Gateway 和 Lambda 上傳和下載檔案 -- Part 2</a>
+            
+        </h1>
+         
+            <div class="content" style="color: #a3a3a3; font-style: italic;">
+                前言
+這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
+上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
+所以必須在 API Gateway 必須要做 body mapping 的調整
+e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
+那這次的紀錄是讓 AWS ...
+            </div>
+        
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2017/11/15/handle-upload-download-file-with-Lambda-and-API-Gateway-2/#more">繼續閱讀</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2017-11-08T13:17:43.000Z">2017-11-08</time>
                 
                 <div class="level-item">
@@ -161,12 +222,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到
-
+                今天要介紹的是一個非常好用的東西，可以直接讓大家都連到你的 localhost
+這樣做完一個網站，你也不用特地部署，可以直接透過這個工具，大家都能連到
+&lt;!-- more --&gt;
 工具連結在此: Ngrok
-使用方式簡單介紹下載下來後，unzip 之後就可以做使用了如果在 localhost 開了一個 8080 想讓大家連可以在下這以下這行指令
-1.&#x2F;ngrok http 8080
-結果會長這樣，然後在網址列...
+使用方式簡單介紹
+下載下來後，unzip 之後就可以做使用了
+如果在 localhost 開了一個 8080 想讓大家連
+可以在下這以下這行指令
+1.&#x2F;ngrok ...
             </div>
         
         
@@ -222,8 +286,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-API Gateway主要...
+                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
+在 API Gateway 中要做幾項設定才有辦法達成
+加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
+這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
+&lt;!-- mo...
             </div>
         
         
@@ -279,11 +346,17 @@ API Gateway主要...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                為什麼要測試?確保你程式的結果跟你預期所想的一樣那這樣有什麼好處?這樣大概會讓你少加班好幾小時吧 ….
-下面我會介紹如何用 mocha 去做測試小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~
-
-介紹測試是為了確保你的程式結果跟你預期所想的一樣那我們又該如何去測試？那又該測試什麼東西？
-在這邊我把該測試的東西分成三個方向，由小到大這篇文章重點會放在 Unit Test ...
+                為什麼要測試?
+確保你程式的結果跟你預期所想的一樣
+那這樣有什麼好處?
+這樣大概會讓你少加班好幾小時吧 ....
+下面我會介紹如何用 mocha 去做測試
+小弟我對測試並沒有鑽研到很深的地步，如果有任何奇怪的地方，歡迎指教 ~
+&lt;!-- more --&gt;
+介紹
+測試是為了確保你的程式結果跟你預期所想的一樣
+那我們又該如何去測試？那又該測試什麼東西？
+在這邊我把該測試的東西分成三個...
             </div>
         
         
@@ -340,9 +413,11 @@ API Gateway主要...
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 [Update] 2017-11-08 原本文章的 mapping 方式再依些特別狀況會出錯，在文章最下面加入了最新的 mapping 方式
-最近需要在 API Gateway 上面作 request 和 response 的參數調整這裡紀錄一下一些基本的使用語法官方網站也有提供使用方式還有一些例子或是可以直接到 Apache Velocity Template Language
-
-if e...
+最近需要在 API Gateway 上面作 request 和 response 的參數調整
+這裡紀錄一下一些基本的使用語法
+官方網站也有提供使用方式還有一些例子
+或是可以直接到 Apache Velocity Template Language
+&l...
             </div>
         
         
@@ -398,9 +473,13 @@ if e...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                最近遇到需要增進網站安全性的問題於是 survey 了幾個常見的 header 設置方式接下來會開始介紹每一個 header 的功能以及設置方式以及可以到這個網站進行檢測 https://securityheaders.io/個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
-Set-Cookie 設置方式防禦面向為: XSS
-Set-Cookie...
+                最近遇到需要增進網站安全性的問題
+於是 survey 了幾個常見的 header 設置方式
+接下來會開始介紹每一個 header 的功能以及設置方式
+以及可以到這個網站進行檢測 https://securityheaders.io/
+個人習慣是用 nodejs + express，所以以下使用方式都會是以 express 為主
+&lt;!--more--&gt;
+Set-Cookie 設置方...
             </div>
         
         
@@ -456,10 +535,13 @@ Set-Cookie...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                稍微紀錄一下在 nodejs 裡面 module.exports 和 require以及在 ECMA6 的 export 和 import 的使用方式
-
-nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
-123456789101112131415161...
+                稍微紀錄一下在 nodejs 裡面 module.exports 和 require
+以及在 ECMA6 的 export 和 import 的使用方式
+&lt;!--more--&gt;
+nodejs
+首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click function
+然後再 b.js 裡面用 require a.js，這時候會有兩種使用方式
+1234...
             </div>
         
         
@@ -515,11 +597,15 @@ nodejs首先先在 a.js 裡面 export 出一個 object 裡面包含一個 click 
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這次要跟大家介紹一下 Google 到底有多好用相信用過 Google 都知道，Google 的搜尋很方便但是你知道，Google 還有提供除了關鍵字搜尋以外的各種神奇的搜尋方式嗎 ?
+                這次要跟大家介紹一下 Google 到底有多好用
+相信用過 Google 都知道，Google 的搜尋很方便
+但是你知道，Google 還有提供除了關鍵字搜尋以外的各種神奇的搜尋方式嗎 ?
+&lt;!--more--&gt;
+下面這張表就是 Google 提供的各種搜尋技巧
+先用幾個來讓大家了解如何使用這個方便的技巧吧！
 
-下面這張表就是 Google 提供的各種搜尋技巧先用幾個來讓大家了解如何使用這個方便的技巧吧！
-
-site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜尋到的排名不高，曝光度也不高更是難上加難但是可以...
+site:
+假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜尋到的...
             </div>
         
         
@@ -577,10 +663,12 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 在開始玩弄 Slack Bot 之前，必須要先去申請頁面建立一個 APP
 
-申請完之後，可以看到 Features 那邊有很多不同的功能這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習
+申請完之後，可以看到 Features 那邊有很多不同的功能
+這次主要會針對 Slash Command、Incoming Webhooks 以及 Interactive Components 做練習
+&lt;!--more--&gt;
 
-
-在開始正式介紹之前，我們可以思考一個情境身為工程師，就是會想要降低人工干涉的事情，大量自動化那今天，我想要自動部署...
+在開始正式介紹之前，我們可以思考一個情境
+身為工程師，就是會想要降低人工干涉的...
             </div>
         
         
@@ -636,17 +724,19 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這篇文章主要在記錄如何用 vue + vuex + vue-router做出一個簡單的 TODO List 專案DEMO 網站Source Code
-
+                這篇文章主要在記錄如何用 vue + vuex + vue-router
+做出一個簡單的 TODO List 專案
+DEMO 網站
+Source Code
+&lt;!--more--&gt;
 先來訂一個 TODO List 的簡單需求表
+
 能夠輸入項目
 能夠打勾確認完成
 能夠刪除項目
 能夠選擇顯示全部, 未完成, 完成的項目
 
-程式部分則會分為一個 vuex store 和三個 components
-專門控管資料的 store
-輸入...
+程式部分則會分為一個 vuex store 和三個 compon...
             </div>
         
         
@@ -670,64 +760,6 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
 
 
 
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2017-09-23T03:43:00.000Z">2017-09-23</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Payment-Gateway/">Payment Gateway</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    11 分鐘 閱讀文 (大約 1575 個字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2017/09/23/tappay-payment/">如何串接上 TapPay 並完成第一筆交易!</a>
-            
-        </h1>
-         
-            <div class="content" style="color: #a3a3a3; font-style: italic;">
-                [Update 2020-12-12] TapPay Web SDK 串接 - @types/tpdirect 介紹
-這篇文章主要是說明如何使用 TapPay 這個服務TapPay 是一家金流廠商，主要都是做線上金流，詳細就不多說有興趣想要詳細了解可以去參考官網 https://www.tappaysdk.com
-最近剛好被派去串接 TapPay 的服務，就順便把整個流程給記錄下來了這邊會以...
-            </div>
-        
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2017/09/23/tappay-payment/#more">繼續閱讀</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -735,7 +767,7 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
         <div class="pagination-previous">
             <a class="is-flex-grow has-text-black-ter" href="/page/7/">上一頁</a>
         </div>
-        <div class="pagination-next is-invisible is-hidden-mobile">
+        <div class="pagination-next">
             <a class="is-flex-grow has-text-black-ter" href="/page/9/">下一頁</a>
         </div>
         <ul class="pagination-list is-hidden-mobile">
@@ -747,6 +779,8 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
             <li><a class="pagination-link has-text-black-ter" href="/page/7/">7</a></li>
             
             <li><a class="pagination-link is-current" href="/page/8/">8</a></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/page/9/">9</a></li>
             
         </ul>
     </nav>
@@ -798,7 +832,7 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            80
+                            81
                         </p>
                     </a>
                 </div>
@@ -810,7 +844,7 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            22
+                            23
                         </p>
                     </a>
                 </div>
@@ -822,7 +856,7 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            111
+                            115
                         </p>
                     </a>
                 </div>
@@ -935,9 +969,9 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                 <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Experience/">
+        <a class="level is-marginless" href="/categories/Payment-Gateway/">
             <span class="level-start">
-                <span class="level-item">Experience</span>
+                <span class="level-item">Payment Gateway</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -951,9 +985,9 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Payment-Gateway/">
+        <a class="level is-marginless" href="/categories/Experience/">
             <span class="level-start">
-                <span class="level-item">Payment Gateway</span>
+                <span class="level-item">Experience</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -967,6 +1001,14 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
+        <a class="level is-marginless" href="/categories/Snow/">
+            <span class="level-start">
+                <span class="level-item">Snow</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Bot/">
             <span class="level-start">
                 <span class="level-item">Bot</span>
@@ -975,25 +1017,9 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Development/">
+        <a class="level is-marginless" href="/categories/Operating-System/">
             <span class="level-start">
-                <span class="level-item">Development</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Google/">
-            <span class="level-start">
-                <span class="level-item">Google</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Kubernetes/">
-            <span class="level-start">
-                <span class="level-item">Kubernetes</span>
+                <span class="level-item">Operating System</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -1007,9 +1033,17 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Operating-System/">
+        <a class="level is-marginless" href="/categories/Development/">
             <span class="level-start">
-                <span class="level-item">Operating System</span>
+                <span class="level-item">Development</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Kubernetes/">
+            <span class="level-start">
+                <span class="level-item">Kubernetes</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -1038,6 +1072,14 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Google/">
+            <span class="level-start">
+                <span class="level-item">Google</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li>
             </ul>
         </div>
@@ -1051,6 +1093,17 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
             彙整
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2024/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2024</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2023/11/">
@@ -1532,6 +1585,19 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1575,19 +1641,6 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
                     <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球潘 (水球學院) - 軟體設計模式精通之旅心得</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Modeling/">Modeling</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
                     </p>
                 </div>
             </div>
@@ -1620,6 +1673,19 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1668,19 +1734,6 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1696,7 +1749,7 @@ site:假設我想要搜尋我這個網站的，光靠關鍵字搜尋是很難搜
         <div class="level">
             <div class="level-start has-text-centered-mobile">
                 <p class="is-size-7">
-                &copy; 2023 Jack Yu&nbsp;
+                &copy; 2024 Jack Yu&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 

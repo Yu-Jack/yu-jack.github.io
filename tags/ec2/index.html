@@ -171,11 +171,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項確認好這三點可以先 Marked 一下待會要額外做哪一些設定  
+                前言
+要讓 ec2 支援往外連線 ipv6 的能力要先注意以下三點事項
+確認好這三點可以先 Marked 一下待會要額外做哪一些設定
 
 確認 ec2 instance type 是否支援 ipv6, 可參考 Instance Types
 確認 ec2 instance 是在 public subnet 還是 private subnet
-public subnet → 要用到 interne...
+
+public subnet → 要用到 intern...
             </div>
         
         
@@ -231,11 +234,17 @@ public subnet → 要用到 interne...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠此時會需要把硬碟增加大小，以免整台機器爆掉接下來會針對如何增加硬碟大小做說明  
+                前言
+在使用 AWS 服務時，有時候會因為 log 量太大導致硬碟大小不夠
+此時會需要把硬碟增加大小，以免整台機器爆掉
+接下來會針對如何增加硬碟大小做說明
+&lt;!-- more --&gt;
+確認硬碟大小方法
+可以透過 df -h . 指令確認硬碟目前使用的大小
+這時候可以看到硬碟配置的大小
 
-確認硬碟大小方法可以透過 df -h . 指令確認硬碟目前使用的大小這時候可以看到硬碟配置的大小
-接下來可以透過 lsblk 回找最大上限的配置可以是多少上面 xvda 就是最多可以有多少大小下面 xvda1 就是實際上目前有多少大小
-看...
+接下來可以透過 lsblk 回找最大上限的配置可以是多少
+上面 xvda 就是最多可以有多少大...
             </div>
         
         
@@ -306,7 +315,7 @@ public subnet → 要用到 interne...
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            80
+                            81
                         </p>
                     </a>
                 </div>
@@ -318,7 +327,7 @@ public subnet → 要用到 interne...
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            22
+                            23
                         </p>
                     </a>
                 </div>
@@ -330,7 +339,7 @@ public subnet → 要用到 interne...
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            111
+                            115
                         </p>
                     </a>
                 </div>
@@ -443,9 +452,9 @@ public subnet → 要用到 interne...
                 <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Experience/">
+        <a class="level is-marginless" href="/categories/Payment-Gateway/">
             <span class="level-start">
-                <span class="level-item">Experience</span>
+                <span class="level-item">Payment Gateway</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -459,9 +468,9 @@ public subnet → 要用到 interne...
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Payment-Gateway/">
+        <a class="level is-marginless" href="/categories/Experience/">
             <span class="level-start">
-                <span class="level-item">Payment Gateway</span>
+                <span class="level-item">Experience</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -475,6 +484,14 @@ public subnet → 要用到 interne...
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
+        <a class="level is-marginless" href="/categories/Snow/">
+            <span class="level-start">
+                <span class="level-item">Snow</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Bot/">
             <span class="level-start">
                 <span class="level-item">Bot</span>
@@ -483,25 +500,9 @@ public subnet → 要用到 interne...
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Development/">
+        <a class="level is-marginless" href="/categories/Operating-System/">
             <span class="level-start">
-                <span class="level-item">Development</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Google/">
-            <span class="level-start">
-                <span class="level-item">Google</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Kubernetes/">
-            <span class="level-start">
-                <span class="level-item">Kubernetes</span>
+                <span class="level-item">Operating System</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -515,9 +516,17 @@ public subnet → 要用到 interne...
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Operating-System/">
+        <a class="level is-marginless" href="/categories/Development/">
             <span class="level-start">
-                <span class="level-item">Operating System</span>
+                <span class="level-item">Development</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Kubernetes/">
+            <span class="level-start">
+                <span class="level-item">Kubernetes</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -546,6 +555,14 @@ public subnet → 要用到 interne...
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Google/">
+            <span class="level-start">
+                <span class="level-item">Google</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li>
             </ul>
         </div>
@@ -559,6 +576,17 @@ public subnet → 要用到 interne...
             彙整
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2024/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2024</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2023/11/">
@@ -1040,6 +1068,19 @@ public subnet → 要用到 interne...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1083,19 +1124,6 @@ public subnet → 要用到 interne...
                     <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球潘 (水球學院) - 軟體設計模式精通之旅心得</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Modeling/">Modeling</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
                     </p>
                 </div>
             </div>
@@ -1128,6 +1156,19 @@ public subnet → 要用到 interne...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1176,19 +1217,6 @@ public subnet → 要用到 interne...
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1204,7 +1232,7 @@ public subnet → 要用到 interne...
         <div class="level">
             <div class="level-start has-text-centered-mobile">
                 <p class="is-size-7">
-                &copy; 2023 Jack Yu&nbsp;
+                &copy; 2024 Jack Yu&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 

@@ -171,7 +171,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                前言這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON所以必須在 API Gateway 必須要做 body mapping 的調整e.g 透過 Binary Support 或是 Base64Enconde 的方式處理那這次的紀錄是讓 AWS 的 API...
+                前言
+這次記錄是介紹，只透過 AWS API Gateway 不加上 AWS Lambda 做檔案的上傳
+上一篇因為 Lambda 的特性是 Request 和 Response 都要是 JSON
+所以必須在 API Gateway 必須要做 body mapping 的調整
+e.g 透過 Binary Support 或是 Base64Enconde 的方式處理
+那這次的紀錄是讓 AWS ...
             </div>
         
         
@@ -227,8 +232,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載在 API Gateway 中要做幾項設定才有辦法達成加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
-API Gateway主要...
+                這篇主要是記錄如何利用 AWS lambda 和 AWS API Gateway 做檔案的上傳以及下載
+在 API Gateway 中要做幾項設定才有辦法達成
+加上 Lambda 不能回傳『完整』的 binary 所以必須搭配 API Gateway mapping template 調整
+這篇不會一步一步教學開 API Gateway 和 Lambda，只記錄重點部分
+&lt;!-- mo...
             </div>
         
         
@@ -285,9 +293,11 @@ API Gateway主要...
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 [Update] 2017-11-08 原本文章的 mapping 方式再依些特別狀況會出錯，在文章最下面加入了最新的 mapping 方式
-最近需要在 API Gateway 上面作 request 和 response 的參數調整這裡紀錄一下一些基本的使用語法官方網站也有提供使用方式還有一些例子或是可以直接到 Apache Velocity Template Language
-
-if e...
+最近需要在 API Gateway 上面作 request 和 response 的參數調整
+這裡紀錄一下一些基本的使用語法
+官方網站也有提供使用方式還有一些例子
+或是可以直接到 Apache Velocity Template Language
+&l...
             </div>
         
         
@@ -358,7 +368,7 @@ if e...
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            80
+                            81
                         </p>
                     </a>
                 </div>
@@ -370,7 +380,7 @@ if e...
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            22
+                            23
                         </p>
                     </a>
                 </div>
@@ -382,7 +392,7 @@ if e...
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            111
+                            115
                         </p>
                     </a>
                 </div>
@@ -495,9 +505,9 @@ if e...
                 <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Experience/">
+        <a class="level is-marginless" href="/categories/Payment-Gateway/">
             <span class="level-start">
-                <span class="level-item">Experience</span>
+                <span class="level-item">Payment Gateway</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -511,9 +521,9 @@ if e...
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Payment-Gateway/">
+        <a class="level is-marginless" href="/categories/Experience/">
             <span class="level-start">
-                <span class="level-item">Payment Gateway</span>
+                <span class="level-item">Experience</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -527,6 +537,14 @@ if e...
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
+        <a class="level is-marginless" href="/categories/Snow/">
+            <span class="level-start">
+                <span class="level-item">Snow</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Bot/">
             <span class="level-start">
                 <span class="level-item">Bot</span>
@@ -535,25 +553,9 @@ if e...
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Development/">
+        <a class="level is-marginless" href="/categories/Operating-System/">
             <span class="level-start">
-                <span class="level-item">Development</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Google/">
-            <span class="level-start">
-                <span class="level-item">Google</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Kubernetes/">
-            <span class="level-start">
-                <span class="level-item">Kubernetes</span>
+                <span class="level-item">Operating System</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -567,9 +569,17 @@ if e...
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Operating-System/">
+        <a class="level is-marginless" href="/categories/Development/">
             <span class="level-start">
-                <span class="level-item">Operating System</span>
+                <span class="level-item">Development</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Kubernetes/">
+            <span class="level-start">
+                <span class="level-item">Kubernetes</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -598,6 +608,14 @@ if e...
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Google/">
+            <span class="level-start">
+                <span class="level-item">Google</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li>
             </ul>
         </div>
@@ -611,6 +629,17 @@ if e...
             彙整
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2024/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2024</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2023/11/">
@@ -1092,6 +1121,19 @@ if e...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1135,19 +1177,6 @@ if e...
                     <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球潘 (水球學院) - 軟體設計模式精通之旅心得</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Modeling/">Modeling</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
                     </p>
                 </div>
             </div>
@@ -1180,6 +1209,19 @@ if e...
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1228,19 +1270,6 @@ if e...
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1256,7 +1285,7 @@ if e...
         <div class="level">
             <div class="level-start has-text-centered-mobile">
                 <p class="is-size-7">
-                &copy; 2023 Jack Yu&nbsp;
+                &copy; 2024 Jack Yu&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 

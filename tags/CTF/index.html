@@ -171,13 +171,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Encrypted Pastebin這題總共有四個 flag
+                Encrypted Pastebin
+這題總共有四個 flag
+&lt;!-- more --&gt;
+0x00
+一開始畫面長這樣
 
-0x00一開始畫面長這樣
 試著輸入值之後，發現上面有一段 ?post= 資料
+
 嘗試更改之後，發現 flag
-0x01根據上一個 error message 得知有用到 base64所以可以知道 ?post= 的是 base64接下來再輸入一些奇怪的值試試看
-發現程式使用的是 aes-128-cbc 去把資料作加密且根據錯誤訊息表...
+
+0x01
+根據上一個 error message 得知有用到 base64
+所以可以知道 ?post= 的是 base64
+接下來再輸入一些奇怪的值試試看
+
+發現程式使用的是...
             </div>
         
         
@@ -233,14 +242,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                Cody’s First Blog這題總共有 3 個 flag
-0x00一開始畫面長這樣
-裡面有提到好像是用 php 建立的試著提交看看 &lt;?php echo phpinfo(); ?&gt;就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
-0x01接下來看一下 source code 發現一個特別的地方  
+                Cody's First Blog
+這題總共有 3 個 flag
+&lt;!-- more --&gt;
+0x00
+一開始畫面長這樣
 
-被註解掉的 admin path
+裡面有提到好像是用 php 建立的
+試著提交看看 &lt;?php echo phpinfo(); ?&gt;
+就得到第一個 FLAG 了，但好像沒有像想像中一樣可以直接 phpinfo
 
-Path: ...
+
+0x01
+接下來看一下 source code 發現一個特別的地方...
             </div>
         
         
@@ -297,11 +311,16 @@ Path: ...
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
                 Photo Gallery
-0x00一開始畫面長這樣
+&lt;!-- more --&gt;
+0x00
+一開始畫面長這樣
+
 發現原始碼有一個 fetch?id=1
+
 點進去網址發現回傳一個 jpg 的 text 檔案
-從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的加個 ‘ 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error可能程式有哪邊出錯了，繼續往下測試
-不過當改下 f...
+
+從這可以推測他是用 id 去 mysql 取出 filename 然後讀出來的
+加個 ' 發現好像沒有 SQL Injection 的存在，但卻出現 500 Internal Server Error...
             </div>
         
         
@@ -357,12 +376,15 @@ Path: ...
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                系列篇第三篇，目前題目寫下來都蠻有趣的  
+                系列篇第三篇，目前題目寫下來都蠻有趣的
+&lt;!-- more --&gt;
+Ticketastic: Live Instance
+根據題目總共有 2 個 Flag
+0x00
+一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看
 
-Ticketastic: Live Instance根據題目總共有 2 個 Flag
-0x00一進來發現有兩個同樣名稱的題目，這邊先點上面的 DEMO 進去看看
-大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/admin 可以先登入
-登入後可以看到有一個...
+大概就是介紹，但最後發現一句特別的話『會有機器人來讀這些 ticket』
+不太明白這意思，先放著一邊繼續看看有什麼功能，裡面提到用 admin/a...
             </div>
         
         
@@ -418,14 +440,21 @@ Ticketastic: Live Instance根據題目總共有 2 個 Flag
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ  
+                系列篇第二篇，Micro-CMS v1 還因為玩壞掉我重開了快二十次才可以開來玩 QQ
+&lt;!-- more --&gt;
+Micro-CMS v1
+根據題目總共有 4 個 Flag
+0x00
+打開頁面後頁面是
 
-Micro-CMS v1根據題目總共有 4 個 Flag
-0x00打開頁面後頁面是
 試著建立 post 試試看
+
 發現有 XSS 跳出來，但打開原始碼沒發現什麼變化
+
 按了 Go Home 會去上一頁就跳出 FLAG 了
-0x01因為跳出 xss 的時候注意到 page 後面的 id 帶的是 8覺得很疑...
+
+0x01
+因為跳出 xss 的時候注...
             </div>
         
         
@@ -481,13 +510,19 @@ Micro-CMS v1根據題目總共有 4 個 Flag
         </h1>
          
             <div class="content" style="color: #a3a3a3; font-style: italic;">
-                近期想到 HackerOne 找找 Bug Bounty卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄
+                近期想到 HackerOne 找找 Bug Bounty
+卻意外發現這邊有 CTF 可以玩玩，就順手玩了幾題然後做紀錄
+&lt;!-- more --&gt;
+Micro-CMS v2
+根據題目總共有 3 個 Flag
+0x00
+一進來頁面長這樣
 
-Micro-CMS v2根據題目總共有 3 個 Flag
-0x00一進來頁面長這樣
 試著建立一個新的 Page, 發現要登入帳號密碼
+
 看到帳號密碼就是要先下個單引號，結果就噴出 exception 了
-根據 error 的 sqlcur.execute(&#39;SELEC...
+
+根據 error 的 ...
             </div>
         
         
@@ -558,7 +593,7 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            80
+                            81
                         </p>
                     </a>
                 </div>
@@ -570,7 +605,7 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            22
+                            23
                         </p>
                     </a>
                 </div>
@@ -582,7 +617,7 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            111
+                            115
                         </p>
                     </a>
                 </div>
@@ -695,9 +730,9 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                 <span class="level-item tag">3</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Experience/">
+        <a class="level is-marginless" href="/categories/Payment-Gateway/">
             <span class="level-start">
-                <span class="level-item">Experience</span>
+                <span class="level-item">Payment Gateway</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -711,9 +746,9 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Payment-Gateway/">
+        <a class="level is-marginless" href="/categories/Experience/">
             <span class="level-start">
-                <span class="level-item">Payment Gateway</span>
+                <span class="level-item">Experience</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">2</span>
@@ -727,6 +762,14 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                 <span class="level-item tag">2</span>
             </span>
         </a></li><li>
+        <a class="level is-marginless" href="/categories/Snow/">
+            <span class="level-start">
+                <span class="level-item">Snow</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Bot/">
             <span class="level-start">
                 <span class="level-item">Bot</span>
@@ -735,25 +778,9 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Development/">
+        <a class="level is-marginless" href="/categories/Operating-System/">
             <span class="level-start">
-                <span class="level-item">Development</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Google/">
-            <span class="level-start">
-                <span class="level-item">Google</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Kubernetes/">
-            <span class="level-start">
-                <span class="level-item">Kubernetes</span>
+                <span class="level-item">Operating System</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -767,9 +794,17 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                 <span class="level-item tag">1</span>
             </span>
         </a></li><li>
-        <a class="level is-marginless" href="/categories/Operating-System/">
+        <a class="level is-marginless" href="/categories/Development/">
             <span class="level-start">
-                <span class="level-item">Operating System</span>
+                <span class="level-item">Development</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Kubernetes/">
+            <span class="level-start">
+                <span class="level-item">Kubernetes</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -798,6 +833,14 @@ Micro-CMS v2根據題目總共有 3 個 Flag
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Google/">
+            <span class="level-start">
+                <span class="level-item">Google</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li>
             </ul>
         </div>
@@ -811,6 +854,17 @@ Micro-CMS v2根據題目總共有 3 個 Flag
             彙整
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2024/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2024</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2023/11/">
@@ -1292,6 +1346,19 @@ Micro-CMS v2根據題目總共有 3 個 Flag
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1335,19 +1402,6 @@ Micro-CMS v2根據題目總共有 3 個 Flag
                     <a href="/2023/06/28/water-ball-design-patterns/" class="title has-link-black-ter is-size-6 has-text-weight-normal">水球潘 (水球學院) - 軟體設計模式精通之旅心得</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Modeling/">Modeling</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
                     </p>
                 </div>
             </div>
@@ -1380,6 +1434,19 @@ Micro-CMS v2根據題目總共有 3 個 Flag
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2024-04-07T12:20:11.000Z">2024-04-07</time></div>
+                    <a href="/2024/04/07/snow-school/" class="title has-link-black-ter is-size-6 has-text-weight-normal">滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Snow/">Snow</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-08T07:43:56.000Z">2023-11-08</time></div>
                     <a href="/2023/11/08/client-go/" class="title has-link-black-ter is-size-6 has-text-weight-normal">client-go Informer 概念與程式碼分析</a>
                     <p class="is-size-7 is-uppercase">
@@ -1428,19 +1495,6 @@ Micro-CMS v2根據題目總共有 3 個 Flag
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-10-04T13:11:30.000Z">2022-10-04</time></div>
-                    <a href="/2022/10/04/go-concurrency/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Go Concurrency Patterns</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Golang/">Golang</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1456,7 +1510,7 @@ Micro-CMS v2根據題目總共有 3 個 Flag
         <div class="level">
             <div class="level-start has-text-centered-mobile">
                 <p class="is-size-7">
-                &copy; 2023 Jack Yu&nbsp;
+                &copy; 2024 Jack Yu&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 

@@ -19,12 +19,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script data-ad-client="ca-pub-1515253208026743" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-    <meta name="description" content="介紹在學習各個語言底層如何去操作 Thread 時都會看到一個名詞 Thread Model也就是不同語言開 Thread 的方式都不太一樣舉例來說, 會看到某些文章寫出以下類似的結果   1234Ruby 1.8  1:N, aka Green threadsJava 8    1:1, 但某個版本之前都是使用 1:NRuby 1.9  1:1, 但使用 GILGo   1.1  M:N, 確切">
+    <meta name="description" content="介紹 在學習各個語言底層如何去操作 Thread 時 都會看到一個名詞 Thread Model 也就是不同語言開 Thread 的方式都不太一樣 舉例來說, 會看到某些文章寫出以下類似的結果 1234Ruby 1.8  1:N, aka Green threadsJava 8    1:1, 但某個版本之前都是使用 1:NRuby 1.9  1:1, 但使用 GILGo   1.1  M:N,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thread Model 介紹">
 <meta property="og:url" content="https://yu-jack.github.io/2021/07/15/thread-model/index.html">
 <meta property="og:site_name" content="技術雜記 Technology Notes - Jack Yu | 傑克">
-<meta property="og:description" content="介紹在學習各個語言底層如何去操作 Thread 時都會看到一個名詞 Thread Model也就是不同語言開 Thread 的方式都不太一樣舉例來說, 會看到某些文章寫出以下類似的結果   1234Ruby 1.8  1:N, aka Green threadsJava 8    1:1, 但某個版本之前都是使用 1:NRuby 1.9  1:1, 但使用 GILGo   1.1  M:N, 確切">
+<meta property="og:description" content="介紹 在學習各個語言底層如何去操作 Thread 時 都會看到一個名詞 Thread Model 也就是不同語言開 Thread 的方式都不太一樣 舉例來說, 會看到某些文章寫出以下類似的結果 1234Ruby 1.8  1:N, aka Green threadsJava 8    1:1, 但某個版本之前都是使用 1:NRuby 1.9  1:1, 但使用 GILGo   1.1  M:N,">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://yu-jack.github.io/images/og_image.png">
 <meta property="article:published_time" content="2021-07-15T04:40:00.000Z">
@@ -176,48 +176,106 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </h1>
         
             <div class="content" style="word-break: break-all;">
-                <h2><span id="介紹">介紹</span></h2><p>在學習各個語言底層如何去操作 Thread 時<br>都會看到一個名詞 Thread Model<br>也就是不同語言開 Thread 的方式都不太一樣<br>舉例來說, 會看到某些文章寫出以下類似的結果  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ruby 1.8  1:N, aka Green threads</span><br><span class="line">Java 8    1:1, 但某個版本之前都是使用 1:N</span><br><span class="line">Ruby 1.9  1:1, 但使用 GIL</span><br><span class="line">Go   1.1  M:N, 確切說 M:P:N 比較好, 但這邊先讓我用 M:N</span><br></pre></td></tr></table></figure>
-<p>而這 1:1 1:N M:N 代表什麼意思呢?<br>而 Go 裡面提到的 M:P:N 又是什麼鬼呢?  </p>
-<h2><span id="user-space-amp-kernal-space">User space &amp; Kernal space</span></h2><p>在往下講之前, 我們必須先談談作業系統的一個特點<br>在整個作業系統中的虛擬記憶體空間被區分成兩塊<br>區分這兩塊是記憶體保護機制的一環</p>
+                <h2><span id="介紹">介紹</span></h2>
+<p>在學習各個語言底層如何去操作 Thread 時<br>
+都會看到一個名詞 Thread Model<br>
+也就是不同語言開 Thread 的方式都不太一樣<br>
+舉例來說, 會看到某些文章寫出以下類似的結果</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ruby 1.8  1:N, aka Green threads</span><br><span class="line">Java 8    1:1, 但某個版本之前都是使用 1:N</span><br><span class="line">Ruby 1.9  1:1, 但使用 GIL</span><br><span class="line">Go   1.1  M:N, 確切說 M:P:N 比較好, 但這邊先讓我用 M:N</span><br></pre></td></tr></table></figure></p>
+<p>而這 1:1 1:N M:N 代表什麼意思呢?<br>
+而 Go 裡面提到的 M:P:N 又是什麼鬼呢?</p>
+<h2><span id="user-space-amp-kernal-space">User space &amp; Kernal space</span></h2>
+<p>在往下講之前, 我們必須先談談作業系統的一個特點
+在整個作業系統中的虛擬記憶體空間被區分成兩塊
+區分這兩塊是記憶體保護機制的一環</p>
 <ul>
-<li><p>User space<br>  我們常使用的軟體, 例如瀏覽器, 甚至是 bash command 也屬於這一環</p>
+<li>
+<p>User space
+我們常使用的軟體, 例如瀏覽器, 甚至是 bash command 也屬於這一環</p>
 </li>
-<li><p>Kernal space<br>  能呼叫系統一切的資源, 例如 file system, network 等等</p>
+<li>
+<p>Kernal space
+能呼叫系統一切的資源, 例如 file system, network 等等</p>
 </li>
 </ul>
-<p>而在 User space 的程式是不允許直接對 Kernal space 的資料做存取<br>所以在我們使用的軟體上要能夠建立檔案或是發出網路請求<br>往往是透過 system call 到 Kernal space 要求更高的權限進而去完成功能</p>
-<p>這都是為了不讓在 User space 的程式惡意亂搞 Kernal space 的資料<br>像是 User space 的程式故意佔著大量 CPU 資源不放或是更改作業系統架構等等</p>
+<p>而在 User space 的程式是不允許直接對 Kernal space 的資料做存取
+所以在我們使用的軟體上要能夠建立檔案或是發出網路請求
+往往是透過 system call 到 Kernal space 要求更高的權限進而去完成功能</p>
+<p>這都是為了不讓在 User space 的程式惡意亂搞 Kernal space 的資料<br>
+像是 User space 的程式故意佔著大量 CPU 資源不放或是更改作業系統架構等等</p>
 <p>可以把以上的情況想像成下面的情境</p>
-<p>作業系統很像一個國度, 此國度是採取國王制度<br>國王掌握了核心的權利, 包含分配食衣住行等等權利<br>國王希望保護全體住民<br>於是安排一個騎士保護一個住民的方式<br>還是安排一個騎士保護多個住民的方式<br>依據不同情竟有不同好壞  </p>
+<p>作業系統很像一個國度, 此國度是採取國王制度<br>
+國王掌握了核心的權利, 包含分配食衣住行等等權利<br>
+國王希望保護全體住民<br>
+於是安排一個騎士保護一個住民的方式<br>
+還是安排一個騎士保護多個住民的方式<br>
+依據不同情竟有不同好壞</p>
 <p>這概念也是待會講 Thread Model 時會提到</p>
-<h2><span id="thread-model">Thread Model</span></h2><p>依照上面定義的兩種 space, Thread 也會被切成兩種形式</p>
+<h2><span id="thread-model">Thread Model</span></h2>
+<p>依照上面定義的兩種 space, Thread 也會被切成兩種形式</p>
 <ul>
-<li><p>User-Space Thread<br>  在應用程式中創建 Thread, 而這個創建並不是透過 system call 去建立的<br>  所以這裡的 Thread 並不是指 OS 實際執行的 Thread<br>  而是透過操作 stack pointer 讓 OS 實際執行的 Thread 去執行指定的 User-Space Thread<br>  通常 OS 是不知道 User-Space Thread 的存在, 所以透過 <code>ps</code> 指令是看不到的<br>  換句話說, User-Space Thread 是交由應用程式去管理, 並不是交給 OS 管理  </p>
+<li>
+<p>User-Space Thread
+在應用程式中創建 Thread, 而這個創建並不是透過 system call 去建立的<br>
+所以這裡的 Thread 並不是指 OS 實際執行的 Thread<br>
+而是透過操作 stack pointer 讓 OS 實際執行的 Thread 去執行指定的 User-Space Thread<br>
+通常 OS 是不知道 User-Space Thread 的存在, 所以透過 <code>ps</code> 指令是看不到的<br>
+換句話說, User-Space Thread 是交由應用程式去管理, 並不是交給 OS 管理</p>
 </li>
-<li><p>Kernal-Space Thread<br>  一個執行中的程式就被稱為 Process<br>  而每一個 Process 都有一個實際的執行者, 也就是 Kernal Thread<br>  Kernal Thread 則是 CPU 執行的最小單位, 這些 Thread 都會交由 OS 去管理  </p>
+<li>
+<p>Kernal-Space Thread
+一個執行中的程式就被稱為 Process<br>
+而每一個 Process 都有一個實際的執行者, 也就是 Kernal Thread<br>
+Kernal Thread 則是 CPU 執行的最小單位, 這些 Thread 都會交由 OS 去管理</p>
 </li>
 </ul>
-<p>講到這裡一定會對於如何實作 User-Space Thread 感到疑惑<br>建議可以看這個 <a href="https://github.com/bhaargav006/User-Thread-Library">Repo</a>, 這是明尼蘇達大學出過的一個作業<br>要實作 User-Space Thead library, 裡面有比較簡化版本的程式可以看看<br>通常是會用到 setjmp/longjmp, signal 這兩種方式<br>詳細可以看看這篇<a href="https://descent-incoming.blogspot.com/2020/03/user-mode-pthread-simplethread.html">文章</a>有簡單實作切換 User-Space Thread 的機制</p>
-<p>但要注意的是常常會有叫做 Pthread 的東西出現在 Thread 相關文章之中<br>它只是一種規格定義, 可以提供給 User-Space / Kernal-Space 去實作<br>但在搜集資料過程中, 有些文章都把 Pthread 定義成在 User-Space 的範疇了<br>若要確認文章說的 Pthread 是哪個部分, 就必須看上下文才知道  </p>
-<p>這種 User-Space Thread 就是只存在於 User-Space, 不會透過 system call 去建立 Kernal Thread<br>但帶來的問題就會是, 一般來說一個 Process 中實際執行的 Kernal Thread 只有一個<br>萬一 User-Space Thread 被 block 的話, 整個 Kernal Thread 也會被 block  </p>
-<p>接著進入正題來開始介紹各種不同 Thread Model<br>下面寫法都是按照 Kernal-Space Thread - User-Space Thread 順序寫的  </p>
-<h3><span id="1-n-one-to-many">1-N (one to many)</span></h3><p><img src="/images/thread-model/1-N.png" alt></p>
-<p>實際執行程式的 Kernal Thread 只會有一個<br>所以當有一個 User-Space Thread 中有被 blocked 的情況, 程式就完全沒辦法執行了<br>因為分給此 Process 的 Kernal Thread 就只有一個  </p>
-<h3><span id="11-one-to-one">1:1 (one to one)</span></h3><p><img src="/images/thread-model/1-1.png" alt></p>
-<p>一樣會發生當有條 Thread 被 blocked 的話, 那條 Thread 會卡住<br>但程式依舊可以運行, 因為 Thread 之間是不會互相影影響的</p>
-<p>以 Java 來說就是經典的 1:1 的模式<br>配合 spring + tomcat 的話, 就是一個請求進來一個 Thread<br>看似不錯, 但當 Thread 開太多的時候也是會造成系統處理效能降低  </p>
-<h3><span id="mn-many-to-many">M:N (many to many)</span></h3><p><img src="/images/thread-model/M-N.png" alt></p>
-<p>而顏色同樣的代表是被 Kernal Thread Schedule 安排下的 Thread 去處理<br>可以看到實際上 Kernal Thread 會有三條<br>其中有一條 Thread 1 處理完 C 之後再去處理 D  </p>
-<p>但這圖上的 M:N 也只是簡易版本的安排方式, 還是會有一些問題存在<br>所以會有一些變形像是 Golang 中 goroutine 的實作方式, 就優化成 M:P:N 的方式處理<br>詳細可以參考 <a href="https://medium.com/cymetrics/javas-thread-model-and-golang-goroutine-46f8475600ae">Java’s Thread model and Golang Goroutine</a> 或是 <a href="https://morsmachine.dk/go-scheduler">The Go scheduler</a></p>
-<h2><span id="後記">後記</span></h2><p>關於 Thread / Process 相關的文章其實已經很多了<br>這邊就是以個人特別關注的角度把它寫成一篇文章<br>另外對於 User-Space Thread 實作還蠻感興趣的<br>之後有機會再來試著實作看看  </p>
-<h2><span id="references">References</span></h2><ul>
+<p>講到這裡一定會對於如何實作 User-Space Thread 感到疑惑<br>
+建議可以看這個 <a href="https://github.com/bhaargav006/User-Thread-Library">Repo</a>, 這是明尼蘇達大學出過的一個作業<br>
+要實作 User-Space Thead library, 裡面有比較簡化版本的程式可以看看<br>
+通常是會用到 setjmp/longjmp, signal 這兩種方式<br>
+詳細可以看看這篇<a href="https://descent-incoming.blogspot.com/2020/03/user-mode-pthread-simplethread.html">文章</a>有簡單實作切換 User-Space Thread 的機制</p>
+<p>但要注意的是常常會有叫做 Pthread 的東西出現在 Thread 相關文章之中<br>
+它只是一種規格定義, 可以提供給 User-Space / Kernal-Space 去實作<br>
+但在搜集資料過程中, 有些文章都把 Pthread 定義成在 User-Space 的範疇了<br>
+若要確認文章說的 Pthread 是哪個部分, 就必須看上下文才知道</p>
+<p>這種 User-Space Thread 就是只存在於 User-Space, 不會透過 system call 去建立 Kernal Thread<br>
+但帶來的問題就會是, 一般來說一個 Process 中實際執行的 Kernal Thread 只有一個<br>
+萬一 User-Space Thread 被 block 的話, 整個 Kernal Thread 也會被 block</p>
+<p>接著進入正題來開始介紹各種不同 Thread Model<br>
+下面寫法都是按照 Kernal-Space Thread - User-Space Thread 順序寫的</p>
+<h3><span id="1-n-one-to-many">1-N (one to many)</span></h3>
+<p><img src="/images/thread-model/1-N.png" alt></p>
+<p>實際執行程式的 Kernal Thread 只會有一個<br>
+所以當有一個 User-Space Thread 中有被 blocked 的情況, 程式就完全沒辦法執行了<br>
+因為分給此 Process 的 Kernal Thread 就只有一個</p>
+<h3><span id="11-one-to-one">1:1 (one to one)</span></h3>
+<p><img src="/images/thread-model/1-1.png" alt></p>
+<p>一樣會發生當有條 Thread 被 blocked 的話, 那條 Thread 會卡住<br>
+但程式依舊可以運行, 因為 Thread 之間是不會互相影影響的</p>
+<p>以 Java 來說就是經典的 1:1 的模式<br>
+配合 spring + tomcat 的話, 就是一個請求進來一個 Thread<br>
+看似不錯, 但當 Thread 開太多的時候也是會造成系統處理效能降低</p>
+<h3><span id="mn-many-to-many">M:N (many to many)</span></h3>
+<p><img src="/images/thread-model/M-N.png" alt></p>
+<p>而顏色同樣的代表是被 Kernal Thread Schedule 安排下的 Thread 去處理<br>
+可以看到實際上 Kernal Thread 會有三條<br>
+其中有一條 Thread 1 處理完 C 之後再去處理 D</p>
+<p>但這圖上的 M:N 也只是簡易版本的安排方式, 還是會有一些問題存在<br>
+所以會有一些變形像是 Golang 中 goroutine 的實作方式, 就優化成 M:P:N 的方式處理<br>
+詳細可以參考 <a href="https://medium.com/cymetrics/javas-thread-model-and-golang-goroutine-46f8475600ae">Java’s Thread model and Golang Goroutine</a> 或是 <a href="https://morsmachine.dk/go-scheduler">The Go scheduler</a></p>
+<h2><span id="後記">後記</span></h2>
+<p>關於 Thread / Process 相關的文章其實已經很多了<br>
+這邊就是以個人特別關注的角度把它寫成一篇文章<br>
+另外對於 User-Space Thread 實作還蠻感興趣的<br>
+之後有機會再來試著實作看看</p>
+<h2><span id="references">References</span></h2>
+<ul>
 <li><a href="https://en.wikipedia.org/wiki/User_space">Wiki - User Space</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Green_threads">Wiki - Green threads</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Thread_(computing">Wiki - Thread(computing)</a>)</li>
+<li><a href="https://en.wikipedia.org/wiki/Thread_(computing)">Wiki - Thread(computing)</a></li>
 <li><a href="https://tldp.org/FAQ/Threads-FAQ/Types.html#UserSpace">What are threads (user/kernal)</a></li>
 <li><a href="https://www.slideshare.net/luccastera/concurrent-programming-with-ruby-and-tuple-spaces">Concurrent Programming with Ruby and Tuple Spaces</a></li>
-<li><a href="https://ithelp.ithome.com.tw/articles/10203786">第七天 Thread(執行緒)–下</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10203786">第七天 Thread(執行緒)--下</a></li>
 </ul>
 
             </div>
@@ -420,7 +478,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="level">
             <div class="level-start has-text-centered-mobile">
                 <p class="is-size-7">
-                &copy; 2023 Jack Yu&nbsp;
+                &copy; 2024 Jack Yu&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a> & Jack Yu
                 

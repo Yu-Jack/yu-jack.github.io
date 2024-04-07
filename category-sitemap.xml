@@ -7,13 +7,6 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/categories/Bot/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://yu-jack.github.io/categories/Google/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -22,6 +15,13 @@
 
     <url>
         <loc>https://yu-jack.github.io/categories/tool/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Bot/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -155,7 +155,14 @@
 
     <url>
         <loc>https://yu-jack.github.io/categories/Kubernetes/</loc>
-        <lastmod>2023-11-10T10:00:37.535Z</lastmod>
+        <lastmod>2023-11-10T10:02:18.209Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/categories/Snow/</loc>
+        <lastmod>2024-04-07T12:33:02.389Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
