@@ -45,6 +45,7 @@ iSKI Lv3 (初階) - SPK/SSTC Lv2
 iSKI Lv4 (中階) - SPK/SSTC Lv3
 iSKI Lv5 (中階) - SPK/SSTC Lv3
 iSKI Lv6 (中階) - SPK/SSTC Lv4
+iSKI Lv7 (高階) - SPK/SSTC Lv4
 
 ## 一對一/包機
 這邊要特別提到關於一對一以及包機，在 iSKI 很可惜沒有這種服務。而在 SPK/SSTC 有提供一對一或是朋友相揪來包機的方式。
