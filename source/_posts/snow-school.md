@@ -39,13 +39,15 @@ SPK/SSTC 24 堂 35,888 + 24 * 200 = 40,688 TWD
 
 而兩邊等級對應，個人單板體感和朋友雙板體感對應表是一樣的如下：
 
-iSKI Lv1 (初階) - SPK/SSTC Lv1
-iSKI Lv2 (初階) - SPK/SSTC Lv2
-iSKI Lv3 (初階) - SPK/SSTC Lv2
-iSKI Lv4 (中階) - SPK/SSTC Lv3
-iSKI Lv5 (中階) - SPK/SSTC Lv3
-iSKI Lv6 (中階) - SPK/SSTC Lv4
-iSKI Lv7 (高階) - SPK/SSTC Lv4
+- iSKI Lv1 (初階) - SPK/SSTC Lv1
+- iSKI Lv2 (初階) - SPK/SSTC Lv2
+- iSKI Lv3 (初階) - SPK/SSTC Lv2
+- iSKI Lv4 (中階) - SPK/SSTC Lv3
+- iSKI Lv5 (中階) - SPK/SSTC Lv3
+- iSKI Lv6 (中階) - SPK/SSTC Lv4
+- iSKI Lv7 (高階) - SPK/SSTC Lv4
+
+不過這裡 SSTC Lv4 之後就可以根據學員狀況決定要學什麼
 
 ## 一對一/包機
 這邊要特別提到關於一對一以及包機，在 iSKI 很可惜沒有這種服務。而在 SPK/SSTC 有提供一對一或是朋友相揪來包機的方式。
