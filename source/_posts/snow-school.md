@@ -1,5 +1,5 @@
 ---
-title: 滑雪學校經驗分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地
+title: 滑雪學校經驗心得分享 - iSKI、SPK 滑雪公園以及 SSTC 雪訓基地
 categories: Snow
 date: 2024-04-07 20:20:11
 tags: [snow school, snow, snowboard, ski]
