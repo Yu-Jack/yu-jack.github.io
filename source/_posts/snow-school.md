@@ -134,7 +134,7 @@ iSKI 和 SPK 都是有點像是毯子的材質，在收集一些朋友心得後�
 # 教學系統簡單差異
 這個差異比較特別，我去不同家檢定後以及跟各家教練聊過後，發現其實兩家注重的點不太一樣。我是學單板為主，而有一位朋友是學雙板，他也有去不同家體驗過不同系統，而在跟朋友聊完後，我們認為雙方的教學系統算是互補的。
 
-以單板來說 SPK/SSTC 比較重旋轉換刃，iSKI 則是利用機台往上帶去換刃，所以兩邊做出來的 C Turn 感覺是不一樣的。而我在 iSKI 常被說旋轉的不太夠，這也是為什麼想去 SSTC 四級課玩玩的原因。
+以單板來說 SPK/SSTC 比較重旋轉換刃，iSKI 則是利用機台往上帶去換刃，所以兩邊做出來的 C Turn 感覺是不一樣的。而我在 iSKI 常被說旋轉的不太夠，這也是為什麼想去 SSTC 四級課玩玩的原因。而 SPK/SSTC 教法會比較偏向雪場，自然往下的感覺。
 
 以單板 C Turn 為例，[SSTC C Turn](https://youtu.be/WGXYI_d2fEg?si=SytPebiZeEMlKOTm&t=280) v.s [iSKI C Turn](https://www.youtube.com/watch?v=wpgpIElOxeE)，雖然這裡 iSKI 是 S Turn，但他就是兩個 C 接在一起。另外因為我不是 SSTC 機台出生的，所以 SSTC C Turn 做的不是很標準，就野人獻曝了。不過在更後面的 S Turn，我覺得做起來感覺是很相似的。不過有趣的是，我看 3~4 年前 iSKI C Turn 教法反而是一樣的，也許這之間課綱有調整過？
 
