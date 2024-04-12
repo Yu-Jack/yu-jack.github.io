@@ -9,21 +9,14 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/CloudFront/</loc>
+        <loc>https://yu-jack.github.io/tags/certificate/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/query-string/</loc>
-        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://yu-jack.github.io/tags/header/</loc>
+        <loc>https://yu-jack.github.io/tags/acm/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -44,14 +37,21 @@
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/certificate/</loc>
+        <loc>https://yu-jack.github.io/tags/CloudFront/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://yu-jack.github.io/tags/acm/</loc>
+        <loc>https://yu-jack.github.io/tags/query-string/</loc>
+        <lastmod>2020-01-29T08:25:29.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://yu-jack.github.io/tags/header/</loc>
         <lastmod>2020-01-29T08:25:29.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
