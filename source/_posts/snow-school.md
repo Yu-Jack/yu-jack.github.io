@@ -163,3 +163,10 @@ iSKI 和 SPK 都是有點像是毯子的材質，在收集一些朋友心得後�
 
 # 後記
 趁現在記憶猶新就分享個人的一些想法，<span style="color: red">絕對沒有好壞之分，只看你怎麼選擇以及如何去思考什麼結果會是你要的。還是要強調，滑雪是一件很快樂的事情，別太因為追求技術而忘記該享受的部分了，分享一部外國 youtuber 教滑雪的一部影片 [How I Snowboard (enjoy yourself)](https://www.youtube.com/watch?v=JJilHNvjmDg)</span>
+
+<style>
+iframe {
+    display: grid;
+    margin: 10px auto;
+}
+</style>
