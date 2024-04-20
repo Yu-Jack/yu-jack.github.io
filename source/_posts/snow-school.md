@@ -106,7 +106,7 @@ SPK/SSTC 24 堂 35,888 + 24 * 200 = 40,688 TWD
 
 至於機台對雪上有沒有幫助，對於我這個運動天賦普通的普通人來說，我認為是非常有幫助的，小小獻醜一下，這是雪齡第三練滑起來的樣子
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/0dALSveEpcU?si=JLA1dwYAJrISbtWQ&amp;start=288" title="日本北海道富良野 3 月單板 Snowboard 滑雪" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe class="custom" width="560" height="315" src="https://www.youtube.com/embed/0dALSveEpcU?si=JLA1dwYAJrISbtWQ&amp;start=288" title="日本北海道富良野 3 月單板 Snowboard 滑雪" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 # 機台上自主訓練/自滑練習
 iSKI 提供自主訓練，SSTC 則是提供自滑練習，兩個名字有點不一樣，但就是讓你在上面自己滑行，然後由教練操控機台。但要注意的是 SPK 沒有提供機上自滑練習，但有 freestyle 和跳台的自滑練習，所以可以看出客群不太一樣。
@@ -140,14 +140,14 @@ iSKI 和 SPK 都是有點像是毯子的材質，在收集一些朋友心得後�
 
 以單板 C Turn 為例，SSTC C Turn(第一個影片) v.s iSKI C Turn(第二個影片)，雖然這裡 iSKI 是 S Turn，但他就是兩個 C 接在一起。另外因為我不是 SSTC 機台出生的，所以 SSTC C Turn 做的不是很標準，就野人獻曝了。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WGXYI_d2fEg?si=qOUnfcQLgkbW3Ee3&amp;start=280" title="SSTC 雪訓基地 Snowboard 檢定為 4 級" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe class="custom" width="560" height="315" src="https://www.youtube.com/embed/WGXYI_d2fEg?si=qOUnfcQLgkbW3Ee3&amp;start=280" title="SSTC 雪訓基地 Snowboard 檢定為 4 級" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/wpgpIElOxeE?si=viLFsvyZ10I852VL" title="iSKI滑雪俱樂部 Snowboard 單板 S Turn 中級過關" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe class="custom" width="560" height="315" src="https://www.youtube.com/embed/wpgpIElOxeE?si=viLFsvyZ10I852VL" title="iSKI滑雪俱樂部 Snowboard 單板 S Turn 中級過關" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ---
 
 而在更後面的 S Turn，我覺得做起來感覺是很相似的。
-<iframe width="560" height="315" src="https://www.youtube.com/embed/QsmTSd3NmXo?si=ODb_CYD3VaXcfIoJ" title="iSKI 滑雪俱樂部 Snowboard 單板進階 S Turn" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe class="custom" width="560" height="315" src="https://www.youtube.com/embed/QsmTSd3NmXo?si=ODb_CYD3VaXcfIoJ" title="iSKI 滑雪俱樂部 Snowboard 單板進階 S Turn" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 不過有趣的是，我看 3~4 年前 iSKI C Turn 教法反而是一樣的，也許這之間課綱有調整過？更詳細的單雙板差異，就等到之後累積足夠心得以及有上跳台後再來分享了！
 
@@ -165,7 +165,7 @@ iSKI 和 SPK 都是有點像是毯子的材質，在收集一些朋友心得後�
 趁現在記憶猶新就分享個人的一些想法，<span style="color: red">絕對沒有好壞之分，只看你怎麼選擇以及如何去思考什麼結果會是你要的。還是要強調，滑雪是一件很快樂的事情，別太因為追求技術而忘記該享受的部分了，分享一部外國 youtuber 教滑雪的一部影片 [How I Snowboard (enjoy yourself)](https://www.youtube.com/watch?v=JJilHNvjmDg)</span>
 
 <style>
-iframe {
+iframe.custom {
     display: grid;
     margin: 10px auto;
     height: 100%;
