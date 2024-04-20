@@ -168,5 +168,9 @@ iSKI 和 SPK 都是有點像是毯子的材質，在收集一些朋友心得後�
 iframe {
     display: grid;
     margin: 10px auto;
+    height: 100%;
+    width: 100%;
+    min-height: 315px;
+    max-width: 560px;
 }
 </style>
