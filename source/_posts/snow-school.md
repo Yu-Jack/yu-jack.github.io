@@ -149,6 +149,8 @@ iSKI 和 SPK 都是有點像是毯子的材質，在收集一些朋友心得後�
 而在更後面的 S Turn，我覺得做起來感覺是很相似的。
 <iframe class="custom" width="560" height="315" src="https://www.youtube.com/embed/QsmTSd3NmXo?si=ODb_CYD3VaXcfIoJ" title="iSKI 滑雪俱樂部 Snowboard 單板進階 S Turn" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+<iframe class="custom" width="560" height="315" src="https://www.youtube.com/embed/WLnVrJD7YJg?si=u0XHxltaSRRFZxkL" title="iSKI 滑雪俱樂部 Snowboard 單板不同 S Turn 差別" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 不過有趣的是，我看 3~4 年前 iSKI C Turn 教法反而是一樣的，也許這之間課綱有調整過？更詳細的單雙板差異，就等到之後累積足夠心得以及有上跳台後再來分享了！
 
 # 機上與雪上差異
